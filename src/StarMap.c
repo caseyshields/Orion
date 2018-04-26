@@ -34,7 +34,7 @@ StarMap * StarMap_create() {
 			((double)calendar->tm_hour)
 			+((double)calendar->tm_min)/60.0
 			+((double)calendar->tm_sec)/3600.0);
-	// set default site //38°53'23"N , 77°00'27"W;
+	// set default site //38ï¿½53'23"N , 77ï¿½00'27"W;
 	make_on_surface(38.88972222222222, -77.0075, 125.0, 10.0, 1010.0, &(map->site));
 	//site_info capitol = {38.88972222222222, -77.0075, 125.0, 10.0, 1010.0};
 	//on_surface geo_loc = {45.0, -75.0, 0.0, 10.0, 1010.0};
@@ -236,12 +236,12 @@ void StarMap_printTime(StarMap * map) {
 }
 
 void StarMap_printSite(StarMap * map) {
-	printf("latitude:\t%f°\n", map->site.latitude);
-	printf("longitude:\t%f°\n", map->site.longitude);
-	printf("elevation:\t%f°\n", map->site.height);
-	printf("temperature:\t%f°C\n", map->site.temperature);
+	printf("latitude:\t%f\n", map->site.latitude);
+	printf("longitude:\t%f\n", map->site.longitude);
+	printf("elevation:\t%f\n", map->site.height);
+	printf("temperature:\t%fC\n", map->site.temperature);
 	printf("pressure:\t%f millibars\n", map->site.pressure);
-	printf("aperture: (asc:%f, dec:%f° rad:%f°)\n", map->aperture.right_ascension, map->aperture.declination, map->aperture.radius);
+	printf("aperture: (asc:%f, dec:%f rad:%f)\n", map->aperture.right_ascension, map->aperture.declination, map->aperture.radius);
 	fflush(0);
 }
 
