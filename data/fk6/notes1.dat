@@ -1,0 +1,1310 @@
+   1 HIP    154 = FK 1630 Suspected by HIP to be double or multiple (Flag S in
+   1 HIP Field H61). R.M. Catchpole et al. (1982RGOB..188....1C) claim from two
+   1 measurements a variable radial velocity. Many more observations by W.I.
+   1 Beavers and J.J. Eitter (1986ApJS...62..147B) favour a constant radial
+   1 velocity.
+   2 HIP    301 = FK  905 Radial velocity is variable according to W. Buscombe
+   2 and P.M. Morris (1958MNRAS.118..609B). Barbier-Brossat
+   2 (1989A&AS...80...67B, See Cat. <III/213>) gives v_rad_=+8km/s
+   2 (Field 17: -5km/s).
+   3 HIP    377 = FK 1001 Radial velocity is variable according to W. Buscombe
+   3 and P.M. Morris (1961MNRAS.123..233B).
+   4 HIP    560 = FK 1003 Radial velocity is variable according to BSC.
+   5 HIP    950 = FK    6 Radial velocity is variable according to J. Andersen
+   5 and B. Nordstroem (1983A&A...122...23A).
+   6 HIP   1473 = FK 1005 Radial velocity is variable, but this is probably due
+   6 to pulsation (E. Antonello et al., 1978A&A....66...37A).
+   7 HIP   1562 = FK    9 2 companions in CCDM+WDS:
+   7 B(1911:  63",  17 deg, 12.9 mag; af), C(1960: 109", 194 deg,  8.6 mag; nc).
+   7 TYCHO gives for C(1991: 108", 192 deg, 10.64 mag) and indicates also nc.
+   8 HIP   1599 = FK   10 The faint companion ({rho}~31", 10.34mag) listed in
+   8 the TYCHO Catalogue (ESA, 1997, Cat. <I/239>) is spurious and was caused by
+   8 side-lobe interferences from the bright FK star (V. Makarov, 1999,
+   8 private communication).
+   9 HIP   2006 = FK 1010 Probably not a visual binary according to S.W. Burnham
+   9 (1906, General Catalogue of Double Stars). O. Struve (1878, Pulkova Obs. 9
+   9 (Object O_Sigma_8)) gave {rho}~1" and m_B~9.
+  10 HIP   2224 = FK 1012 Radial velocity is variable (e.g. R.K. Young,
+  10 1939PDDO....1...71; W.I. Beavers and J.J. Eitter, 1986ApJS...62..147B).
+  11 HIP   2381 = FK   14 Announced as a spectroscopic binary by W.S. Adams
+  11 (1912ApJ....35..163A and 1912PASP...24..129A). Later observations (e.g. J.
+  11 Andersen and B. Nordstroem (1983A&A...122...23A)) do not confirm such
+  11 radial-velocity variations. Doubtful case, mainly because of the large
+  11 rotational velocity v_rot sin(i) ~200km/s.
+  12 HIP   2599 = FK   16 In spite of some reports on radial-velocity variations
+  12 (e.g. BSC), the star is probably not a spectroscopic binary (M.M. Jarad et
+  12 al., 1989MNRAS.238.1085J).
+  13 HIP   2661 = FK 1013 Radial velocity is variable according to W.I. Beavers
+  13 and J.J. Eitter (1986ApJS...62..147B).
+  14 HIP   2920 = FK   17 Radial velocity may be variable according to BSC.
+  14 H. Sadsaoud et al. (1994A&A...287..509S) propose a close binary with a
+  14 period of 11.53 days and an amplitude of a few km/s. The duplicity is
+  14 doubtful.
+  15 HIP   3245 = FK 1015 Radial velocity may be variable according to BSC.
+  16 HIP   3419 = FK   22 Radial velocity may be variable according to K.A.
+  16 Murdoch et al. (1993ApJ...413..349M).
+  17 HIP   3521 = FK 1017 Radial velocity is variable according to W. Buscombe
+  17 and P.M. Morris (1958MNRAS.118..609B) and to W. Buscombe
+  17 (1963MNRAS.126...29B).
+  18 HIP   3781 = FK   31 Radial velocity is variable according to BSC.
+  18 Suspicion of variable radial velocity not supported by D.S. Evans et al.
+  18 (1964RGOB...85..207E).
+  19 HIP   3786 = FK   28 1 companion in CCDM+WDS:
+  19 B(1960: 113", 14 deg, 13.2 mag; nc). Radial velocity may be variable
+  19 according to BSC.
+  20 HIP   3909 = FK   30 Radial velocity is variable according to BSC.
+  21 HIP   4293 = FK   34 Sinzi (1972) indicates an optical companion. We were
+  21 unable to identify such a star.
+  22 HIP   4577 = FK   35 Radial velocity is variable according to BSC.
+  23 HIP   4592 = FK 1024 Radial velocity is variable according to J. Andersen
+  23 and B. Nordstroem (1983A&AS...52..479A, Cat. <III/127>).
+  24 HIP   4852 = FK 1026 Radial velocity is variable according to W. Buscombe
+  24 (1963MNRAS.126...29B) and to P.A. Wayman (1961RGOB...36..131W).
+  25 HIP   5364 = FK   40 1 companion in CCDM+WDS:
+  25 B(1908: 234", 305 deg, 10.3 mag; af).
+  25 TYCHO gives for B(1991: 254", 305 deg, 10.78 mag).
+  26 HIP   5586 = FK   43 Radial velocity may be variable (W.W. Campbell,
+  26 1928PLicO..16.....C; G.H. Herbig and J.F. Spalding, 1955ApJ...121..118H)
+  27 HIP   5626 = FK   41 Barbier-Brossat (1989A&AS...80...67B, See
+  27 Cat. <III/213>) gives v_rad_=+10km/s (Field 17: +18km/s).
+  28 HIP   5661 = FK   44 Radial velocity is variable according to W. Buscombe
+  28 and P.M. Morris (1958MNRAS.118..609B) and to W. Buscombe
+  28 (1963MNRAS.126...29B). Delta Scuti star AI Scl. The pulsation explains the
+  28 radial-velocity variations.
+  29 HIP   6061 = FK 1034 Radial velocity is variable according to BSC.
+  30 HIP   6193 = FK   45 Radial velocity is variable according to BSC.
+  31 HIP   6411 = FK 1035 Radial velocity is probably variable according to W.I.
+  31 Beavers (1985IAUC...88..289B). Later, W.I. Beavers and J.J. Eitter
+  31 (1986ApJS...62..147B) consider the radial velocity as essentially constant.
+  31 Sinzi (1972) claims that the star is an eclipsing binary. This information
+  31 is probably spurious.
+  32 HIP   6537 = FK   47 1 companion in CCDM+WDS:
+  32 B(1925:  65",  57 deg, 14.8 mag; af).
+  33 HIP   6686 = FK   48 1 companion in CCDM+WDS:
+  33 B(1925: 132",  66 deg, 11.5 mag; af). Eclipsing binary with a possible
+  33 period of 759 days. Radial velocity is variable according to BSC and WDS.
+  34 HIP   6732 = FK 1039 Radial velocity is variable according to BSC.
+  35 HIP   7083 = FK 1044 Radial velocity is possibly slightly variable
+  35 according to W. Buscombe and P.M. Morris (1961MNRAS.123..233B).
+  36 HIP   7513 = FK 1045 2 companions in CCDM+WDS:
+  36 B(1910: 114", 128 deg, 12.6 mag; af), C(1926: 291", 283 deg,  9.  mag; af).
+  36 The spectroscopic-binary orbit provided by H.A. Abt and S.G. Levy
+  36 (1976ApJS...30..273A) is spurious, since this radial-velocity variation was
+  36 not confirmed by A. Duquennoy and M. Mayor (1991A&A...248..485D). The star
+  36 has probably three planets (R.P. Butler et al., 1997ApJ...474L.115B;
+  36 G.W. Marcy et al., 1999AAS...194.1402M).
+  37 HIP   7941 = FK   58 Radial velocity is variable according to W. Buscombe
+  37 and P.M. Morris (1961MNRAS.123..233B) and to P.A. Wayman
+  37 (1961RGOB...36..131W).
+  38 HIP   7943 = FK 1047 Radial velocity is variable according to BSC.
+  39 HIP   8102 = FK   59 1 companion in CCDM+WDS:
+  39 B(1940:  90", 215 deg, 13.1 mag; af). The radial velocity is constant
+  39 (B. Campbell et al., 1988ApJ...331..902C;
+  39  G.A.H. Walker et al., 1995Icar..116..359W;
+  39 A.P. Hatzes et al., 1996, J. Geophys. Research  101, 9285).
+  40 HIP   8387 = FK 1050 Radial velocity is variable according to GCRV, BSC,
+  40 and Sinzi (1972).
+  41 HIP   8837 = FK   67 Suspected by HIP to be double or multiple (Flag S in
+  41 HIP Field H61). Radial velocity may be variable (H. Spencer Jones,
+  41 1928, Ann. Cape Obs. 10, part 8, 95).
+  42 HIP   8886 = FK   63 Radial velocity is variable according to BSC.
+  43 HIP   9505 = FK 1054 Radial velocity is variable according to BSC.
+  44 HIP   9598 = FK   70 Double-lined spectroscopic binary according to BSC.
+  45 HIP   9884 = FK   74 Probably not a spectroscopic binary in spite of
+  45 earlier claims (W. Schaub, 1932ZA......4...35S).
+  46 HIP  10155 = FK 1056 Suspected by HIP to be double or multiple (Flag S in
+  46 HIP Field H61).  Radial velocity is variable according to BSC.
+  47 HIP  10320 = FK   78 Radial velocity is variable according to W. Buscombe
+  47 and P.M. Morris (1961MNRAS.123..233B) or may be variable according to D.S.
+  47 Evans et al. (1964RGOB...85..207E).
+  48 HIP  10328 = FK 1057 The radial velocity is variable according to GCRV,
+  48 BSC, and Sinzi (1972).
+  49 HIP  10440 = FK 1060 Suspicion of variable radial velocity (W. Buscombe and
+  49 P.M. Morris, 1958MNRAS.118..609B).
+  50 HIP  10602 = FK   82 1 companion in CCDM+WDS:
+  50 B(1985:  88", 223 deg,  9.0 mag; af).
+  50 TYCHO gives for B(1991:  89", 223 deg, 9.73 mag).
+  51 HIP  10642 = FK   80 Radial velocity may be variable according to BSC.
+  52 HIP  10670 = FK   79 Radial velocity is variable according to BSC.
+  53 HIP  10732 = FK   81 Radial velocity is variable according to GCRV and BSC.
+  54 HIP  10819 = FK 1063 Radial velocity is assumed to be variable by
+  54 W.S. Adams W.E. Harper  (1937PDAO....7....1H) and BSC, but not by GCRV.
+  54 Duplicity doubtful.
+  55 HIP  10993 = FK 1656 Double-lined spectroscopic binary according to J.
+  55 Andersen and B. Nordstroem (1977A&AS...29..309A). More information is given
+  55 by B. Nordstroem and J. Andersen (1985A&AS...61...53N, Cat. <III/127>).
+  56 HIP  11001 = FK 1065 Radial velocity may be variable according to BSC.
+  57 HIP  11258 = FK   84 Radial velocity is variable according to W. Buscombe
+  57 and P.M. Morris (1958MNRAS.118..609B).
+  58 HIP  11345 = FK 1066 Radial velocity is variable according to Sinzi (1972)
+  58 and BSC, but not to GCRV.
+  59 HIP  11407 = FK   86 Radial velocity may be variable according to BSC.
+  60 HIP  11486 = FK 1068 Radial velocity is variable according to BSC.
+  61 HIP  11698 = FK 1069 Radial velocity is variable (R. Woolley, G.A. Harding,
+  61 1965RGOB...93..363W; W.I. Beavers and J.J. Eitter, 1986ApJS...62..147B)
+  62 HIP  11783 = FK 1071 Radial velocity is variable according to J. Andersen
+  62 and B. Nordstroem (1983A&A...122...23A).
+  63 HIP  12107 = FK 1074 2 companions in CCDM+WDS:
+  63 B(1912: 117", 123 deg, 13.3 mag; pc), C(1912: 146", 189 deg,  9.3 mag; pc).
+  64 HIP  12387 = FK   91 Radial velocity is variable (pulsating Beta Cephei
+  64 star). Weak indications of binarity are discussed by M.C. Lane
+  64 (1977PASP...89..905L).
+  65 HIP  12768 = FK 1077 Radial velocity may be variable according to G. Burki
+  65 and M. Mayor (1983A&A...124..256B).
+  66 HIP  12770 = FK   97 Radial velocity may be variable (J.A. Morse,
+  66 1991AJ....101.1495M).
+  67 HIP  13327 = FK 1079 Radial velocity is variable according to BSC.
+  68 HIP  13717 = FK 1080 Radial velocity may be variable according to W.E.
+  68 Harper (1937PDAO....7....1H). HIP: goodness-of-fit parameter F2 = 3.51.
+  69 HIP  14117 = FK 1084 Suspected by HIP to be double or multiple
+  69 (Flag S in HIP Field H61).
+  70 HIP  14135 = FK  107 Suspected by HIP to be double or multiple
+  70 (Flag S in HIP Field H61).
+  71 HIP  14146 = FK 1085 Radial velocity may be variable according to BSC.
+  72 HIP  14187 = FK 1086 Radial velocity is variable according to W. Buscombe
+  72 (1963MNRAS.126...29B).
+  73 HIP  14354 = FK  109 Suspected by HIP to be double or multiple
+  73 (Flag S in HIP Field H61).
+  74 HIP  14632 = FK  112 1 companion in CCDM+WDS:
+  74 B(1912: 146", 132 deg, 12.4 mag; oo).
+  74 The motion of A is non-linear according to W.D. Heintz 
+  74 (1988AJ.....96.1072H) who suggests an orbital period of 6.5 years. However,
+  74 the rather low values of the test parameter F do not reveal a non-linear 
+  74 motion of A. In spite of earlier suspicions (BSC) is the radial velocity 
+  74 constant (H.A. Abt and S.G. Levy, 1976ApJS...30..273A; B. Campbell et al., 
+  74 1988ApJ...331..902C; G.A.H. Walker et al., 1995Icar..116..359W).
+  75 HIP  14677 = FK 1088 Radial velocity is variable according to BSC.
+  76 HIP  14838 = FK  114 Suspected by HIP to be double or multiple
+  76 (Flag S in HIP Field H61).
+  77 HIP  14930 = FK  118 Suspected by HIP to be double or multiple
+  77 (Flag S in HIP Field H61).
+  78 HIP  15110 = FK 1089 Radial velocity is variable according to BSC.
+  79 HIP  15201 = FK 1095 Radial velocity is variable according to BSC.
+  80 HIP  15265 = FK 1092 Radial velocity is variable according to B. Nordstroem
+  80 and J. Andersen (1985A&AS...61...53N, Cat. <III/127>).
+  81 HIP  15457 = FK 1093 2 companions in CCDM+WDS:
+  81 B(1909: 269", 157 deg, 9.6mag; af), C(BC: 1909: 215", 272deg, 11.9mag; oo).
+  81 A. Duquennoy and M. Mayor (1991A&A...248..485D) suspected a radial-velocity
+  81 variation.  According to G.A.H. Walker et al. (1995Icar..116..359W), this
+  81 variation may be connected to the chromospheric activity of the star.
+  82 HIP  15863 = FK  120 1 companion in CCDM+WDS:
+  82 B(1924: 167", 196 deg, 11.9 mag; nc, pc). Radial velocity is variable
+  82 according to BSC.
+  83 HIP  15890 = FK 1096 Suspected by HIP to be double or multiple
+  83 (Flag S in HIP Field H61).
+  84 HIP  16341 = FK 1097 Radial velocity is variable according to Sinzi (1972)
+  84 or may be variable according to BSC, but not to GCRV.
+  85 HIP  16509 = FK  128 Radial velocity is variable according to W. Buscombe
+  85 and  P.M. Morris (1958MNRAS.118..609B).
+  86 HIP  16518 = FK 1098 Flag D in HIP Field H52, based on HIP photometry. This
+  86 could be an indication of duplicity. Radial velocity is variable according
+  86 to BSC.
+  87 HIP  17304 = FK  133 Radial velocity is variable according to BSC.
+  88 HIP  17457 = FK  137 Radial velocity is variable according to W. Buscombe
+  88 (1963MNRAS.126...29B).
+  89 HIP  17678 = FK  146 Suspected by HIP to be double or multiple
+  89 (Flag S in HIP Field H61).
+  90 HIP  18170 = FK 1106 Radial velocity may be variable according to BSC.
+  91 HIP  18217 = FK 1105 1 companion in TYCHO:
+  91 B(1991:  67", 88 deg,  9.95 mag; oo). Flag D in HIP Field H52, based on HIP
+  91 photometry. This could be an indication of duplicity.
+  92 HIP  18614 = FK  148 Probably not a spectroscopic binary. Large variation 
+  92 in the radial velocity may be due to a stellar wind (B. Bohannan and C.D.
+  92 Garmany, 1978ApJ...223..908B).
+  93 HIP  18788 = FK 1111 Radial velocity is variable according to BSC.
+  94 HIP  18907 = FK  151 Suspected by HIP to be double or multiple
+  94 (Flag S in HIP Field H61).
+  95 HIP  19038 = FK 1112 2 companions in CCDM+WDS:
+  95 B(1926: 138",  10 deg,  9.5 mag; hv), C(1923: 235", 213 deg; ~oo).
+  96 HIP  19095 = FK  153 Radial velocity is variable according to BSC.
+  97 HIP  19167 = FK 1113 Radial velocity may be variable according to BSC.
+  98 HIP  19388 = FK 1115 Radial velocity is variable according to BSC.
+  99 HIP  19513 = FK 1116 Delta Scuti star IM Tau. The pulsation explains the
+  99 observed radial-velocity variations (e.g. M.A. Smith, 1982ApJ...254..242S).
+ 100 HIP  19587 = FK  154 Delta Scuti star. The pulsation explains the observed
+ 100 radial-velocity variations.
+ 101 HIP  19860 = FK 1118 Radial velocity may be variable according to BSC.
+ 101 HIP: percentage of rejected data F1 = 4%.
+ 102 HIP  19893 = FK  157 Radial velocity may be variable according to BSC.
+ 102 Prototype of the Gamma-Doradus-class of variable stars. Probably a 
+ 102 pulsating star (Balona et al., 1994MNRAS.267..103B and 1994MNRAS.270..905B)
+ 103 HIP  20049 = FK  166 Radial velocity is variable (F.J. Neubauer,
+ 103 1930LicOB..15...47N). Composite spectrum (K2-3III+A) according to G.T.
+ 103 Davidson et al. (1987AJ.....94..771D).
+ 104 HIP  20252 = FK  158 1 companion in CCDM+WDS:
+ 104 B(1914: 110", 313 deg, 13.0 mag; oo).
+ 105 HIP  20264 = FK  161 Radial velocity is variable according to BSC.
+ 106 HIP  20384 = FK  163 1 companion in TYCHO:
+ 106 B(1991:  86", 295 deg, 10.89 mag; oo).
+ 107 HIP  20507 = FK 1120 Flag D in HIP Field H52, based on HIP photometry. This
+ 107 could be an indication of duplicity. Radial velocity
+ 107 may be variable according to BSC.
+ 108 HIP  20884 = FK 1123 The radial velocity is variable according to GCRV, 
+ 108 BSC, and Sinzi (1972).
+ 109 HIP  20889 = FK  164 1 companion in CCDM+WDS:
+ 109 B(1910: 182", 268 deg, 10.6 mag; oo).
+ 110 HIP  20974 = FK 1122 Radial velocity is probably variable (D. Crampton and
+ 110 W. Morrison, 1979PASP...91..695C).
+ 111 HIP  21242 = FK 1124 3 companions in CCDM+WDS:
+ 111 B(1914: 116", 198 deg,  6.8 mag; nc), C(1909: 104", 225 deg, 13.4 mag; oo),
+ 111 D(1909:  76", 354 deg, 12.1 mag; oo).
+ 111 B is HIP 21238 (1991: 120", 198 deg,  6.80 mag; hv).
+ 111 Radial velocity is variable according to BSC.
+ 112 HIP  21743 = FK 1127 Radial velocity is variable (F.J. Neubauer,
+ 112 1930LicOB..15...47N; H.A. Abt, 1970ApJS...19..387A).
+ 113 HIP  21861 = FK 1130 Radial velocity may be variable according to BSC.
+ 114 HIP  21949 = FK  177 Radial velocity is variable according to Sinzi (1972)
+ 114 or may be variable according to BSC, but not to GCRV.
+ 115 HIP  22361 = FK  173 1 companion in CCDM+WDS:
+ 115 B(1914:  97",  60 deg, 12.0 mag; oo). TYCHO gives for another companion :
+ 115 (1991:  62", 206 deg, 11.06 mag; oo). Radial velocity is variable according
+ 115 to BSC.
+ 116 HIP  22449 = FK 1134 1 companion in CCDM+WDS:
+ 116 B(1924:  90", 143 deg,  8.8 mag; af).
+ 116 TYCHO gives B(1991: 76", 163 deg, 10.57 mag). A is a spectroscopic binary
+ 116 according to WDS (SB) and BSC (SB2). However, H.A. Abt and S.G. Levy
+ 116 (1976ApJS...30..273A) and A. Duquennoy and M. Mayor (1991A&A...248..485D)
+ 116 do not find variations in the radial velocity.
+ 117 HIP  22453 = FK 1133 Radial velocity may be variable according to BSC.
+ 118 HIP  22565 = FK 1135 1 companion in CCDM+WDS:
+ 118 B(1963: 177", 302 deg, 10.4 mag; nc). Radial velocity is variable according
+ 118 to BSC. Delta Scuti star V480 Tau. The pulsation explains the
+ 118 radial-velocity variations.
+ 119 HIP  23522 = FK  182 2 companions in CCDM+WDS:
+ 119 B(1976:  83", 209 deg,  7.4 mag; pc, hv),
+ 119 C(BC: 1919:  15", 168 deg, 12.4 mag).
+ 119 TYCHO gives for B(1991: 83", 209 deg,  7.39 mag).
+ 120 HIP  23607 = FK 1140 Radial velocity is variable according to BSC.
+ 121 HIP  23767 = FK  185 Radial velocity may be variable according to BSC.
+ 121 K. Kodaira (1971PASJ...23..159K) suspected an orbital period of about
+ 121 24 days. H.A. Abt and S.G. Levy (1978ApJS...36..241A) did not confirm the
+ 121 binarity of this object.
+ 122 HIP  23875 = FK  188 1 companion in CCDM+WDS:
+ 122 B(1908: 117", 142 deg, 10.9 mag; af).
+ 122 Radial velocity is variable according to Sinzi (1972).
+ 123 HIP  23972 = FK  190 Beta Cephei star. Radial velocity is variable 
+ 123 according to H.A. Abt and S.G. Levy (1978ApJS...36..241A). C.T. Bolton
+ 123 (1982IAUS...98..181B) explains the radial-velocity variations by pulsation
+ 123 of Lambda Eri.
+ 124 HIP  24372 = FK  196 Radial velocity is variable according to BSC.
+ 125 HIP  24659 = FK  197 Radial velocity may be variable according to BSC.
+ 126 HIP  24813 = FK 1145 7 companions in CCDM+WDS:
+ 126 B(1900:  29", 274 deg, 13.4 mag; af),
+ 126 C(1934:  42", 268 deg, 12.1 mag; af),
+ 126 D(1921: 147",   2 deg,  8.6 mag; af),
+ 126 E(DE: 1914: 146", 112 deg,  9.9 mag; unclear),
+ 126 F(1921:  93", 211 deg, 11.1 mag; af),
+ 126 G(EG: 1893:  33", 218 deg, 10.9 mag; af),
+ 126 H(EH: 1914: 147", 119 deg, 10.7 mag; af).
+ 126 INCA gives B(106", 310 deg, 13.4 mag), C( 87", 299 deg, 12.1 mag),
+ 126 D(202", 350 deg,  8.6 mag), E(DE: 145", 113 deg,  9.9 mag),
+ 126 F( 93", 253 deg, 11.1 mag), G(EG:  33", 216 deg, 10.9 mag),
+ 126 H(EH: 147", 119 deg, 10.7 mag). At present, all the companions have a
+ 126 separation {rho} with respect to A of more than 60".
+ 127 HIP  25336 = FK  201 1 companion in CCDM+WDS:
+ 127 B(1909: 180", 144 deg, 12.2 mag; nc, hv).
+ 127 Radial velocity may be variable according to BSC.
+ 128 HIP  25769 = FK  203 1 companion in TYCHO:
+ 128 B(1991:  66", 130 deg,  9.14 mag; pc).
+ 128 Radial velocity may be variable according to BSC.
+ 129 HIP  25911 = FK 1637 The radial velocity is variable according to GCRV, 
+ 129 BSC, and Sinzi (1972).
+ 130 HIP  25973 = FK 1150 Radial velocity may be variable according to BSC.
+ 131 HIP  26311 = FK  210 1 companion in CCDM+WDS:
+ 131 B(1908: 180",  57 deg, 10.5 mag; pc).
+ 131 Radial velocity is variable according to BSC. While H. Levato et al.
+ 131 (1988ApJS...68..319L) tend to confirm the radial-velocity variations, the
+ 131 measurements by M.M. Jarad et al. (1989MNRAS.238.1085J) favour a constant
+ 131 radial velocity.
+ 132 HIP  26638 = FK  205 Radial velocity may be variable according to BSC.
+ 133 HIP  27288 = FK  219 Radial velocity is variable according to Sinzi (1972)
+ 133 or may be variable according to BSC.
+ 134 HIP  27366 = FK  220 Radial velocity may be variable according to BSC.
+ 134 Beta Cephei star.
+ 135 HIP  27621 = FK 1159 1 companion in TYCHO:
+ 135 B(1991:  90", 294 deg, 10.26 mag; oo).
+ 136 HIP  27628 = FK  223 Radial velocity is variable according to BSC.
+ 137 HIP  27949 = FK 1157 Radial velocity may be variable according to BSC.
+ 138 HIP  28532 = FK 1638 Radial velocity is variable according to BSC.
+ 139 HIP  28814 = FK  230 Radial velocity may be variable according to BSC.
+ 140 HIP  28899 = FK 1164 Radial velocity is variable according to W. Buscombe
+ 140 and P.M. Morris (1958MNRAS.118..609B).
+ 141 HIP  29134 = FK 1166 Radial velocity may be variable according to BSC.
+ 142 HIP  29490 = FK  233 The radial velocity is variable according to GCRV, 
+ 142 BSC, and Sinzi (1972).
+ 143 HIP  29997 = FK  234 Radial velocity is variable according to BSC.
+ 144 HIP  30324 = FK  243 1 companion in CCDM+WDS:
+ 144 B(1908: 186", 340 deg,  9.8 mag; nc, pc).
+ 144 Radial velocity is variable according to Sinzi (1972) and BSC, but not to
+ 144 GCRV. Beta Cephei star.
+ 145 HIP  30343 = FK  241 3 companions in CCDM+WDS:
+ 145 B(1899: 122", 141 deg,  9.8 mag; nc, hv),
+ 145 C(BC: 1939:   1", 260 deg, 10.7 mag),
+ 145 D(1880:  73",  77 deg, 11.5 mag; oo). Suspected by HIP to be double or
+ 145 multiple (Flag S in HIP Field H61).
+ 146 HIP  30438 = FK  245 Suspected by HIP to be double or multiple (Flag S in
+ 146 HIP Field H61). Radial velocity is possibly slightly variable according to
+ 146 W. Buscombe and P.M. Morris (1961MNRAS.123..233B).
+ 147 HIP  30457 = FK 1171 Radial velocity may be variable according to
+ 147 T.G. Barnes et al. (1986PASP...98..223B)
+ 148 HIP  30520 = FK  242 Radial velocity is variable according to BSC and may 
+ 148 be variable according to W.I. Beavers and J.J. Eitter (1986ApJS...62..147B)
+ 149 HIP  30678 = FK 1662 Radial velocity may be variable according to J.
+ 149 Andersen and B. Nordstroem (1983A&AS...52..471A).
+ 150 HIP  30772 = FK  246 2 companions in CCDM+WDS:
+ 150 B(1908:  77", 257 deg,  9.2 mag; nc, pc),
+ 150 C(1908:  81", 231 deg,  9.2 mag; nc, pc).
+ 150 Radial velocity may be variable according to BSC.
+ 151 HIP  31278 = FK 1175 Radial velocity is variable according to Sinzi (1972)
+ 151 and BSC, but not to GCRV.
+ 152 HIP  31676 = FK  247 3 companions in CCDM+WDS:
+ 152 B(1923: 161",  79 deg,  9.1 mag; af),
+ 152 C(1904: 374",  95 deg,  7.0 mag; pc),
+ 152 Q(BQ: 1907:  71", 253 deg, 12.8 mag; oo).
+ 153 HIP  31685 = FK  252 Radial velocity is variable according to W.H. Wright
+ 153 (1911PLicO...9...71W) and D. Baade (1989A&A...222..200B). Duplicity
+ 153 doubtful, mainly because of v_rot*sin(i)=225km/s.
+ 154 HIP  31897 = FK  264 Radial velocity is variable according to W. Buscombe
+ 154 and P.M. Morris (1961MNRAS.123..233B)
+ 155 HIP  32246 = FK  254 1 companion in CCDM+WDS:
+ 155 B(1982: 111",  94 deg,  9.2 mag; pc).
+ 155 TYCHO gives for B(1991: 110", 95 deg, 9.64 mag). The proper motions of A 
+ 155 and B differ only slightly, but A is rather distant (r_H_=277pc). Radial
+ 155 velocity is variable according to BSC.
+ 156 HIP  32362 = FK  256 Radial velocity may be variable according to BSC.
+ 157 HIP  32537 = FK 1178 1 companion in CCDM+WDS:
+ 157 B(1920:  65", 299 deg, 11.1 mag; nc:).
+ 158 HIP  32562 = FK 1176 Radial velocity is variable according to BSC and may 
+ 158 be variable according to W.I. Beavers and J.J. Eitter (1986ApJS...62..147B)
+ 159 HIP  33018 = FK  261 2 companions in CCDM+WDS:
+ 159 B(1922:  78", 322 deg, 12.6 mag; ~oo),
+ 159 C(1922: 102", 185 deg, 12.7 mag; ~oo). Radial velocity
+ 159 is variable according to BSC and WDS, but not to GCRV.
+ 160 HIP  33104 = FK  259 Radial velocity may be variable according to BSC.
+ 161 HIP  33160 = FK  266 Radial velocity may be variable according to BSC.
+ 162 HIP  33694 = FK  260 Radial velocity is variable according to BSC.
+ 163 HIP  33977 = FK  270 Radial velocity is variable according to BSC.
+ 164 HIP  34045 = FK  271 Radial velocity is variable according to W. Buscombe
+ 164 and P.M. Morris (1961MNRAS.123..233B).
+ 165 HIP  34088 = FK  269 4 companions in CCDM+WDS:
+ 165 B(1984:  87",  84 deg, 10.5 mag; pc),
+ 165 C(1984: 100", 348 deg,  7.6 mag; pc),
+ 165 P(1984:  70", 352 deg, 12.0 mag; pc),
+ 165 R(CR: 1908:  27", 166 deg, 12.9 mag; oo).
+ 165 TYCHO gives for C(1991: 100", 348 deg, 7.58 mag). Cepheid. The pulsation
+ 165 explains radial-velocity variations. T.S. Jacobsen and G. Wallerstein
+ 165 (1982PASP...94..471J) conclude that Zeta Gem is not a spectroscopic binary,
+ 165 since the gamma velocity of the center-of-mass of the star has been 
+ 165 constant for 80 years. D.G. Turner and J. Fernie (1978IBVS.1509....1T) 
+ 165 investigate the possibility that the component B (11.46 mag) is a physical 
+ 165 companion of Zeta Gem. The separation of 87" between A and B corresponds 
+ 165 to 0.16pc at the 165 distance of A.
+ 166 HIP  34387 = FK 1185 Radial velocity may be variable according to BSC.
+ 167 HIP  34444 = FK  273 Some older reports on radial-velocity variations
+ 167 (C. Payne, The Stars of High Luminosity, New York and London, 1930, p.302).
+ 167 Radial velocity is constant according to W. Buscombe and P.M. Morris
+ 167 (1961MNRAS.123..233B).
+ 168 HIP  34752 = FK  274 Radial velocity may be variable according to BSC.
+ 169 HIP  35228 = FK  281 Radial velocity is possibly slightly variable 
+ 169 according to W. Buscombe and P.M. Morris (1961MNRAS.123..233B).
+ 170 HIP  35341 = FK  276 Radial velocity is variable according to BSC.
+ 171 HIP  35904 = FK  283 1 companion in CCDM+WDS:
+ 171 B(1909: 179", 285 deg,  6.9 mag; nc, pc).
+ 171 Radial velocity is variable according to BSC.
+ 172 HIP  35907 = FK 1191 Radial velocity may be variable according to BSC.
+ 173 HIP  36046 = FK  282 Radial velocity is variable according to BSC.
+ 174 HIP  36795 = FK  288 1 companion in TYCHO:
+ 174 B(1991:  83", 285 deg, 10.34 mag; oo).
+ 175 HIP  36942 = FK 1198 The radial velocity is variable according to GCRV, 
+ 175 BSC, and Sinzi (1972).
+ 176 HIP  37036 = FK 1197 Radial velocity may be variable according to BSC.
+ 176 Beta Cephei star.
+ 177 HIP  37391 = FK  909 Radial velocity is variable according to BSC.
+ 178 HIP  37891 = FK 1202 Radial velocity is variable according to BSC.
+ 179 HIP  37921 = FK 1201 Radial velocity is variable according to Sinzi (1972)
+ 179 and BSC, but not to GCRV.
+ 180 HIP  37946 = FK 1199 Suspected by HIP to be double or multiple (Flag S in
+ 180 HIP Field H61). Radial velocity is variable according to BSC.
+ 181 HIP  38373 = FK 1205 Radial velocity may be variable according to BSC.
+ 182 HIP  38848 = FK 1208 1 companion in TYCHO:
+ 182 B(1991: 104", 168 deg, 10.44 mag; oo).
+ 183 HIP  39117 = FK  300 Radial velocity may be variable according to BSC.
+ 184 HIP  39191 = FK 1211 Radial velocity is variable according to BSC.
+ 185 HIP  39326 = FK 1213 Radial velocity is variable according to BSC.
+ 186 HIP  39429 = FK  306 Radial velocity may be variable according to BSC.
+ 187 HIP  40215 = FK 1215 Radial velocity is variable according to BSC.
+ 188 HIP  40259 = FK  311 Radial velocity may be variable according to BSC.
+ 189 HIP  40559 = FK 1639 The radial velocity is variable according to GCRV, 
+ 189 BSC, and Sinzi (1972).
+ 190 HIP  40793 = FK  310 Radial velocity is variable according to BSC.
+ 191 HIP  40843 = FK 1217 Radial velocity may be variable according to H.A. Abt
+ 191 and S.G. Levy (1976ApJS...30..273A) and is probably variable according to
+ 191 A. Duquennoy and M. Mayor (1991A&A...248..485D).
+ 192 HIP  41307 = FK  316 Radial velocity is variable according to BSC.
+ 193 HIP  41578 = FK 1222 The radial velocity is variable according to GCRV, 
+ 193 BSC, and Sinzi (1972).
+ 194 HIP  41935 = FK  320 Radial velocity is variable according to BSC.
+ 195 HIP  42313 = FK 1223 1 companion in CCDM+WDS:
+ 195 B(1909: 244", 312 deg, 10.4 mag; nc). Radial velocity is variable according
+ 195 to BSC and WDS.
+ 196 HIP  42452 = FK  323 Radial velocity may be variable according to BSC.
+ 197 HIP  42484 = FK  322 Radial velocity is variable according to BSC.
+ 198 HIP  42637 = FK  331 Radial velocity is variable according to W. Buscombe
+ 198 and P.M. Morris (1961MNRAS.123..233B).
+ 199 HIP  42806 = FK 1228 3 companions in CCDM+WDS:
+ 199 B(1984: 112",  67 deg,  8.7 mag; nc),
+ 199 P(1908: 103", 258 deg, 12.4 mag; oo),
+ 199 Q(BQ: 1908:  95", 102 deg, 12.9 mag; oo).
+ 199 TYCHO gives for B(1991: 114",  66 deg, 10.20 mag).
+ 199 Radial velocity is variable according to GCRV, BSC, WDS, and Sinzi (1972).
+ 200 HIP  42828 = FK  327 2 companions in TYCHO:
+ 200 B(1991: 107", 356 deg,  8.05mag; oo),
+ 200 C(1991: 112", 151 deg, 10.78mag; oo). Radial velocity is variable according
+ 200 to C. Sterken and D. vander (1983IBVS.2330....1S). They estimate a probable
+ 200 period of about 5 hours.
+ 201 HIP  43305 = FK 1230 Radial velocity may be variable according to BSC.
+ 202 HIP  43798 = FK 1231 1 companion in CCDM+WDS:
+ 202 B(1918:  66", 146 deg,  7.1 mag; nc).
+ 202 B is HIP 43800 (1991: 65", 150 deg, 7.06 mag; nc, hv).
+ 203 HIP  44356 = FK 1235 Radial velocity is variable according to BSC.
+ 204 HIP  44382 = FK  343 Radial velocity is variable according to GCRV and BSC.
+ 204 Double-lined spectroscopic binary according to R.M. Catchpole et al.
+ 204 (1982RGOB..188....1C).
+ 205 HIP  44390 = FK  338 Suspected by HIP to be double or multiple
+ 205 (Flag S in HIP Field H61).
+ 206 HIP  44504 = FK  340 Radial velocity is variable according to BSC.
+ 207 HIP  44936 = FK 1240 Radial velocity is variable according to BSC.
+ 208 HIP  45158 = FK 1242 Radial velocity may be variable according to BSC.
+ 209 HIP  45238 = FK  348 Radial velocity may be variable according to BSC.
+ 210 HIP  45290 = FK  346 Radial velocity is variable according to BSC.
+ 211 HIP  45421 = FK 1640 Radial velocity is variable (R.E. Wilson and A.H. Joy,
+ 211 1952ApJ...115..157W; H.A. Abt, 1970ApJS...19..387A). BSC gives SB2.
+ 212 HIP  45902 = FK 1243 Suspected by HIP to be double or multiple
+ 212 (Flag S in HIP Field H61).
+ 213 HIP  46221 = FK 1245 1 companion in TYCHO:
+ 213 B(1991:  74", 182 deg, 10.00 mag; oo).
+ 213 Radial velocity is variable according to BSC.
+ 214 HIP  46390 = FK  354 2 companions in CCDM+WDS:
+ 214 B(1900: 284", 153 deg,  9.7 mag; nc), C(1783: 210"; oo).
+ 214 Radial velocity may be variable according to BSC.
+ 215 HIP  46515 = FK  356 Radial velocity is variable according to BSC.
+ 216 HIP  46952 = FK  360 Interferometric observations by P.W. Merrill
+ 216 (1922ApJ....56...40M) indicated possibly a binary star. However, the object
+ 216 was not resolved by speckle observations (H. McAlister, 1978PASP...90..288M
+ 216 W.I. Hartkopf and H.A. McAlister, 1984PASP...96..105H).
+ 217 HIP  47199 = FK 1248 1 companion in TYCHO:
+ 217 B(1991: 102",  93 deg,  8.92 mag; oo).
+ 218 HIP  47310 = FK 1249 Radial velocity is variable according to BSC.
+ 219 HIP  47431 = FK 1250 Radial velocity may be variable according to BSC.
+ 220 HIP  47452 = FK  364 Radial velocity may be variable according to BSC.
+ 221 HIP  47594 = FK  363 Radial velocity may be variable according to BSC.
+ 221 HIP: goodness-of-fit parameter F2 = 4.03.
+ 222 HIP  47723 = FK 1252 1 companion in CCDM+WDS:
+ 222 B(1909: 282", 138 deg, 10.9 mag; pc).
+ 223 HIP  47854 = FK 1254 Suspected by HIP to be double or multiple (Flag S in
+ 223 HIP Field H61. Cepheid. This explains the observed radial-velocity
+ 223 variations.
+ 224 HIP  47908 = FK  367 Radial velocity may be variable according to BSC.
+ 225 HIP  47909 = FK 1253 Probably a spectroscopic binary according to D.
+ 225 Crampton and W. Morrison (1979PASP...91..695C).
+ 226 HIP  48341 = FK  370 Radial velocity is variable according to BSC.
+ 227 HIP  48615 = FK  373 Radial velocity is variable according to GCRV, BSC,
+ 227 and Sinzi (1972).
+ 228 HIP  49339 = FK 1260 Radial velocity is variable according to BSC.
+ 229 HIP  49402 = FK 1261 Radial velocity is variable (O. Struve,
+ 229 1925ApJ....62..434S; R. Woolley et al., 1981ROAn...14....5W). BSC gives SB2
+ 230 HIP  50099 = FK  385 Radial velocity is variable according to W.
+ 230 Buscombe and P.M. Morris (1960MNRAS.121..263B).
+ 231 HIP  50191 = FK  382 Radial velocity is variable according to GCRV, BSC,
+ 231 and Sinzi (1972).
+ 232 HIP  50335 = FK  384 1 companion in CCDM+WDS:
+ 232 B(1925: 326", 340 deg,  5.9 mag; nc, pc).
+ 232 B is HIP 50319 (1991: 332", 338 deg, 5.95 mag; nc, hv).
+ 232 Radial velocity is variable according to Sinzi (1972), BSC, and WDS, but 
+ 232 not to GCRV. Barbier-Brossat (1989A&AS...80...67B) gives v_rad_ = -20.6km/s
+ 232 (Field 17: -15.6 km/s).
+ 233 HIP  50414 = FK 1263 1 companion in TYCHO:
+ 233 B(1991: 119", 230 deg, 11.15 mag; oo).
+ 233 Radial velocity is variable according to BSC.
+ 234 HIP  50448 = FK 1262 Radial velocity is variable according to BSC.
+ 235 HIP  50684 = FK 1266 Radial velocity is variable according to BSC.
+ 235 Beta Cephei star. The pulsation explains the radial-velocity variations.
+ 236 HIP  50860 = FK 1267 Radial velocity is variable according to BSC.
+ 237 HIP  50954 = FK  391 Radial velocity is variable according to GCRV and BSC.
+ 237 D.S. Evans et al. (1959MNRAS.119..638E) doubt this.
+ 238 HIP  51172 = FK  392 Radial velocity is variable according to BSC.
+ 239 HIP  51362 = FK 1270 Radial velocity is variable according to BSC.
+ 240 HIP  51399 = FK 1271 1 companion in CCDM+WDS:
+ 240 B(1924: 131", 226 deg,  8.3 mag; nc, pc).
+ 240 B is HIP 51390 (1991: 134", 226 deg, 8.10 mag; nc, hv).
+ 241 HIP  51585 = FK 1272 Suspected by HIP to be double or multiple (Flag S in
+ 241 HIP Field H61). Radial velocity may be variable according to BSC.
+ 242 HIP  51814 = FK  398 Radial velocity is variable according to BSC.
+ 243 HIP  52098 = FK 1275 Radial velocity is variable according to BSC.
+ 244 HIP  52316 = FK  404 Radial velocity may be variable according to BSC.
+ 245 HIP  52457 = FK  405 Radial velocity is variable according to BSC.
+ 246 HIP  52638 = FK  407 1 companion in CCDM+WDS:
+ 246 B(1960: 198", 174 deg,  8.2 mag; nc, pc).
+ 246 B is HIP 52645 (1991: 197", 173 deg, 7.64 mag; nc, hv).
+ 246 Radial velocity is variable according to BSC.
+ 247 HIP  52660 = FK 1278 Radial velocity is variable according to BSC.
+ 248 HIP  52911 = FK  409 Radial velocity is variable ccording to BSC.
+ 249 HIP  53229 = FK  412 Radial velocity is variable ccording to BSC.
+ 250 HIP  53702 = FK 1664 1 companion in TYCHO:
+ 250 B(1991: 115", 34 deg, 10.25 mag; oo).
+ 251 HIP  53721 = FK 1282 The star has a planetary companion (R.P. Butler and
+ 251 G.W. Marcy, 1996ApJ...464L.153B).
+ 252 HIP  53761 = FK  413 Radial velocity may be variable according to BSC.
+ 253 HIP  53910 = FK  416 Radial velocity is variable according to BSC.
+ 254 HIP  54463 = FK 1289 Radial-velocity variations may be due to a
+ 254 Cepheid-like pulsation of this yellow supergiant V382 Car (L.A. Ballona,
+ 254 1982MNRAS.201..105B).
+ 255 HIP  54725 = FK 1290 Suspected by HIP to be double or multiple
+ 255 (Flag S in HIP Field H61).
+ 256 HIP  54872 = FK  422 2 companions in CCDM+WDS:
+ 256 B(1924: 191", 344 deg,  8.6 mag; nc), P(1911:  95",  41 deg, 12.1 mag; nc).
+ 256 Radial velocity is variable according to BSC.
+ 257 HIP  54879 = FK  423 Radial velocity is variable according to BSC.
+ 258 HIP  55084 = FK 1292 1 companion in CCDM+WDS:
+ 258 B(1923:  97", 289 deg,  8.5 mag; nc).
+ 258 TYCHO gives for B(1991:  89", 290 deg,  9.75 mag).
+ 258 Radial velocity is variable according to Sinzi (1972) or may be variable
+ 258 according to BSC, but not to GCRV.
+ 259 HIP  55086 = FK  424 Radial velocity may be variable according to BSC.
+ 260 HIP  55282 = FK  426 Radial velocity is variable according to BSC.
+ 261 HIP  55434 = FK  427 Radial velocity is variable according to BSC.
+ 262 HIP  55781 = FK 1295 Radial velocity is variable according to GCRV, BSC,
+ 262 and Sinzi (1972).
+ 263 HIP  55945 = FK 1297 3 companions in CCDM+WDS:
+ 263 B(1985:  90", 180 deg,  8.1 mag; nc),
+ 263 C(BC: 1910: 107", 234deg, 14.4mag; pc), D(1875: 765", 92 deg, 10.0mag; pc).
+ 263 TYCHO gives for B(1991:  89", 180 deg, 7.42 mag).
+ 264 HIP  56343 = FK  434 1 companion in CCDM+WDS:
+ 264 B(1928:  68", 149 deg, 10.7 mag; af).
+ 264 Radial velocity is variable according to BSC.
+ 265 HIP  56633 = FK 1299 Radial velocity is variable according to BSC.
+ 266 HIP  56997 = FK 1300 1 companion in CCDM+WDS:
+ 266 B(1925: 158",  98 deg, 10.4 mag; af).
+ 266 Radial velocity is variable according to BSC.
+ 267 HIP  57111 = FK  440 Radial velocity may be variable according to BSC.
+ 268 HIP  57380 = FK 1302 Suspected by HIP to be double or multiple
+ 268 (Flag S in HIP Field H61). Radial velocity may be variable according to BSC
+ 269 HIP  57399 = FK  441 Radial velocity is variable according to BSC.
+ 270 HIP  57613 = FK 1305 Suspected by HIP to be double or multiple
+ 270 (Flag S in HIP Field H61).
+ 271 HIP  57757 = FK  445 2 companions in CCDM+WDS:
+ 271 B(1984: 305", 285 deg, 10.6 mag; af), C(1884: 512",  85 deg,  8.8 mag; oo).
+ 271 The absolute proper motions of A and C differ
+ 271 significantly. Radial velocity is constant according to
+ 271 G.A.H. Walker et al. (1995Icar..116..359W).
+ 272 HIP  57939 = FK 1307 P. van de Kamp (1968, in: Low Luminosity Stars. Ed. S.
+ 272 Kumar. Gordon and Breach, New York, p. 199) reported a companion with a
+ 272 separation of {rho}~1.7" on parallax plates. He considered the rarely seen
+ 272 companion to be a flare star. In 1968, C. Worley and W.D. Heintz carried 
+ 272 out visual observations and noticed a companion with {rho}~2". W.R. 
+ 272 Beardsley et al. (1974ApJ...194..637B) found evidence for orbital motion 
+ 272 from radial-velocity variations and positional displacements on parallax 
+ 272 plates. They obtained an orbital period of P = 60 years. R.F. Griffin
+ 272 (1984Obs...104..192G) did not confirm significant variations in the radial
+ 272 velocity. In a rediscussion of the binary nature of the object, W.D. Heintz
+ 272 (1984PASP...96..557H) concluded that no evidence for orbital effects of the
+ 272 unconfirmed visual companion is found in the astrometric observations. The
+ 272 very high value of F_0(GC)H of 9.06 should not be taken as a firm
+ 272 confirmation of the binary nature of the object. Firstly, the proper-motion
+ 272 differences from the FK5/HIP comparison give much smaller values of F: The
+ 272 highest value is F_0F = 3.53, while the usually most sensitive quantity
+ 272 F_FH = 1.93 is not significantly different from a value expected for a
+ 272 single star. Secondly, F_0(GC)H is probably affected by an incorrect
+ 272 treatment of the foreshortening effect for this nearby high-proper motion
+ 272 star in the GC. This is indicated by the fact that the vector of
+ 272 Delta_mu_0(GC)H is anti-parallel to the vector of mu within a tolerance
+ 272 of less than 0.6 degrees. Such a nearly perfect alignment of Delta_mu and 
+ 272 mu would be extremely improbable for a Delta_mu binary, but is fully 
+ 272 consistent with a slight error in the foreshortening treatment in the GC, 
+ 272 in which case we expect that Delta_mu is parallel or anti-parallel to mu.
+ 273 HIP  58001 = FK  447 Probably not a spectroscopic binary according to S.
+ 273 Hubrig and G. Mathys (1994AN....315..343H).
+ 274 HIP  58188 = FK 1309 Radial velocity may be variable according to BSC.
+ 275 HIP  58874 = FK 1642 Radial velocity may be variable according to BSC.
+ 276 HIP  58948 = FK  450 Radial velocity may be variable according to BSC.
+ 277 HIP  58952 = FK  451 Radial velocity is variable according to BSC.
+ 278 HIP  59747 = FK  455 Radial velocity may be variable according to BSC.
+ 279 HIP  59774 = FK  456 2 companions in CCDM+WDS:
+ 279 B(1923: 189",  73 deg, 10.0 mag; af), C(1907: 186", 125 deg, 11.6 mag; af).
+ 279 Radial velocity is variable according to BSC. Beta Cephei star. The
+ 279 pulsation explains the radial-velocity variations.
+ 280 HIP  59803 = FK  457 Radial velocity is variable according to BSC.
+ 281 HIP  60122 = FK 1316 Radial velocity is variable according to BSC.
+ 282 HIP  60172 = FK 1317 1 companion in CCDM+WDS:
+ 282 B(1925: 132",   4 deg, 11.6 mag; nc).
+ 282 Radial velocity may be variable according to BSC.
+ 283 HIP  60646 = FK  461 Radial velocity may be variable according to BSC.
+ 284 HIP  60823 = FK  464 Radial velocity is variable according to Sinzi (1972)
+ 284 and BSC, but not to GCRV.
+ 285 HIP  60957 = FK  466 Double-lined spectroscopic binary according to G. Hill
+ 285 et al. (1976MmRAS..82...69H).
+ 286 HIP  61084 = FK  468 2 companions in CCDM+WDS:
+ 286 B(1919: 111",  31 deg,  6.4 mag; af), C(1880: 155",  82 deg,  9.5 mag; oo).
+ 286 Suspected by HIP to be double or multiple (Flag S in HIP Field H61).
+ 287 HIP  61199 = FK  469 Radial velocity may be variable according to BSC.
+ 287 HIP: goodness-of-fit parameter F2 = 3.29.
+ 288 HIP  61296 = FK 1321 Radial velocity may be variable according to BSC.
+ 289 HIP  61309 = FK 1322 Radial velocity is variable according to BSC.
+ 290 HIP  61558 = FK 1324 Radial velocity is variable according to BSC.
+ 291 HIP  61740 = FK  475 3 companions in CCDM+WDS:
+ 291 B(1924: 174", 137 deg, 9.1mag; nc), C(1924: 223", 110deg, 10.4mag; nc, pc),
+ 291 D(1924: 321", 331 deg,  9.1 mag; pc).
+ 291 D is HIP 61721 (1991: 321", 331 deg, 8.93 mag; nc, hv).
+ 292 HIP  61916 = FK 1325 Suspected by HIP to be double or multiple
+ 292 (Flag S in HIP Field H61).
+ 293 HIP  61960 = FK 1326 Radial velocity may be variable (e.g.: R.O. Gray,
+ 293 1988AJ.....95..220G). It is a Lambda Bootis star with
+ 293 v_rot sin(i) ~175 km/s. Not necessarily a spectroscopic binary.
+ 294 HIP  62131 = FK  479 Radial velocity is variable according to BSC.
+ 295 HIP  62223 = FK 1327 Suspected by HIP to be double or multiple
+ 295 (Flag S in HIP Field H61). Radial velocity is slightly variable. This may 
+ 295 be due to pulsation rather than to duplicity (C. Barnbaum and K.H. Hinkle,
+ 295 1995AJ....110..805B).
+ 296 HIP  62443 = FK 1330 Radial velocity may be variable according to BSC.
+ 297 HIP  62448 = FK 1329 Radial velocity is variable according to BSC.
+ 298 HIP  62763 = FK 1332 Radial velocity may be variable according to BSC.
+ 299 HIP  62807 = FK 1333 2 companions in CCDM+WDS:
+ 299 B(1960: 196", 51 deg, 6.9mag; nc, pc), C(1910: 897", 262 deg, 8.9 mag; pc).
+ 299 B is HIP 62819 (1991: 196", 51 deg, 6.93 mag; nc, hv).
+ 299 C is HIP 62718 (1991: 905", 262 deg, 8.78 mag; nc, hv).
+ 299 Radial velocity may be variable according to BSC.
+ 300 HIP  62985 = FK 1335 Suspected by HIP to be double or multiple
+ 300 (Flag S in HIP Field H61).
+ 301 HIP  63090 = FK  484 1 companion in CCDM+WDS:
+ 301 B(1925: 165", 138 deg, 10.7 mag; af).
+ 301 Suspected by HIP to be double or multiple (Flag S in HIP Field H61). Radial
+ 301 velocity may be variable according to W.I. Beavers and J.J. Eitter
+ 301 (1986ApJS...62..147B).
+ 302 HIP  63608 = FK  488 1 companion in CCDM+WDS:
+ 302 B(1909: 249", 120 deg, 11.9 mag; nc).
+ 303 HIP  63901 = FK 1337 Radial velocity is variable according to BSC.
+ 304 HIP  64246 = FK  491 2 companions in CCDM+WDS:
+ 304 B(1922: 284", 297 deg,  6.3 mag), C(BC: 1991:   1", 271 deg,  9.5 mag).
+ 304 B is HIP 64217 (279", 297 deg,  6.25 mag; nc, hv).
+ 304 Flag D in HIP Field H52, based on HIP photometry. This could be an
+ 304 indication of duplicity. Radial velocity may be variable, and the object
+ 304 shows probably a composite spectrum (G. Hill et al., 1976MmRAS..82...69H).
+ 304 Barbier-Brossat (1989A&AS...80...67B) gives v_rad = -16.4 km/s
+ 304 (Field 17: 0.0 km/s).
+ 305 HIP  64394 = FK  492 1 companion in CCDM+WDS:
+ 305 B(1924:  86", 238 deg, 10.1 mag; af). Radial velocity
+ 305 was supposed to be variable with a possible period of 5 years or more by
+ 305 H.A. Abt and S.G. Levy (1976ApJS...30..273A). Radial velocity is constant
+ 305 according to G.A.H. Walker et al. (1995Icar..116..359W)
+ 306 HIP  64803 = FK 1342 Radial velocity may be variable according to BSC.
+ 307 HIP  64844 = FK  494 Delta Scuti star FM Vir. The radial-velocity 
+ 307 variations are probably caused by pulsation (e.g. S. Yang and 
+ 307 G.A.H. Walker, 1986PASP...98..862Y).
+ 308 HIP  64852 = FK 1344 Suspected by HIP to be double or multiple
+ 308 (Flag S in HIP Field H61). Radial velocity may be variable according to BSC
+ 309 HIP  64924 = FK 1345 1 companion in CCDM+WDS:
+ 309 B(1907: 232",  29 deg, 10.3 mag; af). Radial velocity is possibly variable
+ 309 according to B. Campbell et al. (1988ApJ...331..902C) and is constant
+ 309 according to G.A.H. Walker et al. (1995Icar..116..359W).
+ 310 HIP  64962 = FK  495 1 companion in CCDM+WDS:
+ 310 B(1891: 138",  97 deg, 10. mag; nc).
+ 310 Radial velocity may be variable according to BSC.
+ 311 HIP  65581 = FK 1348 Radial velocity may be variable according to BSC.
+ 312 HIP  65721 = FK 1349 2 companions in CCDM+WDS:
+ 312 B(1923: 285", 136 deg,  8.8 mag; nc), C(1923: 326", 263 deg; oo).
+ 312 B is HIP 65749 (1991: 270", 127 deg, 8.58 mag; nc, hv).
+ 312 The star has a planetary companion (G.W. Marcy and R.P. Butler,
+ 312 1996ApJ...464L.147M).
+ 313 HIP  66200 = FK 1351 Radial velocity is variable according to BSC.
+ 314 HIP  66607 = FK  503 Double-lined spectroscopic binary according to J.
+ 314 Andersen and B. Nordstroem (1977A&AS...29..309A).
+ 315 HIP  66753 = FK 1665 Radial velocity is variable according to F.J. Neubauer
+ 315 (1930LicOB..15...47N).
+ 316 HIP  66803 = FK 1355 Suspected by HIP to be double or multiple
+ 316 (Flag S in HIP Field H61).
+ 317 HIP  66878 = FK 1643 Radial velocity is variable according to BSC.
+ 318 HIP  66925 = FK 1356 1 companion in TYCHO:
+ 318 B(1991:  88",  30 deg, 10.22 mag; pc). Radial velocity is variable 
+ 318 according to Sinzi (1972) and BSC, but not to GCRV.
+ 319 HIP  67057 = FK 1357 Radial velocity is variable according to BSC.
+ 320 HIP  67301 = FK  509 Spectroscopic binary according to K. Kodaira
+ 320 (1971PASJ...23..159K) with a period of P = 289.13 days. Not confirmed by
+ 320 H.A. Abt and S.G. Levy (1978ApJS...36..241A).
+ 321 HIP  67481 = FK 1359 Radial velocity is possibly variable according to
+ 321 A.H. Batten (1975PDAO...14..367B).
+ 322 HIP  68269 = FK  515 Radial velocity is variable according to GCRV, BSC,
+ 322 and Sinzi (1972).
+ 323 HIP  68390 = FK 1361 Radial velocity may be variable according to BSC.
+ 324 HIP  68478 = FK  517 Radial velocity is variable according to BSC.
+ 325 HIP  68520 = FK  516 2 companions in CCDM+WDS:
+ 325 B(1961:  81", 290 deg,  9.5 mag; nc), C(1960: 177", 353 deg, 12.5 mag; oo).
+ 325 Radial velocity is variable according to BSC and WDS, but not to GCRV.
+ 326 HIP  68673 = FK 1364 Radial velocity is variable according to Sinzi (1972)
+ 326 and BSC, but not to GCRV.
+ 327 HIP  68763 = FK 1365 1 companion in TYCHO:
+ 327 B(1991: 102", 348 deg, 9.78 mag; oo). Radial velocity is variable according
+ 327 to W. Buscombe and P.M. Morris (1961MNRAS.123..233B).
+ 328 HIP  68933 = FK  520 1 companion in CCDM+WDS:
+ 328 B(1897:  70", 129 deg, 14.3 mag; oo). A faint companion (m~8.0) with a
+ 328 separation of {rho}~3", seen by J. Dunlop in 1826 and by the Harvard
+ 328 observers at Arequipa in 1891, is probably not real (R.T.A. Innes and D.
+ 328 Gill, 1899, Ann. Cape Obs.  2, part II; T.J.J. See, 1898AJ.....18..181S).
+ 329 HIP  69038 = FK 1368 Suspected by HIP to be double or multiple
+ 329 (Flag S in HIP Field H61).
+ 330 HIP  69701 = FK  525 Deviations from a linear motion of the star as an
+ 330 indication for duplicity have been noted by H. Schwan during the
+ 330 construction of the FK5 and by L.V. Morrison et al. (1990A&A...240..173M) 
+ 330 in a comparison of recent meridian-circle positions with the FK5 prediction
+ 331 HIP  69989 = FK 1372 1 companion in CCDM+WDS:
+ 331 B(1922: 157", 217 deg, 10.2 mag; nc).
+ 331 Radial velocity may be variable according to BSC.
+ 332 HIP  70069 = FK  529 Radial velocity may be variable according to BSC.
+ 333 HIP  70400 = FK 1375 Radial velocity is variable according to GCRV, BSC,
+ 333 and Sinzi (1972).
+ 334 HIP  70469 = FK 1376 Radial velocity may be variable according to BSC.
+ 335 HIP  70492 = FK  530 Radial velocity is variable according to Sinzi (1972)
+ 335 and BSC, but not to GCRV.
+ 336 HIP  70574 = FK 1377 1 companion in CCDM+WDS:
+ 336 B(1913: 158", 204 deg,  9.3 mag; nc, pc).
+ 337 HIP  71040 = FK  536 Radial velocity may be variable according to BSC.
+ 338 HIP  71284 = FK 1380 2 companions in CCDM+WDS:
+ 338 B(1924: 233",  83 deg,  9.8 mag; nc), C(1907: 237",  97 deg, 11.3 mag; af).
+ 338 Radial velocity is probably variable according to A. Duquennoy and M. Mayor
+ 338 (1991A&A...248..485D).
+ 339 HIP  71352 = FK  537 Probably an eclipsing binary according to HIP.
+ 339 Composite spectrum and radial-velocity variations suggested a
+ 339 spectroscopic-binary nature of this object (e.g.: W.H. Wright,
+ 339 1909LicOB...5..176W; A.J. Cannon and E.C. Pickering, 1920, Annals Astron.
+ 339 Obs. Harvard Coll. 95, especially p. 313). J. Dachs et al.
+ 339 (1986A&AS...63...87D) argue that the binary appearance is spurious and
+ 339 caused by other effects (Be-shell star). S. Stefl et al.
+ 339 (1995A&A...294..135S) conclude that the available data cannot exclude a
+ 339 contact binary with an 0.6-day orbital period. v_rot_sin(i)~350km/s.
+ 339 T.J.J. See (1898AJ.....18..181S) reported three observations of a visual
+ 339 companion in 1897 with {rho}~6" and  m_B_~14.8. No further observations are
+ 339 available. The object is removed from modern double-star catalogues (such 
+ 339 as the WDS). Sinzi (1972) mentions a common-proper-motion companion, which 
+ 339 we could not identify. Probably he had in mind the companion announced 
+ 339 by See.
+ 340 HIP  71618 = FK  540 Radial velocity is variable according to GCRV, BSC,
+ 340 and Sinzi (1972).
+ 341 HIP  71837 = FK 1382 Radial velocity is variable according to BSC.
+ 342 HIP  71957 = FK  545 Radial velocity is variable (W.W. Campbell,
+ 342 1913LicOB...7..113C; H.A. Abt and S.G. Levy, 1976ApJS...30..273A). Abt &
+ 342 Levy (1976ApJS...30..273A) give a probable orbital period of P~358 days.
+ 343 HIP  71995 = FK 1383 Suspected by HIP to be double or multiple (Flag S in
+ 343 HIP Field H61). Radial velocity may be variable according to W.I. Beavers
+ 343 and J.J. Eitter (1986ApJS...62..147B).
+ 344 HIP  72124 = FK 1384 Radial velocity is variable according to BSC.
+ 345 HIP  72220 = FK  547 Radial velocity may be variable according to BSC.
+ 346 HIP  72469 = FK 1386 Radial velocity may be variable according to BSC.
+ 347 HIP  72573 = FK 1644 Radial velocity is variable according to BSC.
+ 348 HIP  72607 = FK  550 1 companion in CCDM+WDS:
+ 348 B(1908: 209", 342 deg, 11.4 mag; nc).
+ 348 Radial velocity is variable according to BSC.
+ 349 HIP  72664 = FK  549 Radial velocity may be variable according to BSC.
+ 350 HIP  73087 = FK  551 Radial velocity may be variable according to BSC.
+ 351 HIP  73133 = FK 1390 Radial velocity is variable according to BSC.
+ 352 HIP  73273 = FK  552 Radial velocity is variable according to H. Levato et
+ 352 al. (1987ApJS...64..487L).
+ 353 HIP  73714 = FK  556 Suspected by HIP to be double or multiple
+ 353 (Flag S in HIP Field H61).
+ 354 HIP  73909 = FK 1397 Radial velocity may be variable according to BSC.
+ 355 HIP  73996 = FK 1396 2 companions in CCDM+WDS:
+ 355 B(1923: 106",  51 deg, 10.8 mag; nc), C(1923: 243",  40 deg,  9.9 mag; nc).
+ 355 Radial velocity is variable according to BSC.
+ 356 HIP  74785 = FK  564 Radial velocity may be variable (D.B. McLaughlin,
+ 356 1932POMic...4...29M). W. Buscombe and P.M. Kennedy (1965MNRAS.130..281B)
+ 356 list Beta Lib under stars with constant radial velocities.
+ 357 HIP  74946 = FK  560 Radial velocity is variable according to Sinzi (1972)
+ 357 and BSC, but not to GCRV.
+ 358 HIP  75097 = FK  569 Delta Scuti star. O. Struve (1923, Popular Astron. 31,
+ 358 90) presented a spectroscopic-binary orbit for gamma UMi with an orbital
+ 358 period of about 0.11 days. This orbit is probably spurious. The
+ 358 radial-velocity variations are more probably due to pulsations or shell
+ 358 effects (e.g. H.F. Weaver, 1952ApJ...116..541W).
+ 359 HIP  75304 = FK 1403 Radial velocity is variable according to H. Levato
+ 359 et al. (1987ApJS...64..487L).
+ 360 HIP  75342 = FK 1406 Radial velocity is variable according to BSC.
+ 361 HIP  75458 = FK  571 1 companion in CCDM+WDS:
+ 361 B(1909: 255",  50 deg,  9.2 mag; unclear). Separation {rho} corresponds to
+ 361 0.04 pc, if A and B are at a common distance.
+ 362 HIP  75730 = FK 1407 Radial velocity may be variable according to BSC.
+ 363 HIP  76440 = FK  574 1 companion in CCDM+WDS:
+ 363 B(1918:  83", 218 deg,  9.5 mag; nc:).
+ 363 TYCHO gives for B(1991:  82", 220 deg,  9.32 mag).
+ 363 Radial velocity may be variable according to BSC.
+ 364 HIP  76534 = FK  580 Radial velocity may be variable according to BSC.
+ 365 HIP  76996 = FK 1666 1 companion in TYCHO:
+ 365 B(1991:  66", 333 deg, 10.55 mag; oo).
+ 366 HIP  77055 = FK  590 Radial velocity is variable according to BSC.
+ 367 HIP  77277 = FK  587 Radial velocity is variable according to Sinzi (1972)
+ 367 and BSC, but not to GCRV.
+ 368 HIP  77622 = FK  588 Radial velocity is variable according to BSC.
+ 369 HIP  77655 = FK 1414 1 companion in CCDM+WDS:
+ 369 B(1926: 135", 203 deg, 11.5 mag; nc).
+ 370 HIP  78072 = FK  591 2 companions in CCDM+WDS:
+ 370 B(1924: 220", 318 deg, 10.5 mag; af),
+ 370 C(BC: 1908: 177", 165 deg, 10.9 mag; oo).
+ 370 The separation of AC was 101" in 1908. Radial velocity may be variable
+ 370 according to BSC.
+ 371 HIP  78180 = FK  595 Radial velocity is variable according to BSC.
+ 371 Delta Scuti star CL Dra. The pulsation explains the radial-velocity
+ 371 variations.
+ 372 HIP  78207 = FK 1417 Radial velocity is variable according to Sinzi (1972)
+ 372 or may be variable according to BSC, but not to GCRV. v_rot_sin(i)~400km/s
+ 372 (R.W. Hanuschik, 1986A&A...166..185H).
+ 373 HIP  78436 = FK 1420 Radial velocity may be variable according to P.C.
+ 373 Frisch (1987ApJS...65..313F).
+ 374 HIP  79137 = FK 1422 Radial velocity is variable according to BSC.
+ 375 HIP  79280 = FK  606 Radial velocity is variable according to BSC.
+ 376 HIP  79593 = FK  603 2 companions in CCDM+WDS:
+ 376 B(1908:  66", 295 deg, 13.4 mag; nc), C(1879: 266", 127 deg, 10.0 mag; oo).
+ 376 Radial velocity is variable according to BSC and may be variable according
+ 376 to T.G. Barnes et al. (1986PASP...98..223B).
+ 376 HIP: percentage of rejected data F1 = 4%.
+ 377 HIP  80047 = FK 1424 2 companions in CCDM+WDS:
+ 377 B(1919: 103",  12 deg,  5.3 mag; pc), C(1919:  90",  74 deg, 12.5 mag; pc).
+ 377 B is HIP 80057 (1991: 103",  10 deg,  5.27 mag; hv).
+ 377 Suspected by HIP to be double or multiple (Flag S in HIP Field H61).
+ 378 HIP  80179 = FK 1427 Radial velocity may be variable according to BSC.
+ 379 HIP  80375 = FK  614 1 companion in TYCHO:
+ 379 B(1991:  85", 116 deg,  9.60 mag; oo).
+ 379 HIP: percentage of rejected data F1 = 4%.
+ 380 HIP  80650 = FK  619 Radial velocity is variable according to BSC.
+ 381 HIP  80850 = FK  623 Radial velocity may be variable according to BSC.
+ 382 HIP  80911 = FK 1431 Radial velocity is variable according to Sinzi (1972)
+ 382 and BSC, but not to GCRV.
+ 383 HIP  80991 = FK 1432 Radial velocity is variable according to BSC.
+ 384 HIP  81065 = FK  611 In contrast to earlier claims (e.g., W.H. Wright,
+ 384 1911PLicO...9...71W), the radial velocity does not seem to be variable
+ 384 (K.A. Murdoch et al., 1993ApJ...413..349M).
+ 385 HIP  81266 = FK  620 Radial velocity is variable according to Sinzi (1972)
+ 385 and BSC, but not to GCRV. Radial velocity may be variable according to
+ 385 H. Levato et al. (1987ApJS...64..487L).
+ 386 HIP  81300 = FK 1433 1 companion in CCDM+WDS:
+ 386 B(1910: 100", 245 deg, 13.4 mag; oo).
+ 386 Radial velocity may be variable or constant according
+ 386 to A. Young et al. (1987ApJ...317..787Y).
+ 387 HIP  81377 = FK  622 Radial velocity is variable according to W. Buscombe
+ 387 and P.M. Morris (1960MNRAS.121..263B) and may be variable according to P.S.
+ 387 Conti et al. (1977ApJ...214..759C). Barbier-Brossat (1989A&AS...80...67B)
+ 387 gives v_rad_ = -9 km/s (Field 17: -15 km/s).
+ 388 HIP  81833 = FK  626 2 companions in CCDM+WDS:
+ 388 B(1901: 114", 262 deg, 12. mag; unclear),
+ 388 P(1879:  80", 260 deg; oo).
+ 388 Radial velocity may be variable according to BSC.
+ 389 HIP  82351 = FK 1437 Suspected by HIP to be double or multiple
+ 389 (Flag S in HIP Field H61).
+ 390 HIP  82526 = FK  629 Radial velocity may be variable according to BSC.
+ 391 HIP  82587 = FK 1441 1 companion in CCDM+WDS:
+ 391 B(1961:  71",  64 deg, 12.1 mag; af).
+ 392 HIP  82673 = FK 1442 Radial velocity is variable (e.g.: W.W. Campbell,
+ 392 1910LicOB...6...57C; R. Woolley et al., 1981ROAn...14....5W). Lick
+ 392 Observatory reports spectra of two stars, but later observations do not
+ 392 confirm this.
+ 393 HIP  83057 = FK 1444 Radial velocity is variable according to BSC.
+ 394 HIP  83153 = FK  632 Sinzi (1972) indicates a common-proper-motion
+ 394 companion. We were unable to identify such a star.
+ 395 HIP  83262 = FK 1445 1 companion in CCDM+WDS:
+ 395 B(1923:  94",  69 deg,  9.8 mag; nc?).
+ 395 TYCHO gives for B(1991:  99",  68 deg,  9.64 mag).
+ 395 Flag D in HIP Field H52, based on HIP photometry. This could be an
+ 395 indication of duplicity.
+ 396 HIP  83313 = FK 1446 Radial velocity may be variable according to BSC.
+ 397 HIP  83593 = FK 1448 Flag D in HIP Field H52, based on HIP photometry. This
+ 397 could be an indication of duplicity.
+ 398 HIP  83613 = FK  635 1 companion in CCDM+WDS:
+ 398 B(1924:  56", 309 deg, 10.9 mag; af).
+ 398 INCA gives B( 60", 307 deg, 10.9 mag). At present, the separation is
+ 398 probably slightly larger than 60". Radial velocity may be variable 
+ 398 according to BSC.
+ 399 HIP  83740 = FK 1447 1 companion in TYCHO:
+ 399 B(1991: 112", 123 deg, 10.46; pc).
+ 399 Radial velocity is variable according to BSC.
+ 400 HIP  83854 = FK 1449 Radial velocity may be variable according to BSC.
+ 401 HIP  83962 = FK 1450 Radial velocity may be variable according to BSC.
+ 402 HIP  84862 = FK 1456 2 companions in CCDM+WDS:
+ 402 B(1983: 289", 338 deg,  9.7 mag; af), C(BC: 1911:   9", 216 deg, 12.9 mag).
+ 402 Radial velocity is variable according to BSC and may be variable according
+ 402 to T.G. Barnes et al. (1986PASP...98..223B).
+ 403 HIP  85379 = FK  650 Radial velocity is variable according to GCRV, BSC,
+ 403 and Sinzi (1972).
+ 404 HIP  85696 = FK  649 Radial velocity is variable according to GCRV, BSC,
+ 404 and Sinzi (1972).
+ 405 HIP  85760 = FK 1455 Suspected by HIP to be double or multiple
+ 405 (Flag S in HIP Field H61).
+ 406 HIP  85805 = FK  659 1 companion in CCDM+WDS:
+ 406 B(1960: 103", 344 deg, 11.4 mag; nc:).
+ 406 Radial velocity is variable according to GCRV, Sinzi (1972), BSC, and WDS.
+ 407 HIP  85822 = FK  913 Suspected by HIP to be double or multiple (Flag S in
+ 407 HIP Field H61). Radial velocity may be variable according to BSC.
+ 408 HIP  85888 = FK 1462 Radial velocity may be variable according to BSC.
+ 409 HIP  86670 = FK  660 Beta Cephei star. Radial velocity is variable (N.R.
+ 409 Lomb and R.R. Shobrook, 1975MNRAS.173..709L). This may be due to pulsation
+ 409 (J.R. King and T. Liu, 1990PASP..102..328K).
+ 410 HIP  86736 = FK 1463 BSC classifies the star as a double star with a
+ 410 separation of 0.02" and a magnitude difference of 1.8, but remarks that the
+ 410 duplicity is uncertain.
+ 411 HIP  86742 = FK  665 Radial velocity is variable according to BSC.
+ 412 HIP  87072 = FK 1464 Cepheid X Sgr. This explains the observed
+ 412 radial-velocity variations.
+ 413 HIP  87108 = FK  668 Proposed as spectroscopic binary by O.J. Lee
+ 413 (1910ApJ....32..300L). Duplicity very uncertain according to E.B. Frost et
+ 413 al. (1929PYerO...7....1F).
+ 414 HIP  87234 = FK  675 1 companion in TYCHO:
+ 414 B(1991: 111",  57 deg, 10.50 mag; oo).
+ 415 HIP  87289 = FK 1466 Radial velocity may be variable according to
+ 415 J. Andersen and B. Nordstroem (1983A&AS...52..479A).
+ 416 HIP  87585 = FK  671 1 companion in CCDM+WDS:
+ 416 B(1963: 316", 290 deg, 15.6 mag; oo).
+ 416 Radial velocity may be variable according to BSC.
+ 417 HIP  88258 = FK 1470 1 companion in TYCHO:
+ 417 B(1991:  72", 222 deg, 11.19 mag; pc).
+ 417 Radial velocity may be variable according to BSC.
+ 418 HIP  88635 = FK  679 Radial velocity is variable according to GCRV, BSC,
+ 418 and Sinzi (1972).
+ 419 HIP  89482 = FK  684 Radial velocity is variable according to BSC.
+ 420 HIP  89605 = FK 1474 Radial velocity is variable according to GCRV, BSC,
+ 420 and Sinzi (1972).
+ 421 HIP  89962 = FK  688 1 companion in CCDM+WDS:
+ 421 B(1924: 180",  61 deg, 12.1 mag; af).
+ 421 Radial velocity may be variable according to BSC.
+ 422 HIP  90139 = FK  690 2 companions in CCDM+WDS:
+ 422 B(1924: 226", 321 deg, 10.4 mag; af), P(1924: 145",  91 deg; oo).
+ 422 Radial velocity may be variable according to BSC.
+ 423 HIP  90422 = FK  691 Radial velocity may be variable according to BSC.
+ 424 HIP  90496 = FK  692 1 companion in TYCHO:
+ 424 B(1991:  88", 186 deg,  9.84 mag; oo).
+ 425 HIP  90595 = FK  696 Radial velocity is variable according to Sinzi (1972)
+ 425 or may be variable according to BSC, but not to GCRV.
+ 426 HIP  90642 = FK 1480 W.H. Christie (1933PASP...45..190C) presented a set of
+ 426 preliminary orbital elements for 60 Ser as a spectroscopic binary. H.A. Abt
+ 426 and S.G. Levy  (1971PASP...83..687A) found no convincing evidence for
+ 426 the duplicity of this object.
+ 427 HIP  90647 = FK  700 Radial velocity may be variable according to BSC.
+ 428 HIP  90762 = FK 1481 Radial velocity may be variable according to BSC.
+ 429 HIP  90982 = FK  697 Radial velocity is variable according to Sinzi (1972)
+ 429 or may be variable according to BSC, but not to GCRV.
+ 430 HIP  91262 = FK  699 4 companions in CCDM+WDS:
+ 430 B(1947:  63", 173 deg, 9.5 mag; af), C(1899:  54", 285 deg, 11.0 mag; nc:),
+ 430 D(CD: 1897:  31",  35 deg; oo), E(1922: 118",  39 deg,  9.5 mag; nc).
+ 430 Present separation between A and C and between A and D probably larger than
+ 430 60". Suspected by HIP to be double or multiple (Flag S in HIP Field H61).
+ 430 Radial velocity is variable according to BSC. Delta Scuti star.
+ 431 HIP  92041 = FK 1487 Radial velocity may be variable (O.J. Lee,
+ 431 1910ApJ....32..300L; W.W. Campbell and J.H. Moore, 1928LicOB..16..273C).
+ 431 Probably indications for binarity during lunar occultations (1929-1933).
+ 431 R.H. Wilson (1950AJ.....55..153W and 1951AJ.....56...69W) reported
+ 431 duplicity with {rho}~0.2". The visual-binary nature was to be spurious by
+ 431 W.H. van den Bos (1951JO.....34...85V) and by
+ 431 W.S. Finsen (1951AJ.....56Q..56F).
+ 432 HIP  92088 = FK 1488 Radial velocity may be variable according to BSC.
+ 433 1 companion in CCDM+WDS:
+ 433 B(1918:  63", 206 deg, 12.4 mag; pc). Radial velocity is variable according
+ 433 to Sinzi (1972) and BSC, but not to GCRV.
+ 434 HIP  92855 = FK  706 1 companion in CCDM+WDS:
+ 434 B(1838: 309", 244 deg,  9.5 mag; pc). Radial velocity is variable according
+ 434 to Sinzi (1972) and BSC, but not to GCRV.
+ 435 HIP  92862 = FK  711 Semi-regular variable star R Lyr. Radial velocity is
+ 435 variable. Formerly interpreted as a triple stellar system (BSC). In 
+ 435 reality, the radial-velocity variations are most probably due to pulsation 
+ 435 (V.C. Cristian et al., 1995PASP..107..411C; F. Kerschbaum et al.,
+ 435 1996A&A...311..273K). Suspected by HIP to be double or multiple
+ 435 (Flag S in HIP Field H61).
+ 436 HIP  92882 = FK 1495 1 companion in TYCHO:
+ 436 B(1991:  67", 111 deg,  9.53 mag; oo).
+ 436 Radial velocity may be variable according to BSC.
+ 437 HIP  93148 = FK  708 Radial velocity is variable according to GCRV and
+ 437 W. Buscombe and P.M. Morris (1958MNRAS.118..609B).
+ 438 HIP  93805 = FK  717 Radial velocity is variable according to Sinzi (1972)
+ 438 and BSC, but not to GCRV.
+ 439 HIP  93843 = FK 1498 Radial velocity is variable according to GCRV, BSC,
+ 439 and Sinzi (1972).
+ 440 HIP  94376 = FK  723 1 companion in CCDM+WDS:
+ 440 B(1907:  88", 352 deg, 12.4 mag; nc).
+ 441 HIP  94385 = FK 1500 Radial velocity is probably variable according to
+ 441 H.A. Abt et al. (1990ApJS...74..551A).
+ 442 HIP  94713 = FK  724 2 companions in CCDM+WDS:
+ 442 B(1964: 100", 74 deg, 9.2mag; nc, pc), C(1908: 101", 127 deg, 11.0mag; pc).
+ 442 TYCHO gives for B(1991:  99",  70 deg, 10.14 mag).
+ 443 HIP  94714 = FK 1499 Radial velocity is variable according to B. Nordstroem
+ 443 and J. Andersen (1985A&AS...61...53N, Cat. <III/127>).
+ 444 HIP  94779 = FK  726 Radial velocity is variable according to BSC.
+ 445 HIP  94834 = FK  725 Radial velocity is variable according to BSC.
+ 445 HIP: percentage of rejected data F1 = 4%.
+ 446 HIP  94986 = FK 1501 Radial velocity is variable according to W. Buscombe
+ 446 (1963MNRAS.126...29B).
+ 447 HIP  95167 = FK  734 1 companion in TYCHO:
+ 447 B(1991: 110", 182 deg, 10.48 mag; oo).
+ 447 Radial velocity is variable according to BSC.
+ 448 HIP  95347 = FK  728 Radial velocity is variable according to GCRV and to
+ 448 W. Buscombe (1963MNRAS.126...29B).
+ 449 HIP  95447 = FK 1503 2 companions in CCDM+WDS:
+ 449 B(1926:  99", 335 deg,  8.7 mag; af), C(1922: 114", 316 deg, 10.6 mag; af).
+ 449 TYCHO gives for B(1991:  96", 295 deg,  8.55 mag).
+ 449 Radial velocity is probably variable according to A. Duquennoy and M. Mayor
+ 449 (1991A&A...248..485D).
+ 450 HIP  95619 = FK  731 Radial velocity may be variable according to BSC.
+ 451 HIP  95690 = FK 1504 3 companions in CCDM+WDS:
+ 451 B(1985: 74", 240 deg, 8.3 mag; nc), C(BC: 1932: 8", 195 deg, 12.8 mag; nc),
+ 451 D(1873: 71",  96 deg, 11. mag; oo).
+ 451 TYCHO gives for B(1991:  74", 239 deg, 8.32 mag) and D(1991: 10.76 mag).
+ 451 BSC claims a common proper motion of A and B. This is unjustified, since B
+ 451 is a high-proper motion star (LTT 7685), while A has a small proper motion.
+ 452 HIP  95771 = FK 1508 1 companion in CCDM+WDS:
+ 452 B(1925: 414",  28 deg,  5.8 mag; af).
+ 452 B is HIP 95785 (1991: 423", 28 deg,  5.82 mag; nc, hv).
+ 452 Radial velocity may be variable according to BSC.
+ 453 HIP  95853 = FK  733 Radial velocity may be variable according to BSC.
+ 454 HIP  95937 = FK 1509 Radial velocity may be variable according to BSC.
+ 455 HIP  96052 = FK 1510 1 companion in TYCHO:
+ 455 B(1991: 116", 203 deg, 10.90 mag; pc).
+ 455 Radial velocity may be variable according to BSC.
+ 456 HIP  96483 = FK  737 Radial velocity is variable according to Sinzi (1972)
+ 456 and BSC, but not to GCRV.
+ 457 HIP  97278 = FK  741 1 companion in CCDM+WDS:
+ 457 B(1908: 133", 258 deg, 10.8 mag; pc).
+ 457 Radial velocity is variable according to BSC.
+ 458 HIP  97290 = FK 1517 Radial velocity is variable according to BSC.
+ 459 HIP  97421 = FK  739 1 companion in TYCHO:
+ 459 B(1991: 102", 333 deg, 9.49 mag; oo). Radial velocity is variable according
+ 459 to W. Buscombe and P.M. Morris (1961MNRAS.123..233B).
+ 460 HIP  97804 = FK  746 Suspected by HIP to be double or multiple (Flag S in
+ 460 HIP Field H61). Note in HIP photometry: Appears double from a comparison
+ 460 between AC and DC magnitudes. Cepheid. The pulsation explains the observed
+ 460 radial-velocity variations. N.R. Evans (1992ApJ...384..220E) lists a
+ 460 'photometric companion'.
+ 461 HIP  97871 = FK 1519 Radial velocity is variable according to BSC.
+ 462 HIP  98495 = FK  748 Radial velocity may be variable according to BSC.
+ 463 HIP  98688 = FK  753 Suspected by HIP to be double or multiple (Flag S in
+ 463 HIP Field H61). Radial velocity is variable according to BSC.
+ 464 HIP  99120 = FK  755 Radial velocity is variable according to GCRV, BSC,
+ 464 and Sinzi (1972).
+ 465 HIP  99303 = FK 1525 2 companions in TYCHO:
+ 465 B(1991: 82", 122 deg, 9.37 mag; pc), C(1991: 104",  44 deg, 10.49; mag pc).
+ 465 Radial velocity is variable according to Sinzi (1972) or may be variable
+ 465 according to BSC, but not to GCRV. Barbier-Brossat (1989A&AS...80...67B)
+ 465 gives v_rad_ = -7.9 km/s (Field 17: -13.6 km/s).
+ 466 HIP  99655 = FK  758 Radial velocity is variable according to GCRV, BSC,
+ 466 and Sinzi (1972).
+ 467 HIP  99742 = FK 1526 Radial velocity may be variable according to BSC.
+ 468 HIP  99951 = FK  760 Radial velocity is variable according to BSC.
+ 469 HIP 100062 = FK 1529 Radial velocity may be variable according to BSC.
+ 470 HIP 100151 = FK 1528 Radial velocity may be variable (J. Andersen and B.
+ 470 Nordstroem, 1983A&AS...52..479A, Cat. <III/127>).
+ 471 HIP 101067 = FK 1535 1 companion in TYCHO:
+ 471 B(1991: 119", 282 deg, 10.49 mag; pc).
+ 472 HIP 101076 = FK 1534 Radial velocity may be variable according to BSC.
+ 473 HIP 101101 = FK 1533 Radial velocity is variable according to BSC.
+ 474 HIP 101134 = FK 1538 Radial velocity may be variable according to BSC.
+ 475 HIP 101421 = FK  768 Radial velocity is variable according to BSC.
+ 476 HIP 101489 = FK 1537 Radial velocity is variable (J. Andersen and B.
+ 476 Nordstroem, 1983A&AS...52..479A, Cat. <III/127>).
+ 477 HIP 101984 = FK  773 Suspected by HIP to be double or multiple
+ 477 (Flag S in HIP Field H61).
+ 478 HIP 102014 = FK 1540 Radial velocity may be variable according to BSC.
+ 479 HIP 102098 = FK  777 1 companion in CCDM+WDS:
+ 479 B(1925:  75", 106 deg, 11.7 mag; pc).
+ 479 Radial velocity is variable according to BSC.
+ 479 HIP: percentage of rejected data F1 = 4%.
+ 480 HIP 102208 = FK  915 Radial velocity is variable according to GCRV, BSC,
+ 480 and Sinzi (1972).
+ 481 HIP 102333 = FK  776 The spectral type is variable (S. Malaroda,
+ 481 1973PASP...85..328M), but no indications of radial-velocity variations.
+ 482 HIP 102485 = FK  779 Radial velocity is variable according to BSC.
+ 483 HIP 102618 = FK  781 Radial velocity may be variable according to BSC.
+ 484 HIP 102624 = FK 1543 Suspected by HIP to be double or multiple
+ 484 (Flag S in HIP Field H61).
+ 485 HIP 102770 = FK 1545 Suspected by HIP to be double or multiple
+ 485 (Flag S in HIP Field H61).
+ 486 HIP 102978 = FK 1546 Radial velocity is variable according to BSC.
+ 487 HIP 103200 = FK  786 1 companion in TYCHO:
+ 487 B(1991: 102",  81 deg,  9.83 mag; pc).
+ 487 Radial velocity may be variable according to BSC.
+ 488 HIP 103460 = FK 1548 Radial velocity is variable according to W. Buscombe
+ 488 and P.M. Morris (1958MNRAS.118..609B).
+ 489 HIP 103682 = FK  789 Radial velocity may be variable according to BSC.
+ 490 HIP 103882 = FK  790 1 companion in TYCHO:
+ 490 B(1991: 100", 207 deg, 10.71 mag; oo).
+ 490 Radial velocity may be variable according to BSC.
+ 491 HIP 104105 = FK  795 Radial velocity is variable according to GCRV, BSC, 
+ 491 and Sinzi (1972). Barbier-Brossat (1989A&AS...80...67B) gives 
+ 491 v_rad_ = -22.5km/s (Field 17: -16 km/s).
+ 492 HIP 104139 = FK 1552 BSC claims that the radial velocity is variable.
+ 492 However, the orbital elements (H.A. Abt, 1961ApJS....6...37A) given in the
+ 492 remarks of BSC refer to Theta Cep (instead of Theta Cap). Probably a
+ 492 misidentification in BSC and SIMBAD.
+ 493 HIP 104189 = FK 1553 The radial velocity is variable according to J.
+ 493 Andersen and B. Nordstroem (1983A&AS...52..479A, Cat. <III/127>).
+ 494 HIP 104755 = FK 1554 Radial velocity is variable according to GCRV, BSC,
+ 494 and Sinzi (1972).
+ 495 HIP 105140 = FK  801 Radial velocity is variable according to W. Buscombe
+ 495 and P.M. Morris (1961MNRAS.123..233B) and to W. Buscombe
+ 495 (1963MNRAS.126...29B). Barbier-Brossat (1989A&AS...80...67B) gives
+ 495 v_rad_ = +7.2 km/s (Field 17: -1 km/s).
+ 496 HIP 105199 = FK  803 3 companions in CCDM+WDS:
+ 496 B(1908: 207",  22 deg, 10.4 mag; af),
+ 496 C(B(CD): 1908: 20", 172 deg, 11.1 mag; oo),
+ 496 D(CD: 1908:   3", 104 deg, 11.3 mag).
+ 496 Radial velocity is variable according to BSC.
+ 497 HIP 105515 = FK 1561 According to HIP: eclipsing binary (type:EA) with a
+ 497 possible period of 4.1221 days. HIP does not confirm the period of 
+ 497 68.0days obtained by G.L. Henry et al. (1995AJ....110.2926H) from their 
+ 497 photometry. The radial velocity is constant according to G.L. Henry et al.,
+ 497 who interpret the period of 68 days as the rotational period of the star
+ 497 indicated by stellar spots.
+ 498 HIP 105858 = FK  805 Radial velocity is variable according to Sinzi (1972),
+ 498 but K.A. Murdoch et al. (1993ApJ...413..349M) do not find any significant
+ 498 variations in the radial velocity.
+ 499 HIP 106021 = FK 1564 Suspected by HIP to be double or multiple
+ 499 (Flag S in HIP Field H61).
+ 500 HIP 106093 = FK  807 Radial velocity is variable according to Sinzi (1972)
+ 500 or may be variable according to BSC, but not to GCRV.
+ 501 HIP 106429 = FK 1567 Radial velocity is variable according to W. Buscombe
+ 501 and P.M. Morris (1958MNRAS.118..609B).
+ 502 HIP 106787 = FK 1570 Radial velocity is variable according to Sinzi (1972)
+ 502 or may be variable according to BSC, but not to GCRV. Barbier-Brossat
+ 502 (1989A&AS...80...67B) gives v_rad_ = -35.8 km/s (Field 17: -25 km/s).
+ 503 HIP 107315 = FK  815 2 companions in CCDM+WDS:
+ 503 B(1961:  83", 324 deg, 12.7 mag; af), C(1914: 143", 321 deg,  8.9 mag; pc).
+ 503 Suspected by HIP to be double or multiple (Flag S in HIP Field H61).
+ 503 Radial velocity is variable according to BSC.
+ 504 HIP 107418 = FK 1572 Radial velocity is variable according to BSC.
+ 505 HIP 107445 = FK 1571 1 companion in TYCHO:
+ 505 B(1991:  93",  22 deg,  10.70 mag; oo).
+ 506 HIP 107517 = FK  818 Radial velocity is variable according to W. Buscombe
+ 506 and P.M. Morris (1958MNRAS.118..609B).
+ 507 HIP 107575 = FK 1574 Radial velocity may be variable according to BSC.
+ 508 HIP 107649 = FK 1573 1 companion in CCDM+WDS:
+ 508 B(1932:  55", 356 deg,  8.6 mag; nc).
+ 508 Tycho gives for B (1991:  73", 351 deg,  8.65 mag).
+ 509 HIP 108022 = FK  823 Radial velocity may be variable according to E.B. 
+ 509 Frost et al. (1926ApJ....64....1F) and to H.A. Abt et al. 
+ 509 (1990ApJS...74..551A). K. Kodaira (1971PASJ...23..159K) determined a period
+ 509 of 17.79 days, but remarked that the scatter in many of the data is 
+ 509 extraordinarily large. Duplicity uncertain. v_rot_sin(i) ~150 km/s.
+ 510 HIP 108036 = FK 1577 Radial velocity is variable according to BSC.
+ 510 HIP: percentage of rejected data F1 = 4%.
+ 511 HIP 109074 = FK  827 1 companion in CCDM+WDS:
+ 511 B(1907: 113",  41 deg, 12.2 mag; pc). Radial velocity may be variable
+ 511 according to BSC. and to T.G. Barnes et al. (1986PASP...98..223B).
+ 512 HIP 109139 = FK  828 Double-lined spectroscopic binary (e.g.: E.B. Frost et
+ 512 al., 1926ApJ....64....1F; W.W. Campbell and J.H. Moore,
+ 512 1928PLicO..16.....C, p.321).
+ 513 HIP 109400 = FK  837 Radial velocity is variable according to BSC.
+ 514 HIP 109492 = FK  836 Suspected spectroscopic binary (e.g.: J. Moore,
+ 514 1932PLicO..18....1M, especially p. 212; K.C. Gordon, 1943PASP...55R.100G;
+ 514 G. Burki and M. Mayor, 1983A&A...124..256B).
+ 515 HIP 110256 = FK  839 Suspected by HIP to be double or multiple
+ 515 (Flag S in HIP Field H61).
+ 516 HIP 110386 = FK  843 Radial velocity may be variable according to BSC.
+ 516 Barbier-Brossat (1989A&AS...80...67B) gives v_rad_ = +1 km/s
+ 516 (Field 17: +9.6 km/s).
+ 517 HIP 110672 = FK 1585 Radial velocity is variable according to BSC.
+ 518 HIP 110986 = FK 1588 Radial velocity may be variable according to BSC.
+ 519 HIP 110992 = FK 1589 Radial velocity is variable according to BSC.
+ 520 HIP 111056 = FK 1593 Radial velocity is variable according to GCRV, BSC,
+ 520 and Sinzi (1972).
+ 521 HIP 111196 = FK 1670 Radial velocity is variable according to W. Buscombe
+ 521 and P.M. Morris (1958MNRAS.118..609B).
+ 522 HIP 111242 = FK 1594 Radial velocity is variable (e.g.: R. Woolley et al.,
+ 522 1981ROAn...14....5W).
+ 523 HIP 111497 = FK  850 Radial velocity is variable according to Sinzi (1972)
+ 523 or may be variable according to BSC, but not to GCRV.
+ 524 HIP 111532 = FK  851 Radial velocity is variable according to BSC.
+ 525 HIP 111710 = FK 1595 1 companion in CCDM+WDS:
+ 525 B(1926:  98", 248 deg,  8.8 mag; nc).
+ 525 Tycho gives for B (1991:  87", 250 deg, 11.14 mag).
+ 526 HIP 111797 = FK  853 Radial velocity is variable according to GCRV, BSC,
+ 526 and Sinzi (1972). BSC gives SB2.
+ 527 HIP 111841 = FK  852 1 companion in CCDM+WDS:
+ 527 B(1975:  62",  49 deg, 10.0 mag; pc).
+ 527 TYCHO gives for B(1991:  62",  49 deg, 10.29 mag).
+ 527 Radial velocity may be variable according to BSC.
+ 528 HIP 112029 = FK  855 2 companions in CCDM+WDS:
+ 528 B(1925:  62", 140 deg, 11.6 mag; nc),
+ 528 C(1880: 177",   5 deg, 11. mag; oo).
+ 528 Radial velocity may be variable according to BSC.
+ 529 HIP 112122 = FK  856 Suspected by HIP to be double or multiple
+ 529 (Flag S in HIP Field H61).
+ 530 HIP 112358 = FK 1596 Radial velocity may be variable according to BSC.
+ 531 HIP 112623 = FK  860 1 companion in TYCHO:
+ 531 B(1991:  96",  68 deg, 10.52 mag; oo).
+ 531 Radial velocity is variable according to W. Buscombe and P.M. Morris
+ 531 (1958MNRAS.118..609B).
+ 532 HIP 112716 = FK  861 1 companion in CCDM+WDS:
+ 532 B(1963: 132", 296 deg,  9.8 mag; af).
+ 533 HIP 113881 = FK  870 2 companions in CCDM+WDS:
+ 533 B(1925: 109", 211 deg, 11.8 mag; af), C(1925: 253",  98 deg,  9.6 mag; af).
+ 533 Suspected by HIP to be double or multiple (Flag S in HIP Field H61).
+ 533 Radial velocity is variable according to BSC.
+ 534 HIP 113963 = FK  871 Radial velocity is variable according to BSC.
+ 535 HIP 114210 = FK 1604 Radial velocity may be variable according to BSC.
+ 536 HIP 114520 = FK 1606 Radial velocity is variable according to BSC.
+ 537 HIP 114622 = FK  875 1 companion in CCDM+WDS:
+ 537 B(1922: 124", 218 deg,  9.4 mag; af). Radial velocity is constant according
+ 537 to 537 G.A.H. Walker et al. (1995Icar..116..359W).
+ 538 HIP 114971 = FK  878 Radial velocity may be variable according to BSC.
+ 539 HIP 115250 = FK  880 Radial velocity is variable according to BSC.
+ 539 Delta Scuti star. The pulsation explains the observed radial-velocity
+ 539 variations.
+ 540 HIP 115280 = FK 1610 2 companions in CCDM+WDS:
+ 540 B(1922: 122", 256 deg, 9.2mag; af), C(BC: 1908: 156", 214deg, 11.5mag; oo).
+ 540 Radial velocity may be variable according to BSC.
+ 541 HIP 115438 = FK 1612 Radial velocity is variable according to BSC.
+ 542 HIP 115590 = FK  882 3 companions in CCDM+WDS:
+ 542 B(1918: 98", 225 deg, 7.8mag; nc, pc), C(1918: 215", 258 deg, 8.7 mag; pc),
+ 542 D(CD: 1913:  9",  34 deg,  9.7 mag).
+ 542 TYCHO gives for B(1991:  96", 226 deg, 9.82 mag).
+ 543 HIP 115591 = FK 1613 Radial velocity is variable according to BSC.
+ 544 HIP 115713 = FK  883 Radial velocity is variable according to W. Buscombe
+ 544 and P.M. Morris (1961MNRAS.123..233B).
+ 545 HIP 115738 = FK  884 2 companions in CCDM+WDS:
+ 545 B(1950: 163", 344deg, 11.9mag; nc), C(BC: 1908: 76", 154deg, 13.1mag; oo).
+ 545 Radial velocity and spectrum are variable
+ 545 (e.g.: P. Galeotti and E. Lovera, 1972MmSAI..43..759G).
+ 546 HIP 116354 = FK 1616 Radial velocity is variable according to BSC.
+ 547 HIP 116602 = FK  889 Radial velocity is variable according to W. Buscombe
+ 547 and P.M. Morris (1958MNRAS.118..609B) and to W. Buscombe
+ 547 (1963MNRAS.126...29B). Barbier-Brossat (1989A&AS...80...67B) 547) gives
+ 547 v_rad_=+3.4km/s (Field 17: +10km/s).
+ 548 HIP 116631 = FK  891 In spite of other claims (e.g. BSC), the radial
+ 548 velocity is probably constant (e.g. GCRV). v_rot_ sin(i) ~90 km/s.
+ 549 HIP 116771 = FK  892 2 companions in CCDM+WDS:
+ 549 B(1910:  70", 295 deg, 13.0 mag; af), C(1880: 281",  34 deg; oo).
+ 549 Radial velocity may be variable according to T.G. Barnes et al.
+ 549 (1986PASP...98..223B).
+ 550 HIP 116820 = FK 1618 1 companion in TYCHO:
+ 550 B(1991:  97",  34 deg, 10.98 mag; oo).
+ 551 HIP 116928 = FK 1620 Radial velocity is variable according to BSC.
+ 552 HIP 117089 = FK 1621 Radial velocity is variable according to W. Buscombe
+ 552 and P.M. Morris (1958MNRAS.118..609B). D. Baade (1989A&AS...79..423B).
+ 552 v_rot_sin(i) ~315 km/s.
+ 553 HIP 117371 = FK  895 Radial velocity is variable according to BSC.
+ 554 HIP 117375 = FK 1623 2 companions in CCDM+WDS:
+ 554 B(1919: 173", 285 deg, 10.0 mag; nc:),
+ 554 C(BC: 1912:  52", 278 deg, 12.9 mag; AC: pc).
+ 554 Radial velocity may be variable according to BSC.
+ 555 HIP 117488 = FK 1624 Radial velocity may be variable (J. Andersen and B.
+ 555 Nordstroem, 1983A&AS...52..479A, Cat. <III/127>).
+ 556 HIP 117541 = FK  897 Radial velocity is variable according to BSC.
+ 557 HIP 117718 = FK  898 Suspected by HIP to be double or multiple (Flag S in
+ 557 HIP Field H61). Radial velocity may be variable according to BSC.
+ 558 HIP 117863 = FK  899 1 companion in TYCHO:
+ 558 B(1991:  93", 149 deg, 10.62 mag; pc).
+ 558 Radial velocity is variable according to BSC. G. Burki and M. Mayor
+ 558 (1983A&A...124..256B) classified the star as a possible spectroscopic
+ 558 binary. The spectrum is variable. Double lines in the spectrum of rho Cas
+ 558 are probably not due to binarity but caused by effects in the stellar
+ 558 atmosphere (W.P. Bidelman and A. McKellar, 1957PASP...69...31B;
+ 558 D.L. Lambert et al., 1981ApJ...248..638L).
+ 559 HIP 118048 = FK 1628 1 companion in TYCHO:
+ 559 B(1991:  62",  0 deg, 10.13 mag; oo).
+ 559 Radial velocity may be variable according to BSC.
+ 560 HIP 118268 = FK  902 The object was announced as a spectroscopic binary by
+ 560 H. Spencer-Jones (1928AnCap..10h...1J), p.129. A preliminary orbital period
+ 560 of 2.158 days was given by W.R. Beardsley (1965AJ.....70..318B). This was
+ 560 not confirmed by H.A. Abt and S.G. Levy (1976ApJS...30..273A). W.B. Lee et
+ 560 al. (1985A&AS...61..363L) found also no periodicity in the radial velocity
+ 560 and think that the variations, if existing, are not due to duplicity.

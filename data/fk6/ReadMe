@@ -1,0 +1,511 @@
+I/264          Sixth Catalogue of Fundamental Stars (FK6)        (Wielen+ 2000)
+================================================================================
+Sixth Catalogue of Fundamental Stars (FK6).
+Part I: Basic Fundamental Stars with Direct Solutions
+Sixth Catalogue of Fundamental Stars (FK6) , Parts I and III
+     Wielen R., Schwan H., Dettbarn C., Lenhardt H., Jahreiss H., Jahrling R.
+    <Veroeff. Astron. Rechen-Inst. Heidelberg 35, 1 (1999)>
+    =1999VeARI..35....1W
+Part III: Additional Fundamental Stars with Direct Solutions
+     Wielen R., Schwan H., Dettbarn C., Lenhardt H., Jahreiss H., Jahrling R.
+     Khalisi E.
+    <Veroeff. Astron. Rechen-Inst. Heidelberg 37, 1 (2000)>
+    =2000VeARI..37....1W
+================================================================================
+ADC_Keywords: Positional data ; Proper motions ; Stars, fundamental
+
+Description:
+    The FK6 is a suitable combination of the results of the HIPPARCOS
+    (Cat. <I/239>) astrometry satellite with ground-based data, measured
+    over more than two centuries.
+
+    The FK6 gives other solutions than the classical `single-star mode'
+    (SI mode), which take into account the fact that hidden astrometric
+    binaries among `apparently single-stars' introduce sizable `cosmic
+    errors' into the quasi-instantaneously measured HIPPARCOS proper
+    motions and positions. The FK6 gives in addition to the SI mode the
+    `long-term prediction (LTP) mode' and the `short-term prediction (STP)
+    mode'. These LTP and STP modes are on average the most precise
+    solutions for apparently single stars, depending on the epoch
+    difference with respect to the HIPPARCOS epoch of about 1991.
+
+    The FK6(I) results from the combination of FK5(I) (Cat. <I/149>) with
+    Hipparcos results. Among its 878 stars, it contains 340 objects
+    classified as `astrometrically excellent stars', most suited for
+    high-precision astrometry. The typical mean error of an FK6(I) proper
+    motion is 0.35 mas/year in the single-star mode (about two times
+    better than Hipparcos), and 0.50 mas/year in the long-term prediction
+    mode (about four times better than Hipparcos).
+
+    The FK6(III) results from the combination of stars from FK5 extension
+    (Cat. <I/175>) with Hipparcos. Among its 3272 stars, it contains 1928
+    objects classified as `astrometrically excellent stars'. The typical
+    mean error of an FK6(III) proper motion is 0.59 mas/year in the
+    single-star mode, and 0.93 mas/year in the long-term prediction mode.
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName    Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe          80        .   This file
+fk6_1.dat      842      878   FK6(I)   File version 01
+fk6_3.dat      483     3272   FK6(III) File version 01
+notes1.dat      80     1310   Individual notes to FK6(I) stars
+tabnote3.dat    56     1144   `Tabular Notes' about Binarity in FK6(III)
+notes3.dat      80       56   Individual notes to FK6(III) stars
+--------------------------------------------------------------------------------
+
+See also:
+    http://www.ari.uni-heidelberg.de/fk6/ : The FK6 home page
+    I/239 : The Hipparcos and Tycho Catalogues (ESA 1997)
+    I/149 : Fifth Fundamental Catalogue (FK5) Part I (Fricke+, 1988)
+    I/175 : Fifth Fundamental Catalogue (FK5) - Extension (Fricke+ 1991)
+
+Byte-by-byte Description of file: fk6_1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units    Label     Explanations
+--------------------------------------------------------------------------------
+   2-  6  I5    ---      FK6       FK6 number of the star
+                                     (identical with its FK5 number)
+  10- 15  I6    ---      HIP       Hipparcos (<I/239>) number of the star
+  19- 37  A19   ---      Name      Name of the star
+  40- 41  I2    h        RAh       Right ascension (ICRS, Ep=J2000) (G1)
+  43- 44  I2    min      RAm       Right ascension (ICRS, Ep=J2000) (G1)
+  46- 54  F9.6  s        RAs       Right ascension (ICRS, Ep=J2000) (G1)
+      59  A1    ---      DE-       Declination sign (ICRS, Ep=J2000) (G1)
+  60- 61  I2    deg      DEd       Declination (ICRS, Ep=J2000) (G1)
+  63- 64  I2    arcmin   DEm       Declination (ICRS, Ep=J2000) (G1)
+  66- 73  F8.5  arcsec   DEs       Declination (ICRS, Ep=J2000) (G1)
+  77- 85  F9.2  mas/yr   pmRA*     Proper motion in right ascension (SI mode)
+                                     (pmRA* = mu_alpha*cos(delta)) (G1)
+  89- 97  F9.2  mas/yr   pmDE      Proper motion in declination (G1)
+ 100-106  F7.2  yr       TRA       Central epoch in RA of the star (SI mode)
+ 111-115  F5.2  mas    e_RA*       rms uncertainty on alpha*cos(delta) at
+                                     the central epoch TRA (SI mode)
+ 120-124  F5.2  mas/yr e_pmRA*     rms uncertainty on pmRA* (SI mode)
+ 127-133  F7.2  yr       TDE       Central epoch in DE of the star (SI mode)
+ 138-142  F5.2  mas    e_DEs       rms uncertainty on DE at the central
+                                     epoch TDE (SI mode)
+ 147-151  F5.2  mas/yr e_pmDE      rms uncertainty on pm DE (SI mode)
+ 155-160  F6.2  mas      plx       Resulting parallax of the star (G3)
+ 165-169  F5.2  mas    e_plx       rms uncertainty on plx
+     174  A1    ---    f_plx       [HPC] Parallax origin, H=Hipparcos (G4)
+ 179-184  F6.1  km/s     RV        Radial velocity, used in calculating the
+                                     foreshortening effect
+ 189-193  F5.2  mag      Vmag      Apparent visual magnitude of the star
+                                     (taken from the HIPPARCOS Catalogue)
+     198  I1    ---    f_Vmag      [1/3]? Variability flag, from Hipparcos (G5)
+ 204-205  I2    ---      Kbin1     Double-star nature of the object flag (G6)
+     211  I1    ---      Kbin2     ? Double-star nature from pm differences (G7)
+     217  I1    ---      Kae       ? Astrometrically excellent star flag (G8)
+ 222-229  F8.2  mas      DRA*LTP   Difference in alpha*cos(delta) between
+                                     long-term prediction (LTP) and SI modes
+ 233-240  F8.2  mas      DRA*STP   Difference in alpha*cos(delta) between
+                                     short-term prediction (STP) and SI modes
+ 244-251  F8.2  mas      DRA*HIP   Difference in alpha*cos(delta) between
+                                     HIP and SI modes
+ 255-262  F8.2  mas      DRA*FK5   Difference in alpha*cos(delta) between
+                                     FK5 and SI modes
+ 266-273  F8.2  mas      DDE:LTP   Difference in declination between
+                                     long-term prediction (LTP) and SI modes
+ 277-284  F8.2  mas      DDE:STP   Difference in declination between
+                                     short-term prediction (STP) and SI modes
+ 288-295  F8.2  mas      DDE:HIP   Difference in declination between
+                                     HIP and SI modes
+ 299-306  F8.2  mas      DDE:FK5   Difference in declination between
+                                     FK5 and SI modes
+ 310-317  F8.2  mas/yr   DpmRA*LTP Difference in proper motion in RA between
+                                     long-term prediction (LTP) and SI modes
+ 321-328  F8.2  mas/yr   DpmRA*STP Difference in proper motion in RA between
+                                     short-term prediction (STP) and SI modes
+ 332-339  F8.2  mas/yr   DpmRA*HIP Difference in proper motion in RA between
+                                     HIP and SI modes
+ 343-350  F8.2  mas/yr   DpmRA*FK5 Difference in proper motion in RA between
+                                     FK5 and SI modes
+ 354-361  F8.2  mas/yr   DpmRA*mu0 Difference in proper motion in RA between
+                                     mu0 (HIP-FK5) and SI modes
+ 365-372  F8.2  mas/yr   DpmDE:LTP Difference in proper motion in DE between
+                                     long-term prediction (LTP) and SI modes
+ 376-383  F8.2  mas/yr   DpmDE:STP Difference in proper motion in DE between
+                                     short-term prediction (STP) and SI modes
+ 387-394  F8.2  mas/yr   DpmDE:HIP Difference in proper motion in DE between
+                                     HIP and SI modes
+ 398-405  F8.2  mas/yr   DpmDE:FK5 Difference in proper motion in DE between
+                                     FK5 and SI modes
+ 409-416  F8.2  mas/yr   DpmDE:mu0 Difference in proper motion in DE between
+                                     mu0 and SI modes
+ 419-425  F7.2  yr       TRALTP    RA central epoch in LTP solution
+ 428-434  F7.2  yr       TRASTP    RA central epoch in STP solution
+ 437-443  F7.2  yr       TRAHIP    RA central epoch in HIP solution
+ 446-452  F7.2  yr       TRAFK5    RA central epoch in FK5 solution
+ 457-461  F5.2  mas    e_RA*LTP    rms uncertainty on RA at central epoch TRA
+                                     in long-term prediction (LTP) solution
+ 466-470  F5.2  mas    e_RA*STP    rms uncertainty on RA at central epoch TRA
+                                     in short-term prediction (STP) solution
+ 475-479  F5.2  mas    e_RA*HIP    rms uncertainty on RA at central epoch TRA
+                                     in HIP solution
+ 484-488  F5.2  mas    e_RA*FK5    rms uncertainty on RA at central epoch TRA
+                                     in FK5 solution
+ 493-497  F5.2  mas/yr e_pmRA*LTP  rms uncertainty on pmRA* in LTP solution
+ 502-506  F5.2  mas/yr e_pmRA*STP  rms uncertainty on pmRA* in STP solution
+ 511-515  F5.2  mas/yr e_pmRA*HIP  rms uncertainty on pmRA* in HIP solution
+ 520-524  F5.2  mas/yr e_pmRA*FK5  rms uncertainty on pmRA* in FK5 solution
+ 529-533  F5.2  mas/yr e_pmRA*mu0  rms uncertainty on pmRA* in mu0 solution
+ 536-542  F7.2  yr       TDELTP    DE central epoch in LTP solution
+ 545-551  F7.2  yr       TDESTP    DE central epoch in LTP solution
+ 554-560  F7.2  yr       TDEHIP    DE central epoch in HIP solution
+ 563-569  F7.2  yr       TDEFK5    DE central epoch in FK5 solution
+ 574-578  F5.2  mas    e_DE:LTP    rms uncertainty on DE at central epoch TDE
+                                     in long-term prediction (LTP) solution
+ 583-587  F5.2  mas    e_DE:STP    rms uncertainty on DE at central epoch TDE
+                                     in Short-term prediction (STP) solution
+ 592-596  F5.2  mas    e_DE:HIP    rms uncertainty on DE at central epoch TDE
+                                     in HIP solution
+ 601-605  F5.2  mas    e_DE:FK5    rms uncertainty on DE at central epoch TDE
+                                     in FK5 solution
+ 610-614  F5.2  mas/yr e_pmDE:LTP  rms uncertainty on pmDE in LTP solution
+ 619-623  F5.2  mas/yr e_pmDE:STP  rms uncertainty on pmDE in STP solution
+ 628-632  F5.2  mas/yr e_pmDE:HIP  rms uncertainty on pmDE in HIP solution
+ 637-641  F5.2  mas/yr e_pmDE:FK5  rms uncertainty on pmDE in FK5 solution
+ 646-650  F5.2  mas/yr e_pmDE:mu0  rms uncertainty on pmDE in mu0 solution
+ 654-659  F6.2  mas      plxSI     Parallax derived in the SI mode
+ 663-668  F6.2  mas      plxSTP    Parallax derived in the STP mode
+ 672-677  F6.2  mas      plxHIP    Parallax from HIP
+ 683-686  F4.2  mas    e_plxSI     rms uncertainty on plxSI
+ 692-695  F4.2  mas    e_plxSTP    rms uncertainty on plxSTP
+ 701-704  F4.2  mas    e_plxHIP    rms uncertainty on plxHIP
+ 708-715  F8.2  mas      DRAsys    FK5-HIP difference in alpha*cos(delta) (9)
+ 719-726  F8.2  mas      DDEsys    FK5-HIP difference in declination (9)
+     727  A1    ---      ---       [.] (the dot exists in 12 records)
+ 730-737  F8.2  mas/yr   DpmRA*sys FK5-HIP difference in pm_RA*cos(DE) (9)
+ 741-748  F8.2  mas/yr   DpmDE:sys FK5-HIP difference in pmDE  (9)
+ 755-759  F5.2  mas    e_RA*sys    rms uncertainty on RA*sys
+ 766-770  F5.2  mas    e_DE:sys    rms uncertainty on DE:sys
+ 778-781  F4.2  mas/yr e_pmRA*sys  rms uncertainty on pmRA*sys
+ 789-792  F4.2  mas/yr e_pmDE:sys  rms uncertainty on pmDE:sys
+     797  I1    ---      Ksys      ? FK5/HIP systematic differences flag (10)
+ 803-807  F5.2  ---      FFH       F parameter based on FK5/HIP data (G11)
+ 812-816  F5.2  ---      F0H       F parameter based on FK5/HIP data (G11)
+ 821-825  F5.2  ---      F0(GC)H   ? F parameter based on GC/HIP data (G11)
+ 830-834  F5.2  ---      F0F       F parameter based on Fk5/HIP data (G11)
+ 838-840  I3    ---      Note      ? Number of the note in notes1.dat file
+     842  A1    ---      ---       [|]
+--------------------------------------------------------------------------------
+
+Note (9): Systematic differences between the FK5 system and ICRS/HIPPARCOS
+    system (in the sense FK5-HIP), for the star under consideration at
+    the epoch J1949.4 .
+
+    The differences have to be subtracted from the FK5 data at epoch
+    J1949.4 in order to obtain the FK5 quantities at epoch J1949.4 in the
+    HIPPARCOS reference system. The systematic differences given include
+    both the rotational and regional systematic differences between the
+    FK5 system and the HIPPARCOS system. The mean errors of the systematic
+    differences at epoch J1949.4 are given.
+
+Note (10): Flag for the use of the star in determining the systematic
+    differences between the FK5 system and the HIPPARCOS system in
+    position and proper motion:
+      1 = used for positions and proper motions
+  blank = not used
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: fk6_3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units    Label     Explanations
+--------------------------------------------------------------------------------
+   2-  6  I5    ---      FK6       FK6 number of the star
+                                    (identical with its FK5 number)
+  10- 15  I6    ---      HIP       Hipparcos (<I/239>) number of the star
+  19- 20  A2    ---      Flag      Flag for the subsample of FK6(III) stars (1)
+  24- 42  A19   ---      Name      Name of the star
+  45- 46  I2    h        RAh       Right ascension (ICRS, Ep=J2000) (G1)
+  48- 49  I2    min      RAm       Right ascension (ICRS, Ep=J2000) (G1)
+  51- 59  F9.6  s        RAs       Right ascension (ICRS, Ep=J2000) (G1)
+      64  A1    ---      DE-       Declination sign (ICRS, Ep=J2000) (G1)
+  65- 66  I2    deg      DEd       Declination (ICRS, Ep=J2000) (G1)
+  68- 69  I2    arcmin   DEm       Declination (ICRS, Ep=J2000) (G1)
+  71- 78  F8.5  arcsec   DEs       Declination (ICRS, Ep=J2000) (G1)
+  82- 90  F9.2  mas/yr   pmRA*     Proper motion in right ascension
+                                   (pmRA* = mu_alpha*cos(delta)) (G1)
+  94-102  F9.2  mas/yr   pmDE      Proper motion in declination (G1)
+ 105-111  F7.2  yr       TRA       Central epoch in RA of the star (SI mode)
+ 117-120  F4.2  mas    e_RA*       rms uncertainty on alpha*cos(delta) at
+                                    the central epoch TRA (SI mode)
+ 126-129  F4.2  mas/yr e_pmRA*     rms uncertainty on pmRA* (SI mode)
+ 132-138  F7.2  yr       TDE       Central epoch in DE of the star (SI mode)
+ 144-147  F4.2  mas    e_DEs       rms uncertainty on DE at the central
+                                    epoch TDE (SI mode)
+ 153-156  F4.2  mas/yr e_pmDE      rms uncertainty on pmDE (SI mode)
+ 161-165  F5.1  mas      plx       Resulting parallax of the star (G3)
+ 171-174  F4.2  mas    e_plx       rms uncertainty on plx
+     179  A1    ---    f_plx       [HP] Parallax origin, H=Hipparcos (G4)
+ 184-191  F8.1  km/s     RV        ? Radial velocity, used in calculating the
+                                      foreshortening effect
+ 196-199  F4.2  mag      Vmag      Apparent visual magnitude of the star
+                                    (taken from the HIPPARCOS Catalogue)
+     205  I1    ---    f_Vmag      [1/3]? Variability flag, from Hipparcos (G5)
+ 211-212  I2    ---      Kbin1     Double-star nature of the object flag (G6)
+     218  I1    ---      Kbin2     ? Double-star nature from pm differences (G7)
+     224  I1    ---      Kae       ? Astrometrically excellent star flag (G8)
+ 229-236  F8.2  mas/yr   DpmRA*LTP Difference in proper motion in RA between
+                                     long-term prediction (LTP) and SI mode
+ 240-247  F8.2  mas/yr   DpmRA*STP Difference in proper motion in RA between
+                                     short-term prediction (STP) and SI mode
+ 251-258  F8.2  mas/yr   DpmRA*HIP Difference in proper motion in RA between
+                                     HIP and SI mode
+ 262-269  F8.2  mas/yr   DpmRA*FK5 Difference in proper motion in RA between
+                                     FK5 and SI mode
+ 273-280  F8.2  mas/yr   DpmRA*mu0 Difference in proper motion in RA between
+                                     mu0 and SI mode
+ 284-291  F8.2  mas/yr   DpmDE:LTP Difference in proper motion in DE between
+                                     long-term prediction (LTP) and SI mode
+ 295-302  F8.2  mas/yr   DpmDE:STP Difference in proper motion in DE between
+                                     short-term prediction (STP) and SI mode
+ 306-313  F8.2  mas/yr   DpmDE:HIP Difference in proper motion in DE between
+                                     HIP and SI mode
+ 317-324  F8.2  mas/yr   DpmDE:FK5 Difference in proper motion in DE between
+                                     FK5 and SI mode
+ 328-335  F8.2  mas/yr   DpmDE:mu0 Difference in proper motion in DE between
+                                     mu0 and SI mode
+ 339-343  F5.2  mas/yr e_DpmRA*LTP rms uncertainty on DpmRA*LTP
+ 348-352  F5.2  mas/yr e_DpmRA*STP rms uncertainty on DpmRA*STP
+ 357-361  F5.2  mas/yr e_DpmRA*HIP rms uncertainty on DpmRA*HIP
+ 366-370  F5.2  mas/yr e_DpmRA*FK5 rms uncertainty on DpmRA*FK5
+ 375-379  F5.2  mas/yr e_DpmRA*mu0 rms uncertainty on DpmRA*mu0
+ 384-388  F5.2  mas/yr e_DpmDE:LTP rms uncertainty on DpmDELTP
+ 393-397  F5.2  mas/yr e_DpmDE:STP rms uncertainty on DpmDESTP
+ 402-406  F5.2  mas/yr e_DpmDE:HIP rms uncertainty on DpmDEHIP
+ 411-415  F5.2  mas/yr e_DpmDE:FK5 rms uncertainty on DpmDEFK5
+ 420-424  F5.2  mas/yr e_DpmDE:mu0 rms uncertainty on DpmDEmu0
+ 429-433  F5.2  ---      FFH       F parameter based on FK5/HIP data (G11)
+ 438-442  F5.2  ---      F0H       F parameter based on FK5/HIP data (G11)
+ 447-451  F5.2  ---      F0(GC)H   ? F parameter based on GC/HIP data (G11)
+ 457-460  F4.2  ---      F0F       F parameter based on Fk5/HIP data (G11)
+ 465-469  F5.2  ---      FTH       ? F parameter based on TYCHO2/HIP (12)
+     475  A1    ---      tNote     [t] indicates a note in tabnote3.dat
+ 477-480  I4    ---      Note      ? Number of the note in file notes3.dat
+     483  A1    ---      ---       [|]
+--------------------------------------------------------------------------------
+Note (1):  Flag for the subsample of FK6(III) stars:
+     BX = star from the bright extension of the FK5
+     FX = star from the faint extension of the FK5
+     RS = star from the RSup (Schwan et al., 1993, Cat. <I/210>).
+
+Note (12): F parameter based on the difference Delta_mu_{TH} = mu_T_ - mu_H_
+    between the proper motion mu_T_ given in TYCHO2 Catalogue (Hoeg et al.,
+    2000, Cat. <I/259>) and the proper motion mu_H_ given by HIPPARCOS.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: notes1.dat notes3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  4  I4    ---     Note      [1/3024]=+ Number of the note
+   6- 80  A75   ---     Text      Text of the note (1)
+--------------------------------------------------------------------------------
+Note (1): Abbreviations for flags:
+  optical companion because of:
+    af = approximately fixed
+    nc = no common proper motion
+    hv = high relative velocity
+    pc = large separation in pc
+  other flags:
+    no = no relative position given
+    oo = only one observation given in CCDM or WDS
+         (hence no relative proper motion available)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: tabnote3.dat
+--------------------------------------------------------------------------------
+ Bytes Format Units Label  Explanations
+--------------------------------------------------------------------------------
+  3-  6  I4    ---   FK6   FK6 number
+ 10- 15  I6    ---   HIP   HIPPARCOS (Cat. <I/239>) number
+     20  A1    ---   H    *[sdt.] HIPPARCOS indicators for suspected binarity
+     23  I1     %    U    *HIPPARCOS percentage of rejected data
+     24  I1    ---   F    *? HIPPARCOS goodness-of-fit parameter
+     27  A1    ---   K    *[bun.] Binarity from speckle observations
+     28  A1    ---   C    *[ctwr.] Existence of a companion at large distance
+     31  A1    ---   G    *[vu2bd.] Binarity from Wilson's GCRV <III/21>
+     32  A1    ---   B    *[vu2bd.] Binarity from Bright Star Cat. <V/50>
+     33  A1    ---   S    *[vu2bd.] Binarity from 'oRV' data in SIMBAD (CDS)
+     34  A1    ---   T    *[bu.] Binarity from 'MK' data in SIMBAD (CDS)
+     37  A1    ---   A    *[vu2db.] Binarity from Barbier-Brossat+ <III/184>
+     38  A1    ---   M    *[vu2dbf.] Binarity from Malaroda+ <III/216>
+     39  A1    ---   L    *[vu2dbc.] Binarity from additional radial velocities
+     42  A1    ---   V    *[abew.] Binarity from photometric variability.
+     43  A1    ---   P    *[csb.]
+     44  A1    ---   I     [i.] individual note is given in file notes3.dat
+ 50- 53  I4    ---   Note  ?Individual note in notes3.dat file
+     56  A1    ---   ---   [|]
+--------------------------------------------------------------------------------
+Note on H: HIP indicators for a suspected visual binary:
+    s = Flag S in HIP Field H61.
+    d = Flag D in HIP Field H52, based on photometry.
+         This could be an indication of duplicity.
+    t = HIP Flags S and D (t = s+d).
+
+Note on U: HIP percentage of rejected data (HIP Field H29 (F1)).
+    one digit only (less than 10%)
+    A high percentage of rejected data may be caused by a duplicity of the
+    object, but other reasons cannot be excluded.
+
+Note on F: HIPPARCOS goodness-of-fit parameter (HIP Field H30, F2)
+    -        F2 < 0
+    0   0 <= F2 < 1
+    1   1 <= F2 < 2
+    2   2 <= F2 < 3
+    3   3 <= F2 < 4
+        etc.
+    A large value of F2 (e.g. larger than 3) may be caused by a duplicity
+    of the object, but other reasons cannot be excluded.
+
+Note on K: Indications on binarity from the catalogue of speckle
+    observations (Hartkopf et al., 1999AJ....118..509H).
+    b = binary resolved by speckle (or other interferometric) observations
+        (such objects are generally excluded from the FK6(III))
+    u = possibly resolved
+    n = object observed, but not resolved (i.e. not hint to binarity)
+
+Note on C: Indicator for a star which has one (or more) visual
+   component(s) with a separation {rho} of at least 60".
+   Source of information:
+    c = CCDM (Dommanget and Nys, 1994, Cat. <I/211>)
+    t = TYCHO2 (Hoeg et al., 2000, Cat. <I/259>)
+    w = WDS (Worley and Douglass, 1997 (Cat. <I/237>), and updated versions
+        under the given URL)
+    r = other sources
+    Visual binaries with {rho}<60" are generally excluded from the FK6(III).
+
+Note on G, B, S, A, M, L: Binarity from radial velocities.
+    v = radial velocity is variable
+    u = radial velocity may be variable
+    2 = variable radial velocities for two stellar components
+    b = (other) indications of binarity
+    d = (other) indications of binarity are doubtful
+  Remarks about the binarity flag:
+    f = probably erroneous indication on binarity.
+    c = radial velocity is probably constant.
+
+Note on T: Indication of binarity from spectral classification:
+    b = binary
+    u = possibly a binary
+
+Note on V: Indication of binarity from photometric variability
+    a = eclipsing binary, Algol type
+    b = eclipsing binary, beta Lyrae type
+    e = eclipsing binary, type uncertain
+    w = eclipsing binary, W Ursae Majoris type
+
+Note on P: Indication for a variability of the radial velocity V_rad_
+    due to stellar pulsation (which may be confused with a variability of
+    V_rad_ due to spectroscopic binarity).
+    c = Cepheid
+    s = delta Scuti star
+    b = beta Cephei star
+--------------------------------------------------------------------------------
+
+Global notes:
+
+Note (G1):
+    The positions and proper motions are given at epoch and equinox J2000.0
+    in the ICRS/HIPPARCOS system, for the single-star (SI) mode of the FK6.
+
+Note (G3): This is either the HIPPARCOS parallax or a
+           photometric/spectroscopic parallax
+
+Note (G4): Source for parallax:
+     H = HIPPARCOS Catalogue (ESA 1997, Cat. <I/239>)
+     P = Newly determined photometric/spectroscopic parallax
+     C = Not explicited
+
+Note (G5): Variability of the brightness of the star:
+     blank = star not variable
+         1 = star variable at the level of < 0.06 mag
+         2 = star variable at the level of   0.06 - 0.6 mag
+         3 = star variable at the level of > 0.6 mag
+
+Note (G6): Flag for the double-star nature of the object:
+     Kbin = d_1_d_2_ = 10d_1_+d_2_
+
+  First digit d1 is based on the proper-motion differences {Delta}{mu}:
+    The method and the meaning of the corresponding test parameters F are
+    explained in Wielen et al. (1999A&A...346..675W)
+      1 = all values of F (F_FH, F_0H, F_0(GC)H, F_0F) are below 2.49
+      2 = at least one value of F (F_FH, F_0H, F_0(GC)H, F_0F) is
+           larger than 3.44
+      3 = all other (intermediate) cases
+  Second digit d2 is based in other indicators:
+    if the data indicate various kinds of binarity, the
+    `astrometrically most disturbing' effect is given, as:
+      1 = single star indicated
+      2 = the star is a member of a visual binary (gravitationally bound
+          system), or the object is resolved by speckle interferometry
+      3 = the object is suspected to be a visual binary (mainly due to
+          HIPPARCOS)
+      4 = the star has at least one optical companion with a separation
+          of {rho}<60"
+      5 = the star has at least one optical companion, but all companions
+          have a separation of {rho} >= 60"
+      6 = astrometric binary (mainly the non-standard solutions O, G, V, X
+          of HIPPARCOS)
+      7 = spectroscopic binary with a known orbit, or the star is an
+          eclipsing binary
+      8 = the radial velocity of the star is variable (indicating a
+          spectroscopic binary), or the object shows a composite
+          spectrum (indicating a double star)
+      9 = the radial velocity of the star may be variable (possible
+          indication for a spectroscopic binary), or the object may show
+          a composite spectrum (possibly indicating a double star),
+          or other weak indications of binarity,
+          or the star has a (suspected) planetary companion.
+
+Note (G7): Flag for the double-star nature of the object based on differences
+    between various proper motions (Wielen et al., 1999A&A...346..675W):
+       1 = single-star candidate
+       2 = {Delta}{mu} binary
+   blank = uncertain (between 1 and 2), or the binary nature which is
+           indicated by other data does not allow to classify the object
+           as a single-star candidate
+
+Note (G8): Flag for 'astrometrically excellent stars':
+       3 = astrometrically excellent star with rank *** (the very best)
+       2 = astrometrically excellent star with rank **
+       1 = astrometrically excellent star with rank *
+   blank = star not classified as astrometrically excellent
+
+Note (G11): These fields contain the test parameters F for various
+    proper-motion differences {Delta}{mu}. The parameter F is defined by
+    Eq.(23) of Wielen et al. (1999A&A...346..675W).
+    It is essentially the ratio between the two-dimensional difference
+    {Delta}{mu} and its mean error. Values of F>3.44 indicate {Delta}{mu}
+    binaries. If all the F values are below 2.49, the star may be
+    classified as a single-star candidate.
+
+   FFH: F parameter based on the difference {Delta}{mu}_FH_={mu}_F_-{mu}_H_
+        between the proper motions given by the FK5 and by HIPPARCOS.
+   F0H: F parameter based on the difference {Delta}{mu}_0H_={mu}_0_-{mu}_H_
+        between the proper motion {mu}_0_ (based on the stellar positions in
+        the FK5 and in the HIPPARCOS Catalogue) and the proper motion mu_H_
+        given by HIPPARCOS.
+ F0GCH: F parameter based on the difference
+        {Delta}{mu}_0(GC)H_={mu}_0(GC)_-{mu}_H_
+        between the proper motion {mu}_0_ (based on the stellar positions
+        in the GC (Boss et al., 1937, Cat. <I/113>) and in the HIPPARCOS
+        Catalogue) and the proper motion {mu}_H_ given by HIPPARCOS.
+   F0F: F parameter based on the difference {Delta}{mu}_0F_={mu}_0_-{mu}_F_
+        between the proper motion {mu}_0_ (based on the stellar positions
+        in the FK5 and in the HIPPARCOS Catalogue) and the proper motion
+        {mu}_F_ given by the FK5.
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Christian Dettbarn <dettbarn@ari.uni-heidelberg.de>
+
+References:
+      Wielen et al., 1999A&A...346..675W
+      Wielen et al., 1999A&A...347.1046W
+      Wielen et al., 2001A&A...368..298W
+================================================================================
+(End)                                   Francois Ochsenbein [CDS]    01-Mar-2002
