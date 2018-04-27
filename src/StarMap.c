@@ -9,60 +9,59 @@
 #include <time.h>
 #include "novas.h"
 
-#ifndef PI
-#define PI 3.14159265358979323846
-#endif
-
 void StarMap_test(StarMap *map);
 
-StarMap * StarMap_create() {
-	int error=0;
-	long ticks;
-	struct tm * calendar;
+//double dt;         // Terrestrial time offset TT-UT1 = 32.184+ dAT -(UT1-UTC)
 
-	// allocate map
-	StarMap * map = malloc(sizeof(StarMap));
-	if(!map) return NULL; // exit routine on memory failure
+/**
+ * jd_utc : julian date in days
+ * ut1_utc : current difference between UT1 and UTC time
+ * leap_secs: current number of leap seconds in TAI*/
+int StarMap_create(StarMap* map, struct tm* utc, double ut1_utc, double leap_secs ) {
 
-	// set default time
-	time(&ticks);
-	calendar = gmtime(&ticks); // localtime(&ticks);
-	StarMap_setTime(map,
-			calendar->tm_year+1900,
-			calendar->tm_mon+1,
-			calendar->tm_mday, // 0.0);
-			((double)calendar->tm_hour)
-			+((double)calendar->tm_min)/60.0
-			+((double)calendar->tm_sec)/3600.0);
-	// set default site //38�53'23"N , 77�00'27"W;
+    map->starcount = 0;
+    map->stars = 0;
+
+    map->ut1_utc = ut1_utc;
+    map->leap_secs = leap_secs;
+    //map->delta_t = 32.184 + map->leap_secs - map->ut1_utc; // Novas typically deals with the sum of the offsets, might want to cache it...
+	StarMap_setTime( map, utc );
+
+	// set default site //38 53'23"N , 77 00'27"W;
 	make_on_surface(38.88972222222222, -77.0075, 125.0, 10.0, 1010.0, &(map->site));
 	//site_info capitol = {38.88972222222222, -77.0075, 125.0, 10.0, 1010.0};
 	//on_surface geo_loc = {45.0, -75.0, 0.0, 10.0, 1010.0};
 	//StarMap_setSite(map, &capitol);
 
 	// set default planet
-	error = make_object (0, 2, "Earth", (cat_entry*)NULL, &(map->earth) );
-	if(error) {
-		  free(map);
-		  return NULL;
-	}
-
-	map->starcount = 0;
-	map->stars = 0;
-
-	return map;
+	return make_object (0, 2, "Earth", (cat_entry*)NULL, &(map->earth) );
 }
 
-void StarMap_setTime(StarMap* map, short int year, short int month, short int day, double hour) {
-	// todo find UT1 or TT
-	// TT = UTC+dAT + 32.184s
-	// UT1 = UTC + (UT1-UTC)
-	// UT1 = TT - dT
-	// (UT1-UTC)/dtT is a measured quantity
-	// see section 1.3 of Novas c3.0 guide
-	map->date = julian_date (year, month, day, hour);
-
+void StarMap_setTime(StarMap* map, struct tm* utc) {
+    // convert it to a julian date, which is days since noon, Jan 1, 4713 BC
+    map->date = julian_date(
+                (short) (utc->tm_year + 1900),
+                (short) (utc->tm_mon + 1),
+                (short) utc->tm_mday,
+                ((double)utc->tm_hour)
+                +((double)utc->tm_min)/60.0
+                + (double) utc->tm_sec / 3600.0
+        );
 }
+
+/** Returns terrestrial time in julian days.
+ * TT = UTC + leap_seconds + 32.184. */
+double StarMap_getTT(StarMap *map) {
+    return map->date + (map->leap_secs + DELTA_TT) / SECONDS_IN_DAY;
+}
+
+/** Returns UT1, a time scale which depends on the non-uniform rotation of the earth.
+ * Derived by adding an empirically determined offset to UTC
+ * */
+double Starmap_getUT1( StarMap *map ) {
+    return map->date + map->ut1_utc / SECONDS_IN_DAY;
+}
+
 void StarMap_setSite(StarMap* map, on_surface* site) {
 	map->site.longitude = site->longitude;
 	map->site.latitude = site->latitude;

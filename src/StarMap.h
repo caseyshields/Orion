@@ -2,6 +2,19 @@
 */
 #include "FK6.h"
 #include "novas.h"
+#include <time.h>
+
+#ifndef PI
+#define PI 3.14159265358979323846
+#endif
+
+#ifndef SECONDS_IN_DAY
+#define SECONDS_IN_DAY 86400.0
+#endif
+
+#ifndef DELTA_TT
+#define DELTA_TT 32.184
+#endif
 
 #ifndef STARMAP_H_
 #define STARMAP_H_
@@ -30,9 +43,11 @@ typedef struct {
 
 // transforms a catalog of stars to topocentric coordinates
 typedef struct {
-	double date;       // julian hour
-	on_surface site;    // geodetic location
-	object earth;        // location in the solar system
+    double date;       // julian day
+    double ut1_utc;    //
+    double leap_secs;  //
+	on_surface site;   // geodetic location
+	object earth;      // location in the solar system
 	Aperture aperture; // current view of the sky TODO allow multiple apertures
 	float visibleMag;  // minimum brightness visible
 	int starcount;     // number of stars
@@ -40,15 +55,15 @@ typedef struct {
 	// star** index; // TODO name, number and position indices
 } StarMap;
 
-StarMap * StarMap_create();
-void StarMap_setTime(StarMap* map, short int year, short int month, short int day, double hour);
-void StarMap_setSite(StarMap* map, on_surface* site);
-void StarMap_setAperture(StarMap* map, double ra, double de, double ap);
-void StarMap_update(StarMap* map);
-void StarMap_printTime(StarMap * map);
-void StarMap_printSite(StarMap * map);
-void StarMap_printStar(Star * star);
-void StarMap_printMap(StarMap * map);
+int StarMap_create( StarMap* map, struct tm* utc, double ut1_utc, double leap_secs );
+void StarMap_setTime( StarMap* map, struct tm* calendar );
+void StarMap_setSite( StarMap* map, on_surface* site );
+void StarMap_setAperture( StarMap* map, double ra, double de, double ap );
+void StarMap_update( StarMap* map );
+void StarMap_printTime( StarMap * map );
+void StarMap_printSite( StarMap * map );
+void StarMap_printStar( Star * star );
+void StarMap_printMap( StarMap * map );
 
 //void StarMap_test(StarMap *map);
 //Star* StarMap_closest(double ra, double de, StarMap *map);
