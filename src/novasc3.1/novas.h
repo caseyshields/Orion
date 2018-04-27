@@ -75,7 +75,7 @@
    #define SIZE_OF_OBJ_NAME 51
    #define SIZE_OF_CAT_NAME 4
 
-   typedef struct
+   typedef struct cat_entry_struct
    {
       char starname[SIZE_OF_OBJ_NAME];
       char catalog[SIZE_OF_CAT_NAME];

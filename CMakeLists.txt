@@ -52,4 +52,4 @@ add_executable(tracker
         src/legacy/Heap.c
         src/legacy/Heap.h
         src/tracker.h
-        src/tracker.c src/novasc3.1/test/client.c src/catalog.h)
+        src/tracker.c src/client.c src/catalog.h src/catalog.c)
