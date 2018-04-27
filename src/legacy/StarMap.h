@@ -1,23 +1,18 @@
 /* StarPlot.h
 */
-#include "FK6.h"
-#include "novas.h"
-#include <time.h>
 
 #ifndef PI
 #define PI 3.14159265358979323846
 #endif
 
-#ifndef SECONDS_IN_DAY
-#define SECONDS_IN_DAY 86400.0
-#endif
-
-#ifndef DELTA_TT
-#define DELTA_TT 32.184
-#endif
-
 #ifndef STARMAP_H_
 #define STARMAP_H_
+
+#include "novas.h"
+#include <time.h>
+
+#define SECONDS_IN_DAY 86400.0
+#define DELTA_TT 32.184
 
 //Structure for holding the topocentric coordinates of stars
 typedef struct {
