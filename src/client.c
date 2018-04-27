@@ -7,6 +7,7 @@
 #include <time.h>
 #include "novas.h"
 #include "tracker.h"
+#include "catalog.h"
 
 int main (void) {
 
@@ -16,15 +17,12 @@ int main (void) {
     // Difference between TAI and UTC, an integral number of leap second
     double leap_secs = 37.000000; // delta AT, obtained from IERS Apr 26 2018
 
-
-    // TODO we should get a higher resolution timestamp, possibly from NTP?
-
     // create the tracker
     Tracker tracker;
     create(&tracker, ut1_utc, leap_secs );
 
     // set the tracker's time in UTC
-    time_t unix_time;
+    time_t unix_time; // TODO we should get a higher resolution timestamp, possibly from NTP?
     time( &unix_time ); // GMT seconds since January 1970 0:00
     struct tm *utc = gmtime( &unix_time );
     setTime(&tracker, utc);
@@ -32,5 +30,16 @@ int main (void) {
     // set the location
     setCoordinates( &tracker, 38.88972222222222, -77.0075, 125.0 );
     setAtmosphere( &tracker, 10.0, 1010.0);
+
+    print_time( &tracker );
+    print_site( &tracker );
+
+    // create and load a catalog
+    FILE *file = fopen("../data/FK6.txt", "r");
+    Catalog catalog;
+    init( &catalog, 878 );
+    load( &catalog, file );
+
+    print_catalog( &catalog );
 
 }

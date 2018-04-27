@@ -35,5 +35,7 @@ void setAtmosphere( Tracker* tracker, double temperature, double pressure );
 //double getTemperature( Tracker* tracker );
 //double getPressure( Tracker* tracker );
 
+void print_time( Tracker* tracker );
+void print_site( Tracker* tracker );
 
 #endif //STARTRACK_TRACKER_H

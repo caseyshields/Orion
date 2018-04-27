@@ -56,8 +56,32 @@ void setAtmosphere( Tracker* tracker, double temperature, double pressure ) {
     tracker->site.pressure = pressure;
     tracker->site.temperature = temperature;
 }
-//double getLatitude( Tracker* tracker ) { return tracker->site.latitude; }
-//double getLongitude( Tracker* tracker ) { return tracker->site.longitude; }
-//double getHeight( Tracker* tracker ) { return tracker->site.height; }
-//double getTemperature( Tracker* tracker ) { return tracker->site.temperature; }
-//double getPressure( Tracker* tracker ) { return tracker->site.pressure; }
+
+//on_surface getLocation( Tracker* tracker ) { return tracker->site; }
+
+void print_time( Tracker* tracker ) {
+    short int year, month, day;
+    double hour;
+
+    cal_date( getUTC(tracker), &year, &month, &day, &hour );
+    printf( "UTC : %hi/%hi/%hi %f\n", year, month, day, hour );
+
+    cal_date( getUT1(tracker), &year, &month, &day, &hour );
+    printf( "UT1 : %hi/%hi/%hi %f\n", year, month, day, hour );
+
+    cal_date( getTT(tracker), &year, &month, &day, &hour );
+    printf( "TT  : %hi/%hi/%hi %f\n\n", year, month, day, hour );
+
+    fflush(0);
+}
+
+void print_site( Tracker* tracker ) {
+    printf("latitude:\t%f hours\n", tracker->site.latitude);
+    printf("longitude:\t%f degrees\n", tracker->site.longitude);
+    printf("elevation:\t%f meters\n", tracker->site.height);
+    printf("temperature:\t%f Celsius\n", tracker->site.temperature);
+    printf("pressure:\t%f millibars\n\n", tracker->site.pressure);
+    //Aperture* aperture = tracker->aperture;
+    //printf("aperture: (asc:%f, dec:%f rad:%f)\n", aperture.right_ascension, aperture.declination, aperture.radius);
+    fflush(0);
+}

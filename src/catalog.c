@@ -78,3 +78,24 @@ int load( Catalog* catalog, FILE* f) {
 
     return catalog->size;
 }
+
+void print_catalog( const Catalog *catalog ) {
+    int n;
+    Entry *star;
+    for(n=0; n<catalog->size; n++) {
+        star = &catalog->stars[n];
+        print_entry( star );
+    }
+    fflush(0);
+}
+
+void print_entry( const Entry *star ) {
+    printf("%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
+           star->catalog,
+           star->starnumber,
+           star->starname,
+           star->ra,
+           star->dec,
+           star->parallax,
+           star->magnitude);
+}
