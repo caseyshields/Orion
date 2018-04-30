@@ -47,6 +47,8 @@ double getUT1( Tracker *map ) { return map->date + map->ut1_utc / SECONDS_IN_DAY
 /** Returns the Universal Coordinated Time in Julian days. */
 double getUTC( Tracker *tracker ) { return tracker->date; }
 
+double getDeltaT( Tracker *tracker ) { return 32.184 + tracker->leap_secs - tracker->ut1_utc; }
+
 void setCoordinates( Tracker* tracker, double latitude, double longitude, double height ) {
     tracker->site.latitude = latitude;
     tracker->site.longitude = longitude;
@@ -58,6 +60,24 @@ void setAtmosphere( Tracker* tracker, double temperature, double pressure ) {
 }
 
 //on_surface getLocation( Tracker* tracker ) { return tracker->site; }
+
+void setTarget( Tracker* tracker, Entry* entry ) {
+    tracker->target = entry;
+}
+
+int getTopocentric(Tracker* tracker, double *latitude, double *longitude) {
+    short int error;
+    error = topo_star(
+                tracker->date,
+                getDeltaT( tracker ),
+                (cat_entry*) tracker->target,
+                &tracker->site,
+                REDUCED_ACCURACY,
+                latitude,
+                longitude
+        );
+    return error;
+}
 
 void print_time( Tracker* tracker ) {
     short int year, month, day;

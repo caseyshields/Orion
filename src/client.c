@@ -39,7 +39,15 @@ int main (void) {
     Catalog catalog;
     init( &catalog, 878 );
     load( &catalog, file );
+//    print_catalog( &catalog );
 
-    print_catalog( &catalog );
-
+    // track every star in the FK6 catalog
+    double latitude, longitude;
+    for( int n=0; n<catalog.size; n++ ) {
+        Entry* entry = &catalog.stars[n];
+        setTarget( &tracker, entry );
+        getTopocentric(&tracker, &latitude, &longitude);
+        print_entry( entry );
+        printf( "appears at(%f, %f)\n\n", longitude, latitude );
+    }
 }
