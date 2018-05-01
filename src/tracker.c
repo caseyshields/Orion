@@ -65,7 +65,7 @@ void setTarget( Tracker* tracker, Entry* entry ) {
     tracker->target = entry;
 }
 
-int getTopocentric(Tracker* tracker, double *latitude, double *longitude) {
+int getTopocentric( Tracker* tracker, double *longitude, double *latitude ) {
     short int error;
     error = topo_star(
                 tracker->date,
@@ -73,8 +73,8 @@ int getTopocentric(Tracker* tracker, double *latitude, double *longitude) {
                 (cat_entry*) tracker->target,
                 &tracker->site,
                 REDUCED_ACCURACY,
-                latitude,
-                longitude
+                longitude,
+                latitude
         );
     return error;
 }

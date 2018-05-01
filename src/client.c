@@ -8,8 +8,12 @@
 #include "novas.h"
 #include "tracker.h"
 #include "catalog.h"
+#include <sys/types.h>
 
 int main (void) {
+
+    const int SIZE = 878;
+    const int TRIALS = 1000;
 
     // this is the current offset between atomic clock time and time derived from Earth's orientation
     double ut1_utc = 0.108644; // (UT1-UTC) obtained from IERS Apr 26 2018
@@ -37,17 +41,32 @@ int main (void) {
     // create and load a catalog
     FILE *file = fopen("../data/FK6.txt", "r");
     Catalog catalog;
-    init( &catalog, 878 );
+    init( &catalog, SIZE );
     load( &catalog, file );
 //    print_catalog( &catalog );
 
+    // start the timer
+    clock_t start = clock();
+
     // track every star in the FK6 catalog
-    double latitude, longitude;
+    double tracks [SIZE][2]; //double latitude, longitude;
+    for( int t=0; t< TRIALS; t++ ) {
+        for (int n = 0; n < catalog.size; n++) {
+            Entry *entry = &catalog.stars[n];
+            setTarget(&tracker, entry);
+            getTopocentric(&tracker, &tracks[n][0], &tracks[n][1]);
+        }
+    }
+
+    // get the time
+    clock_t end = clock();
+    double duration = (double)(end-start)/CLOCKS_PER_SEC;
+    printf( "time: %lf\nspeed: %lf\n", duration, duration/(TRIALS*SIZE) );
+
+    // print the catalog with correspnding tracks
     for( int n=0; n<catalog.size; n++ ) {
         Entry* entry = &catalog.stars[n];
-        setTarget( &tracker, entry );
-        getTopocentric(&tracker, &latitude, &longitude);
         print_entry( entry );
-        printf( "appears at(%f, %f)\n\n", longitude, latitude );
+        printf( "appears at(%f, %f)\n\n", tracks[n][0], tracks[n][1] );
     }
 }
