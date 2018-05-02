@@ -2,7 +2,6 @@
 // Created by Casey Shields on 4/27/2018.
 //
 
-
 #ifndef STARTRACK_TRACKER_H
 #define STARTRACK_TRACKER_H
 
@@ -26,8 +25,7 @@ typedef struct {
 
 int create( Tracker* tracker, double ut1_utc, double leap_secs );
 
-void setTimeCoarse( Tracker* tracker, struct tm* calendar );
-void setTime( Tracker* tracker, double );
+void setTime( Tracker* tracker, double seconds ); // set UTC
 double getTT( Tracker *map );
 double getUT1( Tracker *map );
 double getUTC( Tracker *tracker );
@@ -35,14 +33,9 @@ double getDeltaT( Tracker *tracker );
 
 void setCoordinates( Tracker* tracker, double latitude, double longitude, double height );
 void setAtmosphere( Tracker* tracker, double temperature, double pressure );
-//double getLatitude( Tracker* tracker );
-//double getLongitude( Tracker* tracker );
-//double getHeight( Tracker* tracker );
-//double getTemperature( Tracker* tracker );
-//double getPressure( Tracker* tracker );
+on_surface getLocation( Tracker* tracker );
 
 void setTarget( Tracker* tracker, Entry* entry );
-
 int getTopocentric(Tracker* tracker, double *longitude, double *latitude);
 
 void print_time( Tracker* tracker );

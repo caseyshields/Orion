@@ -12,14 +12,8 @@
 #include "catalog.h"
 
 double getTime( ) {
-    time_t coarse;
-    time( &coarse );
-
     struct timeval time;
     gettimeofday( &time, NULL );
-
-    printf( "iso: %d\ngnu: %d\n", (long)coarse, (long)time.tv_sec );
-
     return time.tv_sec + (double) (time.tv_usec / 1000000.0);
 }
 
@@ -39,13 +33,6 @@ int main (void) {
     create(&tracker, ut1_utc, leap_secs );
 
     // set the tracker's time in UTC
-    time_t unix_time; // TODO we should get a higher resolution timestamp, possibly from NTP?
-    time( &unix_time ); // GMT seconds since January 1970 0:00
-    struct tm *utc = gmtime( &unix_time );
-    setTimeCoarse(&tracker, utc);
-    print_time( &tracker );
-
-    // set the tracker's time in UTC
     setTime( &tracker, getTime() );
     print_time( &tracker );
 
@@ -63,7 +50,6 @@ int main (void) {
 
     // start the timer
     double start = getTime();
-//    clock_t start = clock();
 
     // track every star in the FK6 catalog
     double tracks [SIZE][2]; //double latitude, longitude;
@@ -76,13 +62,11 @@ int main (void) {
     }
 
     // get the time
-//    clock_t end = clock();
-//    double duration = (double)(end-start)/CLOCKS_PER_SEC;
     double end = getTime();
     double duration = end - start;
     printf( "time: %lf\nspeed: %lf\n", duration, duration/(TRIALS*SIZE) );
 
-    // print the catalog with correspnding tracks
+    // print the catalog with corresponding tracks
     for( int n=0; n<catalog.size; n++ ) {
         Entry* entry = &catalog.stars[n];
         print_entry( entry );
