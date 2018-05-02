@@ -9,6 +9,7 @@
 #include "novas.h"
 #include "catalog.h"
 #include <time.h>
+#include <sys/time.h>
 
 #define SECONDS_IN_DAY 86400.0
 #define DELTA_TT 32.184
@@ -25,7 +26,8 @@ typedef struct {
 
 int create( Tracker* tracker, double ut1_utc, double leap_secs );
 
-void setTime( Tracker* tracker, struct tm* calendar );
+void setTimeCoarse( Tracker* tracker, struct tm* calendar );
+void setTime( Tracker* tracker, double );
 double getTT( Tracker *map );
 double getUT1( Tracker *map );
 double getUTC( Tracker *tracker );

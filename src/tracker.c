@@ -24,7 +24,7 @@ int create(Tracker* tracker, double ut1_utc, double leap_secs ) {
     return make_object (0, 2, "Earth", (cat_entry*)NULL, &(tracker->earth) );
 }
 
-void setTime(Tracker* tracker, struct tm* utc) {
+void setTimeCoarse(Tracker* tracker, struct tm* utc) {
     // convert it to a julian date, which is days since noon, Jan 1, 4713 BC
     tracker->date = julian_date(
             (short) (utc->tm_year + 1900),
@@ -34,6 +34,44 @@ void setTime(Tracker* tracker, struct tm* utc) {
             +((double)utc->tm_min)/60.0
             + (double) utc->tm_sec / 3600.0
     );
+} // time.h only provides second resolution
+
+/** Sets the current UTC time used for subsequent tracker operations
+ * time: a UTC, unix epoch(January 1, 1970) timestamp */
+void setTime( Tracker * tracker, double seconds ) {
+
+//    // if timeval is not set, assume they want to use the system clock
+//    if (!time) {
+//        struct timeval time;
+//        gettimeofday( time, NULL );
+//    }
+
+//    // get calendar date using the second resolution
+//    time_t seconds = (time_t) s(time->tv_sec);
+//    struct tm* utc = gmtime( &seconds );
+
+//    // figure out julian hours by adding back in the microsecond count
+//    double hours = ((double)utc->tm_hour)
+//            + (double) utc->tm_min /60.0
+//            + (double) utc->tm_sec / 3600.0
+//            + (double) time->tv_usec / 3600000000.0;
+
+    long s = (long) seconds;
+    double f = seconds - s;
+    struct tm* utc = gmtime( &s );
+
+    // figure out julian hours by adding back in the microsecond count
+    double hours = ((double)utc->tm_hour)
+                   + (double) utc->tm_min / 60.0
+                   + (double) utc->tm_sec / 3600.0
+                   + f / 3600.0;
+
+    // convert it to a julian date, which is days since noon, Jan 1, 4713 BC
+    tracker->date = julian_date(
+            (short) (utc->tm_year + 1900),
+            (short) (utc->tm_mon + 1),
+            (short) utc->tm_mday,
+            hours );
 }
 
 /** Returns terrestrial time in julian days.
