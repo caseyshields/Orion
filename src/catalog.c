@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "catalog.h"
 #include "legacy/heap.h"
+#include"vmath.h"
 
 int init(Catalog* catalog, const int allocate) {
     catalog->allocated = allocate;
@@ -16,13 +17,11 @@ int init(Catalog* catalog, const int allocate) {
     return 0;
 }
 
-int load( Catalog* catalog, FILE* f) {
+void load( Catalog* catalog, FILE* f) {
     char buf[1024], *s;
     double hour, min, sec;
     double deg, arcmin, arcsec;
     int n=0;
-
-    if(!catalog) return 1;
 
     // parse FK6 entries from file
     while(n<10) { // skip first ten lines
@@ -78,8 +77,6 @@ int load( Catalog* catalog, FILE* f) {
 
         n++;
     } while(1);
-
-    return catalog->size;
 }
 
 void add( Catalog* catalog, Entry* entry ) {
@@ -100,25 +97,29 @@ void add( Catalog* catalog, Entry* entry ) {
 /** catalog: the catalog to be searched.
  * ra: right ascension of axis of search cone volume in hours.
  * dec: declination of axis of search cone volume in degrees.
- * r: angle between axis and edge of search con volume in degrees.
+ * r: angle between axis and edge of search cone volume in degrees.
  * result: a subset of the catalog which is in the search volume. references are shared
  * */
-int search(Catalog* catalog, double ra, double dec, double r, Catalog *result) {
-    // since catalog is ordered by right ascension;
-    // binary search for the entry s.t. entry.ra >= ra-r;
-    int low=0, mid, high;
+void search(Catalog* catalog, double ra, double dec, double r, Catalog *result) {
+    // find a direction vector for the axis of the search cone
+    double A[3], S[3];
+    spherical2cartesian(
+            hours2radians(ra),
+            degrees2radians(dec),
+            A );
 
+    // determine the maximum angular separation
+    double max = cos( degrees2radians(r) );
 
-    // while entry.ra < ra+r
-        // compute angular separation
-        // original method was the dot product of unit vectors of the spherical coordinates
-        // might be able to compute it more directly...
-        // if angular separation is less than r
-            // add to results
-    /* x^2 + y^2 + z^2 = p^2
-     * x = p sin(theta)cos(phi)
-     * y = p sin(theta)sin(phi)
-     * z = p cos(theta)*/
+    // for all catalog entries
+    for( int n=0; n<catalog->size; n++ ) {
+        Entry* entry = catalog->stars[n];
+
+        // if the entry's unit vectors is within the cone, add it to the results
+        spherical2cartesian( hours2radians(entry->ra), degrees2radians(entry->dec), S);
+        if( dot(A, S) < max )
+            add(result, entry);
+    }
 }
 
 void filter(Catalog* catalog, int (*predicate)(Entry*), Catalog* results) {

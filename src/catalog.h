@@ -38,8 +38,8 @@ typedef struct {
 
 int init( Catalog* catalog, const int size );
 void add( Catalog* catalog, Entry* entry );
-int load( Catalog* catalog, FILE* file );
-int search( Catalog* catalog, double right_ascension, double declination, double radius, Catalog *result);
+void load( Catalog* catalog, FILE* file );
+void search( Catalog* catalog, double right_ascension, double declination, double radius, Catalog *result);
 void filter( Catalog* catalog, int(*predicate)(Entry*), Catalog* result );
 void freeCatalog( Catalog* catalog, int free_entries );
 void print_catalog( const Catalog *catalog );
