@@ -14,10 +14,22 @@
 double getTime( ) {
     struct timeval time;
     gettimeofday( &time, NULL );
-    return time.tv_sec + (double) (time.tv_usec / 1000000.0);
+    return time.tv_sec + (time.tv_usec / 1000000.0);
 }
 
 int main (void) {
+    // create and load a catalog
+    FILE *file = fopen("../data/FK6.txt", "r");
+    Catalog catalog;
+    init( &catalog, 64 );
+    load( &catalog, file );
+
+    print_catalog( &catalog );
+
+    freeCatalog( &catalog, 1 );
+}
+
+int Xmain (void) {
 
     const int SIZE = 878;
     const int TRIALS = 100;
@@ -46,6 +58,7 @@ int main (void) {
     Catalog catalog;
     init( &catalog, SIZE );
     load( &catalog, file );
+
 //    print_catalog( &catalog );
 
     // start the timer
@@ -55,7 +68,7 @@ int main (void) {
     double tracks [SIZE][2]; //double latitude, longitude;
     for( int t=0; t< TRIALS; t++ ) {
         for (int n = 0; n < catalog.size; n++) {
-            Entry *entry = &catalog.stars[n];
+            Entry *entry = catalog.stars[n];
             setTarget(&tracker, entry);
             getTopocentric(&tracker, &tracks[n][0], &tracks[n][1]);
         }
@@ -68,7 +81,7 @@ int main (void) {
 
     // print the catalog with corresponding tracks
     for( int n=0; n<catalog.size; n++ ) {
-        Entry* entry = &catalog.stars[n];
+        Entry* entry = catalog.stars[n];
         print_entry( entry );
         printf( "appears at(%f, %f)\n\n", tracks[n][0], tracks[n][1] );
     }
