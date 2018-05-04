@@ -116,7 +116,10 @@ void search(Catalog* catalog, double ra, double dec, double r, Catalog *result) 
         Entry* entry = catalog->stars[n];
 
         // if the entry's unit vectors is within the cone, add it to the results
-        spherical2cartesian( hours2radians(entry->ra), degrees2radians(entry->dec), S);
+        spherical2cartesian(
+                hours2radians(entry->ra),
+                degrees2radians(entry->dec),
+                S );
         if( dot(A, S) < max )
             add(result, entry);
     }

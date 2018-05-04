@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.6.1)
 project(startrack C)
 
 set(CMAKE_C_STANDARD 11)
