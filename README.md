@@ -42,16 +42,16 @@ as well as an offline planning program used to design a viewing schedule.
 
 #### What platform should it be on?
 
--[ ] CLI Application
+- [ ] CLI Application
     - simple to develop but harder to visually check
--[ ] Web Application (Spark or Node)
+- [ ] Web Application (Spark or Node)
     - requires recent browser and JVM or Node
     - Front-end visualization
     - [ ] D3 projections, topology and interactivity
         - I made an [FK6 chart](https://caseyshields.github.io/starlog/index.html) partially based on a script by Philip Plewa;
-        - [ ] [Aladin Lite](http://aladin.u-strasbg.fr/AladinLite/)
-            - can overlay catalogs on progressively rendered rasters 
-            - needs to be on internet or special servers need to be replicated
+    - [ ] [Aladin Lite](http://aladin.u-strasbg.fr/AladinLite/)
+        - can overlay catalogs on progressively rendered rasters 
+        - needs to be on internet or special servers need to be replicated
    
 #### How do we query and rank stars' characteristics for the plan?
 
@@ -64,9 +64,10 @@ as well as an offline planning program used to design a viewing schedule.
 #### Platform
 
 - [ ] C native application
-    - communication between planner and tacker much harder 
+    - any communication between planner and tracker would have to be inter-process 
 - [ ] Spark web application linking to Novas with JNA
     - might be performance penalty but benchmarks were very encouraging...
+    - more development time
 
 #### Broadcast Interface
 
