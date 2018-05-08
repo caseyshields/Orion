@@ -1,16 +1,20 @@
 # Orion
+
 Software for hunting stars- also, a star constellation which is a hunter.
 Consists of a native application which transforms star catalog coordinates and broadcasts them, 
 as well as an offline planning program used to design a viewing schedule.
 
 ## Planner Concept
+
 ##### First; what can we add that isn't already in this awesome public software?
+
   - [In-The-Sky](https://in-the-sky.org/skymap.php)
   - [Stellarium](http://stellarium.org/)
   - [Google Sky](https://www.google.com/sky/)
   - [The Sky Live](https://theskylive.com/)
   
 ##### My guesses;
+
 - adding some automation
 - creating standards for;
     - The master catalog
@@ -21,6 +25,7 @@ as well as an offline planning program used to design a viewing schedule.
 ##### Thoughts?
 
 #### How is a viewing plan made and carried out?
+
 - [ ] Is a plan built offline from a sequence of queries and later played back?
     - How do you control for the passage of time?
     - What format is the plan output to?
@@ -36,6 +41,7 @@ as well as an offline planning program used to design a viewing schedule.
     7. Tracker is told to start controlling for that star
 
 #### What platform should it be on?
+
 -[ ] CLI Application
     - simple to develop but harder to visually check
 -[ ] Web Application (Spark or Node)
@@ -48,6 +54,7 @@ as well as an offline planning program used to design a viewing schedule.
             - needs to be on internet or special servers need to be replicated
    
 #### How do we query and rank stars' characteristics for the plan?
+
 - Spatialy (lesser circles, longitudinal slices, latitudinal slices)?
 - Visual magnitude?
 - Density?
@@ -55,12 +62,14 @@ as well as an offline planning program used to design a viewing schedule.
 ## Tracker Concept
 
 #### Platform
+
 - [ ] C native application
     - communication between planner and tacker much harder 
 - [ ] Spark web application linking to Novas with JNA
     - might be performance penalty but benchmarks were very encouraging...
 
 #### Broadcast Interface
+
 - [ ] Some protocol over some socket?
     - need protocol definition
 - [ ] Link to TATS libraries?
@@ -69,6 +78,7 @@ as well as an offline planning program used to design a viewing schedule.
     - I provide a clean API?
 
 #### Actual Control Data
+
 - Coordinates
     - [ ] geocentric EFG
     - [ ] Topocentric Azimuth and ELevation?
@@ -79,16 +89,19 @@ as well as an offline planning program used to design a viewing schedule.
     - Is it handled or do we need crazy spherical Beziers with kinematically limited curvatures?
     
 #### Safety
+
 - Sun Avoidance: In the case of sun obstruction do I generate a new path?
 - Cable wraps: does the plan have to limit total rotation? 
 
 #### Accuracy
+
 - [ ] Default accuracy reaches 1 mas theoretically with good clock and catalog
 - [ ] Increased accuracy is required for planets
     - need to generate some binaries for CIO predictions
     - need to relink to novas component to JPL's ephemeris libs...
       
 #### Control ( depends on Planner platform )
+
 - [ ] Pipe?
     - Could let the planner CLI drive it...
 - [ ] Socket?
@@ -101,12 +114,14 @@ __________________________________________________
 ## Current Tasklist (Draft- need concept clarified so I can tighten this up...)
 
 ###Times
+
 - [X] conversions between UTC, UT1, TT
 - [ ] apply P2000 epoch and resolution(ns)
 - [X] get accurate system time using GNU C libs
     - assume machine has NTP client installed
 
 ###Configuration
+
 - [ ] Projected network delay
 - [ ] Telescope Location
     - Geodetic lat long, height in meters
@@ -118,6 +133,7 @@ __________________________________________________
     - [ ] nutation model (needed for planet tracking)
 
 ###Catalog
+
 - [X] load FK5 data
 - [ ] load FK6 data
 - [X] provide filtering
@@ -128,6 +144,7 @@ __________________________________________________
     - [ ] orange slice query
 
 ###Tracker
+
 - [X] compute topocentric coordinates
 - [ ] compute EFG
 - Broadcast coordinates at 50 Hz;
@@ -147,6 +164,7 @@ __________________________________________________
   
 
 ###Client
+
 - [ ] Read configuration
 - [ ] Load catalog
 - [ ] Create tracker
