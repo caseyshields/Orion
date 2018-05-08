@@ -24,6 +24,7 @@ typedef struct {
 } Tracker;
 
 int create( Tracker* tracker, double ut1_utc, double leap_secs );
+//void free_tracker( Tracker* tracker );
 
 void setTime( Tracker* tracker, double seconds ); // set UTC
 double getTT( Tracker *map );
