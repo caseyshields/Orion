@@ -54,4 +54,4 @@ double angular_separation( double theta_1, double phi_1, double theta_2, double 
 
 //double angular_separation_dot( double* U[3], double* V[3] ) {
 //    return acos(dot(U, V));
-//}
+//} // TODO derive angular separation from arctan statement

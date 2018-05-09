@@ -1,8 +1,12 @@
 # Orion
 
 Software for hunting stars- also, a star constellation which is a hunter.
-Consists of a native application which transforms star catalog coordinates and broadcasts them, 
-as well as an offline planning program used to design a viewing schedule.
+The software has a planning component for loading astrometric catalogs and selecting suitable stars.
+The other component is a tracker which transforms catalog coordinates into a useable format and broadcasts them to client(s).
+The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library is used to perform the transformations.
+The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.
+The performance critical libraries are written in C, with an idiom similar to the underlying Novas libraries.
+The front end is still in the conceptual phases, however a UI experiment has been written in [D3](https://d3js.org/).  
 
 ## Planner Concept
 
@@ -82,7 +86,7 @@ as well as an offline planning program used to design a viewing schedule.
 
 - Coordinates
     - [ ] geocentric EFG
-    - [ ] Topocentric Azimuth and ELevation?
+    - [ ] Topocentric Azimuth and Elevation?
 - Models
     - Refraction; Novas has a primitive exponential model based on ground temp/pressure
     - Aberation; Only a factor for higher accuracy mode?
@@ -112,7 +116,7 @@ as well as an offline planning program used to design a viewing schedule.
 
 __________________________________________________
 
-## Current Tasklist (Draft- need concept clarified so I can tighten this up...)
+## Tasklist Notes (Draft- need concept clarified so I can tighten this up...)
 
 ###Times
 
@@ -124,14 +128,13 @@ __________________________________________________
 ###Configuration
 
 - [ ] Projected network delay
-- [ ] Telescope Location
+- [X] Telescope Location
     - Geodetic lat long, height in meters
 - [ ] Weatherstation(WX) data
-- [ ] File
-- [ ] TCP
-- Scrape IERS bulletin or maintain configuration item for
-    - [ ] UT1-UTC and leapseconds
-    - [ ] nutation model (needed for planet tracking)
+- [X] (UT1-UTC), (TAI-UTC)
+- [ ] Scrape IERS bulletin or maintain configuration item for
+    - UT1-UTC and leapseconds
+    - nutation model (needed for planet tracking)
 
 ###Catalog
 
@@ -167,8 +170,8 @@ __________________________________________________
 ###Client
 
 - [ ] Read configuration
-- [ ] Load catalog
-- [ ] Create tracker
+- [X] Load catalog
+- [X] Create tracker
 - [ ] Allow user to query for stars
     - Shape(cone, slice, ring)
     - Time
