@@ -118,14 +118,14 @@ __________________________________________________
 
 ## Tasklist Notes (Draft- need concept clarified so I can tighten this up...)
 
-###Times
+### Times
 
 - [X] conversions between UTC, UT1, TT
 - [ ] apply P2000 epoch and resolution(ns)
 - [X] get accurate system time using GNU C libs
     - assume machine has NTP client installed
 
-###Configuration
+### Configuration
 
 - [ ] Projected network delay
 - [X] Telescope Location
@@ -136,7 +136,7 @@ __________________________________________________
     - UT1-UTC and leapseconds
     - nutation model (needed for planet tracking)
 
-###Catalog
+### Catalog
 
 - [X] load FK5 data
 - [ ] load FK6 data
@@ -147,7 +147,7 @@ __________________________________________________
     - [ ] ring query
     - [ ] orange slice query
 
-###Tracker
+### Tracker
 
 - [X] compute topocentric coordinates
 - [ ] compute EFG
@@ -167,7 +167,7 @@ __________________________________________________
     - cable wraps?
   
 
-###Client
+### Client
 
 - [ ] Read configuration
 - [X] Load catalog

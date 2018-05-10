@@ -13,7 +13,7 @@
 
 double get_time();
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
-void get_input(char* prompt, char** buffer );
+ssize_t get_input(char* prompt, char **line, size_t *size );
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 
 /** a simple CLI interface for exercising various orion components. */
@@ -72,57 +72,76 @@ int main( int argc, char *argv[] ) {
     init( &catalog, 64 );
     load( &catalog, file );
 
-    char line[1024];
+    char *line = NULL;
+    size_t size = 0 ;
+    ssize_t read = 0;
     while(true) {
 
         // update the current time and print a prompt
         setTime( &tracker, get_time() );
-        print_time( &tracker );
-        get_input( ">", &line );
+        printf( "orion[%lf]", getUTC(&tracker) ); //print_time( &tracker );
+        read = get_input( "", &line, &size );
 
-        // clean up the program components and exit the program
-        if( strcmp( "exit", line )==0 ) {
-            freeCatalog( &catalog, true );
-            exit(0);
+        // select a specific star by number
+        if( strncmp( "star", line, 4 ) == 0 ) {
+            get_input("catalog number", &line, &size);
+            int catalog_id = atoi(line);
+
+            int check_id( Entry *entry ) {
+                return entry->starnumber == catalog_id ? 1 : 0;
+            }
+
+            Catalog results;
+            init( &results, 64 );
+            filter( &catalog, &check_id, &results );
+            print_catalog( &results );
+            freeCatalog( &results, false );
         }
 
         // search within a lesser circle of the catalog
-        else if( strcmp( "circle", line )==0 ) {
-            get_input( "right ascension hours", &line );
-            double ra = hours2radians( atof( line ) );
+        else if( strncmp( "circle", line, 6 )==0 ) {
+            get_input( "right ascension hours", &line, &size );
+            double ra = atof( line );//hours2radians( atof( line ) );
 
-            get_input( "declination degrees", &line );
-            double dec = degrees2radians( atof( line ) );
+            get_input( "declination degrees", &line, &size );
+            double dec = atof( line );//degrees2radians( atof( line ) );
 
-            get_input( "radius degrees", &line );
-            double rad = degrees2radians( atof( line ) );
+            get_input( "radius degrees", &line, &size );
+            double rad = atof( line );//degrees2radians( atof( line ) );
 
             Catalog results;
             init( &results, 64 );
             search( &catalog, ra, dec, rad, &results );
             print_catalog( &results );
-            freeCatalog( &results, true );
+            printf( "\n%d stars found.\n", results.size );
+            freeCatalog( &results, false );
         }
 
         // print the entire catalog contents
-        else if( strcmp( "catalog", line )==0 ) {
+        else if( strncmp( "print", line, 5 )==0 ) {
             print_catalog( &catalog );
         }
 
-        //
-        else if( strcmp(line, "")==0 ) {
+        // run the benchmark
+        else if( strncmp( "bench", line, 5 )==0 ) {
+            benchmark( &catalog, &tracker, 100 );
+        }
+
+        // clean up the program components and exit the program
+        else if( strncmp( "exit", line, 4 )==0 ) {
+            freeCatalog( &catalog, true );
+            free( line );
+            exit(0);
         }
 
         // print available commands
         else {
-            printf( "Commands include \n\tcircle\n\tbench\n\texit" );
+            printf( "Commands include \n\tstar\n\tcircle\n\tprint\n\tbench\n\texit\n" );
         }
     }
 }
 
-int get_search() {
 
-}
 
 /** uses the GNU gettime of day method to get a accurate system time, then converts it to seconds since the unix epoch */
 double get_time() {
@@ -138,19 +157,29 @@ char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
         if( !strcmp(name, argv[n]) )
             return argv[n+1];
     if( default_value ) {
-        printf("Parameter '%s' defaulting to '%s'", name, default_value);
+        printf("Parameter '%s' defaulting to '%s'\n", name, default_value);
         return default_value;
     }
-    printf( "Error: missing parameter '%s'", name );
+    printf( "Error: missing parameter '%s'\n", name );
     exit( 1 );
 }
 
-void get_input(char* prompt, char** buffer ) {
+/** Frees any data line is pointing to, then prompts the user, allocates a buffer, and reads the input.
+ * Be sure to free the buffer after your last call to get_input! */
+ssize_t get_input(char* prompt, char **line, size_t *size ) {
+    if( *line ) {
+        free( *line );
+        *line = NULL;
+        *size = 0;
+    }
     printf("%s : ", prompt);
-    if( getline( buffer, (size_t) 1024, stdin ) == -1 ) {
+    fflush( stdout );
+    ssize_t read = getline( line, size, stdin );
+    if( read == -1 ) {
         printf("Error: input stream closed");
         exit( 2 );
     }
+    return read;
 }
 
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */
@@ -164,15 +193,14 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     for( int t=0; t<trials; t++ ) {
         for (int n = 0; n < catalog->size; n++) {
             Entry *entry = catalog->stars[n];
-            setTarget(&tracker, entry);
-            getTopocentric(&tracker, &tracks[n][0], &tracks[n][1]);
+            setTarget( tracker, entry );
+            getTopocentric( tracker, &tracks[n][0], &tracks[n][1]);
         }
     }
 
     // get the time
     double end = get_time();
     double duration = end - start;
-    printf( "time: %lf\nspeed: %lf\n", duration, duration/(trials*catalog->size) );
 
     // print the catalog with corresponding tracks
     for( int n=0; n<catalog->size; n++ ) {
@@ -180,4 +208,6 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
         print_entry( entry );
         printf( "appears at(%f, %f)\n\n", tracks[n][0], tracks[n][1] );
     }
+
+    printf( "time: %lf\nspeed: %lf\n", duration, duration/(trials*catalog->size) );
 }

@@ -120,7 +120,7 @@ void search(Catalog* catalog, double ra, double dec, double r, Catalog *result) 
                 hours2radians(entry->ra),
                 degrees2radians(entry->dec),
                 S );
-        if( dot(A, S) < max )
+        if( dot(A, S) > max )
             add(result, entry);
     }
 }
