@@ -37,7 +37,7 @@ void setAtmosphere( Tracker* tracker, double temperature, double pressure );
 on_surface getLocation( Tracker* tracker );
 
 void setTarget( Tracker* tracker, Entry* entry );
-int getTopocentric(Tracker* tracker, double *longitude, double *latitude);
+int local(Tracker *tracker, double *longitude, double *latitude);
 
 void print_time( Tracker* tracker );
 void print_site( Tracker* tracker );

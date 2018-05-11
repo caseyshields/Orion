@@ -167,6 +167,36 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     return results;
 }
 
+EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, double dec_max ) {
+    // wrap right ascension
+    volatile double min = fmod( ra_min, 24.0);
+    volatile double max = fmod( ra_max, 24.0);
+
+    int f(Entry* e) {
+        // check for wrap-around assuming min to max direction is clockwise
+        if( min < max ) {
+            // continuous bound test
+            if( min <= (e->ra) && (e->ra) <= max )
+                return 1;
+        } else {
+            // disjoint bound test
+            if (min <= (e->ra) || (e->ra) <= max)
+                return 1;
+        }
+        return 0;
+    }
+    return f;
+}
+
+Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results) {
+
+    EntryPredicate p = patch_predicate( min, max, 0.0, 0.0 );
+
+    results = catalog_filter( c, p, results );
+
+    return results;
+}
+
 /** Searches a catalog for entries within the geometry and returns a catalog holding the results.
  * No effort is taken to remove duplicates from the results.
  * catalog: The catalog to be searched.
@@ -183,6 +213,9 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
     // if the entry's unit vectors is within or on the patch, add it to the results
     for( int n=0; n<catalog->size; n++ ) {
         Entry* entry = catalog->stars[n];
+        // check right ascension bounds remembering 0 to 23 wraps around
+
+
         if( min_ra <= entry->ra && entry->ra <= max_ra
             && min_dec <= entry->dec && entry->dec <= max_dec )
             catalog_add( results, entry );

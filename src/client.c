@@ -132,6 +132,20 @@ int main( int argc, char *argv[] ) {
             catalog_free(results);
         }
 
+        // test an orange slice shaped section of sky
+        else if( strncmp("orange", line, 5)==0 ) {
+            get_input( "minimum right ascension hours", &line, &size );
+            double ra_min = atof( line );
+
+            get_input( "maximum right ascension hours", &line, &size );
+            double ra_max = atof( line );
+
+            Catalog* results = catalog_orange(catalog, ra_min, ra_max, NULL);
+            catalog_print(results);
+            printf( "\n%d stars found.\n", results->size );
+            catalog_free(results);
+        }
+
         // print the entire catalog contents
         else if( strncmp( "print", line, 5 )==0 ) {
             catalog_print(catalog);
@@ -210,7 +224,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
         for (int n = 0; n < catalog->size; n++) {
             Entry *entry = catalog->stars[n];
             setTarget( tracker, entry );
-            getTopocentric( tracker, &tracks[n][0], &tracks[n][1] );
+            local(tracker, &tracks[n][0], &tracks[n][1]);
         }
     }
 
@@ -226,4 +240,8 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     }
 
     printf( "trials: %d\ntime: %lf\nspeed: %lf\n\n", trials, duration, duration/(trials*catalog->size) );
+}
+
+void search_dome() {
+
 }

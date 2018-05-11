@@ -59,4 +59,6 @@ void catalog_print( Catalog *c );
 void catalog_free_entries( Catalog *c );
 void catalog_free( Catalog *c );
 
+Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results);
+
 #endif //STARTRACK_CATALOG_H
