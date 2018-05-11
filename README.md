@@ -1,7 +1,6 @@
 # Orion
 
-Software for hunting stars- also, a star constellation which is a hunter.
-The software has a planning component for loading astrometric catalogs and selecting suitable stars.
+Software for hunting stars. Contains a planning component for loading astrometric catalogs and selecting suitable stars.
 The other component is a tracker which transforms catalog coordinates into a useable format and broadcasts them to client(s).
 The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library is used to perform the transformations.
 The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.

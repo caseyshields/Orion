@@ -4,24 +4,58 @@
 
 #include <novasc3.1/novas.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "catalog.h"
 #include "legacy/heap.h"
-#include"vmath.h"
+#include "vmath.h"
 
-int init(Catalog* catalog, const int allocate) {
-    catalog->allocated = allocate;
+/** Creates a new catalog at the given pointer.
+ * If the 'catalog' reference is NULL a new catalog and entries are allocated using the hint.
+ * If the reference is valid and 'allocate' is positive, new entries are allocated and teh old are freed.
+ * Otherwise the catalog's pre-existing references are used. This allows you to reuse previously allocated catalogs.
+ * Returns the initialized catalog. */
+Catalog* catalog_create(Catalog *catalog, size_t allocate) {
+    // If they request a new catalog but don't provide a size hint just guess a default.
+    if( !catalog && allocate<=0 )
+        allocate = 64;
+
+    // allocate a catalog if none is provided
+    if( !catalog ) {
+        catalog = malloc(sizeof(Catalog));
+        if (!catalog) {
+            perror("Catalog allocation failed");
+            exit(1);
+        }
+    }
+
+    // allocate the Entry index if a hint is given
+    if( allocate > 0 ) {
+        if( catalog->stars )
+            free(catalog->stars);
+        catalog->stars = calloc((size_t) allocate, sizeof(Entry));
+        catalog->allocated = allocate;
+        if( !catalog->stars ) {
+            perror("Catalog directory allocation failed");
+            exit(1);
+        }
+    }
+
+    // clear the index by zeroing the size;
     catalog->size = 0;
-    catalog->stars = calloc( (size_t)allocate, sizeof(Entry) );
-    if( catalog->stars )
-        return 1;
-    return 0;
+
+    return catalog;
 }
 
-void load( Catalog* catalog, FILE* f) {
+/**  */
+Catalog* catalog_load_fk5(Catalog *catalog, FILE *f) {
     char buf[1024], *s;
     double hour, min, sec;
     double deg, arcmin, arcsec;
     int n=0;
+
+    // create a catalog if no reference was given
+    if( !catalog )
+        catalog = catalog_create(NULL, 128);
 
     // parse FK6 entries from file
     while(n<10) { // skip first ten lines
@@ -71,15 +105,17 @@ void load( Catalog* catalog, FILE* f) {
             entry->radialvelocity*=-1.0;
 
         // actually add the Entry to the catalog
-        add( catalog, entry );
+        catalog_add(catalog, entry);
         // debug
         //StarMap_print_star(star);
 
         n++;
     } while(1);
+    return catalog;
 }
 
-void add( Catalog* catalog, Entry* entry ) {
+/** Adds the given entry to the catalog, doubling the allocated space if necessary. */
+void catalog_add(Catalog *catalog, Entry *entry) {
     // if full, copy Entries into larger array
     if( catalog->size == catalog->allocated ) {
         Entry** old = catalog->stars;
@@ -94,13 +130,19 @@ void add( Catalog* catalog, Entry* entry ) {
     catalog->stars[ catalog->size++ ] = entry;
 }
 
-/** catalog: the catalog to be searched.
+/** Searches a catalog for entries within the geometry and returns a catalog holding the results.
+ * No effort is taken to remove duplicates from the results.
+ * catalog: the catalog to be searched.
  * ra: right ascension of axis of search cone volume in hours.
  * dec: declination of axis of search cone volume in degrees.
  * r: angle between axis and edge of search cone volume in degrees.
- * result: a subset of the catalog which is in the search volume. references are shared
+ * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
  * */
-void search(Catalog* catalog, double ra, double dec, double r, Catalog *result) {
+Catalog* catalog_search_dome(Catalog *catalog, double ra, double dec, double r, Catalog *results) {
+    // create an output catalog if no reference was given
+    if( !results )
+        results = catalog_create(NULL, catalog->size / 4);
+
     // find a direction vector for the axis of the search cone
     double A[3], S[3];
     spherical2cartesian(
@@ -121,36 +163,74 @@ void search(Catalog* catalog, double ra, double dec, double r, Catalog *result) 
                 degrees2radians(entry->dec),
                 S );
         if( dot(A, S) > max )
-            add(result, entry);
+            catalog_add(results, entry);
     }
+
+    return results;
 }
 
-void filter(Catalog* catalog, int (*predicate)(Entry*), Catalog* results) {
+/** Searches a catalog for entries within the geometry and returns a catalog holding the results.
+ * No effort is taken to remove duplicates from the results.
+ * catalog: The catalog to be searched.
+ * ra_min, ra_max: Right ascension bounds, inclusive.
+ * dec_min, dec_max: Declination bounds, inclusive.
+ * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
+ * */
+Catalog* catalog_search_patch(Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
+                              Catalog *results) {
+    // create an output catalog if no reference was given
+    if( !results )
+        results = catalog_create(NULL, catalog->size / 4);
+
+    // if the entry's unit vectors is within or on the patch, add it to the results
+    for( int n=0; n<catalog->size; n++ ) {
+        Entry* entry = catalog->stars[n];
+        if( min_ra <= entry->ra && entry->ra <= max_ra
+            && min_dec <= entry->dec && entry->dec <= max_dec )
+            catalog_add(results, entry);
+    }
+
+    return results;
+}
+
+/** Searches a catalog for Entries for which the predicate function returns true.
+ * No effort is taken to remove duplicates from the results.
+ * catalog: The catalog to be searched.
+ * predicate: a pointer to a boolean function of an Entry
+ * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
+ * */
+Catalog* catalog_filter(Catalog *catalog, int (*predicate)(Entry *), Catalog *results) {
+    // create an output catalog if no reference was given
+    if( !results )
+        results = catalog_create(NULL, catalog->size / 4);
+
     for( int n=0; n<catalog->size; n++ )
         if( (*predicate)(catalog->stars[n]) )
-            add( results, catalog->stars[n] );
+            catalog_add(results, catalog->stars[n]);
+
+    return results;
 }
 
-/** Deallocates the catalog, including the underlying Entries if 'free_entrees' is true.
- * This requires some care when cleaning up resources. One strategy is making sure catalogs are completely disjoint.
- * Another is keeping a master catalog which is a superset of all the others, and only deallocating it's entries. */
-void freeCatalog( Catalog* catalog, int free_entries ) {
-    if( free_entries )
-        for( int n=0; n<catalog->allocated; n++ )
-            free( catalog->stars[n] );
+/** Releases the Catalog and it's directory, but not the actual Entries. */
+void catalog_free(Catalog *catalog) {
     free( catalog->stars );
-} // TODO another less-efficient option is making queries perform a deep copy on entries
-
-void print_catalog( const Catalog *catalog ) {
-    int n;
-    for(n=0; n<catalog->size; n++) {
-        print_entry( catalog->stars[n] );
-    }
-    fflush(0);
+    free( catalog );
 }
 
-void print_entry( const Entry *star ) {
-    printf("%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
+/** Releases the Entries underlying the Catalog.  */
+void catalog_free_entries(Catalog *catalog) {
+    for( int n=0; n<catalog->allocated; n++ )
+        free( catalog->stars[n] );
+}
+
+void catalog_print(const Catalog *catalog) {
+    for( int n=0; n<catalog->size; n++)
+        entry_print(catalog->stars[n]);
+
+}
+
+void entry_print(const Entry *star) {
+    printf( "%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
            star->catalog,
            star->starnumber,
            star->starname,
@@ -158,4 +238,10 @@ void print_entry( const Entry *star ) {
            star->dec,
            star->parallax,
            star->magnitude);
+    fflush(0);
+}
+
+void catalog_each(Catalog *catalog, void (*function)(Entry *)) {
+    for( int n=0; n<catalog->size; n++ )
+        function( catalog->stars[n] );
 }

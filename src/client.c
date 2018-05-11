@@ -68,9 +68,7 @@ int main( int argc, char *argv[] ) {
 
     // create and load a catalog
     FILE *file = fopen(path, "r");
-    Catalog catalog;
-    init( &catalog, 64 );
-    load( &catalog, file );
+    Catalog* catalog = catalog_load_fk5(NULL, file);
 
     char *line = NULL;
     size_t size = 0 ;
@@ -91,15 +89,13 @@ int main( int argc, char *argv[] ) {
                 return entry->starnumber == catalog_id ? 1 : 0;
             }
 
-            Catalog results;
-            init( &results, 64 );
-            filter( &catalog, &check_id, &results );
-            print_catalog( &results );
-            freeCatalog( &results, false );
+            Catalog* results = catalog_filter(catalog, &check_id, NULL);
+            catalog_print(results);
+            catalog_free(results);
         }
 
         // search within a lesser circle of the catalog
-        else if( strncmp( "circle", line, 6 )==0 ) {
+        else if( strncmp( "dome", line, 4 )==0 ) {
             get_input( "right ascension hours", &line, &size );
             double ra = atof( line );//hours2radians( atof( line ) );
 
@@ -109,34 +105,53 @@ int main( int argc, char *argv[] ) {
             get_input( "radius degrees", &line, &size );
             double rad = atof( line );//degrees2radians( atof( line ) );
 
-            Catalog results;
-            init( &results, 64 );
-            search( &catalog, ra, dec, rad, &results );
-            print_catalog( &results );
-            printf( "\n%d stars found.\n", results.size );
-            freeCatalog( &results, false );
+            Catalog* results = catalog_search_dome(catalog, ra, dec, rad, NULL);
+            catalog_print(results);
+            printf( "\n%d stars found.\n", results->size );
+            catalog_free(results);
+        }
+
+        // search within a lesser circle of the catalog
+        else if( strncmp( "patch", line, 5 )==0 ) {
+            get_input( "minimum right ascension hours", &line, &size );
+            double ra_min = atof( line );
+
+            get_input( "maximum right ascension hours", &line, &size );
+            double ra_max = atof( line );
+
+            get_input( "minimum declination degrees", &line, &size );
+            double dec_min = atof( line );
+
+            get_input( "maximum declination degrees", &line, &size );
+            double dec_max = atof( line );
+
+            Catalog* results = catalog_search_patch(catalog, ra_min, ra_max, dec_min, dec_max, NULL);
+            catalog_print(results);
+            printf( "\n%d stars found.\n", results->size );
+            catalog_free(results);
         }
 
         // print the entire catalog contents
         else if( strncmp( "print", line, 5 )==0 ) {
-            print_catalog( &catalog );
+            catalog_print(catalog);
         }
 
         // run the benchmark
         else if( strncmp( "bench", line, 5 )==0 ) {
-            benchmark( &catalog, &tracker, 100 );
+            benchmark( catalog, &tracker, 100 );
         }
 
         // clean up the program components and exit the program
         else if( strncmp( "exit", line, 4 )==0 ) {
-            freeCatalog( &catalog, true );
+            catalog_free_entries(catalog);
+            catalog_free(catalog);
             free( line );
             exit(0);
         }
 
         // print available commands
         else {
-            printf( "Commands include \n\tstar\n\tcircle\n\tprint\n\tbench\n\texit\n" );
+            printf( "Commands include \n\tstar\n\tdome\n\tpatch\n\tprint\n\tbench\n\texit\n" );
         }
     }
 }
@@ -205,9 +220,9 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // print the catalog with corresponding tracks
     for( int n=0; n<catalog->size; n++ ) {
         Entry* entry = catalog->stars[n];
-        print_entry( entry );
+        entry_print(entry);
         printf( "appears at(%f, %f)\n\n", tracks[n][0], tracks[n][1] );
     }
 
-    printf( "time: %lf\nspeed: %lf\n", duration, duration/(trials*catalog->size) );
+    printf( "trials: %d\ntime: %lf\nspeed: %lf\n\n", trials, duration, duration/(trials*catalog->size) );
 }
