@@ -32,7 +32,7 @@ Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     if( allocate > 0 ) {
         if( catalog->stars )
             free(catalog->stars);
-        catalog->stars = calloc((size_t) allocate, sizeof(Entry));
+        catalog->stars = calloc( (size_t)allocate, sizeof(Entry) );
         catalog->allocated = allocate;
         if( !catalog->stars ) {
             perror("Catalog directory allocation failed");
@@ -47,7 +47,7 @@ Catalog* catalog_create(Catalog *catalog, size_t allocate) {
 }
 
 /**  */
-Catalog* catalog_load_fk5(Catalog *catalog, FILE *f) {
+Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
     char buf[1024], *s;
     double hour, min, sec;
     double deg, arcmin, arcsec;
@@ -105,9 +105,7 @@ Catalog* catalog_load_fk5(Catalog *catalog, FILE *f) {
             entry->radialvelocity*=-1.0;
 
         // actually add the Entry to the catalog
-        catalog_add(catalog, entry);
-        // debug
-        //StarMap_print_star(star);
+        catalog_add( catalog, entry );
 
         n++;
     } while(1);
@@ -115,7 +113,7 @@ Catalog* catalog_load_fk5(Catalog *catalog, FILE *f) {
 }
 
 /** Adds the given entry to the catalog, doubling the allocated space if necessary. */
-void catalog_add(Catalog *catalog, Entry *entry) {
+void catalog_add( Catalog *catalog, Entry *entry ) {
     // if full, copy Entries into larger array
     if( catalog->size == catalog->allocated ) {
         Entry** old = catalog->stars;
@@ -138,10 +136,10 @@ void catalog_add(Catalog *catalog, Entry *entry) {
  * r: angle between axis and edge of search cone volume in degrees.
  * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
  * */
-Catalog* catalog_search_dome(Catalog *catalog, double ra, double dec, double r, Catalog *results) {
+Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r, Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
-        results = catalog_create(NULL, catalog->size / 4);
+        results = catalog_create( NULL, catalog->size / 4 );
 
     // find a direction vector for the axis of the search cone
     double A[3], S[3];
@@ -163,7 +161,7 @@ Catalog* catalog_search_dome(Catalog *catalog, double ra, double dec, double r, 
                 degrees2radians(entry->dec),
                 S );
         if( dot(A, S) > max )
-            catalog_add(results, entry);
+            catalog_add( results, entry );
     }
 
     return results;
@@ -176,18 +174,18 @@ Catalog* catalog_search_dome(Catalog *catalog, double ra, double dec, double r, 
  * dec_min, dec_max: Declination bounds, inclusive.
  * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
  * */
-Catalog* catalog_search_patch(Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
-                              Catalog *results) {
+Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
+                              Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
-        results = catalog_create(NULL, catalog->size / 4);
+        results = catalog_create( NULL, catalog->size / 4 );
 
     // if the entry's unit vectors is within or on the patch, add it to the results
     for( int n=0; n<catalog->size; n++ ) {
         Entry* entry = catalog->stars[n];
         if( min_ra <= entry->ra && entry->ra <= max_ra
             && min_dec <= entry->dec && entry->dec <= max_dec )
-            catalog_add(results, entry);
+            catalog_add( results, entry );
     }
 
     return results;
@@ -199,49 +197,46 @@ Catalog* catalog_search_patch(Catalog *catalog, double min_ra, double max_ra, do
  * predicate: a pointer to a boolean function of an Entry
  * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
  * */
-Catalog* catalog_filter(Catalog *catalog, int (*predicate)(Entry *), Catalog *results) {
+Catalog* catalog_filter( Catalog *catalog, int (*predicate)(Entry *), Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
-        results = catalog_create(NULL, catalog->size / 4);
+        results = catalog_create( NULL, catalog->size / 4 );
 
     for( int n=0; n<catalog->size; n++ )
         if( (*predicate)(catalog->stars[n]) )
-            catalog_add(results, catalog->stars[n]);
+            catalog_add( results, catalog->stars[n] );
 
     return results;
 }
 
 /** Releases the Catalog and it's directory, but not the actual Entries. */
-void catalog_free(Catalog *catalog) {
+void catalog_free( Catalog *catalog ) {
     free( catalog->stars );
     free( catalog );
 }
 
 /** Releases the Entries underlying the Catalog.  */
-void catalog_free_entries(Catalog *catalog) {
-    for( int n=0; n<catalog->allocated; n++ )
-        free( catalog->stars[n] );
+void catalog_free_entries( Catalog *catalog ) {
+    catalog_each( catalog, (EntryFunction)free );
 }
 
-void catalog_print(const Catalog *catalog) {
-    for( int n=0; n<catalog->size; n++)
-        entry_print(catalog->stars[n]);
-
+void catalog_print( Catalog *catalog ) {
+    catalog_each( catalog, entry_print );
 }
 
-void entry_print(const Entry *star) {
-    printf( "%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
-           star->catalog,
-           star->starnumber,
-           star->starname,
-           star->ra,
-           star->dec,
-           star->parallax,
-           star->magnitude);
-    fflush(0);
-}
-
-void catalog_each(Catalog *catalog, void (*function)(Entry *)) {
+void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
     for( int n=0; n<catalog->size; n++ )
         function( catalog->stars[n] );
+}
+
+void entry_print( Entry *star ) {
+    printf( "%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
+            star->catalog,
+            star->starnumber,
+            star->starname,
+            star->ra,
+            star->dec,
+            star->parallax,
+            star->magnitude );
+    fflush(0);
 }

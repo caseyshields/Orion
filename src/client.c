@@ -14,6 +14,7 @@
 double get_time();
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
 ssize_t get_input(char* prompt, char **line, size_t *size );
+
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 
 /** a simple CLI interface for exercising various orion components. */
@@ -209,7 +210,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
         for (int n = 0; n < catalog->size; n++) {
             Entry *entry = catalog->stars[n];
             setTarget( tracker, entry );
-            getTopocentric( tracker, &tracks[n][0], &tracks[n][1]);
+            getTopocentric( tracker, &tracks[n][0], &tracks[n][1] );
         }
     }
 

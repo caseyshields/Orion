@@ -30,14 +30,18 @@ typedef struct entry_struct {
     double E, F, G;
 } Entry;
 
-void entry_print( const Entry *e );
+void entry_print( Entry *e );
 
 /** A catalog of stars. provides methods for loading, searching and printing. */
 typedef struct catalog_struct {
-    int size;
-    int allocated;
+    size_t size;
+    size_t allocated;
     Entry** stars;
 } Catalog;
+
+typedef void (*EntryFunction)(Entry*);
+
+typedef int (*EntryPredicate)(Entry*);
 
 //typedef struct {
 //    double ra, dec, r;
@@ -46,14 +50,13 @@ typedef struct catalog_struct {
 Catalog* catalog_create(Catalog* c, size_t s);
 Catalog* catalog_load_fk5(Catalog* c, FILE* f);
 Catalog* catalog_search_dome( Catalog* c, double right_ascension, double declination, double radius, Catalog* results );
-Catalog* catalog_search_patch( Catalog* c, double min_ra, double max_ra, double min_dec, double max_dec, Catalog* results );
-Catalog* catalog_filter(Catalog* c, int(*predicate)(Entry *), Catalog *result );
+Catalog* catalog_search_patch( Catalog* c, double ra_min, double ra_max, double dec_min, double dec_max, Catalog* results );
+Catalog* catalog_filter(Catalog* c, EntryPredicate p, Catalog *result );
 void catalog_add( Catalog* c, Entry *e );
-void catalog_each( Catalog* c, void (*f)(Entry *) );
+void catalog_each( Catalog* c, EntryFunction f );
 //void catalog_sort( Catalog* c, int (*comparison)(Entry*, Entry*) );
-void catalog_print( const Catalog *c );
+void catalog_print( Catalog *c );
 void catalog_free_entries( Catalog *c );
 void catalog_free( Catalog *c );
-
 
 #endif //STARTRACK_CATALOG_H
