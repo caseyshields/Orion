@@ -78,7 +78,7 @@ int main( int argc, char *argv[] ) {
 
         // update the current time and print a prompt
         setTime( &tracker, get_time() );
-        printf( "orion[%lf]", getUTC(&tracker) ); //print_time( &tracker );
+        printf( "orion[%lf]", getUTC(&tracker) );
         read = get_input( "", &line, &size );
 
         // select a specific star by number
@@ -239,7 +239,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
         printf( "appears at(%f, %f)\n\n", tracks[n][0], tracks[n][1] );
     }
 
-    printf( "trials: %d\ntime: %lf\nspeed: %lf\n\n", trials, duration, duration/(trials*catalog->size) );
+    printf( "stars: %d\ntrials: %d\ntime: %lf\nspeed: %lf\n\n", catalog->size, trials, duration, duration/(trials*catalog->size) );
 }
 
 void search_dome() {

@@ -58,7 +58,7 @@ The front end is still in the conceptual phases, however a UI experiment has bee
    
 #### How do we query and rank stars' characteristics for the plan?
 
-- Spatialy (lesser circles, longitudinal slices, latitudinal slices)?
+- Spatially (lesser circles, longitudinal slices, latitudinal slices)?
 - Visual magnitude?
 - Density?
 
@@ -144,7 +144,7 @@ __________________________________________________
 - [ ] provide planning tools
     - [X] cone spatial query
     - [ ] ring query
-    - [ ] orange slice query
+    - [X] orange slice query
 
 ### Tracker
 
@@ -168,17 +168,17 @@ __________________________________________________
 
 ### Client
 
-- [ ] Read configuration
+- [X] Read configuration
 - [X] Load catalog
 - [X] Create tracker
-- [ ] Allow user to query for stars
+- [X] Allow user to query for stars
     - Shape(cone, slice, ring)
     - Time
     - Min brightness
 - [ ] Interactively ask user for star numbers
     - send new star to tracker
 - [ ] Print/save usage logs.
-    - [ ] Bring together into convenient app
-    - [ ] Input: time, location, min brightness, star density
+    - [X] Bring together into convenient app
+    - [X] Input: time, location, min brightness, star density
     - [ ] output: star/time/coordinate tables in CSV?
     - have interactive web app which allows stars to be selected, then tells tracker to go after them?

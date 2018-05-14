@@ -167,12 +167,11 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     return results;
 }
 
-EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, double dec_max ) {
+Catalog* catalog_orange( Catalog* c, double ra_min, double ra_max, Catalog* results ) {
     // wrap right ascension
     volatile double min = fmod( ra_min, 24.0);
     volatile double max = fmod( ra_max, 24.0);
-
-    int f(Entry* e) {
+    int orange(Entry* e) {
         // check for wrap-around assuming min to max direction is clockwise
         if( min < max ) {
             // continuous bound test
@@ -185,14 +184,7 @@ EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, do
         }
         return 0;
     }
-    return f;
-}
-
-Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results) {
-
-    EntryPredicate p = patch_predicate( min, max, 0.0, 0.0 );
-
-    results = catalog_filter( c, p, results );
+    results = catalog_filter( c, orange, results );
 
     return results;
 }
@@ -273,3 +265,30 @@ void entry_print( Entry *star ) {
             star->magnitude );
     fflush(0);
 }
+
+// doesn't work because the stack values that affect the behavior of the stack
+// are released before the function is called. C does not have closures.
+//EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, double dec_max ) {
+//    // wrap right ascension
+//    volatile double min = fmod( ra_min, 24.0);
+//    volatile double max = fmod( ra_max, 24.0);
+//    int f(Entry* e) {
+//        // check for wrap-around assuming min to max direction is clockwise
+//        if( min < max ) {
+//            // continuous bound test
+//            if( min <= (e->ra) && (e->ra) <= max )
+//                return 1;
+//        } else {
+//            // disjoint bound test
+//            if (min <= (e->ra) || (e->ra) <= max)
+//                return 1;
+//        }
+//        return 0;
+//    }
+//    return f;
+//}
+//Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results) {
+//    EntryPredicate p = patch_predicate( min, max, 0.0, 0.0 );
+//    results = catalog_filter( c, p, results );
+//    return results;
+//}
