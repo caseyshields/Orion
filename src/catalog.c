@@ -5,6 +5,7 @@
 #include <novasc3.1/novas.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include "catalog.h"
 #include "legacy/heap.h"
 #include "vmath.h"
@@ -70,6 +71,8 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
 
         // allocate a new entry
         Entry* entry = malloc( sizeof(Entry) );
+        assert( entry );
+        memset( entry, '\0', sizeof(Entry) );
 
         // uhh, I might want to make a smarter parser...
         sscanf(buf+1, " %li ", &(entry->starnumber)); // col 1
