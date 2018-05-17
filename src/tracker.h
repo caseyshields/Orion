@@ -37,7 +37,8 @@ void setAtmosphere( Tracker* tracker, double temperature, double pressure );
 on_surface getLocation( Tracker* tracker );
 
 void setTarget( Tracker* tracker, Entry* entry );
-int local(Tracker *tracker, double *longitude, double *latitude);
+int local(Tracker *tracker, double *zenith_distance, double *topocentric_azimuth);
+int zenith( Tracker* tracker, double* right_ascension, double* declination );
 
 void print_time( Tracker* tracker );
 void print_site( Tracker* tracker );

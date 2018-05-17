@@ -3,6 +3,7 @@
 //
 
 #include <novasc3.1/novas.h>
+#include <assert.h>
 #include "tracker.h"
 
 /**
@@ -80,18 +81,70 @@ void setTarget( Tracker* tracker, Entry* entry ) {
     tracker->target = entry;
 }
 
-int local(Tracker *tracker, double *longitude, double *latitude) {
+int local(Tracker *tracker, double* zenith_distance, double* topocentric_azimuth) {
     short int error;
+    double deltaT = getDeltaT( tracker );
+    double right_ascension=0, declination=0;
+
+    // get the GCRS coordinates
     error = topo_star(
                 tracker->date,
-                getDeltaT( tracker ),
+                deltaT,
                 (cat_entry*) tracker->target,
                 &tracker->site,
                 REDUCED_ACCURACY,
-                longitude,
-                latitude
+                &right_ascension,
+                &declination
         );
+    // then convert them to horizon coordinates
+    double ra, dec;
+    equ2hor(
+            tracker->date,
+            deltaT,
+            REDUCED_ACCURACY,
+            0.0, 0.0, // TODO ITRS poles... scrub from bulletin!
+            &tracker->site,
+            right_ascension, declination,
+            2, // simple refraction model based on site atmospheric conditions
+
+            zenith_distance, topocentric_azimuth,
+            &ra, &dec // TODO do I need to expose these?
+    );
+
     return error;
+}
+
+int zenith( Tracker* tracker, double* right_ascension, double* declination ) {
+    on_surface site = tracker->site;
+
+    // calculate a geocentric earth fixed vector as in Novas C-39
+    double lon_rad = site.longitude * DEG2RAD;
+    double lat_rad = site.latitude *DEG2RAD;
+    double sin_lon = sin(lon_rad);
+    double cos_lon = cos(lon_rad);
+    double sin_lat = sin(lat_rad);
+    double cos_lat = cos(lat_rad);
+    double terestrial[3] = {0.0,0.0,0.0};
+    terestrial[0] = cos_lat * cos_lon;
+    terestrial[1] = cos_lat * sin_lon;
+    terestrial[2] = sin_lat;
+
+    // convert to a celestial vector
+    double celestial[3] = {0.0,0.0,0.0};
+    int error = ter2cel(
+            tracker->date, 0.0, getDeltaT(tracker),
+            1, // equinox method (0= CIO method)
+            REDUCED_ACCURACY,
+            0, // output in GCRS axes (1=equator & equinox of date)
+            0.0, 0.0, // TODO add in pole offsets!
+            terestrial,
+            celestial
+    );
+    assert(error==0);
+
+    // convert to spherical celestial components
+    error = vector2radec( celestial, right_ascension, declination );
+    assert(error==0);
 }
 
 void print_time( Tracker* tracker ) {

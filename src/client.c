@@ -83,15 +83,31 @@ int main( int argc, char *argv[] ) {
 
         // select a specific star by number
         if( strncmp( "star", line, 4 ) == 0 ) {
+//            // filter by ID
+//            get_input("catalog number", &line, &size);
+//            int catalog_id = atoi(line);
+//            int check_id( Entry *entry ) {
+//                return entry->starnumber == catalog_id ? 1 : 0;
+//            }
+//            Catalog* results = catalog_filter(catalog, &check_id, NULL);
+
+            // filter by name
             get_input("catalog number", &line, &size);
-            int catalog_id = atoi(line);
-
-            int check_id( Entry *entry ) {
-                return entry->starnumber == catalog_id ? 1 : 0;
+            int check_name( Entry *entry ) {
+                return NULL != strstr(entry->starname, line );
             }
+            Catalog* results = catalog_filter(catalog, &check_name, NULL);
 
-            Catalog* results = catalog_filter(catalog, &check_id, NULL);
-            catalog_print(results);
+            // transform each star to local coordinates
+            void process( Entry *entry ) {
+                double zd=0, az=0;
+                setTarget( &tracker, entry );
+                local( &tracker, &zd, &az );
+                entry_print( entry );
+                printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
+            }
+            catalog_each( results, process );
+
             catalog_free(results);
         }
 
@@ -146,6 +162,13 @@ int main( int argc, char *argv[] ) {
             catalog_free(results);
         }
 
+        // figure out spherical celestial coordinates of the local zenith
+        else if( strncmp( "zenith", line, 6 )==0 ) {
+            double ra = 0, dec = 0;
+            zenith( &tracker, &ra, &dec );
+            printf( "Current zenith coodinates : (ra:%lf, dec:%lf)\n", ra, dec );
+        }
+
         // print the entire catalog contents
         else if( strncmp( "print", line, 5 )==0 ) {
             catalog_print(catalog);
@@ -170,8 +193,6 @@ int main( int argc, char *argv[] ) {
         }
     }
 }
-
-
 
 /** uses the GNU gettime of day method to get a accurate system time, then converts it to seconds since the unix epoch */
 double get_time() {
@@ -205,6 +226,8 @@ ssize_t get_input(char* prompt, char **line, size_t *size ) {
     printf("%s : ", prompt);
     fflush( stdout );
     ssize_t read = getline( line, size, stdin );
+    (*line)[read-1] = '\0'; // trim trailing
+
     if( read == -1 ) {
         printf("Error: input stream closed");
         exit( 2 );
@@ -236,7 +259,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     for( int n=0; n<catalog->size; n++ ) {
         Entry* entry = catalog->stars[n];
         entry_print(entry);
-        printf( "appears at(%f, %f)\n\n", tracks[n][0], tracks[n][1] );
+        printf( "Horizon : (zd:%lf, az:%lf)\n\n", tracks[n][0], tracks[n][1] );
     }
 
     printf( "stars: %d\ntrials: %d\ntime: %lf\nspeed: %lf\n\n", catalog->size, trials, duration, duration/(trials*catalog->size) );
