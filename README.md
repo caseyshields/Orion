@@ -1,31 +1,13 @@
-# Orion
+# Star Tracker
 
-Software for hunting stars. Contains a planning component for loading astrometric catalogs and selecting suitable stars.
+Software for pointing at stars. Contains a planning component for loading astrometric catalogs and selecting suitable stars.
 The other component is a tracker which transforms catalog coordinates into a useable format and broadcasts them to client(s).
 The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library is used to perform the transformations.
 The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.
 The performance critical libraries are written in C, with an idiom similar to the underlying Novas libraries.
 The front end is still in the conceptual phases, however a UI experiment has been written in [D3](https://d3js.org/).  
 
-## Planner Concept
-
-##### First; what can we add that isn't already in this awesome public software?
-
-  - [In-The-Sky](https://in-the-sky.org/skymap.php)
-  - [Stellarium](http://stellarium.org/)
-  - [Google Sky](https://www.google.com/sky/)
-  - [The Sky Live](https://theskylive.com/)
-  
-##### My guesses;
-
-- adding some automation
-- creating standards for;
-    - The master catalog
-    - Star ranking (brightness, variability, motions)
-    - The viewing plan's schedule and distribution
-- Generate reports by time tagging commands and tabulating results?
- 
-##### Thoughts?
+## Planner Questions
 
 #### How is a viewing plan made and carried out?
 
@@ -35,18 +17,17 @@ The front end is still in the conceptual phases, however a UI experiment has bee
 - [ ] Do we automatically generated a bright, distributed subset from the visible hemisphere?
     - how do we control for time beside setting a rigid viewing schedule?
 - [ ] Are targets interactively selected from zones of the current night sky?
-    1. User types/clicks on hour 3 and 45 degrees
-    2. System finds current terrestrial time and locates the topocentric zenith. 
-    3. System finds a patch of sky 3 to 4 hours by 45 to 60 degrees
-    4. Ranks stars by brightness and or astrometric quality
-    5. Returns table of best candidates
-    6. User clicks/types selection
-    7. Tracker is told to start controlling for that star
+    1. User (types in/clicks on) a patch of the current night sky
+    2. System finds catalog stars in corresponding patch of sky
+    3. Ranks stars by brightness and or astrometric quality
+    4. Returns table of best candidates
+    5. User clicks/types selection
+    6. Tracker is told to start controlling for that star
 
-#### What platform should it be on?
+#### What UI should it have?
 
-- [ ] CLI Application
-    - simple to develop but harder to visually check
+- [ ] Command Line Application
+    - simpler to develop but harder to visually check
 - [ ] Web Application (Spark or Node)
     - requires recent browser and JVM or Node
     - Front-end visualization
@@ -55,14 +36,29 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     - [ ] [Aladin Lite](http://aladin.u-strasbg.fr/AladinLite/)
         - can overlay catalogs on progressively rendered rasters 
         - needs to be on internet or special servers need to be replicated
+- [ ] Something else?
    
-#### How do we query and rank stars' characteristics for the plan?
+#### How do we group and rank stars?
 
-- Spatially (lesser circles, longitudinal slices, latitudinal slices)?
-- Visual magnitude?
-- Density?
+- Group by;
+  - [ ] patches
+  - [ ] lesser circles
+  - [ ] longitudinal slices
+  - [ ] latitudinal slices
+- Rank by;
+  - [ ] Visual magnitude
+  - [ ] Astrometric quality
+  - Something else in FK6
+- Overall metrics;
+  - [ ] Minimum separation?
+  - [ ] Non-colinearity
+  - [ ] Coverage?
 
-## Tracker Concept
+#### Catalog
+- [ ] FK5
+- [ ] FK6
+
+## Tracker Questions
 
 #### Platform
 
@@ -81,7 +77,7 @@ The front end is still in the conceptual phases, however a UI experiment has bee
 - [ ] Integrate into simulator?
     - I provide a clean API?
 
-#### Actual Control Data
+#### Output Data
 
 - Coordinates
     - [ ] geocentric EFG
@@ -90,12 +86,13 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     - Refraction; Novas has a primitive exponential model based on ground temp/pressure
     - Aberation; Only a factor for higher accuracy mode?
 - Interpolation?
-    - Is it handled or do we need crazy spherical Beziers with kinematically limited curvatures?
+    - Is it handled by the control unit or do we need to generate our own spherical Beziers?
     
 #### Safety
 
 - Sun Avoidance: In the case of sun obstruction do I generate a new path?
-- Cable wraps: does the plan have to limit total rotation? 
+- Cable wraps: does the plan have to limit total rotation?
+- How would I implement a smoothness test?
 
 #### Accuracy
 
@@ -104,7 +101,7 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     - need to generate some binaries for CIO predictions
     - need to relink to novas component to JPL's ephemeris libs...
       
-#### Control ( depends on Planner platform )
+#### Tracker Control ( depends on Planner platform )
 
 - [ ] Pipe?
     - Could let the planner CLI drive it...
@@ -120,9 +117,9 @@ __________________________________________________
 ### Times
 
 - [X] conversions between UTC, UT1, TT
-- [ ] apply P2000 epoch and resolution(ns)
+- [ ] provide routines for P2000 and resolution(ns)
 - [X] get accurate system time using GNU C libs
-    - assume machine has NTP client installed
+    - [ ] assume machine has NTP client installed
 
 ### Configuration
 
@@ -134,36 +131,40 @@ __________________________________________________
 - [ ] Scrape IERS bulletin or maintain configuration item for
     - UT1-UTC and leapseconds
     - nutation model (needed for planet tracking)
+- [ ] compile novas CIO predictions
+- [ ] JPL planet ephemeris
 
 ### Catalog
 
-- [X] load FK5 data
-- [ ] load FK6 data
-- [X] provide filtering
-- [ ] convert between local coordinates and celestial ra, dec at given time
+- [X] load FK5 data to tracker
+- [ ] load FK6 data to tracker
+- [X] load FK6 data to Planner
+- [X] Provide filtering
+- [ ] Provide sorting
 - [ ] provide planning tools
-    - [X] cone spatial query
-    - [ ] ring query
-    - [X] orange slice query
+    - [ ] cone spatial query
+    - [X] patch
+- [ ] CSV outputs
 
 ### Tracker
 
-- [X] compute topocentric coordinates
-- [ ] compute EFG
-- Broadcast coordinates at 50 Hz;
+- [X] compute local horizon coordinates
+- [X] convert between local coordinates and celestial ra, dec at given time
+- [ ] compute EFG of stars on celestial sphere
+- [ ] Broadcast coordinates at 50 Hz;
     - [ ] option 1: send EFG over TATS messages
     - [ ] option 2: send az, el over ethernet
-    - [ ] have smoothness test suite plug in here
-- Routine that can be built into the PCU simulator
+- [ ] Provide PCU simulator interface
     - [ ] time should be specified in ns since beginning of year
-    - [ ] {az,el} or {E,F,G} place(Tracker* tracker, Entry* star, double jd_utc )
-- Handle bad optical refraction model
-    - option 1: stay above 15 degrees elevation
-    - option 2: replace novas refraction routine with more comprehensive model
-    - option 3: invoke novas routines without including refraction, compute refraction externally
+    - [ ] output {az,el} or {E,F,G}
+- Improve optical refraction model?
+    - [ ] option 1: stay above 15 degrees elevation
+    - [ ] option 2: replace novas refraction routine with more comprehensive model
+    - [ ] option 3: invoke novas routines without including refraction, compute refraction externally
 - Safety:
     - [ ] solar avoidance? 
-    - cable wraps?
+    - [ ] cable wraps?
+    - [ ] smoothness test?
   
 
 ### Client
@@ -171,14 +172,24 @@ __________________________________________________
 - [X] Read configuration
 - [X] Load catalog
 - [X] Create tracker
+- [X] Continually update time
 - [X] Allow user to query for stars
-    - Shape(cone, slice, ring)
-    - Time
-    - Min brightness
-- [ ] Interactively ask user for star numbers
-    - send new star to tracker
+    - [X] Shape(cone, slice, ring, patch)
+    - [ ] Min brightness
+- [X] Interactively ask user for star numbers
+    - [ ] send new star to tracker
 - [ ] Print/save usage logs.
     - [X] Bring together into convenient app
     - [X] Input: time, location, min brightness, star density
     - [ ] output: star/time/coordinate tables in CSV?
     - have interactive web app which allows stars to be selected, then tells tracker to go after them?
+    
+### Tests
+
+- [ ] Accuraccy better than .001 degrees
+
+## Example Planetarium and  Stargazing Software
+  - [In-The-Sky](https://in-the-sky.org/skymap.php)
+  - [Stellarium](http://stellarium.org/)
+  - [Google Sky](https://www.google.com/sky/)
+  - [The Sky Live](https://theskylive.com/)
