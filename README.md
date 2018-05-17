@@ -5,18 +5,23 @@ The other component is a tracker which transforms catalog coordinates into a use
 The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library is used to perform the transformations.
 The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.
 The performance critical libraries are written in C, with an idiom similar to the underlying Novas libraries.
-The front end is still in the conceptual phases, however a UI experiment has been written in [D3](https://d3js.org/).  
+The front end is still in the conceptual phases, however a 
+[UI experiment](https://caseyshields.github.io/starlog/index.html) has been written in [D3](https://d3js.org/).  
 
 ## Planner Questions
 
 #### How is a viewing plan made and carried out?
+
+**A: Interactive mode will be good to start with. A typical plan is to pick bright stars and alternate between them over 
+the course of the night. Pre-selecting planned stars would be a nice feature, or even a schedule which can be 
+interactively interrupted.**
 
 - [ ] Is a plan built offline from a sequence of queries and later played back?
     - How do you control for the passage of time?
     - What format is the plan output to?
 - [ ] Do we automatically generated a bright, distributed subset from the visible hemisphere?
     - how do we control for time beside setting a rigid viewing schedule?
-- [ ] Are targets interactively selected from zones of the current night sky?
+- [X] Are targets interactively selected from zones of the current night sky?
     1. User (types in/clicks on) a patch of the current night sky
     2. System finds catalog stars in corresponding patch of sky
     3. Ranks stars by brightness and or astrometric quality
@@ -25,6 +30,9 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     6. Tracker is told to start controlling for that star
 
 #### What UI should it have?
+
+**A: Command line to get started, Web app is a nice to have. It needs to be protable and run offline, so it has to carry 
+it's catalog with it.**
 
 - [ ] Command Line Application
     - simpler to develop but harder to visually check
@@ -39,6 +47,9 @@ The front end is still in the conceptual phases, however a UI experiment has bee
 - [ ] Something else?
    
 #### How do we group and rank stars?
+
+**A: star number is sufficient for current use, but all these are nice to have for being able to plan in the mission room.
+Most of the queries are actually already implemented.**
 
 - Group by;
   - [ ] patches
@@ -55,12 +66,17 @@ The front end is still in the conceptual phases, however a UI experiment has bee
   - [ ] Coverage?
 
 #### Catalog
+
+**A: FK6 is fine because it should contain FK 5, but with improved accuraccy.**
+
 - [ ] FK5
 - [ ] FK6
 
 ## Tracker Questions
 
 #### Platform
+
+**A: A command line is fine to get started, integrated with the planner.**
 
 - [ ] C native application
     - any communication between planner and tracker would have to be inter-process 
@@ -70,6 +86,9 @@ The front end is still in the conceptual phases, however a UI experiment has bee
 
 #### Broadcast Interface
 
+**A: TATS is the preferred protocol, either ethernet or serial is fine.
+I'll still have a nice, modular API if anything is embedded.**
+
 - [ ] Some protocol over some socket?
     - need protocol definition
 - [ ] Link to TATS libraries?
@@ -78,6 +97,9 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     - I provide a clean API?
 
 #### Output Data
+
+**A: Trackers use EFG. We'll see if the refraction model is sufficient when we get there. Most missions are above 20 
+degrees elevation anyways so the effect should be negligible. Interpolation is handled by the by the ACUs.**
 
 - Coordinates
     - [ ] geocentric EFG
@@ -90,11 +112,17 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     
 #### Safety
 
+**A: Sun avoidance is the only feature the PCU/ACUs don't have. And since the process is largely manual such a problem 
+is usually caught- so this isn't a high priority feature.**
+
 - Sun Avoidance: In the case of sun obstruction do I generate a new path?
 - Cable wraps: does the plan have to limit total rotation?
 - How would I implement a smoothness test?
 
 #### Accuracy
+
+**A: For the first delivery use the reduced accuracy which should be around 1mas. Improve accuracy when adding in planet
+tracking. Once I generate A stream of EFG coordinates this can be tested against tracker outputs.**
 
 - [ ] Default accuracy reaches 1 mas theoretically with good clock and catalog
 - [ ] Increased accuracy is required for planets
@@ -102,6 +130,8 @@ The front end is still in the conceptual phases, however a UI experiment has bee
     - need to relink to novas component to JPL's ephemeris libs...
       
 #### Tracker Control ( depends on Planner platform )
+
+**A: for first delivery just use the command line. Add a socket/pipe for the graphical UI later.**
 
 - [ ] Pipe?
     - Could let the planner CLI drive it...
@@ -193,3 +223,4 @@ __________________________________________________
   - [Stellarium](http://stellarium.org/)
   - [Google Sky](https://www.google.com/sky/)
   - [The Sky Live](https://theskylive.com/)
+  - [Aladin Lite](http://aladin.u-strasbg.fr/AladinLite/)
