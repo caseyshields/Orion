@@ -6,12 +6,12 @@
 #define STARTRACK_CATALOG_H
 
 #include <stdio.h>
-#include <novasc3.1/novas.h>
+#include "novasc3.1/novas.h"
 
 /** Represents a entry in a star catalog. Extended from Novas's struct cat_entry */
 typedef struct entry_struct {
 
-    struct cat_entry_struct;
+    struct cat_entry_struct novas;
 //    char starname[SIZE_OF_OBJ_NAME]; // name of star
 //    char catalog[SIZE_OF_CAT_NAME];  // name of catalog
 //    long int starnumber;             // catalog number

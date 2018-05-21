@@ -2,10 +2,10 @@
 // Created by Casey Shields on 4/27/2018.
 //
 
-#include <novasc3.1/novas.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "novasc3.1/novas.h"
 #include "catalog.h"
 #include "legacy/heap.h"
 #include "vmath.h"
@@ -75,15 +75,15 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
         memset( entry, '\0', sizeof(Entry) );
 
         // uhh, I might want to make a smarter parser...
-        sscanf(buf+1, " %li ", &(entry->starnumber)); // col 1
-        sscanf(buf+17, " %19c ", entry->starname); // col 3
-        strcpy(entry->catalog, "FK6"); // FK6
+        sscanf(buf+1, " %li ", &(entry->novas.starnumber)); // col 1
+        sscanf(buf+17, " %19c ", entry->novas.starname); // col 3
+        strcpy(entry->novas.catalog, "FK6"); // FK6
         sscanf(buf+38, " %lf %lf %lf ", &hour, &min, &sec); // col 4
         sscanf(buf+59, " %lf %lf %lf ", &deg, &arcmin, &arcsec); // col 5
-        sscanf(buf+77, " %lf ", &(entry->promora)); // col 6?
-        sscanf(buf+89, " %lf ", &(entry->promodec)); // col 7?
-        sscanf(buf+153, " %lf ", &(entry->parallax)); // col 14
-        sscanf(buf+179, " %lf ", &(entry->radialvelocity)); // col
+        sscanf(buf+77, " %lf ", &(entry->novas.promora)); // col 6?
+        sscanf(buf+89, " %lf ", &(entry->novas.promodec)); // col 7?
+        sscanf(buf+153, " %lf ", &(entry->novas.parallax)); // col 14
+        sscanf(buf+179, " %lf ", &(entry->novas.radialvelocity)); // col
         sscanf(buf+186, " %f ", &(entry->magnitude)); // col 18
         /*TODO use make_cat_entry(
                           char star_name[SIZE_OF_OBJ_NAME],
@@ -94,18 +94,18 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
                           cat_entry *star)*/
 
         // combine hours minutes and seconds
-        entry->ra = hour+(min/60.0)+(sec/3600.0);
+        entry->novas.ra = hour+(min/60.0)+(sec/3600.0);
         if(buf[58]=='+')
-            entry->dec = deg+(arcmin/60.0)+(arcsec/3600.0);
+            entry->novas.dec = deg+(arcmin/60.0)+(arcsec/3600.0);
         else
-            entry->dec = -deg-(arcmin/60.0)-(arcsec/3600.0);
+            entry->novas.dec = -deg-(arcmin/60.0)-(arcsec/3600.0);
 
         if(buf[76]=='-')
-            entry->promora*=-1.0;
+            entry->novas.promora*=-1.0;
         if(buf[88]=='-')
-            entry->promodec*=-1.0;
+            entry->novas.promodec*=-1.0;
         if(buf[178]=='-')
-            entry->radialvelocity*=-1.0;
+            entry->novas.radialvelocity*=-1.0;
 
         // actually add the Entry to the catalog
         catalog_add( catalog, entry );
@@ -160,8 +160,8 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
 
         // if the entry's unit vectors is within the cone, add it to the results
         spherical2cartesian(
-                hours2radians(entry->ra),
-                degrees2radians(entry->dec),
+                hours2radians(entry->novas.ra),
+                degrees2radians(entry->novas.dec),
                 S );
         if( dot(A, S) > max )
             catalog_add( results, entry );
@@ -178,11 +178,11 @@ Catalog* catalog_orange( Catalog* c, double ra_min, double ra_max, Catalog* resu
         // check for wrap-around assuming min to max direction is clockwise
         if( min < max ) {
             // continuous bound test
-            if( min <= (e->ra) && (e->ra) <= max )
+            if( min <= (e->novas.ra) && (e->novas.ra) <= max )
                 return 1;
         } else {
             // disjoint bound test
-            if (min <= (e->ra) || (e->ra) <= max)
+            if (min <= (e->novas.ra) || (e->novas.ra) <= max)
                 return 1;
         }
         return 0;
@@ -211,8 +211,8 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
         // check right ascension bounds remembering 0 to 23 wraps around
 
 
-        if( min_ra <= entry->ra && entry->ra <= max_ra
-            && min_dec <= entry->dec && entry->dec <= max_dec )
+        if( min_ra <= entry->novas.ra && entry->novas.ra <= max_ra
+            && min_dec <= entry->novas.dec && entry->novas.dec <= max_dec )
             catalog_add( results, entry );
     }
 
@@ -259,12 +259,12 @@ void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
 
 void entry_print( Entry *star ) {
     printf( "%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
-            star->catalog,
-            star->starnumber,
-            star->starname,
-            star->ra,
-            star->dec,
-            star->parallax,
+            star->novas.catalog,
+            star->novas.starnumber,
+            star->novas.starname,
+            star->novas.ra,
+            star->novas.dec,
+            star->novas.parallax,
             star->magnitude );
     fflush(0);
 }

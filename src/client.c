@@ -4,7 +4,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include "novas.h"
+#include "novasc3.1/novas.h"
 #include "tracker.h"
 #include "catalog.h"
 #include "vmath.h"
@@ -94,7 +94,7 @@ int main( int argc, char *argv[] ) {
             // filter by name
             get_input("catalog number", &line, &size);
             int check_name( Entry *entry ) {
-                return NULL != strstr(entry->starname, line );
+                return NULL != strstr(entry->novas.starname, line );
             }
             Catalog* results = catalog_filter(catalog, &check_name, NULL);
 
