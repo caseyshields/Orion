@@ -96,6 +96,7 @@ int local(Tracker *tracker, double* zenith_distance, double* topocentric_azimuth
                 &right_ascension,
                 &declination
         );
+
     // then convert them to horizon coordinates
     double ra, dec;
     equ2hor(
@@ -128,6 +129,7 @@ int zenith( Tracker* tracker, double* right_ascension, double* declination ) {
     terestrial[0] = cos_lat * cos_lon;
     terestrial[1] = cos_lat * sin_lon;
     terestrial[2] = sin_lat;
+    //  this is a spherical approximation so it can have up to about 1% error...
 
     // convert to a celestial vector
     double celestial[3] = {0.0,0.0,0.0};

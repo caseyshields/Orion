@@ -20,7 +20,6 @@ double hours2radians( double h );
 double degrees2radians( double d );
 void spherical2cartesian(double theta, double phi, double C[3] );
 double angular_separation( double theta_1, double phi_1, double theta_2, double phi_2 );
-
-//double angular_separation_dot( double* U[3], double* V[3] );
+double orthodromic_distance( double theta_1, double phi_1, double theta_2, double phi_2 );
 
 #endif //STARTRACK_VMATH_H

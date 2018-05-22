@@ -189,7 +189,7 @@ int main( int argc, char *argv[] ) {
 
         // print available commands
         else {
-            printf( "Commands include \n\tstar\n\tdome\n\tpatch\n\tprint\n\tbench\n\texit\n" );
+            printf( "Commands include \n\tstar\n\tzenith\n\tdome\n\tpatch\n\tprint\n\tbench\n\texit\n" );
         }
     }
 }

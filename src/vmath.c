@@ -52,6 +52,19 @@ double angular_separation( double theta_1, double phi_1, double theta_2, double 
     return dA;
 }
 
-//double angular_separation_dot( double* U[3], double* V[3] ) {
-//    return acos(dot(U, V));
-//} // TODO derive angular separation from arctan statement
+/** Determines the great-circle distance between two points on a sphere. arctan( ||VxU|| / V*U ) */
+double orthodromic_distance( double theta_1, double phi_1, double theta_2, double phi_2 ) {
+    double U[3] = {0,0,0};
+    spherical2cartesian( theta_1, phi_1, U );
+
+    double V[3] = {0,0,0};
+    spherical2cartesian( theta_2, phi_2, V );
+
+    double UxV[3] = {0,0,0};
+    cross( U, V, UxV );
+
+    double sind = magnitude( UxV );
+    double cosd = dot( U, V );
+
+    double angle = atan( sind / cosd );
+}
