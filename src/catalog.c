@@ -144,26 +144,38 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     if( !results )
         results = catalog_create( NULL, catalog->size / 4 );
 
-    // find a direction vector for the axis of the search cone
-    double A[3], S[3];
-    spherical2cartesian(
-            hours2radians(ra),
-            degrees2radians(dec),
-            A );
+//    // find a direction vector for the axis of the search cone
+//    double A[3], S[3];
+//    spherical2cartesian(
+//            hours2radians(ra),
+//            degrees2radians(dec),
+//            A );
+//
+//    // determine the maximum angular separation
+//    double max = cos( degrees2radians(r) );
+//
+//    // for all catalog entries
+//    for( int n=0; n<catalog->size; n++ ) {
+//        Entry* entry = catalog->stars[n];
+//
+//        // if the entry's unit vectors is within the cone, add it to the results
+//        spherical2cartesian(
+//                hours2radians(entry->novas.ra),
+//                degrees2radians(entry->novas.dec),
+//                S );
+//        if( dot(A, S) > max )
+//            catalog_add( results, entry );
+//    }
 
-    // determine the maximum angular separation
-    double max = cos( degrees2radians(r) );
-
-    // for all catalog entries
+    double max = degrees2radians( r );
     for( int n=0; n<catalog->size; n++ ) {
-        Entry* entry = catalog->stars[n];
-
-        // if the entry's unit vectors is within the cone, add it to the results
-        spherical2cartesian(
+        Entry *entry = catalog->stars[n];
+        double d = orthodromic_distance(
+                hours2radians(ra),
+                degrees2radians(dec),
                 hours2radians(entry->novas.ra),
-                degrees2radians(entry->novas.dec),
-                S );
-        if( dot(A, S) > max )
+                degrees2radians(entry->novas.dec) );
+        if( d < max )
             catalog_add( results, entry );
     }
 
