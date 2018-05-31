@@ -7,7 +7,7 @@ include_directories(src)
 include_directories(src/novasc3.1)
 include_directories(src/novasc3.1/ext)
 
-add_executable(startrack
+set( NOVAS_SOURCE
         src/novasc3.1/novas.c
         src/novasc3.1/novas.h
         src/novasc3.1/novascon.c
@@ -16,40 +16,39 @@ add_executable(startrack
         src/novasc3.1/nutation.h
         src/novasc3.1/readeph0.c
         src/novasc3.1/solarsystem.h
-        src/novasc3.1/solsys3.c
-        src/legacy/FK6.c
-        src/legacy/FK6.h
-        src/legacy/Heap.c
-        src/legacy/Heap.h
-        src/legacy/StarMap.c
-        src/legacy/StarMap.h
-        src/legacy/test.c)
+        src/novasc3.1/solsys3.c )
 
-add_executable(checkout
-        src/novasc3.1/test/checkout-stars.c
-        src/novasc3.1/novas.c
-        src/novasc3.1/novas.h
-        src/novasc3.1/novascon.c
-        src/novasc3.1/novascon.h
-        src/novasc3.1/nutation.c
-        src/novasc3.1/nutation.h
-        src/novasc3.1/readeph0.c
-        src/novasc3.1/solarsystem.h
-        src/novasc3.1/solsys3.c src/catalog.h)
+add_library( novas STATIC ${NOVAS_SOURCE} )
 
-add_executable(tracker
-        src/novasc3.1/novas.c
-        src/novasc3.1/novas.h
-        src/novasc3.1/novascon.c
-        src/novasc3.1/novascon.h
-        src/novasc3.1/nutation.c
-        src/novasc3.1/nutation.h
-        src/novasc3.1/readeph0.c
-        src/novasc3.1/solarsystem.h
-        src/novasc3.1/solsys3.c
-        src/legacy/FK6.c
-        src/legacy/FK6.h
-        src/legacy/Heap.c
-        src/legacy/Heap.h
+add_executable( checkout src/novasc3.1/test/checkout-stars.c )
+target_link_libraries( checkout novas )
+
+add_executable(client
         src/tracker.h
-        src/tracker.c src/client.c src/catalog.h src/catalog.c src/vmath.c src/vmath.h src/fk6.c src/fk6.h)
+        src/tracker.c
+        src/catalog.h
+        src/catalog.c
+        src/vmath.c
+        src/vmath.h
+        src/fk6.c
+        src/fk6.h
+        src/client.c)
+target_link_libraries( client novas )
+
+#add_executable(legacy
+#        src/novasc3.1/novas.c
+#        src/novasc3.1/novas.h
+#        src/novasc3.1/novascon.c
+#        src/novasc3.1/novascon.h
+#        src/novasc3.1/nutation.c
+#        src/novasc3.1/nutation.h
+#        src/novasc3.1/readeph0.c
+#        src/novasc3.1/solarsystem.h
+#        src/novasc3.1/solsys3.c
+#        src/legacy/FK6.c
+#        src/legacy/FK6.h
+#        src/legacy/Heap.c
+#        src/legacy/Heap.h
+#        src/legacy/StarMap.c
+#        src/legacy/StarMap.h
+#        src/legacy/test.c)
