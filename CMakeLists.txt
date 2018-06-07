@@ -40,3 +40,5 @@ set( ORION_SOURCE
 add_executable(tester ${ORION_SOURCE} src/test.c)
 target_link_libraries( tester novas )
 
+add_executable( server ${ORION_SOURCE} src/orion.c src/orion.h )
+target_link_libraries( server novas wsock32 ws2_32 )
