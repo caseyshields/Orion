@@ -116,7 +116,7 @@ int main( int argc, char *argv[] ) {
             // transform each star to local coordinates
             void process( Entry *entry ) {
                 double zd=0, az=0;
-                setTarget( &tracker, entry );
+                setTarget( &tracker, entry->novas );
                 local( &tracker, &zd, &az );
                 entry_print( entry );
                 printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
@@ -261,7 +261,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     for( int t=0; t<trials; t++ ) {
         for (int n = 0; n < catalog->size; n++) {
             Entry *entry = catalog->stars[n];
-            setTarget( tracker, entry );
+            setTarget( tracker, entry->novas );
             local(tracker, &tracks[n][0], &tracks[n][1]);
         }
     }

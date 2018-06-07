@@ -11,7 +11,8 @@
 /** Represents a entry in a star catalog. Extended from Novas's struct cat_entry */
 typedef struct entry_struct {
 
-    struct cat_entry_struct novas;
+    cat_entry novas;
+    //struct cat_entry_struct; // anonomous structure method was not very portable
 //    char starname[SIZE_OF_OBJ_NAME]; // name of star
 //    char catalog[SIZE_OF_CAT_NAME];  // name of catalog
 //    long int starnumber;             // catalog number

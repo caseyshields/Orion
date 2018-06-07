@@ -77,7 +77,7 @@ on_surface getLocation( Tracker* tracker ) {
     return tracker->site;
 }
 
-void setTarget( Tracker* tracker, Entry* entry ) {
+void setTarget( Tracker* tracker, cat_entry entry ) {
     tracker->target = entry;
 }
 
@@ -90,7 +90,7 @@ int local(Tracker *tracker, double* zenith_distance, double* topocentric_azimuth
     error = topo_star(
                 tracker->date,
                 deltaT,
-                (cat_entry*) tracker->target,
+                &tracker->target,
                 &tracker->site,
                 REDUCED_ACCURACY,
                 &right_ascension,

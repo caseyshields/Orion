@@ -6,9 +6,6 @@
 #define STARTRACK_TRACKER_H
 
 #include "novas.h"
-#include "catalog.h"
-#include <time.h>
-#include <sys/time.h>
 
 #define SECONDS_IN_DAY 86400.0
 #define DELTA_TT 32.184
@@ -20,7 +17,7 @@ typedef struct {
     double leap_secs;  // Number of leap seconds added in International Atomic Time
     on_surface site;   // geodetic location
     object earth;      // location in the solar system
-    Entry* target;      // the current target of the tracker, extended from novas cat_entry;
+    cat_entry target;      // the current target of the tracker, extended from novas cat_entry;
 } Tracker;
 
 int create( Tracker* tracker, double ut1_utc, double leap_secs );
@@ -36,7 +33,7 @@ void setCoordinates( Tracker* tracker, double latitude, double longitude, double
 void setAtmosphere( Tracker* tracker, double temperature, double pressure );
 on_surface getLocation( Tracker* tracker );
 
-void setTarget( Tracker* tracker, Entry* entry );
+void setTarget( Tracker* tracker, cat_entry entry );
 int local(Tracker *tracker, double *zenith_distance, double *topocentric_azimuth);
 int zenith( Tracker* tracker, double* right_ascension, double* declination );
 
