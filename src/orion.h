@@ -5,9 +5,6 @@
 #ifndef STARTRACK_ORION_H
 #define STARTRACK_ORION_H
 
-// we only allow one controller and one sensor
-#define MAX_CONNECTIONS 2
-
 // default latitude of sensor in degrees
 #define LATITUDE "38.88972222222222"
 

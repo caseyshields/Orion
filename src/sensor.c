@@ -1,32 +1,77 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <winsock.h>
 #include <assert.h>
-#include <stdbool.h>
-
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
-
-#include <winsock.h>
-
+#include <unistd.h>
+#include <stdbool.h>
 #include "novasc3.1/novas.h"
 #include "tracker.h"
+#include "catalog.h"
 #include "vmath.h"
-#include "orion.h"
 
-/** A tracker controller which issues TATS commands over ethernet, given star information.
+// we only allow one controller and one sensor
+#define MAX_CONNECTIONS 2
+
+#define MAX_BUFFER_SIZE 2<<10
+
+typedef struct {
+    unsigned char midc;
+    unsigned short riu_sensor_id;
+    unsigned short tcn_time;
+    int E, F, G;
+    unsigned char track_status;
+    union {
+        unsigned short track_id;
+        unsigned char symbol_type;
+    };
+    unsigned short crc;
+} MIDC_01;
+
+double get_time();
+unsigned int configure_server( int argc, char* argv[] );
+char* get_arg( int argc, char *argv[], char *name, char* default_value );
+void terminate( int status, char* msg );
+
+char *buffer;
+unsigned int server = INVALID_SOCKET;
+unsigned int client = INVALID_SOCKET;
+
+/** A simulator of a TATS sensor used for testing Orion.
  * @author Casey Shields
  */
 int main( int argc, char *argv[] ) {
 
-    // create main components according to program arguments
-    tracker = configure_tracker( argc, argv );
-    server = configure_server( argc, argv );
+    server = configure_server(argc, argv);
 
-    // TODO connect to sensor
-    // TODO start control thread
-    // TODO take user input and relay commands
+    buffer = malloc( MAX_BUFFER_SIZE );
+
+    printf("Awaiting client.\n");
+    client = accept(server, NULL, NULL);
+    if (client == INVALID_SOCKET)
+        terminate(WSAGetLastError(), "failed to accept client connection");
+
+    printf("Client connected.\n");
+    do {
+        memset( buffer, 0, MAX_BUFFER_SIZE );
+        int result = recv(client, buffer, MAX_BUFFER_SIZE, 0);
+        if( result > 0 ) {
+            printf( "Recieved message:\n%s", buffer );
+//          result = send( client, &entry, sizeof(entry), 0);
+//          if( result == SOCKET_ERROR )
+//              terminate( WSAGetLastError(), "Failed to send back the entry");
+
+        } else if( result==0 ) {
+            printf( "Client closing connection. Closing server" );
+            terminate( 0, NULL );
+            break;
+
+        } else
+            terminate( WSAGetLastError(), "Failed to read from client");
+
+    } while (true);
 }
 
 /** Gets an accurate UTC timestamp from the system in seconds since the unix epoch */
@@ -36,69 +81,16 @@ double get_time() {
     return time.tv_sec + (time.tv_usec / 1000000.0);
 }
 
-/** extracts tracker information from the program arguments and constructs a model */
-Tracker * configure_tracker( int argc, char *argv[] ) {
-
-    // tracker configuration
-    double latitude, longitude, height;
-    double celsius, millibars;
-
-    // Earth orientation/time configuration
-    double ut1_utc, leap_secs;
-
-    // geodetic coordinates in degrees
-    char* arg = get_arg( argc, argv, "-latitude", LATITUDE );
-    latitude = atof( arg );
-
-    arg = get_arg( argc, argv, "-longitude", LONGITUDE );
-    longitude = atof( arg );
-
-    // geodetic height in meters
-    arg = get_arg( argc, argv, "-height", HEIGHT );
-    height = atof( arg );
-
-    // site temperature in degrees celsius
-    arg = get_arg( argc, argv, "-celsius", TEMPERATURE );
-    celsius = atof( arg );
-
-    // atmospheric pressure at site in millibars
-    arg = get_arg( argc, argv, "-millibars", PRESSURE );
-    millibars = atof( arg );
-
-    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
-    arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
-    ut1_utc = atof( arg );
-
-    // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
-    arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
-    leap_secs = atof( arg );
-
-    // create the tracker
-    Tracker* tracker = malloc( sizeof(Tracker) );
-    create( tracker, ut1_utc, leap_secs );
-
-    // set the tracker's time in UTC
-    setTime( tracker, get_time() );
-    print_time( tracker );
-
-    // set the location
-    setCoordinates( tracker, latitude, longitude, height );
-    setAtmosphere( tracker, celsius, millibars );
-    print_site( tracker );
-
-    return tracker;
-}
-
 unsigned int configure_server(int argc, char* argv[]) {
     int result;
 
-    // get server address, should be in dotted quad notation
-    char* ip = get_arg( argc, argv, "-ip", "127.0.0.1");
+//    // get server address, should be in dotted quad notation
+//    char* ip = get_arg( argc, argv, "-ip", "127.0.0.1");
 
     // get server socket port number
     unsigned short port; // port
     char* arg = get_arg( argc, argv, "-port", "43210" );//8080" );
-    port = (unsigned short)atoi( arg );
+    if( arg ) port = atoi( arg );
 
     // load the winsock library
     WSADATA wsadata;
@@ -106,7 +98,7 @@ unsigned int configure_server(int argc, char* argv[]) {
     if( result != 0 )
         terminate( result, "Failed to initialize winsock" );
 
-      // retrieve a list of available sockets for the server
+    // retrieve a list of available sockets for the server
 //    struct sockaddr_in hints;
 //    mwmser(&hints, 0, sizeof(hints));
 //    hints.ai_family = AF_INET;
@@ -143,7 +135,7 @@ unsigned int configure_server(int argc, char* argv[]) {
     //freeaddrinfo(address);// free the linked list of results if getaddrinfo() was used
 
     // set socket to listen for incoming connections
-    result = listen( server, 2 );
+    result = listen( server, MAX_CONNECTIONS );
     if( result < 0 )
         terminate(result, "Failed to listen");
 
@@ -170,8 +162,8 @@ void terminate(int status, char* msg) {
         printf( "Error : %s : %d", msg, status );
 
     // release resources
-    if( tracker != NULL )
-        free( tracker );
+    if( buffer != NULL )
+        free( buffer );
 
     if( server != INVALID_SOCKET )
         closesocket( server );

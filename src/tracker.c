@@ -4,6 +4,7 @@
 
 #include <novasc3.1/novas.h>
 #include <assert.h>
+#include <time.h>
 #include "tracker.h"
 
 /**
