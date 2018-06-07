@@ -51,25 +51,25 @@ int main( int argc, char *argv[] ) {
     printf("Awaiting client.\n");
     client = accept(server, NULL, NULL);
     if (client == INVALID_SOCKET)
-        terminate(WSAGetLastError(), "failed to accept client connection");
+        terminate(WSAGetLastError(), "failed to accept client connection\n");
 
     printf("Client connected.\n");
     do {
         memset( buffer, 0, MAX_BUFFER_SIZE );
         int result = recv(client, buffer, MAX_BUFFER_SIZE, 0);
         if( result > 0 ) {
-            printf( "Recieved message:\n%s", buffer );
+            printf( "Recieved message:\n%s\n", buffer );
 //          result = send( client, &entry, sizeof(entry), 0);
 //          if( result == SOCKET_ERROR )
 //              terminate( WSAGetLastError(), "Failed to send back the entry");
 
         } else if( result==0 ) {
-            printf( "Client closing connection. Closing server" );
+            printf( "Client closing connection, closing server\n" );
             terminate( 0, NULL );
             break;
 
         } else
-            terminate( WSAGetLastError(), "Failed to read from client");
+            terminate( WSAGetLastError(), "Failed to read from client\n");
 
     } while (true);
 }
@@ -84,8 +84,8 @@ double get_time() {
 unsigned int configure_server(int argc, char* argv[]) {
     int result;
 
-//    // get server address, should be in dotted quad notation
-//    char* ip = get_arg( argc, argv, "-ip", "127.0.0.1");
+    // get server address, should be in dotted quad notation
+    char* ip = get_arg( argc, argv, "-ip", "127.0.0.1");
 
     // get server socket port number
     unsigned short port; // port
@@ -121,14 +121,15 @@ unsigned int configure_server(int argc, char* argv[]) {
 
 
     // construct server address structure
-    struct sockaddr_in * address = malloc( sizeof(address) );
+    struct sockaddr_in address;
     memset(&address, 0, sizeof(address));
-    address->sin_family = AF_INET; // internet address family
-    address->sin_addr.s_addr = htonl( INADDR_ANY ); // any incoming interface
-    address->sin_port = htons( port ); // local port
+    address.sin_family = AF_INET; // internet address family
+    address.sin_addr.s_addr = inet_addr( ip ); // server ip
+    //address.sin_addr.s_addr = htonl( INADDR_ANY ); // any incoming interface
+    address.sin_port = htons( port ); // local port
 
     // bind socket to host network
-    result = bind( server, (struct sockaddr *) address, sizeof(address) );
+    result = bind( server, (struct sockaddr *) &address, sizeof(address) );
     if( result == SOCKET_ERROR )
         terminate( WSAGetLastError(), "Failed to bind server socket" );
 

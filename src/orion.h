@@ -32,14 +32,12 @@
 
 // ORION program state
 Tracker * tracker = NULL; // a representation of the sensor being controlled
-unsigned int server = INVALID_SOCKET; // socket for giving targets to the tracker
 unsigned int client = INVALID_SOCKET; // socket for the actual sensor
-//unsigned int sensor = INVALID_SOCKET;
 
 // ORION methods
 Tracker * configure_tracker( int argc, char *argv[] );
 
-unsigned int configure_server( int argc, char *argv[] );
+unsigned int configure_client( int argc, char *argv[] );
 
 double get_time();
 

@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
+#include <pthread.h>
 #include <winsock.h>
 
 #include "novasc3.1/novas.h"
@@ -22,9 +23,18 @@ int main( int argc, char *argv[] ) {
 
     // create main components according to program arguments
     tracker = configure_tracker( argc, argv );
-    server = configure_server( argc, argv );
+    client = configure_client( argc, argv );
+    // TODO load a catalog
 
-    // TODO connect to sensor
+    // test connection
+    char * teststr = "testy tester testing tests testily";
+    int length = strlen( teststr );
+    int sent = send( client, teststr, length, 0 );
+    if( sent < length )
+        terminate( sent, "Failed to send entire message");
+
+    terminate( 0, NULL );
+
     // TODO start control thread
     // TODO take user input and relay commands
 }
@@ -89,7 +99,8 @@ Tracker * configure_tracker( int argc, char *argv[] ) {
     return tracker;
 }
 
-unsigned int configure_server(int argc, char* argv[]) {
+/** Connects to a socket to the server specified in the arguments. */
+unsigned int configure_client(int argc, char* argv[]) {
     int result;
 
     // get server address, should be in dotted quad notation
@@ -121,31 +132,25 @@ unsigned int configure_server(int argc, char* argv[]) {
 //        orion_exit( result, "failed to get server socket information" );
 //    }
 
-    // create a TCP socket for connecting to the server
+    // create a TCP socket for the client
     unsigned int server = INVALID_SOCKET; // listening socket descriptor
-    server = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    server = socket(PF_INET/*AF_UNSPEC*/, SOCK_STREAM, IPPROTO_TCP);
     if( server == INVALID_SOCKET )
-        terminate( WSAGetLastError(), "Failed to create socket");
+        terminate( WSAGetLastError(), "Failed to create socket\n");
 
 
     // construct server address structure
-    struct sockaddr_in * address = malloc( sizeof(address) );
+    struct sockaddr_in address;
     memset(&address, 0, sizeof(address));
-    address->sin_family = AF_INET; // internet address family
-    address->sin_addr.s_addr = htonl( INADDR_ANY ); // any incoming interface
-    address->sin_port = htons( port ); // local port
+    address.sin_family = AF_INET; // internet address family
+    address.sin_addr.s_addr = inet_addr( ip ); // server ip
+    address.sin_port = htons( port ); // sserver port
 
-    // bind socket to host network
-    result = bind( server, (struct sockaddr *) address, sizeof(address) );
+
+    // connect the socket to the server
+    result = connect( server, (struct sockaddr *) &address, sizeof(address) );
     if( result == SOCKET_ERROR )
-        terminate( WSAGetLastError(), "Failed to bind server socket" );
-
-    //freeaddrinfo(address);// free the linked list of results if getaddrinfo() was used
-
-    // set socket to listen for incoming connections
-    result = listen( server, 2 );
-    if( result < 0 )
-        terminate(result, "Failed to listen");
+        terminate( WSAGetLastError(), "Failed to connect to the server");
 
     return server;
 }
@@ -173,11 +178,12 @@ void terminate(int status, char* msg) {
     if( tracker != NULL )
         free( tracker );
 
-    if( server != INVALID_SOCKET )
-        closesocket( server );
-
-    if( client != INVALID_SOCKET )
-        closesocket( client );
+    if( client != INVALID_SOCKET ) {
+        int result = shutdown( client, SD_SEND ); // winsock specific
+        if( result == SOCKET_ERROR )
+            ;// well we tried
+        closesocket(client);
+    }
 
     // winsock cleanup routine
     WSACleanup();
