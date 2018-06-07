@@ -6,6 +6,8 @@
 #define STARTRACK_ORION_H
 
 // default latitude of sensor in degrees
+#include "catalog.h"
+
 #define LATITUDE "38.88972222222222"
 
 // default longitude of sensor in degrees
@@ -33,11 +35,14 @@
 // ORION program state
 Tracker * tracker = NULL; // a representation of the sensor being controlled
 unsigned int client = INVALID_SOCKET; // socket for the actual sensor
+Catalog * catalog = NULL; // a catalog of stars to choose targets from
 
 // ORION methods
 Tracker * configure_tracker( int argc, char *argv[] );
 
 unsigned int configure_client( int argc, char *argv[] );
+
+Catalog * configure_catalog( int argc, char* argv[] );
 
 double get_time();
 

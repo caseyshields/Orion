@@ -7,6 +7,7 @@ The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/f
 The front end is still in the conceptual phases, however a [UI experiment](https://caseyshields.github.io/starlog/index.html) has been written in [D3](https://d3js.org/).  
 
 ## Components
+ - vmath : utility library of vector and spherical math routines
  - novas : USNO's astrometric software package
  - fk6 : loads raw FK6 catalogs into a catalog
  - catalog : module for filtering and sorting desired stars.
@@ -15,4 +16,4 @@ The front end is still in the conceptual phases, however a [UI experiment](https
  - orion : main program which integrates all features
 
 ## Requirements
- - Orion was developed in CLion using MinGw
+ - Orion is developed in CLion using MinGW

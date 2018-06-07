@@ -24,7 +24,7 @@ int main( int argc, char *argv[] ) {
     // create main components according to program arguments
     tracker = configure_tracker( argc, argv );
     client = configure_client( argc, argv );
-    // TODO load a catalog
+    catalog = configure_catalog( argc, argv );
 
     // test connection
     char * teststr = "testy tester testing tests testily";
@@ -33,10 +33,11 @@ int main( int argc, char *argv[] ) {
     if( sent < length )
         terminate( sent, "Failed to send entire message");
 
-    terminate( 0, NULL );
-
     // TODO start control thread
+
     // TODO take user input and relay commands
+
+    terminate( 0, NULL );
 }
 
 /** Gets an accurate UTC timestamp from the system in seconds since the unix epoch */
@@ -155,6 +156,17 @@ unsigned int configure_client(int argc, char* argv[]) {
     return server;
 }
 
+Catalog * configure_catalog( int argc, char* argv[] ) {
+    // get the location of the catalog data
+    char* path = get_arg( argc, argv, "-catalog", "../data/FK6.txt");
+
+    // create and load a catalog
+    FILE *file = fopen(path, "r");
+    Catalog* catalog = catalog_load_fk5(NULL, file);
+
+    return catalog;
+}
+
 /** retrieves the value subsequent to the specified option. If the default_value
  * is supplied, the function will return it. otherwise the method will print an
  * error message and abort. */
@@ -177,6 +189,11 @@ void terminate(int status, char* msg) {
     // release resources
     if( tracker != NULL )
         free( tracker );
+
+    if( catalog != NULL ) {
+        catalog_free_entries( catalog );
+        catalog_free( catalog );
+    }
 
     if( client != INVALID_SOCKET ) {
         int result = shutdown( client, SD_SEND ); // winsock specific
