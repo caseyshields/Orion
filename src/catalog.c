@@ -7,7 +7,6 @@
 #include <assert.h>
 #include "novasc3.1/novas.h"
 #include "catalog.h"
-#include "legacy/heap.h"
 #include "vmath.h"
 
 /** Creates a new catalog at the given pointer.
