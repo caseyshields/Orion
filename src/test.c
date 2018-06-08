@@ -71,16 +71,16 @@ int main( int argc, char *argv[] ) {
 
     // create the tracker
     Tracker tracker;
-    create(&tracker, ut1_utc, leap_secs );
+    tracker_create(&tracker, ut1_utc, leap_secs);
 
     // set the tracker's time in UTC
-    setTime( &tracker, get_time() );
-    print_time( &tracker );
+    tracker_set_time(&tracker, get_time());
+    tracker_print_time(&tracker);
 
     // set the location
-    setCoordinates( &tracker, latitude, longitude, height );
-    setAtmosphere( &tracker, celsius, millibars );
-    print_site( &tracker );
+    tracker_set_location(&tracker, latitude, longitude, height);
+    tracker_set_weather(&tracker, celsius, millibars);
+    tracker_print_site(&tracker);
 
     // create and load a catalog
     FILE *file = fopen(path, "r");
@@ -92,8 +92,8 @@ int main( int argc, char *argv[] ) {
     while(true) {
 
         // update the current time and print a prompt
-        setTime( &tracker, get_time() );
-        printf( "orion[%lf]", getUTC(&tracker) );
+        tracker_set_time(&tracker, get_time());
+        printf( "orion[%lf]", tracker_get_UTC(&tracker) );
         read = get_input( "", &line, &size );
 
         // select a specific star by number
@@ -116,7 +116,7 @@ int main( int argc, char *argv[] ) {
             // transform each star to local coordinates
             void process( Entry *entry ) {
                 double zd=0, az=0;
-                local( &tracker, &(entry->novas), &zd, &az );
+                tracker_to_horizon(&tracker, &(entry->novas), &zd, &az);
                 entry_print( entry );
                 printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
             }
@@ -179,7 +179,7 @@ int main( int argc, char *argv[] ) {
         // figure out spherical celestial coordinates of the local zenith
         else if( strncmp( "zenith", line, 6 )==0 ) {
             double ra = 0, dec = 0;
-            zenith( &tracker, &ra, &dec );
+            tracker_zenith(&tracker, &ra, &dec);
             printf( "Current zenith coodinates : (ra:%lf, dec:%lf)\n", ra, dec );
         }
 
@@ -260,7 +260,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     for( int t=0; t<trials; t++ ) {
         for (int n = 0; n < catalog->size; n++) {
             Entry *entry = catalog->stars[n];
-            local(tracker, &(entry->novas), &tracks[n][0], &tracks[n][1]);
+            tracker_to_horizon(tracker, &(entry->novas), &tracks[n][0], &tracks[n][1]);
         }
     }
 

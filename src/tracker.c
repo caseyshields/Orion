@@ -7,11 +7,7 @@
 #include <time.h>
 #include "tracker.h"
 
-/**
- * jd_utc : julian date in days
- * ut1_utc : current difference between UT1 and UTC time
- * leap_secs: current number of leap seconds in TAI*/
-int create(Tracker* tracker, double ut1_utc, double leap_secs ) {
+int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
 
     tracker->ut1_utc = ut1_utc;
     tracker->leap_secs = leap_secs;
@@ -26,13 +22,11 @@ int create(Tracker* tracker, double ut1_utc, double leap_secs ) {
     return make_object (0, 2, "Earth", (cat_entry*)NULL, &(tracker->earth) );
 }
 
-/** Sets the time for the star tracker
- * seconds: seconds since the unix epoch(January 1, 1970) in UTC */
-void setTime( Tracker * tracker, double seconds ) {
+void tracker_set_time(Tracker *tracker, double utc_unix_seconds) {
 
     // separate fractional seconds
-    long s = (long) seconds;
-    double f = seconds - s;
+    long s = (long) utc_unix_seconds;
+    double f = utc_unix_seconds - s;
 
     // get the calendar date
     struct tm* utc = gmtime( &s );
@@ -50,37 +44,39 @@ void setTime( Tracker * tracker, double seconds ) {
             hours );
 }
 
-// TODO julian hours is pretty obscure, might want to return in unix seconds...
-/** Returns terrestrial time in julian hours.
- * TT = UTC + leap_seconds + 32.184. */
-double getTT( Tracker *map ) { return map->date + (map->leap_secs + DELTA_TT) / SECONDS_IN_DAY; }
+double tracker_get_TT(Tracker *tracker) {
+    return tracker->date + (tracker->leap_secs + DELTA_TT) / SECONDS_IN_DAY;
+}
 
-/** Returns UT1, a time scale which depends on the non-uniform rotation of the earth.
- * Derived by adding an empirically determined offset to UTC */
-double getUT1( Tracker *map ) { return map->date + map->ut1_utc / SECONDS_IN_DAY; }
+double tracker_get_UT1(Tracker *tracker) {
+    return tracker->date + tracker->ut1_utc / SECONDS_IN_DAY;
+}
 
-/** Returns the Universal Coordinated Time in Julian hours. */
-double getUTC( Tracker *tracker ) { return tracker->date; }
+double tracker_get_UTC(Tracker *tracker) {
+    return tracker->date;
+}
 
-double getDeltaT( Tracker *tracker ) { return 32.184 + tracker->leap_secs - tracker->ut1_utc; }
+double tracker_get_DeltaT(Tracker *tracker) {
+    return DELTA_TT + tracker->leap_secs - tracker->ut1_utc;
+}
 
-void setCoordinates( Tracker* tracker, double latitude, double longitude, double height ) {
+void tracker_set_location(Tracker *tracker, double latitude, double longitude, double height) {
     tracker->site.latitude = latitude;
     tracker->site.longitude = longitude;
     tracker->site.height = height;
 }
-void setAtmosphere( Tracker* tracker, double temperature, double pressure ) {
+void tracker_set_weather(Tracker *tracker, double temperature, double pressure) {
     tracker->site.pressure = pressure;
     tracker->site.temperature = temperature;
 }
 
-on_surface getLocation( Tracker* tracker ) {
+on_surface tracker_get_location(Tracker *tracker) {
     return tracker->site;
 }
 
-int local(Tracker *tracker, cat_entry * target, double* zenith_distance, double* topocentric_azimuth) {
+int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth) {
     short int error;
-    double deltaT = getDeltaT( tracker );
+    double deltaT = tracker_get_DeltaT(tracker);
     double right_ascension=0, declination=0;
 
     // get the GCRS coordinates
@@ -112,7 +108,7 @@ int local(Tracker *tracker, cat_entry * target, double* zenith_distance, double*
     return error;
 }
 
-int zenith( Tracker* tracker, double* right_ascension, double* declination ) {
+int tracker_zenith(Tracker *tracker, double *right_ascension, double *declination) {
     on_surface site = tracker->site;
 
     // calculate a geocentric earth fixed vector as in Novas C-39
@@ -131,7 +127,7 @@ int zenith( Tracker* tracker, double* right_ascension, double* declination ) {
     // convert to a celestial vector
     double celestial[3] = {0.0,0.0,0.0};
     int error = ter2cel(
-            tracker->date, 0.0, getDeltaT(tracker),
+            tracker->date, 0.0, tracker_get_DeltaT(tracker),
             1, // equinox method (0= CIO method)
             REDUCED_ACCURACY,
             0, // output in GCRS axes (1=equator & equinox of date)
@@ -146,23 +142,23 @@ int zenith( Tracker* tracker, double* right_ascension, double* declination ) {
     assert(error==0);
 }
 
-void print_time( Tracker* tracker ) {
+void tracker_print_time(Tracker *tracker) {
     short int year, month, day;
     double hour;
 
-    cal_date( getUTC(tracker), &year, &month, &day, &hour );
+    cal_date(tracker_get_UTC(tracker), &year, &month, &day, &hour );
     printf( "UTC : %hi/%hi/%hi %f\n", year, month, day, hour );
 
-    cal_date( getUT1(tracker), &year, &month, &day, &hour );
+    cal_date(tracker_get_UT1(tracker), &year, &month, &day, &hour );
     printf( "UT1 : %hi/%hi/%hi %f\n", year, month, day, hour );
 
-    cal_date( getTT(tracker), &year, &month, &day, &hour );
+    cal_date(tracker_get_TT(tracker), &year, &month, &day, &hour );
     printf( "TT  : %hi/%hi/%hi %f\n\n", year, month, day, hour );
 
     fflush(0);
 }
 
-void print_site( Tracker* tracker ) {
+void tracker_print_site(Tracker *tracker) {
     printf("latitude:\t%f hours\n", tracker->site.latitude);
     printf("longitude:\t%f degrees\n", tracker->site.longitude);
     printf("elevation:\t%f meters\n", tracker->site.height);

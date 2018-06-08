@@ -9,11 +9,6 @@
 #include "catalog.h"
 #include "vmath.h"
 
-/** Creates a new catalog at the given pointer.
- * If the 'catalog' reference is NULL a new catalog and entries are allocated using the hint.
- * If the reference is valid and 'allocate' is positive, new entries are allocated and teh old are freed.
- * Otherwise the catalog's pre-existing references are used. This allows you to reuse previously allocated catalogs.
- * Returns the initialized catalog. */
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // If they request a new catalog but don't provide a size hint just guess a default.
     if( !catalog && allocate<=0 )
@@ -46,7 +41,6 @@ Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     return catalog;
 }
 
-/**  */
 Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
     char buf[1024], *s;
     double hour, min, sec;
@@ -114,7 +108,6 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
     return catalog;
 }
 
-/** Adds the given entry to the catalog, doubling the allocated space if necessary. */
 void catalog_add( Catalog *catalog, Entry *entry ) {
     // if full, copy Entries into larger array
     if( catalog->size == catalog->allocated ) {
@@ -130,14 +123,6 @@ void catalog_add( Catalog *catalog, Entry *entry ) {
     catalog->stars[ catalog->size++ ] = entry;
 }
 
-/** Searches a catalog for entries within the geometry and returns a catalog holding the results.
- * No effort is taken to remove duplicates from the results.
- * catalog: the catalog to be searched.
- * ra: right ascension of axis of search cone volume in hours.
- * dec: declination of axis of search cone volume in degrees.
- * r: angle between axis and edge of search cone volume in degrees.
- * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
- * */
 Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r, Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
@@ -203,13 +188,6 @@ Catalog* catalog_orange( Catalog* c, double ra_min, double ra_max, Catalog* resu
     return results;
 }
 
-/** Searches a catalog for entries within the geometry and returns a catalog holding the results.
- * No effort is taken to remove duplicates from the results.
- * catalog: The catalog to be searched.
- * ra_min, ra_max: Right ascension bounds, inclusive.
- * dec_min, dec_max: Declination bounds, inclusive.
- * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
- * */
 Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
                               Catalog *results ) {
     // create an output catalog if no reference was given
@@ -230,12 +208,6 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
     return results;
 }
 
-/** Searches a catalog for Entries for which the predicate function returns true.
- * No effort is taken to remove duplicates from the results.
- * catalog: The catalog to be searched.
- * predicate: a pointer to a boolean function of an Entry
- * results: A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
- * */
 Catalog* catalog_filter( Catalog *catalog, int (*predicate)(Entry *), Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
@@ -248,13 +220,11 @@ Catalog* catalog_filter( Catalog *catalog, int (*predicate)(Entry *), Catalog *r
     return results;
 }
 
-/** Releases the Catalog and it's directory, but not the actual Entries. */
 void catalog_free( Catalog *catalog ) {
     free( catalog->stars );
     free( catalog );
 }
 
-/** Releases the Entries underlying the Catalog.  */
 void catalog_free_entries( Catalog *catalog ) {
     catalog_each( catalog, (EntryFunction)free );
 }

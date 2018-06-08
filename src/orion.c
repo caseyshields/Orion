@@ -86,16 +86,16 @@ Tracker * configure_tracker( int argc, char *argv[] ) {
 
     // create the tracker
     Tracker* tracker = malloc( sizeof(Tracker) );
-    create( tracker, ut1_utc, leap_secs );
+    tracker_create(tracker, ut1_utc, leap_secs);
 
     // set the tracker's time in UTC
-    setTime( tracker, get_time() );
-    print_time( tracker );
+    tracker_set_time(tracker, get_time());
+    tracker_print_time(tracker);
 
     // set the location
-    setCoordinates( tracker, latitude, longitude, height );
-    setAtmosphere( tracker, celsius, millibars );
-    print_site( tracker );
+    tracker_set_location(tracker, latitude, longitude, height);
+    tracker_set_weather(tracker, celsius, millibars);
+    tracker_print_site(tracker);
 
     return tracker;
 }
