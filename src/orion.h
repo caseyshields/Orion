@@ -5,9 +5,10 @@
 #ifndef STARTRACK_ORION_H
 #define STARTRACK_ORION_H
 
-// default latitude of sensor in degrees
+#include <pthread.h>
 #include "catalog.h"
 
+// default latitude of sensor in degrees
 #define LATITUDE "38.88972222222222"
 
 // default longitude of sensor in degrees
@@ -28,26 +29,34 @@
 // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
 #define TAI_UTC "37.000000"
 
-// some winsock crap if you're trying to figure this out on posix;
-//define INVALID_SOCKET (unsigned int)(~0)
-//define SOCKET_ERROR -1
 
-// ORION program state
-Tracker * tracker = NULL; // a representation of the sensor being controlled
-unsigned int client = INVALID_SOCKET; // socket for the actual sensor
-Catalog * catalog = NULL; // a catalog of stars to choose targets from
+typedef struct {
+    Tracker tracker; // a representation of the sensor being controlled
+    Catalog catalog; // A catalog of stars to choose targets from
+    struct sockaddr_in address; // address of the sensor
+    unsigned int client; // socket for the sensor
+    pthread_t control; // thread which runs the control loop for the sensor
+} Orion;
 
-// ORION methods
-Tracker * configure_tracker( int argc, char *argv[] );
+/** extracts tracker information from the program arguments and constructs a model of a tracker */
+void configure_tracker( int argc, char* argv[], Tracker* tracker );
 
-unsigned int configure_client( int argc, char *argv[] );
+void configure_address(int argc, char* argv[], struct sockaddr_in* address);
 
-Catalog * configure_catalog( int argc, char* argv[] );
+void configure_catalog( int argc, char* argv[], Catalog* catalog );
+
+void * orion_start_sensor( void * data );
 
 double get_time();
 
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
 
-void terminate( int status, char* msg );
+// some winsock crap if you're trying to figure this out on posix;
+//define INVALID_SOCKET (unsigned int)(~0)
+//define SOCKET_ERROR -1
+
+// cleans up orion program resources and exits the program, emmiting a message in msg is non-null.
+//void orion_terminate( Orion* orion, int status, char* msg );
+
 
 #endif //STARTRACK_ORION_H

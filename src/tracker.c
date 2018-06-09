@@ -11,7 +11,6 @@ int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
 
     tracker->ut1_utc = ut1_utc;
     tracker->leap_secs = leap_secs;
-
     // Novas typically deals with the sum of the offsets, might want to cache it...
     //map->delta_t = 32.184 + map->leap_secs - map->ut1_utc;
 
@@ -113,7 +112,7 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
 
     // calculate a geocentric earth fixed vector as in Novas C-39
     double lon_rad = site.longitude * DEG2RAD;
-    double lat_rad = site.latitude *DEG2RAD;
+    double lat_rad = site.latitude * DEG2RAD;
     double sin_lon = sin(lon_rad);
     double cos_lon = cos(lon_rad);
     double sin_lat = sin(lat_rad);
