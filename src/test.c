@@ -107,7 +107,7 @@ int main( int argc, char *argv[] ) {
 //            Catalog* results = catalog_filter(catalog, &check_id, NULL);
 
             // filter by name
-            get_input("catalog number", &line, &size);
+            get_input("catalog name", &line, &size);
             int check_name( Entry *entry ) {
                 return NULL != strstr(entry->novas.starname, line );
             }

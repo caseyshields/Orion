@@ -33,9 +33,12 @@
 typedef struct {
     Tracker tracker; // a representation of the sensor being controlled
     Catalog catalog; // A catalog of stars to choose targets from
+    cat_entry target; // current target of the tracker
+    volatile int mode; // current state of the control thread
+    pthread_t control; // thread which runs the control loop for the sensor
     struct sockaddr_in address; // address of the sensor
     unsigned int client; // socket for the sensor
-    pthread_t control; // thread which runs the control loop for the sensor
+    //char* error;
 } Orion;
 
 /** extracts tracker information from the program arguments and constructs a model of a tracker */
@@ -45,11 +48,17 @@ void configure_address(int argc, char* argv[], struct sockaddr_in* address);
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog );
 
-void * orion_start_sensor( void * data );
+void * control_loop( void * data );
 
 double get_time();
 
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
+
+ssize_t get_input(char* prompt, char **line, size_t *size );
+
+int orion_start( Orion * orion );
+int orion_select( Orion * orion, int id );
+int orion_stop( Orion * orion );
 
 // some winsock crap if you're trying to figure this out on posix;
 //define INVALID_SOCKET (unsigned int)(~0)
