@@ -34,18 +34,16 @@ set( ORION_SOURCE
         src/fk6.c
         src/fk6.h
         src/tats.h
-        src/orion.h
-        src/orion.c
         src/vmath.c
         src/vmath.h
         )
 
 # This is an interactive commandline program for benchmarking and testing program components
-add_executable(tester ${ORION_SOURCE} src/test.c)
+add_executable( tester ${ORION_SOURCE} src/test.c)
 target_link_libraries( tester novas )
 
 add_executable( sensor ${ORION_SOURCE} src/sensor.c )
 target_link_libraries( sensor novas wsock32 ws2_32 )
 
-add_executable( orion ${ORION_SOURCE} src/main.c)
+add_executable( orion ${ORION_SOURCE} src/orion.h src/orion.c src/main.c)
 target_link_libraries( orion novas pthread wsock32 ws2_32 )

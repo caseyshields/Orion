@@ -20,7 +20,10 @@ Orion* orion_create( Orion * orion ) {
     if (!orion)
         orion = malloc(sizeof(orion));
     if (orion) {
-        memset(orion, 0, sizeof(orion));
+        memset( orion, 0, sizeof(Orion) );
+        //        memset(&(orion->tracker), 0, sizeof(Tracker));
+//        memset(&(orion->target), 0, sizeof(cat_entry));
+        orion->mode = ORION_MODE_OFF;
         orion->socket = INVALID_SOCKET;
         pthread_mutex_init( &(orion->lock), NULL);
         orion->rate = (int)(SLEEP_RESOLUTION / ORION_RATE);//(int)(1000.0 / 50.0);
@@ -158,7 +161,7 @@ int orion_start( Orion * orion ) {
 
     // start the server control thread
     orion->mode = ORION_MODE_ON;
-    pthread_create(&orion->control, NULL, orion_control_loop, &orion);
+    pthread_create( &(orion->control), NULL, orion_control_loop, orion);
     pthread_mutex_unlock( &(orion->lock) );
     return 0;
 }

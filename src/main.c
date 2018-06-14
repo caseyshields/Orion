@@ -46,16 +46,18 @@ int main( int argc, char *argv[] ) {
     ssize_t read = 0;
     int result;
 
-    // create and load a catalog of stars
-    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
-    Catalog catalog;
-    FILE *file = fopen(path, "r");
-    if (catalog_load_fk5(&catalog, file))
-        goto CLEANUP;
-
     // create the Orion server structure
     Orion orion;
     orion_create( &orion );
+
+    // create and load a catalog of stars
+    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
+    Catalog catalog = {.size=0, .allocated=0, .stars = NULL};
+    catalog_create( &catalog, 1024 );
+    FILE *file = fopen(path, "r");
+    catalog_load_fk5(&catalog, file);
+    if (!catalog.size)
+        goto CLEANUP;
 
     // create main components according to program arguments
     configure_tracker( argc, argv, &(orion.tracker) );
@@ -108,7 +110,7 @@ int main( int argc, char *argv[] ) {
 //        }
 
         // search name ////////////////////////////////////////////////////////
-        if( strncmp( "name ", line, 7)==0 ) {
+        if( strncmp( "name ", line, 5)==0 ) {
             char name[32];
             result = sscanf( line, "name %32s\n", name);
             if( result==0 ) {
@@ -149,22 +151,18 @@ int main( int argc, char *argv[] ) {
 //                printf( "select failed");
 //        }
 
-        // stop the sensor control thread
-        if (strncmp("stop", line, 4)==0) {
-            orion_stop( &orion );
-        } // reference : https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
-
-        // exit orion
+        // stop the sensor control thread and exit
         if( strncmp("exit", line, 4)==0 ) {
+            orion_stop( &orion );
             break;
         }
 
         // get help with the commands
         if( strncmp( "help", line, 4 )==0 ) {
-            char command[11];
+            char command[11] = {0,0,0,0,0,0,0,0,0,0,0};
             result = sscanf(line, "help%10s\n", command);
-            if (result == 0) {
-                printf("Commands:load <path>\nsearch <name>\nstart\nselect <id>\nstop\nexit\n");
+            if (strlen(command)==0) {//result == 0) {
+                printf("Commands:\nname <substr>\nsearch <> <> <> <> <>\ntrack <id>\nexit\n");
             } else {
                 // todo print specific help
             }
@@ -180,7 +178,8 @@ int main( int argc, char *argv[] ) {
 
     EXIT:
     if (orion.error) {
-        fprintf(stderr, orion.error);
+        fprintf(stdout, orion.error);
+        fflush(stdout);
         return 1;
     }
     return 0;

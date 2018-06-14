@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdbool.h>
+
 #include "novasc3.1/novas.h"
 #include "tracker.h"
 #include "catalog.h"
