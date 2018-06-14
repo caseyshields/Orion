@@ -16,7 +16,113 @@
 #include "vmath.h"
 #include "orion.h"
 
-Orion * orion_create( Tracker * tracker ) {
+Orion* orion_create( Orion * orion ) {
+    if (!orion)
+        orion = malloc(sizeof(orion));
+    if (!orion) {
+        memset(orion, 0, sizeof(orion));
+        orion->client = INVALID_SOCKET;
+        pthread_mutex_init(orion->mutex, NULL);
+    }
+    return orion;
+}
+
+int orion_is_connected (Orion * orion) {
+    return orion != INVALID_SOCKET;
+}
+
+int orion_is_running ( Orion * orion ) {
+    pthread_mutex_lock( orion->mutex );
+    int running = orion->mode;
+    pthread_mutex_unlock( orion->mutex ); //https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
+    return running;
+}
+
+int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
+    char * error = NULL;
+    int status = 0;
+
+    // construct server address structure
+    struct sockaddr_in address = {
+            .sin_zero = {0,0,0,0,0,0,0,0},
+            .sin_family = AF_INET, // internet address family
+            .sin_addr.s_addr = inet_addr(ip), // server ip
+            .sin_port = htons(port) // server port
+    };
+
+    // load the winsock library
+    WSADATA wsadata;
+    status = WSAStartup( MAKEWORD(2, 2), &wsadata);
+    if( status != 0 ) {
+        error = "Failed to initialize winsock";
+        goto EXIT;
+    }
+
+    // create a TCP socket for the client
+    orion->client = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if( orion->client == INVALID_SOCKET ) {
+        error = "Failed to create socket";
+        goto CLEANUP_WINSOCK;
+    }
+
+    // connect the socket to the server
+    status = connect( orion->client, (struct sockaddr*)&(address), sizeof(address) );
+    if( status == SOCKET_ERROR ) {
+        error = "Failed to connect to the server";
+        goto CLEANUP_SOCKET;
+    }
+
+    status = 0;
+    goto EXIT;
+
+    CLEANUP_SOCKET:
+    status = WSAGetLastError();
+    closesocket(orion->client); // just close in POSIX
+
+    CLEANUP_WINSOCK:
+    WSACleanup(); // no posix equivalent
+
+    EXIT:
+    if (error)
+        sprintf(orion->error, "[%d] %s\n", status, error);
+    return status;
+}
+
+void * orion_control_loop( void * arg ) {
+    Orion * orion = (Orion*)arg;
+    int status = 0;
+
+    // enter a loop where the target is continually updated...
+    while( orion->mode ) {
+        // test connection
+        char * teststr = "testy tester testing tests testily";
+        int length = strlen( teststr );
+        int sent = send( orion->client, teststr, length, 0 );
+        if( sent < length ) {
+            status = WSAGetLastError();
+            printf("Error [%d] Failed to send entire message, sent %d\n", status, sent);
+
+            goto CLEANUP_CONNECTION;
+        }
+        break;
+    }
+
+
+
+    return (void*) orion;
+}
+
+int orion_start( Orion * orion ) {//int * mode, pthread_t * control, Tracker * tracker) {
+    // get mutex
+    // check server is off
+    if( !orion->mode ) {
+        orion->mode = 1;
+        pthread_create(&orion->control, NULL, orion_control_loop, &orion);
+        return 0;
+    } else {
+        printf("Sensor control thread already started.\n");
+        return 1;
+    }
 
 }
 
@@ -28,85 +134,7 @@ int orion_select( int id ) {
     return -1;
 }
 
-int orion_start( int * mode, pthread_t * control, Tracker * tracker) {
-    if( !mode ) {
-        pthread_create(&control, NULL, control_loop, &tracker);
-        return 0;
-    } else {
-        printf("Sensor control thread already started.\n");
-        return 1;
-    }
-
-}
-
-unsigned int connect_sensor ( struct sockaddr * address ) {
-    char * error = NULL;
-    int status = 0;
-
-    // load the winsock library
-    WSADATA wsadata;
-    status = WSAStartup( MAKEWORD(2, 2), &wsadata);
-    if( status != 0 ) {
-        error = "Failed to initialize winsock";
-        goto EXIT;
-    }
-
-    // create a TCP socket for the client
-    unsigned int client = socket(PF_INET/*AF_UNSPEC*/, SOCK_STREAM, IPPROTO_TCP);
-    if( client == INVALID_SOCKET ) {
-        error = "Failed to create socket";
-        goto CLEANUP_WINSOCK;
-    }
-
-    // connect the socket to the server
-    status = connect( client, (struct sockaddr*)&(address), sizeof(address) );
-    if( status == SOCKET_ERROR ) {
-        error = "Failed to connect to the server";
-        goto CLEANUP_SOCKET;
-    }
-
-    CLEANUP_SOCKET:
-    status = WSAGetLastError();
-    closesocket(client); // just close in POSIX
-
-    CLEANUP_WINSOCK:
-    WSACleanup(); // no posix equivalent
-
-    EXIT:
-    if (error) {
-        printf("Error [%d] %s\n", status, error);
-        fflush(stdout);
-        return INVALID_SOCKET;
-    } else {
-        return client;
-    }
-}
-
-void * sensor_control_loop( void * arg ) {
-    int client = *((int*)arg);
-    int status = 0;
-
-    // enter a loop where the target is continually updated...
-    while( true ) {
-        // test connection
-        char * teststr = "testy tester testing tests testily";
-        int length = strlen( teststr );
-        int sent = send( client, teststr, length, 0 );
-        if( sent < length ) {
-            status = WSAGetLastError();
-            printf("Error [%d] Failed to send entire message, sent %d\n", status, sent);
-
-            goto CLEANUP_CONNECTION;
-        }
-        break;
-    }
-
-    CLEANUP_CONNECTION:
-    if( shutdown(client, SD_SEND) == SOCKET_ERROR ) // winsock specific
-        ;// well we tried
-}
-
-int orion_stop(int * mode, pthread_t * control) {
+int orion_stop(Orion * orion) {//int * mode, pthread_t * control) {
     if( mode ) {
         int* value = NULL;
         pthread_join( *control, (void**)&value );
@@ -120,9 +148,11 @@ int orion_stop(int * mode, pthread_t * control) {
 }
 
 int disconnect_sensor(unsigned int client) {
+
     if(client==INVALID_SOCKET)
         return 1;
 
+    //CLEANUP_CONNECTION:
     if( shutdown(client, SD_SEND) == SOCKET_ERROR ) // winsock specific
         ;// well we tried
 

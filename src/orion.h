@@ -23,10 +23,10 @@ typedef struct {
     pthread_t control; // thread which runs the control loop for the sensor
     pthread_mutex_t mutex;
 
-    char* error; //
+    char error[128]; // error message set if a server method fails
 } Orion;
 
-void orion_create( Tracker * tracker );
+Orion * orion_create( Orion * orion );
 
 int orion_connect( Orion * orion, char * ip, unsigned short port );
 

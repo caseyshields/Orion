@@ -11,6 +11,7 @@
 #define DELTA_TT 32.184
 #define REDUCED_ACCURACY 1
 
+/** An object representing a tracker on the surface of the earth */
 typedef struct {
     double date;       // julian days; the number of days since noon, January 1, 4713 BC // Which Joseph Justice Scaliger estimated to be the beginning of history.
     double ut1_utc;    // current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time
