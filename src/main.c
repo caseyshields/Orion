@@ -24,52 +24,65 @@
 // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
 #define TAI_UTC "37.000000"
 
-// some winsock crap if you're trying to figure this out on posix;
-//define INVALID_SOCKET (unsigned int)(~0)
-//define SOCKET_ERROR -1
+// some winsock constant I use
+#ifndef WIN32
+#define INVALID_SOCKET (unsigned int)(~0)
+#define SOCKET_ERROR -1
+#endif
 
 double get_time();
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
 ssize_t get_input(char* prompt, char **line, size_t *size );
 void configure_tracker( int argc, char* argv[], Tracker* tracker );
-void configure_address(int argc, char* argv[], struct sockaddr_in* address);
+//void configure_address(int argc, char* argv[], struct sockaddr_in* address);
 void configure_catalog( int argc, char* argv[], Catalog* catalog );
 int search( Catalog * catalog, Tracker * tracker,
             double az_min, double az_max, double zd_min, double zd_max, float mag_min);
 
-/**  */
+/** Provides an interactive command line interface to the Orion server. */
 int main( int argc, char *argv[] ) {
-
-    Catalog catalog; // A catalog of stars to choose targets from
-    Orion orion;
-
     char *line = NULL;
     size_t size = 0 ;
     ssize_t read = 0;
     int result;
 
-    //Orion orion;//orion = malloc( sizeof(Orion) );
-//    memset( &tracker, 0, sizeof(tracker) );
-//    memset( &catalog, 0, sizeof(catalog) );
-//    memset( &target, 0, sizeof(target) );
-//    memset( &control, 0, sizeof(control) );
-//    memset( &address, 0, sizeof(address) );
-    client = INVALID_SOCKET;
-//    mode = 0;
+    // create and load a catalog of stars
+    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
+    Catalog catalog;
+    FILE *file = fopen(path, "r");
+    if (catalog_load_fk5(&catalog, file))
+        goto CLEANUP;
+
+    // create the Orion server structure
+    Orion orion;
+    orion_create( &orion );
 
     // create main components according to program arguments
     configure_tracker( argc, argv, &(orion.tracker) );
-    configure_address( argc, argv, &(orion.address) );
-    configure_catalog( argc, argv, &catalog );
-    // TODO eventually move this to interactive commands and make a script instead...
+    // TODO eventually move this configuration code to interactive commands and make a script instead...
 
-    while( true ) {
+    // get server address, should be in dotted quad notation
+    char *ip = get_arg(argc, argv, "-ip", "127.0.0.1");
 
-        // update and print out the time
-        tracker_set_time( &tracker, get_time() );
-        tracker_print_time( &tracker );
+    // get server socket port number
+    unsigned short port; // port
+    char *arg = get_arg(argc, argv, "-port", "43210");
+    port = (unsigned short) atoi(arg);
 
-        // print prompt and get next user command
+    // connect and start the orion server
+    if (orion_connect( &orion, ip, port ))
+        goto EXIT;
+    if (orion_start( &orion ))
+        goto DISCONNECT;
+
+    // start the main ui loop
+    while( TRUE ) {
+
+//        // update and print out the time
+//        tracker_set_time( &tracker, get_time() );
+//        tracker_print_time( &tracker );
+
+        // todo print prompt and get next user command
 
         read = get_input( "", &line, &size );
 
@@ -81,18 +94,18 @@ int main( int argc, char *argv[] ) {
         // set sensor ( ip, port )
 
         // load catalog ( path ) //////////////////////////////////////////////
-        if( strncmp( "load ", line, 5)==0) {
-            char path[256];
-            result = sscanf( line, "load %256s\n", path );
-            if(result==0) {
-                printf("usage: load <catalog path>");
-                continue;
-            }
-            if( catalog.size>0 )
-                catalog_free_entries( &catalog );
-            FILE *file = fopen( path, "r" );
-            catalog_load_fk5( &catalog, file );
-        }
+//        if( strncmp( "load ", line, 5)==0) {
+//            char path[256];
+//            result = sscanf( line, "load %256s\n", path );
+//            if(result==0) {
+//                printf("usage: load <catalog path>");
+//                continue;
+//            }
+//            if( catalog.size>0 )
+//                catalog_free_entries( &catalog );
+//            FILE *file = fopen( path, "r" );
+//            catalog_load_fk5( &catalog, file );
+//        }
 
         // search name ////////////////////////////////////////////////////////
         if( strncmp( "name ", line, 7)==0 ) {
@@ -111,7 +124,7 @@ int main( int argc, char *argv[] ) {
         }
 
         // search horizon patch ///////////////////////////////////////////////
-        if( strncmp("search ", line, 7) == 0) {
+        if (strncmp("search ", line, 7) == 0) {
             float mag;
             double az_0, az_1, zd_0, zd_1;
             result = scanf("search %f %lf %lf %lf %lf\n", &mag, &az_0, &az_1, &zd_0, &zd_1 );
@@ -119,26 +132,26 @@ int main( int argc, char *argv[] ) {
                 printf( "usage: search <min magnitude> <min az> <max az> <min zd> <max zd>\n");
                 continue;
             }
-            orion_search( &catalog, &tracker, az_0, az_1, zd_0, zd_1, mag );
+            search( &catalog, &(orion.tracker), az_0, az_1, zd_0, zd_1, mag );
         }
 
         // start the sensor control thread
-        if( strncmp( "start", line, 5 ) == 0 ) {
-            if(orion_start( &mode, &control, &tracker))
+        if (strncmp( "start", line, 5 ) == 0) {
+            if (orion_start( &orion ))
                 printf("Sensor control thread already started.\n");
         }
 
-        // select a target
-        if( strncmp("select", line, 6)==0 ) {
-            int id = 0;
-            result = sscanf( line, "select %d\n", &id );
-            if( orion_select(id) )
-                printf( "select failed");
-        }
+//        // select a target
+//        if (strncmp("select", line, 6) == 0) {
+//            int id = 0;
+//            result = sscanf( line, "select %d\n", &id );
+//            if( orion_track( id, target ) )
+//                printf( "select failed");
+//        }
 
         // stop the sensor control thread
-        if( strncmp("stop", line, 4)==0 ) {
-            orion_stop( &mode, &control );
+        if (strncmp("stop", line, 4)==0) {
+            orion_stop( &orion );
         } // reference : https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
         // exit orion
@@ -148,7 +161,8 @@ int main( int argc, char *argv[] ) {
 
         // get help with the commands
         if( strncmp( "help", line, 4 )==0 ) {
-            result = sscanf(line, "help%s\n");
+            char command[11];
+            result = sscanf(line, "help%10s\n", command);
             if (result == 0) {
                 printf("Commands:load <path>\nsearch <name>\nstart\nselect <id>\nstop\nexit\n");
             } else {
@@ -157,7 +171,19 @@ int main( int argc, char *argv[] ) {
         }
     }
 
+    DISCONNECT:
+    orion_disconnect( &orion );
+
+    CLEANUP:
     catalog_free_entries( &catalog );
+    catalog_free( &catalog );
+
+    EXIT:
+    if (orion.error) {
+        fprintf(stderr, orion.error);
+        return 1;
+    }
+    return 0;
 }
 
 int search(
@@ -170,11 +196,11 @@ int search(
     int is_bright( Entry * entry ) {
         return entry->magnitude >= mag_min;
     }
-    Catalog * bright_stars = catalog_filter( &catalog, is_bright, NULL );
+    Catalog * bright_stars = catalog_filter( catalog, is_bright, NULL );
 
     // transform the entire catalog of bright stars
     void to_horizon(Entry * entry) {
-        tracker_to_horizon( &tracker,
+        tracker_to_horizon( tracker,
                             &(entry->novas),
                             &(entry->zenith_distance),
                             &(entry->topocentri_azimiuth) );
@@ -298,28 +324,28 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
     tracker_set_weather(tracker, celsius, millibars);
 }
 
-/** Creates an ip address for the sensor from the arguments. */
-void configure_address(int argc, char* argv[], struct sockaddr_in* address) {
+///** Creates an ip address for the sensor from the arguments. */
+//void configure_address(int argc, char* argv[], struct sockaddr_in* address) {
+//
+//    // get server address, should be in dotted quad notation
+//    char *ip = get_arg(argc, argv, "-ip", "127.0.0.1");
+//
+//    // get server socket port number
+//    unsigned short port; // port
+//    char *arg = get_arg(argc, argv, "-port", "43210");
+//    port = (unsigned short) atoi(arg);
+//
+//    // construct server address structure
+//    address->sin_family = AF_INET; // internet address family
+//    address->sin_addr.s_addr = inet_addr( ip ); // server ip
+//    address->sin_port = htons( port ); // server port
+//}
 
-    // get server address, should be in dotted quad notation
-    char *ip = get_arg(argc, argv, "-ip", "127.0.0.1");
-
-    // get server socket port number
-    unsigned short port; // port
-    char *arg = get_arg(argc, argv, "-port", "43210");
-    port = (unsigned short) atoi(arg);
-
-    // construct server address structure
-    address->sin_family = AF_INET; // internet address family
-    address->sin_addr.s_addr = inet_addr( ip ); // server ip
-    address->sin_port = htons( port ); // server port
-}
-
-void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
-    // get the location of the catalog data
-    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
-
-    // create and load a catalog
-    FILE *file = fopen(path, "r");
-    catalog_load_fk5(catalog, file);
-}
+//void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
+//    // get the location of the catalog data
+//    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
+//
+//    // create and load a catalog
+//    FILE *file = fopen(path, "r");
+//    catalog_load_fk5(catalog, file);
+//}

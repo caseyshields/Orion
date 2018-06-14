@@ -46,7 +46,7 @@ int main( int argc, char *argv[] ) {
         int result = recv(client, buffer, MAX_BUFFER_SIZE, 0);
         if( result > 0 ) {
             printf( "Recieved message:\n%s\n", buffer );
-//          result = send( client, &entry, sizeof(entry), 0);
+//          result = send( socket, &entry, sizeof(entry), 0);
 //          if( result == SOCKET_ERROR )
 //              terminate( WSAGetLastError(), "Failed to send back the entry");
 
