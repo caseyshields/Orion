@@ -19,24 +19,45 @@
 Orion* orion_create( Orion * orion ) {
     if (!orion)
         orion = malloc(sizeof(orion));
-    if (!orion) {
+    if (orion) {
         memset(orion, 0, sizeof(orion));
         orion->client = INVALID_SOCKET;
-        pthread_mutex_init(orion->mutex, NULL);
+        pthread_mutex_init( &(orion->mutex), NULL);
+        orion->rate = (int)(SLEEP_RESOLUTION / ORION_RATE);//(int)(1000.0 / 50.0);
     }
     return orion;
 }
 
+/** gets a millisecond accurate timestamp from the system, converts it to Julian hours(see Novas
+ * 3.1 documentation), then sets the current tracker time.
+ * @returns the last marked timestamp.*/
+double orion_mark_time( Orion * orion ) {
+    struct timeval time;
+    gettimeofday( &time, NULL ); // UTC timestamp in unix epoch
+    double julian_hours = time.tv_sec + (time.tv_usec / 1000000.0);
+    double last_time = orion->tracker.date;
+    orion->tracker.date = julian_hours;
+    return last_time;
+}
+
 int orion_is_connected (Orion * orion) {
-    return orion != INVALID_SOCKET;
+    return orion->client != INVALID_SOCKET;
 }
 
 int orion_is_running ( Orion * orion ) {
-    pthread_mutex_lock( orion->mutex );
+    pthread_mutex_lock( &(orion->mutex) );
     int running = orion->mode;
-    pthread_mutex_unlock( orion->mutex ); //https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
-    return running;
-}
+    pthread_mutex_unlock( &(orion->mutex) );
+    return running == ORION_MODE_ON;
+} //https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
+
+//char* orion_set_error( Orion *orion, char* error ) {
+//    orion->error = error;
+//}
+//
+//char* orion_poll_error( Orion* orion ) {
+//
+//}
 
 int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
     char * error = NULL;
@@ -90,40 +111,80 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
 
 void * orion_control_loop( void * arg ) {
     Orion * orion = (Orion*)arg;
-    int status = 0;
+    double zd, az;
+    char buffer[1024];
+    memset(&buffer, 0, 1024);
 
-    // enter a loop where the target is continually updated...
-    while( orion->mode ) {
-        // test connection
-        char * teststr = "testy tester testing tests testily";
-        int length = strlen( teststr );
-        int sent = send( orion->client, teststr, length, 0 );
-        if( sent < length ) {
-            status = WSAGetLastError();
-            printf("Error [%d] Failed to send entire message, sent %d\n", status, sent);
+    // loop indefinately
+    do {
+        // obtain lock
+        pthread_mutex_lock( &(orion->mutex) );
 
-            goto CLEANUP_CONNECTION;
+        // check if the server has been stopped
+        if (orion->mode)
+            break;
+
+        // update the current time
+        double last_time = orion_mark_time(orion);
+
+        // create a tracking message if we have a target
+        if (orion->target.starnumber) {
+
+            // calculate the current location of the target
+            tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);
+
+            // devise the tracking message
+            sprintf(buffer, "%4s%ld %s (%lf, %lf)\n\0",
+                    orion->target.catalog,
+                    orion->target.starnumber,
+                    orion->target.starname,
+                    az, zd);
+            // todo use TATS MIDC01
+
+        } else { // otherwise send an idle message
+            sprintf(buffer, "IDLE\n\0");
         }
-        break;
-    }
 
+        // we no longer need tracker internals or mode, so we can release the lock
+        pthread_mutex_unlock( &(orion->mutex) );
 
+        // send the tracking message
+        int length = strlen( buffer );
+        int sent = send( orion->client, buffer, length, 0 );
+
+        // set error and exit if there was a transmission error
+        if (sent < length) {
+            sprintf(orion->error, "[%d] Failed to send entire message, sent %d\0", WSAGetLastError(), sent);
+            break;
+        }
+
+        // enter a idle state
+        // TODO use running average to set heartbeat rate
+        sleep( orion->rate ); // in Windows this is in Milliseconds
+
+    } while( TRUE );
+
+    // release the lock after we abort the control loop
+    pthread_mutex_unlock( &(orion->mutex) );
 
     return (void*) orion;
 }
 
-int orion_start( Orion * orion ) {//int * mode, pthread_t * control, Tracker * tracker) {
-    // get mutex
+int orion_start( Orion * orion ) {
+    // get mutex lock
+    pthread_mutex_lock( &(orion->mutex) );
+
     // check server is off
-    if( !orion->mode ) {
-        orion->mode = 1;
+    int mode = orion->mode;
+    if ( mode ) {
+        orion->mode = ORION_MODE_ON;
         pthread_create(&orion->control, NULL, orion_control_loop, &orion);
-        return 0;
     } else {
-        printf("Sensor control thread already started.\n");
-        return 1;
+        sprintf(orion->error, "[%d] %s", 1, "Orion server is not initialized or has erred");
     }
 
+    pthread_mutex_unlock( &(orion->mutex) );
+    return mode;
 }
 
 int orion_select( int id ) {
@@ -134,30 +195,53 @@ int orion_select( int id ) {
     return -1;
 }
 
-int orion_stop(Orion * orion) {//int * mode, pthread_t * control) {
-    if( mode ) {
-        int* value = NULL;
-        pthread_join( *control, (void**)&value );
-        printf( "thread returned with value %d", *value );
-        free(value);
-        return 0;
-    } else {
-        printf( "Sensor control thread not running.\n");
+int orion_stop(Orion * orion) {
+
+    // obtain lock since we need to change the mode
+    pthread_mutex_lock( orion->mutex );
+
+    // abort if the server isn't running
+    if (orion->mode == ORION_MODE_OFF) {
+        sprintf(orion->error, "[%ld] %s", 1, "server is not running");
+        pthread_mutex_unlock(orion->mutex);
         return 1;
     }
+
+    // turn it off
+    orion->mode = ORION_MODE_OFF;
+
+    // release the lock so the control thread can complete gracefully
+    pthread_mutex_unlock(orion->mutex);
+
+    // wait for the control thread to join
+    void * result = NULL;
+    pthread_join( orion->control, &result);
+
+    return 0;
 }
 
-int disconnect_sensor(unsigned int client) {
+int orion_disconnect( Orion * orion ) {
 
-    if(client==INVALID_SOCKET)
+    // abort if the server is running
+    if (orion_is_running( orion )) {
+        sprintf( orion->error, "[%d] %s\n\0", 1, "Cannot disconnect server while it is running");
         return 1;
+    }
 
-    //CLEANUP_CONNECTION:
-    if( shutdown(client, SD_SEND) == SOCKET_ERROR ) // winsock specific
+    // abort if the sensor is not connected
+    if(orion->client == INVALID_SOCKET) {
+        sprintf( orion->error, "[%d] %s\n\0", 1, "Server is not connected");
+        return 1;
+    }
+
+    // winsock specific, close the network connection
+    if( shutdown(orion->client, SD_SEND) == SOCKET_ERROR )
         ;// well we tried
 
-    closesocket(client); // just close in POSIX
+    // close the socket
+    closesocket( orion->client ); // just close(...) in POSIX
 
+    // unloads the winsock libraries
     WSACleanup(); // no posix equivalent
 
     return 0;
