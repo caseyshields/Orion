@@ -17,19 +17,6 @@
 
 #define MAX_BUFFER_SIZE 2<<10
 
-typedef struct {
-    unsigned char midc;
-    unsigned short riu_sensor_id;
-    unsigned short tcn_time;
-    int E, F, G;
-    unsigned char track_status;
-    union {
-        unsigned short track_id;
-        unsigned char symbol_type;
-    };
-    unsigned short crc;
-} MIDC_01;
-
 double get_time();
 unsigned int configure_server( int argc, char* argv[] );
 char* get_arg( int argc, char *argv[], char *name, char* default_value );

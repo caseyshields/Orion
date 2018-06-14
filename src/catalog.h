@@ -13,8 +13,11 @@ typedef struct entry_struct {
     cat_entry novas;
     // TODO add more catalog information...
     float magnitude;
-    double x, y, z;
-    double az, el;
+
+    // transformed horizon coordinates
+    double zenith_distance, topocentri_azimiuth;
+
+    // a pointing vector in geocentric coordinates, it's magnitude
     double E, F, G;
 } Entry;
 
@@ -71,6 +74,9 @@ Catalog* catalog_search_dome( Catalog* c, double right_ascension, double declina
 Catalog* catalog_search_patch( Catalog* c, double ra_min, double ra_max, double dec_min, double dec_max, Catalog* results );
 
 Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results);
+
+/**  */
+//Catalog* catalog_search_horizon( Catalog* c, double az_min, double az_max, double el_min, double el_max, float mag_min, Catalog * results );
 
 void catalog_print( Catalog *c );
 
