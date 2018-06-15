@@ -21,12 +21,10 @@ Orion* orion_create( Orion * orion ) {
         orion = malloc(sizeof(orion));
     if (orion) {
         memset( orion, 0, sizeof(Orion) );
-        //        memset(&(orion->tracker), 0, sizeof(Tracker));
-//        memset(&(orion->target), 0, sizeof(cat_entry));
         orion->mode = ORION_MODE_OFF;
         orion->socket = INVALID_SOCKET;
         pthread_mutex_init( &(orion->lock), NULL);
-        orion->rate = ORION_RATE;//(int)(SLEEP_RESOLUTION / ORION_RATE);
+        orion->rate = ORION_RATE; //(int)(SLEEP_RESOLUTION / ORION_RATE);
     }
     return orion;
 }
@@ -258,5 +256,7 @@ int orion_is_running ( Orion * orion ) {
 } //https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
 void orion_clear_error( Orion * orion ) {
+    pthread_mutex_lock( &(orion->lock) );
     memset( &(orion->error), 0, 128);
+    pthread_mutex_unlock( &(orion->lock) );
 }
