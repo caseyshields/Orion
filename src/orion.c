@@ -12,9 +12,9 @@
 #include <winsock.h>
 
 #include "novasc3.1/novas.h"
-#include "tracker.h"
-#include "vmath.h"
-#include "orion.h"
+#include "h/tracker.h"
+#include "h/vmath.h"
+#include "h/orion.h"
 
 Orion* orion_create( Orion * orion ) {
     if (!orion)

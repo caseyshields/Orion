@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include "novasc3.1/novas.h"
-#include "catalog.h"
-#include "vmath.h"
+#include "h/catalog.h"
+#include "h/vmath.h"
 
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // If they request a new catalog but don't provide a size hint just guess a default.

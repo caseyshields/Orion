@@ -5,7 +5,7 @@
 #include <novasc3.1/novas.h>
 #include <assert.h>
 #include <time.h>
-#include "tracker.h"
+#include "h/tracker.h"
 
 int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
 

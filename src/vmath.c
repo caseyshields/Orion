@@ -2,7 +2,7 @@
 // Created by Casey Shields on 5/3/2018.
 //
 #include <math.h>
-#include "vmath.h"
+#include "h/vmath.h"
 
 void scale( double U[3], double k ) {
     U[0] *= k;

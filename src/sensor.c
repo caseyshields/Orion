@@ -9,9 +9,9 @@
 #include <stdbool.h>
 
 #include "novasc3.1/novas.h"
-#include "tracker.h"
-#include "catalog.h"
-#include "vmath.h"
+#include "h/tracker.h"
+#include "h/catalog.h"
+#include "h/vmath.h"
 
 // we only allow one controller and one sensor
 #define MAX_CONNECTIONS 2

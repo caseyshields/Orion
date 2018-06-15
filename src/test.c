@@ -5,9 +5,9 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include "novasc3.1/novas.h"
-#include "tracker.h"
-#include "catalog.h"
-#include "vmath.h"
+#include "h/tracker.h"
+#include "h/catalog.h"
+#include "h/vmath.h"
 #include <unistd.h>
 #include <stdbool.h>
 

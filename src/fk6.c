@@ -2,7 +2,7 @@
 // Created by Casey Shields on 5/14/2018.
 //
 
-#include "fk6.h"
+#include "h/fk6.h"
 
 int fk6_load( Catalog* catalog, FILE* file ) {
     fk6_field metadata[100];
