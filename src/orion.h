@@ -13,12 +13,12 @@
 #define ORION_MODE_ON 1
 
 #define ORION_RATE 1
-//todo eventually put it to 50...
+//todo eventually put it to 50 hertz...
 
 #ifdef WIN32
 #define SLEEP_RESOLUTION 1000
 #else
-#define SLEEP_RESOLUTION 1000000
+#define SLEEP_RESOLUTION 1
 #endif
 
 /** A tracker controller which issues TATS commands over ethernet, given star information.

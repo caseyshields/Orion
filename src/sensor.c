@@ -23,6 +23,7 @@ unsigned int configure_server( int argc, char* argv[] );
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
 void terminate( int status, char* msg );
 
+int mode = 1;
 char *buffer;
 unsigned int server = INVALID_SOCKET;
 unsigned int client = INVALID_SOCKET;
@@ -31,46 +32,8 @@ unsigned int client = INVALID_SOCKET;
  * @author Casey Shields
  */
 int main( int argc, char *argv[] ) {
-
-    server = configure_server(argc, argv);
-
     buffer = malloc( MAX_BUFFER_SIZE );
-
-    printf("Awaiting client.\n");
-    client = accept(server, NULL, NULL);
-    if (client == INVALID_SOCKET)
-        terminate(WSAGetLastError(), "failed to accept client connection\n");
-
-    printf("Client connected.\n");
-    do {
-        memset( buffer, 0, MAX_BUFFER_SIZE );
-        int result = recv(client, buffer, MAX_BUFFER_SIZE, 0);
-        if( result > 0 ) {
-            printf( "Recieved message:\n%s\n", buffer );
-//          result = send( socket, &entry, sizeof(entry), 0);
-//          if( result == SOCKET_ERROR )
-//              terminate( WSAGetLastError(), "Failed to send back the entry");
-
-        } else if( result==0 ) {
-            printf( "Client closing connection, closing server\n" );
-            terminate( 0, NULL );
-            break;
-
-        } else
-            terminate( WSAGetLastError(), "Failed to read from client\n");
-
-    } while (true);
-}
-
-/** Gets an accurate UTC timestamp from the system in seconds since the unix epoch */
-double get_time() {
-    struct timeval time;
-    gettimeofday( &time, NULL );
-    return time.tv_sec + (time.tv_usec / 1000000.0);
-}
-
-unsigned int configure_server(int argc, char* argv[]) {
-    int result;
+    memset( buffer, 0, MAX_BUFFER_SIZE );
 
     // get server address, should be in dotted quad notation
     char* ip = get_arg( argc, argv, "-ip", "127.0.0.1");
@@ -82,38 +45,20 @@ unsigned int configure_server(int argc, char* argv[]) {
 
     // load the winsock library
     WSADATA wsadata;
-    result = WSAStartup( MAKEWORD(2, 2), &wsadata);
+    int result = WSAStartup( MAKEWORD(2, 2), &wsadata);
     if( result != 0 )
         terminate( result, "Failed to initialize winsock" );
 
-    // retrieve a list of available sockets for the server
-//    struct sockaddr_in hints;
-//    mwmser(&hints, 0, sizeof(hints));
-//    hints.ai_family = AF_INET;
-//    hints.ai_socktype = SOCK_STREAM;
-//    hints.ai_protocol = IPPROTO_TCP;
-//    hints.ai_flags = AI_PASSIVE;
-//
-//    result = getaddrinfo(NULL, DEFAULT_PORT, &hints, server);
-//    if( result!=0 ) {
-//        result = WSAGetLastError();
-//        freeaddrinfo(server);
-//        orion_exit( result, "failed to get server socket information" );
-//    }
-
     // create a TCP socket for connecting to the server
-    unsigned int server = INVALID_SOCKET; // listening socket descriptor
     server = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if( server == INVALID_SOCKET )
         terminate( WSAGetLastError(), "Failed to create socket");
-
 
     // construct server address structure
     struct sockaddr_in address;
     memset(&address, 0, sizeof(address));
     address.sin_family = AF_INET; // internet address family
     address.sin_addr.s_addr = inet_addr( ip ); // server ip
-    //address.sin_addr.s_addr = htonl( INADDR_ANY ); // any incoming interface
     address.sin_port = htons( port ); // local port
 
     // bind socket to host network
@@ -121,14 +66,55 @@ unsigned int configure_server(int argc, char* argv[]) {
     if( result == SOCKET_ERROR )
         terminate( WSAGetLastError(), "Failed to bind server socket" );
 
-    //freeaddrinfo(address);// free the linked list of results if getaddrinfo() was used
-
     // set socket to listen for incoming connections
     result = listen( server, MAX_CONNECTIONS );
     if( result < 0 )
         terminate(result, "Failed to listen");
 
-    return server;
+    // accept Orion clients
+    while( mode ) { // todo need a way to gracefully exit
+
+        printf("Awaiting client.\n");
+        client = accept(server, NULL, NULL);
+        if (client == INVALID_SOCKET) {
+            //terminate(WSAGetLastError(), "failed to accept client connection\n");
+            printf( "[%ld] Failed to accept client connection\n\0", WSAGetLastError() );
+            continue;
+        }
+
+        printf("Client connected.\n");
+        do {
+            memset(buffer, 0, MAX_BUFFER_SIZE);
+            int result = recv(client, buffer, MAX_BUFFER_SIZE, 0);
+            if (result > 0) {
+                printf("Recieved message:\n%s\n", buffer);
+//          result = send( socket, &entry, sizeof(entry), 0);
+//          if( result == SOCKET_ERROR )
+//              terminate( WSAGetLastError(), "Failed to send back the entry");
+
+            } else if (result == 0) {
+                // terminate(0, NULL);
+                printf( "[%ld] Client closed connection\n\0", WSAGetLastError());
+                closesocket( client );
+                break;
+            } else {
+                //terminate(WSAGetLastError(), "Failed to read from client\n");
+                printf( "[%ld] Failed to read from client\n\0", WSAGetLastError());
+                closesocket( client );
+                break;
+            }
+
+        } while (true);
+    }
+
+    terminate(0, NULL);
+}
+
+/** Gets an accurate UTC timestamp from the system in seconds since the unix epoch */
+double get_time() {
+    struct timeval time;
+    gettimeofday( &time, NULL );
+    return time.tv_sec + (time.tv_usec / 1000000.0);
 }
 
 /** retrieves the value subsequent to the specified option. If the default_value
@@ -165,3 +151,67 @@ void terminate(int status, char* msg) {
 
     exit( status );
 }
+
+// retrieve a list of available sockets for the server
+//    struct sockaddr_in hints;
+//    mwmser(&hints, 0, sizeof(hints));
+//    hints.ai_family = AF_INET;
+//    hints.ai_socktype = SOCK_STREAM;
+//    hints.ai_protocol = IPPROTO_TCP;
+//    hints.ai_flags = AI_PASSIVE;
+//
+//    result = getaddrinfo(NULL, DEFAULT_PORT, &hints, server);
+//    if( result!=0 ) {
+//        result = WSAGetLastError();
+//        freeaddrinfo(server);
+//        orion_exit( result, "failed to get server socket information" );
+//    }
+//    freeaddrinfo(address);// free the linked list of results if getaddrinfo() was used
+
+
+//unsigned int configure_server(int argc, char* argv[]) {
+//    int result;
+//
+//    // get server address, should be in dotted quad notation
+//    char* ip = get_arg( argc, argv, "-ip", "127.0.0.1");
+//
+//    // get server socket port number
+//    unsigned short port; // port
+//    char* arg = get_arg( argc, argv, "-port", "43210" );//8080" );
+//    if( arg ) port = atoi( arg );
+//
+//    // load the winsock library
+//    WSADATA wsadata;
+//    result = WSAStartup( MAKEWORD(2, 2), &wsadata);
+//    if( result != 0 )
+//        terminate( result, "Failed to initialize winsock" );
+//
+//    // create a TCP socket for connecting to the server
+//    unsigned int server = INVALID_SOCKET; // listening socket descriptor
+//    server = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+//    if( server == INVALID_SOCKET )
+//        terminate( WSAGetLastError(), "Failed to create socket");
+//
+//
+//    // construct server address structure
+//    struct sockaddr_in address;
+//    memset(&address, 0, sizeof(address));
+//    address.sin_family = AF_INET; // internet address family
+//    address.sin_addr.s_addr = inet_addr( ip ); // server ip
+//    //address.sin_addr.s_addr = htonl( INADDR_ANY ); // any incoming interface
+//    address.sin_port = htons( port ); // local port
+//
+//    // bind socket to host network
+//    result = bind( server, (struct sockaddr *) &address, sizeof(address) );
+//    if( result == SOCKET_ERROR )
+//        terminate( WSAGetLastError(), "Failed to bind server socket" );
+//
+//    //freeaddrinfo(address);// free the linked list of results if getaddrinfo() was used
+//
+//    // set socket to listen for incoming connections
+//    result = listen( server, MAX_CONNECTIONS );
+//    if( result < 0 )
+//        terminate(result, "Failed to listen");
+//
+//    return server;
+//}

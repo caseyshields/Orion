@@ -26,7 +26,7 @@ Orion* orion_create( Orion * orion ) {
         orion->mode = ORION_MODE_OFF;
         orion->socket = INVALID_SOCKET;
         pthread_mutex_init( &(orion->lock), NULL);
-        orion->rate = (int)(SLEEP_RESOLUTION / ORION_RATE);//(int)(1000.0 / 50.0);
+        orion->rate = ORION_RATE;//(int)(SLEEP_RESOLUTION / ORION_RATE);
     }
     return orion;
 }
@@ -140,6 +140,8 @@ void * orion_control_loop( void * arg ) {
 
         // enter a idle state
         sleep( orion->rate ); // in Windows this is in Milliseconds
+//        struct timespec ts;
+//        nanosleep( &ts, );
         // TODO use running average to set heartbeat rate
 
     } while( TRUE );
