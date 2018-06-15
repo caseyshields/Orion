@@ -2,6 +2,7 @@
 #include <winsock.h>
 #include "tracker.h"
 #include "orion.h"
+#include "catalog.h"
 
 // default latitude of sensor in degrees
 #define LATITUDE "38.88972222222222"
@@ -202,7 +203,7 @@ int search(
         tracker_to_horizon( tracker,
                             &(entry->novas),
                             &(entry->zenith_distance),
-                            &(entry->topocentri_azimiuth) );
+                            &(entry->topocentric_azimuth) );
     }
     catalog_each( bright_stars, &to_horizon );
 
@@ -210,8 +211,8 @@ int search(
     int in_patch(Entry *entry) {
         return entry->zenith_distance > zd_min
                && entry->zenith_distance < zd_max
-               && entry->topocentri_azimiuth > az_min
-               && entry->topocentri_azimiuth < az_max;
+               && entry->topocentric_azimuth > az_min
+               && entry->topocentric_azimuth < az_max;
     }
     Catalog * results = catalog_filter( bright_stars, in_patch, NULL );
     // todo if catalog == results, filter the catalog in place...
@@ -225,7 +226,7 @@ int search(
         printf( "%s%ld\t%s\t%f\t%lf\t%lf\n",
                 novas->catalog, novas->starnumber,
                 novas->starname, entry->magnitude,
-                entry->topocentri_azimiuth, entry->zenith_distance);
+                entry->topocentric_azimuth, entry->zenith_distance);
     }
     catalog_each( results, print_star );
 

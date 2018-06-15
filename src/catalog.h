@@ -19,7 +19,7 @@ typedef struct {
     float magnitude;
 
     /** Scratch-space for transformed horizon coordinates- only makes sense in the context of a Tracker */
-    double zenith_distance, topocentri_azimiuth;
+    double zenith_distance, topocentric_azimuth;
 
     /** A pointing vector in geocentric coordinates, only makes sense in the context of a Tracker */
     double E, F, G;
