@@ -53,27 +53,6 @@ int main( int argc, char *argv[] ) {
 
         read = get_input( "", &line, &size );
 
-        // mark time
-        // set time
-        // set orientation ( ut1-utc, leapsecs, x, y )
-        // set location ( lat, longitude, height )
-        // set weather ( temperature, pressure )
-        // set sensor ( ip, port )
-
-        // load catalog ( path ) //////////////////////////////////////////////
-//        if( strncmp( "load ", line, 5)==0) {
-//            char path[256];
-//            result = sscanf( line, "load %256s\n", path );
-//            if(result==0) {
-//                printf("usage: load <catalog path>");
-//                continue;
-//            }
-//            if( catalog.size>0 )
-//                catalog_free_entries( &catalog );
-//            FILE *file = fopen( path, "r" );
-//            catalog_load_fk5( &catalog, file );
-//        }
-
         // search name ////////////////////////////////////////////////////////
         if( strncmp( "name ", line, 5)==0 ) {
             char name[32];
@@ -102,7 +81,7 @@ int main( int argc, char *argv[] ) {
             search( &catalog, &(orion.tracker), az_0, az_1, zd_0, zd_1, mag );
         }
 
-        // start the sensor control thread
+        // start the sensor control thread ////////////////////////////////////
         if (strncmp( "start", line, 5 ) == 0) {
             if (orion_start( &orion ))
                 printf("Sensor control thread already started.\n");
@@ -122,7 +101,7 @@ int main( int argc, char *argv[] ) {
             break;
         }
 
-        // get help with the commands
+        // get help with the commands /////////////////////////////////////////
         if( strncmp( "help", line, 4 )==0 ) {
             char command[11] = {0,0,0,0,0,0,0,0,0,0,0};
             result = sscanf(line, "help%10s\n", command);
@@ -313,3 +292,24 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
 //    FILE *file = fopen(path, "r");
 //    catalog_load_fk5(catalog, file);
 //}
+
+// mark time
+// set time
+// set orientation ( ut1-utc, leapsecs, x, y )
+// set location ( lat, longitude, height )
+// set weather ( temperature, pressure )
+// set sensor ( ip, port )
+
+// load catalog ( path ) //////////////////////////////////////////////
+//        if( strncmp( "load ", line, 5)==0) {
+//            char path[256];
+//            result = sscanf( line, "load %256s\n", path );
+//            if(result==0) {
+//                printf("usage: load <catalog path>");
+//                continue;
+//            }
+//            if( catalog.size>0 )
+//                catalog_free_entries( &catalog );
+//            FILE *file = fopen( path, "r" );
+//            catalog_load_fk5( &catalog, file );
+//        }
