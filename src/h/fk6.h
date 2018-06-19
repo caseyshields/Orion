@@ -8,30 +8,28 @@
 
 #include <stdbool.h>
 #include <assert.h>
-#include "catalog.h"
+#include <stdio.h>
 
-const char* FK6_1_HEADER = "Byte-by-byte Description of file: fk6_1.dat\n";
-const char* FK6_1_FIELDS = "   Bytes Format Units    Label     Explanations\n";
-const char* SEPARATOR = "--------------------------------------------------------------------------------";
+#define FK6_1_HEADER "Byte-by-byte Description of file: fk6_1.dat\n"
+#define FK6_1_FIELDS "   Bytes Format Units    Label     Explanations\n"
+#define SEPARATOR "--------------------------------------------------------------------------------\n"
 
-typedef struct fk6_field {
+typedef struct {
     int start;
     int end;
     char Format[5];
     char Units[7];
     char Label[13];
     char Explanations[80];
-} fk6_field;
+} FK6_Field;
 
-typedef struct fk6_catalog {
-    int width, height;
-    fk6_field* cols;
-    Entry rows;
-} fk6_catalog;
+typedef struct {
+    int rows, cols;
+    FK6_Field* fields;
+    char** data;
+} FK6;
 
-int fk6_load( Catalog* catalog, FILE* file );
-int scan_line( FILE* file, const char* header );
-int get_field( char* line, int start, int end, char* dest );
-int add_field( fk6_field* field, fk6_catalog* catalog );
+int fk6_load( FK6* fk6, FILE* file );
+
 
 #endif //STARTRACK_FK6_H

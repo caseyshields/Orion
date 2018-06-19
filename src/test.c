@@ -4,12 +4,13 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <unistd.h>
+#include <stdbool.h>
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
-#include <unistd.h>
-#include <stdbool.h>
+#include "h/fk6.h"
 
 /** A simple command line app for testing and exercising different features of
  * the star tracker. Accepts configuration parameters as command line arguments;
@@ -191,6 +192,14 @@ int main( int argc, char *argv[] ) {
         // run the benchmark
         else if( strncmp( "bench", line, 5 )==0 ) {
             benchmark( catalog, &tracker, 100 );
+        }
+
+        else if( strncmp("fk6", line, 3)==0) {
+//            FILE *f = fopen("../data/fk6/fk6_1.dat", "r");
+            FILE *f = fopen("../data/fk6/ReadMe", "r");
+            FK6 *fk6 = fk6_load(NULL, 256);
+
+            fclose( f );
         }
 
         // clean up the program components and exit the program

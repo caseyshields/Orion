@@ -2,28 +2,41 @@
 // Created by Casey Shields on 5/14/2018.
 //
 
+#include <mem.h>
+#include <malloc.h>
 #include "h/fk6.h"
 
-int fk6_load( Catalog* catalog, FILE* file ) {
-    fk6_field metadata[100];
+int scan_line( FILE* file, const char* header );
+int get_field( char* line, int start, int end, char* dest );
+//int add_field( fk6_field* field, fk6_catalog* catalog );
+
+FK6 * fk6_create(FK6 * fk6, FILE* file) {
+    if(fk6==NULL)
+        fk6 = malloc( sizeof(FK6) );
+    memset(fk6, 0, sizeof(FK6));
+    return fk6;
+}
+
+int fk6_load(FK6 * fk6, FILE* file ) {
+    FK6_Field metadata[100];
     int n = 0;
 
     // find the metadata section
-    if( scan_line(file, FK6_1_HEADER) == -1
+            if( scan_line(file, FK6_1_HEADER) == -1
         || scan_line(file, FK6_1_FIELDS) == -1
         || scan_line(file, SEPARATOR) == -1 ) {
-        perror( "Invalid format" );
-        exit(1);
-    }
+                perror( "Invalid format" );
+                exit(1);
+            }
 
-    // read rows from the file
-    while (true) {
-        char *line = NULL;
-        size_t size = 0;
-        fk6_field *field = NULL;
-        char start[3], end[3];
+            // read rows from the file
+    FK6_Field *field = NULL;
+            while (true) {
+                char *line = NULL;
+                size_t size = 0;
+                char start[3], end[3];
 
-        // check for end of file and end of record
+                // check for end of file and end of record
         if (getline(&line, &size, file) == -1)
             return 1;
         else if (strcmp(line, SEPARATOR) == 0)
@@ -34,34 +47,34 @@ int fk6_load( Catalog* catalog, FILE* file ) {
 
         }
 
-            // otherwise create the field an parse data into it
+        // otherwise create the field an parse data into it
         else {
             // flush the field
-            if( field!=NULL ) {
-
+            if( field != NULL ) {
+                //catalog_add( catalog, field );
             }
+
+            field = malloc(sizeof(FK6_Field));
+            assert( field!=NULL );
 
             field->end = atoi(end);
 
-            field = malloc(sizeof(fk6_field));
-            assert( field!=NULL );
-
             // starting byte is absent in the case of single byte fields
-            get_field(line, 1, 3, start);
-            if( start == NULL )
-                field->start = field->end;
-            else field->start = atoi( start );
+                    get_field(line, 1, 3, start);
+                    if( start == NULL )
+                        field->start = field->end;
+                    else field->start = atoi( start );
 
-            get_field( line, 8, 15, field->Format );
-            get_field( line, 16, 22, field->Units );
-            get_field( line, 23, 34, field->Label );
-            get_field( line, 35, 79, field->Explanations );
+                    get_field( line, 8, 15, field->Format );
+                    get_field( line, 16, 22, field->Units );
+                    get_field( line, 23, 34, field->Label );
+                    get_field( line, 35, 79, field->Explanations );
 
         }
 
         n++;
         free(line);
-    }
+            }
 
 
 }
@@ -94,11 +107,13 @@ int get_field( char* line, int start, int end, char* dest ) {
 int scan_line(FILE *file, const char *header) {
     char *line;
     size_t size;
+    int count = 0;
     while (true) {
         if (getline(&line, &size, file) == -1)
-            return 1;
+            return -count;
         if (strcmp(line, header) == 0)
-            return 0;
+            return count;
+        count++;
         free(line);
     }
 }
