@@ -250,8 +250,8 @@ void entry_print( Entry *star ) {
     fflush(0);
 }
 
-// doesn't work because the stack values that affect the behavior of the stack
-// are released before the function is called. C does not have closures.
+// doesn't work because the stack variables that affect the behavior of the function
+// are out of scope when the function is called. C does not have closures.
 //EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, double dec_max ) {
 //    // wrap right ascension
 //    volatile double min = fmod( ra_min, 24.0);
