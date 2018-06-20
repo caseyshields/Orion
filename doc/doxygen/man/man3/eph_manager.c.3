@@ -1,0 +1,131 @@
+.TH "src/novasc3.1/ext/eph_manager.c" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/novasc3.1/ext/eph_manager.c
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'eph_manager\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "short int \fBephem_open\fP (char *ephem_name, double *jd_begin, double *jd_end, short int *de_number)"
+.br
+.ti -1c
+.RI "short int \fBephem_close\fP (void)"
+.br
+.ti -1c
+.RI "short int \fBplanet_ephemeris\fP (double tjd[2], short int target, short int center, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short int \fBstate\fP (double *jed, short int target, double *target_pos, double *target_vel)"
+.br
+.ti -1c
+.RI "void \fBinterpolate\fP (double *buf, double *t, long int ncf, long int na, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "void \fBsplit\fP (double tt, double *fr)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "short int \fBKM\fP"
+.br
+.ti -1c
+.RI "int \fBIPT\fP [3][12]"
+.br
+.ti -1c
+.RI "int \fBLPT\fP [3]"
+.br
+.ti -1c
+.RI "long int \fBNRL\fP"
+.br
+.ti -1c
+.RI "long int \fBNP\fP"
+.br
+.ti -1c
+.RI "long int \fBNV\fP"
+.br
+.ti -1c
+.RI "long int \fBRECORD_LENGTH\fP"
+.br
+.ti -1c
+.RI "double \fBSS\fP [3]"
+.br
+.ti -1c
+.RI "double \fBJPLAU\fP"
+.br
+.ti -1c
+.RI "double \fBPC\fP [18]"
+.br
+.ti -1c
+.RI "double \fBVC\fP [18]"
+.br
+.ti -1c
+.RI "double \fBTWOT\fP"
+.br
+.ti -1c
+.RI "double \fBEM_RATIO\fP"
+.br
+.ti -1c
+.RI "double * \fBBUFFER\fP"
+.br
+.ti -1c
+.RI "FILE * \fBEPHFILE\fP = NULL"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "short int ephem_close (void)"
+
+.SS "short int ephem_open (char * ephem_name, double * jd_begin, double * jd_end, short int * de_number)"
+
+.SS "void interpolate (double * buf, double * t, long int ncf, long int na, double * position, double * velocity)"
+
+.SS "short int planet_ephemeris (double tjd[2], short int target, short int center, double * position, double * velocity)"
+
+.SS "void split (double tt, double * fr)"
+
+.SS "short int state (double * jed, short int target, double * target_pos, double * target_vel)"
+
+.SH "Variable Documentation"
+.PP 
+.SS "double* BUFFER"
+
+.SS "double EM_RATIO"
+
+.SS "FILE* EPHFILE = NULL"
+
+.SS "int IPT[3][12]"
+
+.SS "double JPLAU"
+
+.SS "short int KM"
+
+.SS "int LPT[3]"
+
+.SS "long int NP"
+
+.SS "long int NRL"
+
+.SS "long int NV"
+
+.SS "double PC[18]"
+
+.SS "long int RECORD_LENGTH"
+
+.SS "double SS[3]"
+
+.SS "double TWOT"
+
+.SS "double VC[18]"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

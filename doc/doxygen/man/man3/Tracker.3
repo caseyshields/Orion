@@ -1,0 +1,55 @@
+.TH "Tracker" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Tracker
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <tracker\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "double \fBdate\fP"
+.br
+.ti -1c
+.RI "double \fBut1_utc\fP"
+.br
+.ti -1c
+.RI "double \fBleap_secs\fP"
+.br
+.ti -1c
+.RI "\fBon_surface\fP \fBsite\fP"
+.br
+.ti -1c
+.RI "\fBobject\fP \fBearth\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBTracker\fP module represents a sensor on the surface of the earth at a specific time, observing a celestial object\&. It can transform star coordinates between celestial and horizon, using Novas 3\&.1 to handle orbit, spin, precession, parallax, atmospheric refraction and relativistic aberration, whatever that is\&. 
+.PP
+\fBAuthor:\fP
+.RS 4
+Casey Shields 
+.RE
+.PP
+
+.SH "Field Documentation"
+.PP 
+.SS "double date"
+Julian hours; the number of hours since noon, January 1, 4713 BC- Which Joseph Justice Scaliger estimated to be the beginning of history\&. 
+.SS "\fBobject\fP earth"
+Novas structure for planet earth 
+.SS "double leap_secs"
+Number of leap seconds added in International Atomic Time 
+.SS "\fBon_surface\fP site"
+Novas structure holding the geodetic location of the tracker 
+.SS "double ut1_utc"
+Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

@@ -1,0 +1,38 @@
+.TH "catalog_struct" 3 "Fri Jun 15 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+catalog_struct
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <catalog\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBsize\fP"
+.br
+.ti -1c
+.RI "size_t \fBallocated\fP"
+.br
+.ti -1c
+.RI "\fBEntry\fP ** \fBstars\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+A catalog of stars\&. provides methods for loading, searching, filtering and printing entries\&. 
+.SH "Field Documentation"
+.PP 
+.SS "size_t allocated"
+Tracks space currently allocated for the catalog\&. 
+.SS "size_t size"
+Current number of stars in the catalog 
+.SS "\fBEntry\fP** stars"
+An array of catalog entries\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

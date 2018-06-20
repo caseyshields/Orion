@@ -1,0 +1,140 @@
+\hypertarget{orion_8c}{}\section{src/orion.c File Reference}
+\label{orion_8c}\index{src/orion.\+c@{src/orion.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$winsock.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}novasc3.\+1/novas.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}h/tracker.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}h/vmath.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}h/orion.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_orion}{Orion}} $\ast$ \mbox{\hyperlink{orion_8c_a33f2460264fc3f9e9939fb3f291c4de5}{orion\+\_\+create}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+int \mbox{\hyperlink{orion_8c_adafd601281e0519b26db46a06046c4f7}{orion\+\_\+connect}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion, char $\ast$ip, unsigned short port)
+\item 
+void $\ast$ \mbox{\hyperlink{orion_8c_a715555e8dc1fa1bc779afda29750ed96}{orion\+\_\+control\+\_\+loop}} (void $\ast$arg)
+\item 
+int \mbox{\hyperlink{orion_8c_a50ad846a48b4f9a9e6a0bf3daf1edef6}{orion\+\_\+start}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+void \mbox{\hyperlink{orion_8c_a9b9aa05485996bc3a2ebfcf027e50471}{orion\+\_\+track}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion, \mbox{\hyperlink{novas_8h_a262daaa71cede05205cfaa727313c1f3}{cat\+\_\+entry}} target)
+\item 
+int \mbox{\hyperlink{orion_8c_ab48a953fa4789878bbd631ef1080dd33}{orion\+\_\+stop}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+void \mbox{\hyperlink{orion_8c_a25b007892d35cdb4ed2c42849311bc5f}{orion\+\_\+disconnect}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+double \mbox{\hyperlink{orion_8c_af99f733c05ea1a26aac41b9b5b4fe307}{orion\+\_\+mark\+\_\+time}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+int \mbox{\hyperlink{orion_8c_a30d0255064c075920c03162a3c37b154}{orion\+\_\+is\+\_\+connected}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+int \mbox{\hyperlink{orion_8c_aa2a04410d05c733769b5ef25beb50743}{orion\+\_\+is\+\_\+running}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\item 
+void \mbox{\hyperlink{orion_8c_ad8fe7b6e30c13746f481d248572551ce}{orion\+\_\+clear\+\_\+error}} (\mbox{\hyperlink{struct_orion}{Orion}} $\ast$orion)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{orion_8c_ad8fe7b6e30c13746f481d248572551ce}\label{orion_8c_ad8fe7b6e30c13746f481d248572551ce}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+clear\+\_\+error@{orion\+\_\+clear\+\_\+error}}
+\index{orion\+\_\+clear\+\_\+error@{orion\+\_\+clear\+\_\+error}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+clear\+\_\+error()}{orion\_clear\_error()}}
+{\footnotesize\ttfamily void orion\+\_\+clear\+\_\+error (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+Clears the internal error buffer. Thread safe. \mbox{\Hypertarget{orion_8c_adafd601281e0519b26db46a06046c4f7}\label{orion_8c_adafd601281e0519b26db46a06046c4f7}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+connect@{orion\+\_\+connect}}
+\index{orion\+\_\+connect@{orion\+\_\+connect}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+connect()}{orion\_connect()}}
+{\footnotesize\ttfamily int orion\+\_\+connect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion,  }\item[{char $\ast$}]{ip,  }\item[{unsigned short}]{port }\end{DoxyParamCaption})}
+
+Connect a socket to the specified sensor using T\+CP. 
+\begin{DoxyParams}{Parameters}
+{\em ip} & a string holding the ip address of the sensor in dotted quad notation \\
+\hline
+{\em port} & the port of the sensor\textquotesingle{}s socket \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, 1 otherwise. Check error buffer after a failure for cause. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{orion_8c_a715555e8dc1fa1bc779afda29750ed96}\label{orion_8c_a715555e8dc1fa1bc779afda29750ed96}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+control\+\_\+loop@{orion\+\_\+control\+\_\+loop}}
+\index{orion\+\_\+control\+\_\+loop@{orion\+\_\+control\+\_\+loop}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+control\+\_\+loop()}{orion\_control\_loop()}}
+{\footnotesize\ttfamily void$\ast$ orion\+\_\+control\+\_\+loop (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{orion_8c_a33f2460264fc3f9e9939fb3f291c4de5}\label{orion_8c_a33f2460264fc3f9e9939fb3f291c4de5}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+create@{orion\+\_\+create}}
+\index{orion\+\_\+create@{orion\+\_\+create}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+create()}{orion\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_orion}{Orion}}$\ast$ orion\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+Instantiates the given \mbox{\hyperlink{struct_orion}{Orion}} structure, allocating space if the argument is N\+U\+LL. \begin{DoxyReturn}{Returns}
+a pointer to the instantiated structure regardless if it was allocated. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{orion_8c_a25b007892d35cdb4ed2c42849311bc5f}\label{orion_8c_a25b007892d35cdb4ed2c42849311bc5f}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+disconnect@{orion\+\_\+disconnect}}
+\index{orion\+\_\+disconnect@{orion\+\_\+disconnect}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+disconnect()}{orion\_disconnect()}}
+{\footnotesize\ttfamily void orion\+\_\+disconnect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+Disconnects the socket and disposes of resources. \mbox{\Hypertarget{orion_8c_a30d0255064c075920c03162a3c37b154}\label{orion_8c_a30d0255064c075920c03162a3c37b154}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+is\+\_\+connected@{orion\+\_\+is\+\_\+connected}}
+\index{orion\+\_\+is\+\_\+connected@{orion\+\_\+is\+\_\+connected}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+is\+\_\+connected()}{orion\_is\_connected()}}
+{\footnotesize\ttfamily int orion\+\_\+is\+\_\+connected (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+True if the sensor is connected to the orion server. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{orion_8c_aa2a04410d05c733769b5ef25beb50743}\label{orion_8c_aa2a04410d05c733769b5ef25beb50743}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+is\+\_\+running@{orion\+\_\+is\+\_\+running}}
+\index{orion\+\_\+is\+\_\+running@{orion\+\_\+is\+\_\+running}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+is\+\_\+running()}{orion\_is\_running()}}
+{\footnotesize\ttfamily int orion\+\_\+is\+\_\+running (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+Best guess of whether the server is running. Thread safe. \begin{DoxyReturn}{Returns}
+True if the orion server was running recently. False otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{orion_8c_af99f733c05ea1a26aac41b9b5b4fe307}\label{orion_8c_af99f733c05ea1a26aac41b9b5b4fe307}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+mark\+\_\+time@{orion\+\_\+mark\+\_\+time}}
+\index{orion\+\_\+mark\+\_\+time@{orion\+\_\+mark\+\_\+time}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+mark\+\_\+time()}{orion\_mark\_time()}}
+{\footnotesize\ttfamily double orion\+\_\+mark\+\_\+time (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+gets a millisecond accurate timestamp from the system, converts it to Julian hours(see Novas 3.\+1 documentation), then sets the current tracker time. \begin{DoxyReturn}{Returns}
+the last marked timestamp. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{orion_8c_a50ad846a48b4f9a9e6a0bf3daf1edef6}\label{orion_8c_a50ad846a48b4f9a9e6a0bf3daf1edef6}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+start@{orion\+\_\+start}}
+\index{orion\+\_\+start@{orion\+\_\+start}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+start()}{orion\_start()}}
+{\footnotesize\ttfamily int orion\+\_\+start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+Starts the main control loop of the \mbox{\hyperlink{struct_orion}{Orion}} sensor in a separate thread. Thread safe. \begin{DoxyReturn}{Returns}
+0 on success, 1 on failure. Check error buffer after a failure for cause. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{orion_8c_ab48a953fa4789878bbd631ef1080dd33}\label{orion_8c_ab48a953fa4789878bbd631ef1080dd33}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+stop@{orion\+\_\+stop}}
+\index{orion\+\_\+stop@{orion\+\_\+stop}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+stop()}{orion\_stop()}}
+{\footnotesize\ttfamily int orion\+\_\+stop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion }\end{DoxyParamCaption})}
+
+Safely stops the control loop and blocks until it returns. Thread safe. \mbox{\Hypertarget{orion_8c_a9b9aa05485996bc3a2ebfcf027e50471}\label{orion_8c_a9b9aa05485996bc3a2ebfcf027e50471}} 
+\index{orion.\+c@{orion.\+c}!orion\+\_\+track@{orion\+\_\+track}}
+\index{orion\+\_\+track@{orion\+\_\+track}!orion.\+c@{orion.\+c}}
+\subsubsection{\texorpdfstring{orion\+\_\+track()}{orion\_track()}}
+{\footnotesize\ttfamily void orion\+\_\+track (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_orion}{Orion}} $\ast$}]{orion,  }\item[{\mbox{\hyperlink{novas_8h_a262daaa71cede05205cfaa727313c1f3}{cat\+\_\+entry}}}]{target }\end{DoxyParamCaption})}
+
+Specify a target which the control thread will instruct the sensor to track. Thread safe. 
+\begin{DoxyParams}{Parameters}
+{\em target} & A novas structure holding the celestial location of the target. \\
+\hline
+\end{DoxyParams}

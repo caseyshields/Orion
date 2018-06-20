@@ -1,0 +1,40 @@
+.TH "src/fk6.c" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/fk6.c
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'h/fk6\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBfk6_load\fP (\fBCatalog\fP *catalog, FILE *file)"
+.br
+.ti -1c
+.RI "int \fBget_field\fP (char *line, int start, int end, char *dest)"
+.br
+.ti -1c
+.RI "int \fBscan_line\fP (FILE *file, const char *header)"
+.br
+.ti -1c
+.RI "ssize_t \fBget_line\fP (char **line, size_t *size)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int fk6_load (\fBCatalog\fP * catalog, FILE * file)"
+
+.SS "int get_field (char * line, int start, int end, char * dest)"
+trim the substring and copy it to a newly allocated string 
+.SS "ssize_t get_line (char ** line, size_t * size)"
+
+.SS "int scan_line (FILE * file, const char * header)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

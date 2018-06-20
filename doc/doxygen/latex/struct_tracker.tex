@@ -1,0 +1,63 @@
+\hypertarget{struct_tracker}{}\section{Tracker Struct Reference}
+\label{struct_tracker}\index{Tracker@{Tracker}}
+
+
+{\ttfamily \#include $<$tracker.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{struct_tracker_a6c9423e9bfc2c6dfcbae6c1276e0bfc0}{date}}
+\item 
+double \mbox{\hyperlink{struct_tracker_a9eef053f0153643589ed50d5f193afe7}{ut1\+\_\+utc}}
+\item 
+double \mbox{\hyperlink{struct_tracker_ad762d92dc4fcba312c9d2d11ff3a7e67}{leap\+\_\+secs}}
+\item 
+\mbox{\hyperlink{structon__surface}{on\+\_\+surface}} \mbox{\hyperlink{struct_tracker_afb38e182752f31d6a08f82d960955438}{site}}
+\item 
+\mbox{\hyperlink{structobject}{object}} \mbox{\hyperlink{struct_tracker_ae1beefa1f286be116b00f0e8ad83d002}{earth}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \mbox{\hyperlink{struct_tracker}{Tracker}} module represents a sensor on the surface of the earth at a specific time, observing a celestial object. It can transform star coordinates between celestial and horizon, using Novas 3.\+1 to handle orbit, spin, precession, parallax, atmospheric refraction and relativistic aberration, whatever that is. \begin{DoxyAuthor}{Author}
+Casey Shields 
+\end{DoxyAuthor}
+
+
+\subsection{Field Documentation}
+\mbox{\Hypertarget{struct_tracker_a6c9423e9bfc2c6dfcbae6c1276e0bfc0}\label{struct_tracker_a6c9423e9bfc2c6dfcbae6c1276e0bfc0}} 
+\index{Tracker@{Tracker}!date@{date}}
+\index{date@{date}!Tracker@{Tracker}}
+\subsubsection{\texorpdfstring{date}{date}}
+{\footnotesize\ttfamily double date}
+
+Julian hours; the number of hours since noon, January 1, 4713 B\+C-\/ Which Joseph Justice Scaliger estimated to be the beginning of history. \mbox{\Hypertarget{struct_tracker_ae1beefa1f286be116b00f0e8ad83d002}\label{struct_tracker_ae1beefa1f286be116b00f0e8ad83d002}} 
+\index{Tracker@{Tracker}!earth@{earth}}
+\index{earth@{earth}!Tracker@{Tracker}}
+\subsubsection{\texorpdfstring{earth}{earth}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structobject}{object}} earth}
+
+Novas structure for planet earth \mbox{\Hypertarget{struct_tracker_ad762d92dc4fcba312c9d2d11ff3a7e67}\label{struct_tracker_ad762d92dc4fcba312c9d2d11ff3a7e67}} 
+\index{Tracker@{Tracker}!leap\+\_\+secs@{leap\+\_\+secs}}
+\index{leap\+\_\+secs@{leap\+\_\+secs}!Tracker@{Tracker}}
+\subsubsection{\texorpdfstring{leap\+\_\+secs}{leap\_secs}}
+{\footnotesize\ttfamily double leap\+\_\+secs}
+
+Number of leap seconds added in International Atomic Time \mbox{\Hypertarget{struct_tracker_afb38e182752f31d6a08f82d960955438}\label{struct_tracker_afb38e182752f31d6a08f82d960955438}} 
+\index{Tracker@{Tracker}!site@{site}}
+\index{site@{site}!Tracker@{Tracker}}
+\subsubsection{\texorpdfstring{site}{site}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structon__surface}{on\+\_\+surface}} site}
+
+Novas structure holding the geodetic location of the tracker \mbox{\Hypertarget{struct_tracker_a9eef053f0153643589ed50d5f193afe7}\label{struct_tracker_a9eef053f0153643589ed50d5f193afe7}} 
+\index{Tracker@{Tracker}!ut1\+\_\+utc@{ut1\+\_\+utc}}
+\index{ut1\+\_\+utc@{ut1\+\_\+utc}!Tracker@{Tracker}}
+\subsubsection{\texorpdfstring{ut1\+\_\+utc}{ut1\_utc}}
+{\footnotesize\ttfamily double ut1\+\_\+utc}
+
+Current observed discrepancy between earth\textquotesingle{}s non-\/uniform rotation and Universal Coordinated Time 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/h/\mbox{\hyperlink{tracker_8h}{tracker.\+h}}\end{DoxyCompactItemize}

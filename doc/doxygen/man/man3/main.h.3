@@ -1,0 +1,143 @@
+.TH "src/h/main.h" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/h/main.h
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBLATITUDE\fP   '38\&.88972222222222'"
+.br
+.ti -1c
+.RI "#define \fBLONGITUDE\fP   '\-77\&.0075'"
+.br
+.ti -1c
+.RI "#define \fBHEIGHT\fP   '125\&.0'"
+.br
+.ti -1c
+.RI "#define \fBTEMPERATURE\fP   '10\&.0'"
+.br
+.ti -1c
+.RI "#define \fBPRESSURE\fP   '1010\&.0'"
+.br
+.ti -1c
+.RI "#define \fBUT1_UTC\fP   '0\&.108644'"
+.br
+.ti -1c
+.RI "#define \fBTAI_UTC\fP   '37\&.000000'"
+.br
+.ti -1c
+.RI "#define \fBINVALID_SOCKET\fP   (unsigned int)(~0)"
+.br
+.ti -1c
+.RI "#define \fBSOCKET_ERROR\fP   \-1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBconfigure_tracker\fP (int argc, char *argv[], \fBTracker\fP *tracker)"
+.br
+.ti -1c
+.RI "void \fBconfigure_catalog\fP (int argc, char *argv[], \fBCatalog\fP *catalog)"
+.br
+.ti -1c
+.RI "int \fBsearch\fP (\fBCatalog\fP *catalog, \fBTracker\fP *tracker, double az_min, double az_max, double zd_min, double zd_max, float mag_min)"
+.br
+.ti -1c
+.RI "double \fBget_time\fP ()"
+.br
+.ti -1c
+.RI "char * \fBget_arg\fP (int argc, char *argv[], char *name, char *default_value)"
+.br
+.ti -1c
+.RI "ssize_t \fBget_input\fP (char *prompt, char **line, size_t *size)"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define HEIGHT   '125\&.0'"
+default geodetic height of sensor in meters 
+.SS "#define INVALID_SOCKET   (unsigned int)(~0)"
+some winsock constants I use 
+.SS "#define LATITUDE   '38\&.88972222222222'"
+default latitude of sensor in degrees 
+.SS "#define LONGITUDE   '\-77\&.0075'"
+default longitude of sensor in degrees 
+.SS "#define PRESSURE   '1010\&.0'"
+default atmospheric pressure at site in millibars 
+.SS "#define SOCKET_ERROR   \-1"
+
+.SS "#define TAI_UTC   '37\&.000000'"
+delta AT, Difference between TAI and UTC\&. Obtained from IERS Apr 26 2018 
+.SS "#define TEMPERATURE   '10\&.0'"
+default site temperature in degrees celsius 
+.SS "#define UT1_UTC   '0\&.108644'"
+(UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation 
+.SH "Function Documentation"
+.PP 
+.SS "void configure_catalog (int argc, char * argv[], \fBCatalog\fP * catalog)"
+
+.SS "void configure_tracker (int argc, char * argv[], \fBTracker\fP * tracker)"
+extracts tracker information from the program arguments and constructs a model of a tracker 
+.SS "char * get_arg (int argc, char * argv[], char * name, char * default_value)"
+retrieves the value subsequent to the specified option\&. If the default_value is supplied, the function will return it\&. otherwise the method will print an error message and abort\&.
+.PP
+retrieves the value subsequent to the specified option\&. If the default_value is supplied, the function will return it if the option is not included\&. otherwise the method will print an error message and abort\&. 
+.SS "ssize_t get_input (char * prompt, char ** line, size_t * size)"
+Frees any data line is pointing to, then prompts the user, allocates a buffer, and reads the input\&. Be sure to free the buffer after your last call to get_input! 
+.SS "double get_time ()"
+Gets an accurate UTC timestamp from the system in seconds since the unix epoch
+.PP
+uses the GNU gettime of day method to get a accurate system time, then converts it to seconds since the unix epoch
+.PP
+A simple command line app for testing and exercising different features of the star tracker\&. Accepts configuration parameters as command line arguments; 
+.PD 0
+
+.IP "\(bu" 2
+-latitude (tracker location in degrees) 
+.IP "\(bu" 2
+-longitude (tracker location in degrees) 
+.IP "\(bu" 2
+-height (tracker location in meters) 
+.IP "\(bu" 2
+-celsius (temp at tracker location) 
+.IP "\(bu" 2
+-millibars (pressure at tracker location) 
+.IP "\(bu" 2
+-ut1_utc (difference between TAI and TT in seconds) 
+.IP "\(bu" 2
+-leap_secs (difference between UT1 and TAI in integer seconds) 
+.IP "\(bu" 2
+-catalog (path of the catalog file) 
+.PP
+\fBAuthor:\fP
+.RS 4
+Casey Shields
+.RE
+.PP
+uses the GNU gettime of day method to get a accurate system time, then converts it to seconds since the unix epoch 
+.SS "int main (int argc, char * argv[])"
+Provides an interactive command line interface to the \fBOrion\fP server\&.
+.PP
+A simulator of a TATS sensor used for testing \fBOrion\fP\&. 
+.PP
+\fBAuthor:\fP
+.RS 4
+Casey Shields
+.RE
+.PP
+a simple CLI interface for exercising various orion components\&. 
+.SS "int search (\fBCatalog\fP * catalog, \fBTracker\fP * tracker, double az_min, double az_max, double zd_min, double zd_max, float mag_min)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

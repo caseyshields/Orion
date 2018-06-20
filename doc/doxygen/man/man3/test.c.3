@@ -1,0 +1,97 @@
+.TH "src/test.c" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/test.c
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <assert\&.h>\fP
+.br
+\fC#include <time\&.h>\fP
+.br
+\fC#include <sys/time\&.h>\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include 'novasc3\&.1/novas\&.h'\fP
+.br
+\fC#include 'h/tracker\&.h'\fP
+.br
+\fC#include 'h/catalog\&.h'\fP
+.br
+\fC#include 'h/vmath\&.h'\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBget_time\fP ()"
+.br
+.ti -1c
+.RI "char * \fBget_arg\fP (int argc, char *argv[], char *name, char *default_value)"
+.br
+.ti -1c
+.RI "ssize_t \fBget_input\fP (char *prompt, char **line, size_t *size)"
+.br
+.ti -1c
+.RI "void \fBbenchmark\fP (\fBCatalog\fP *catalog, \fBTracker\fP *tracker, int trials)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBsearch_dome\fP ()"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void benchmark (\fBCatalog\fP * catalog, \fBTracker\fP * tracker, int trials)"
+Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates\&. 
+.SS "char* get_arg (int argc, char * argv[], char * name, char * default_value)"
+retrieves the value subsequent to the specified option\&. If the default_value is supplied, the function will return it if the option is not included\&. otherwise the method will print an error message and abort\&. 
+.SS "ssize_t get_input (char * prompt, char ** line, size_t * size)"
+Frees any data line is pointing to, then prompts the user, allocates a buffer, and reads the input\&. Be sure to free the buffer after your last call to get_input! 
+.SS "double get_time ()"
+A simple command line app for testing and exercising different features of the star tracker\&. Accepts configuration parameters as command line arguments; 
+.PD 0
+
+.IP "\(bu" 2
+-latitude (tracker location in degrees) 
+.IP "\(bu" 2
+-longitude (tracker location in degrees) 
+.IP "\(bu" 2
+-height (tracker location in meters) 
+.IP "\(bu" 2
+-celsius (temp at tracker location) 
+.IP "\(bu" 2
+-millibars (pressure at tracker location) 
+.IP "\(bu" 2
+-ut1_utc (difference between TAI and TT in seconds) 
+.IP "\(bu" 2
+-leap_secs (difference between UT1 and TAI in integer seconds) 
+.IP "\(bu" 2
+-catalog (path of the catalog file) 
+.PP
+\fBAuthor:\fP
+.RS 4
+Casey Shields
+.RE
+.PP
+uses the GNU gettime of day method to get a accurate system time, then converts it to seconds since the unix epoch 
+.SS "int main (int argc, char * argv[])"
+a simple CLI interface for exercising various orion components\&. 
+.SS "void search_dome ()"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

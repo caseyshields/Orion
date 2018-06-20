@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['place',['place',['../novas_8c.html#a9719cd6c5bc14eabd46568400fc03419',1,'place(double jd_tt, object *cel_object, observer *location, double delta_t, short int coord_sys, short int accuracy, sky_pos *output):&#160;novas.c'],['../novas_8h.html#a9719cd6c5bc14eabd46568400fc03419',1,'place(double jd_tt, object *cel_object, observer *location, double delta_t, short int coord_sys, short int accuracy, sky_pos *output):&#160;novas.c']]],
+  ['planet_5fephemeris',['planet_ephemeris',['../eph__manager_8c.html#af3f0c4ca7e001237a6ba8d71d6c4fc3f',1,'planet_ephemeris(double tjd[2], short int target, short int center, double *position, double *velocity):&#160;eph_manager.c'],['../eph__manager_8h.html#af3f0c4ca7e001237a6ba8d71d6c4fc3f',1,'planet_ephemeris(double tjd[2], short int target, short int center, double *position, double *velocity):&#160;eph_manager.c']]],
+  ['precession',['precession',['../novas_8c.html#af1ccf98819f2f94ace01ab769f893997',1,'precession(double jd_tdb1, double *pos1, double jd_tdb2, double *pos2):&#160;novas.c'],['../novas_8h.html#af1ccf98819f2f94ace01ab769f893997',1,'precession(double jd_tdb1, double *pos1, double jd_tdb2, double *pos2):&#160;novas.c']]],
+  ['proper_5fmotion',['proper_motion',['../novas_8c.html#a25fba845be218714e64ac2a7191f5942',1,'proper_motion(double jd_tdb1, double *pos, double *vel, double jd_tdb2, double *pos2):&#160;novas.c'],['../novas_8h.html#a25fba845be218714e64ac2a7191f5942',1,'proper_motion(double jd_tdb1, double *pos, double *vel, double jd_tdb2, double *pos2):&#160;novas.c']]]
+];

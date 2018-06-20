@@ -1,0 +1,118 @@
+.TH "src/sensor.c" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sensor.c
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <winsock\&.h>\fP
+.br
+\fC#include <assert\&.h>\fP
+.br
+\fC#include <time\&.h>\fP
+.br
+\fC#include <sys/time\&.h>\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include 'novasc3\&.1/novas\&.h'\fP
+.br
+\fC#include 'h/tracker\&.h'\fP
+.br
+\fC#include 'h/catalog\&.h'\fP
+.br
+\fC#include 'h/vmath\&.h'\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_CONNECTIONS\fP   2"
+.br
+.ti -1c
+.RI "#define \fBMAX_BUFFER_SIZE\fP   2<<10"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBget_time\fP ()"
+.br
+.ti -1c
+.RI "unsigned int \fBconfigure_server\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "char * \fBget_arg\fP (int argc, char *argv[], char *name, char *default_value)"
+.br
+.ti -1c
+.RI "void \fBterminate\fP (int status, char *msg)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBmode\fP = 1"
+.br
+.ti -1c
+.RI "char * \fBbuffer\fP"
+.br
+.ti -1c
+.RI "unsigned int \fBserver\fP = \fBINVALID_SOCKET\fP"
+.br
+.ti -1c
+.RI "unsigned int \fBclient\fP = \fBINVALID_SOCKET\fP"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define MAX_BUFFER_SIZE   2<<10"
+
+.SS "#define MAX_CONNECTIONS   2"
+
+.SH "Function Documentation"
+.PP 
+.SS "unsigned int configure_server (int argc, char * argv[])"
+
+.SS "char* get_arg (int argc, char * argv[], char * name, char * default_value)"
+retrieves the value subsequent to the specified option\&. If the default_value is supplied, the function will return it\&. otherwise the method will print an error message and abort\&. 
+.SS "double get_time ()"
+Gets an accurate UTC timestamp from the system in seconds since the unix epoch 
+.SS "int main (int argc, char * argv[])"
+A simulator of a TATS sensor used for testing \fBOrion\fP\&. 
+.PP
+\fBAuthor:\fP
+.RS 4
+Casey Shields 
+.RE
+.PP
+
+.SS "void terminate (int status, char * msg)"
+
+.SH "Variable Documentation"
+.PP 
+.SS "char* buffer"
+
+.SS "unsigned int client = \fBINVALID_SOCKET\fP"
+
+.SS "int mode = 1"
+
+.SS "unsigned int server = \fBINVALID_SOCKET\fP"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

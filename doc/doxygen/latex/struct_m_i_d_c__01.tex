@@ -1,0 +1,113 @@
+\hypertarget{struct_m_i_d_c__01}{}\section{M\+I\+D\+C\+\_\+01 Struct Reference}
+\label{struct_m_i_d_c__01}\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+
+
+{\ttfamily \#include $<$tats.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+unsigned char \mbox{\hyperlink{struct_m_i_d_c__01_a4e26ddc4da6da6fea6901c0caee2e7fd}{midc}}
+\item 
+unsigned short \mbox{\hyperlink{struct_m_i_d_c__01_a69763ba083a498ead8e43afecc94b4d7}{riu\+\_\+sensor\+\_\+id}}
+\item 
+unsigned short \mbox{\hyperlink{struct_m_i_d_c__01_a445d2a2e3e4ac1f29a426d3a1a617bfc}{tcn\+\_\+time}}
+\item 
+int \mbox{\hyperlink{struct_m_i_d_c__01_a105a63272424d04208f33bac739acf98}{E}}
+\item 
+int \mbox{\hyperlink{struct_m_i_d_c__01_a83e4d55f5823e12da6439ef69be4a42a}{F}}
+\item 
+int \mbox{\hyperlink{struct_m_i_d_c__01_ab8735735273b982cc3125e51fe46e2f4}{G}}
+\item 
+unsigned char \mbox{\hyperlink{struct_m_i_d_c__01_aa0ab1eef0f6c81401665b11a7e91c9d5}{track\+\_\+status}}
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>unsigned short \mbox{\hyperlink{struct_m_i_d_c__01_ab9a4981dc4f20d168da9ffb2db377584}{track\_id}}\\
+\>unsigned char \mbox{\hyperlink{struct_m_i_d_c__01_a10ae4966d28a3e8356b329080e73e037}{symbol\_type}}\\
+\}; \\
+
+\end{tabbing}\item 
+unsigned short \mbox{\hyperlink{struct_m_i_d_c__01_a0e34886f35a1dc651e0caf46a73e27ab}{crc}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Standard T\+CN data message. Documetation taken from T\+A\+TS I\+RS documentation V2.\+2 
+
+\subsection{Field Documentation}
+\mbox{\Hypertarget{struct_m_i_d_c__01_aa30fb6fb5084e023ab402731b4bff2d7}\label{struct_m_i_d_c__01_aa30fb6fb5084e023ab402731b4bff2d7}} 
+\subsubsection{\texorpdfstring{"@1}{@1}}
+{\footnotesize\ttfamily union \{ ... \} }
+
+\mbox{\Hypertarget{struct_m_i_d_c__01_a0e34886f35a1dc651e0caf46a73e27ab}\label{struct_m_i_d_c__01_a0e34886f35a1dc651e0caf46a73e27ab}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!crc@{crc}}
+\index{crc@{crc}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{crc}{crc}}
+{\footnotesize\ttfamily unsigned short crc}
+
+A 16-\/bit error checksum, Cyclic Redundancy Check. The C\+RC field consists of the Consultative Committee International for Telegraphy and Telephone (C\+C\+I\+TT)/(I\+TU) V.\+41 polynomial, x$^\wedge$16 + x$^\wedge$12 + x$^\wedge$5 + 1, with the C\+RC accumulator preset ti 1\textquotesingle{}s. \mbox{\Hypertarget{struct_m_i_d_c__01_a105a63272424d04208f33bac739acf98}\label{struct_m_i_d_c__01_a105a63272424d04208f33bac739acf98}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!E@{E}}
+\index{E@{E}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{E}{E}}
+{\footnotesize\ttfamily int E}
+
+32 bit signed integers with L\+SB=0.\+00390625 (1/256) meters. \mbox{\Hypertarget{struct_m_i_d_c__01_a83e4d55f5823e12da6439ef69be4a42a}\label{struct_m_i_d_c__01_a83e4d55f5823e12da6439ef69be4a42a}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!F@{F}}
+\index{F@{F}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{F}{F}}
+{\footnotesize\ttfamily int F}
+
+\mbox{\Hypertarget{struct_m_i_d_c__01_ab8735735273b982cc3125e51fe46e2f4}\label{struct_m_i_d_c__01_ab8735735273b982cc3125e51fe46e2f4}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!G@{G}}
+\index{G@{G}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{G}{G}}
+{\footnotesize\ttfamily int G}
+
+\mbox{\Hypertarget{struct_m_i_d_c__01_a4e26ddc4da6da6fea6901c0caee2e7fd}\label{struct_m_i_d_c__01_a4e26ddc4da6da6fea6901c0caee2e7fd}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!midc@{midc}}
+\index{midc@{midc}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{midc}{midc}}
+{\footnotesize\ttfamily unsigned char midc}
+
+Identifies message type. (Message Type 1 R\+IU tracking data). \mbox{\Hypertarget{struct_m_i_d_c__01_a69763ba083a498ead8e43afecc94b4d7}\label{struct_m_i_d_c__01_a69763ba083a498ead8e43afecc94b4d7}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!riu\+\_\+sensor\+\_\+id@{riu\+\_\+sensor\+\_\+id}}
+\index{riu\+\_\+sensor\+\_\+id@{riu\+\_\+sensor\+\_\+id}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{riu\+\_\+sensor\+\_\+id}{riu\_sensor\_id}}
+{\footnotesize\ttfamily unsigned short riu\+\_\+sensor\+\_\+id}
+
+T\+I\+DC.
+\begin{DoxyItemize}
+\item 0 Hex. Indicates I\+FF codes.
+\item 1 Hex. Indicates R\+IU Sensor ID.
+\item 2 Hex. Indicates G\+PS pod numbers. Sensor ID (T\+I\+DC) -\/ 000-\/\+F\+FF H\+EX code unique for each sensor. 
+\end{DoxyItemize}\mbox{\Hypertarget{struct_m_i_d_c__01_a10ae4966d28a3e8356b329080e73e037}\label{struct_m_i_d_c__01_a10ae4966d28a3e8356b329080e73e037}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!symbol\+\_\+type@{symbol\+\_\+type}}
+\index{symbol\+\_\+type@{symbol\+\_\+type}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{symbol\+\_\+type}{symbol\_type}}
+{\footnotesize\ttfamily unsigned char symbol\+\_\+type}
+
+\mbox{\Hypertarget{struct_m_i_d_c__01_a445d2a2e3e4ac1f29a426d3a1a617bfc}\label{struct_m_i_d_c__01_a445d2a2e3e4ac1f29a426d3a1a617bfc}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!tcn\+\_\+time@{tcn\+\_\+time}}
+\index{tcn\+\_\+time@{tcn\+\_\+time}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{tcn\+\_\+time}{tcn\_time}}
+{\footnotesize\ttfamily unsigned short tcn\+\_\+time}
+
+Usigned integer. L\+SB = 1 millisecond. Maximum count is 59.\+999 seconds. T\+CN timeis used to calculate latency. It is also used by some receiving systems for delta calculations. \mbox{\Hypertarget{struct_m_i_d_c__01_ab9a4981dc4f20d168da9ffb2db377584}\label{struct_m_i_d_c__01_ab9a4981dc4f20d168da9ffb2db377584}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!track\+\_\+id@{track\+\_\+id}}
+\index{track\+\_\+id@{track\+\_\+id}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{track\+\_\+id}{track\_id}}
+{\footnotesize\ttfamily unsigned short track\+\_\+id}
+
+\mbox{\Hypertarget{struct_m_i_d_c__01_aa0ab1eef0f6c81401665b11a7e91c9d5}\label{struct_m_i_d_c__01_aa0ab1eef0f6c81401665b11a7e91c9d5}} 
+\index{M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}!track\+\_\+status@{track\+\_\+status}}
+\index{track\+\_\+status@{track\+\_\+status}!M\+I\+D\+C\+\_\+01@{M\+I\+D\+C\+\_\+01}}
+\subsubsection{\texorpdfstring{track\+\_\+status}{track\_status}}
+{\footnotesize\ttfamily unsigned char track\+\_\+status}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/h/\mbox{\hyperlink{tats_8h}{tats.\+h}}\end{DoxyCompactItemize}

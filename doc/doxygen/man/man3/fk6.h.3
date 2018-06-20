@@ -1,0 +1,91 @@
+.TH "src/h/fk6.h" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/h/fk6.h
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include <assert\&.h>\fP
+.br
+\fC#include 'catalog\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBfk6_field\fP"
+.br
+.ti -1c
+.RI "struct \fBfk6_catalog\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBfk6_field\fP \fBfk6_field\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBfk6_catalog\fP \fBfk6_catalog\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBfk6_load\fP (\fBCatalog\fP *catalog, FILE *file)"
+.br
+.ti -1c
+.RI "int \fBscan_line\fP (FILE *file, const char *header)"
+.br
+.ti -1c
+.RI "int \fBget_field\fP (char *line, int start, int end, char *dest)"
+.br
+.ti -1c
+.RI "int \fBadd_field\fP (\fBfk6_field\fP *field, \fBfk6_catalog\fP *catalog)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBFK6_1_HEADER\fP = 'Byte\-by\-byte Description of file: fk6_1\&.dat\\n'"
+.br
+.ti -1c
+.RI "const char * \fBFK6_1_FIELDS\fP = ' Bytes Format Units Label Explanations\\n'"
+.br
+.ti -1c
+.RI "const char * \fBSEPARATOR\fP = '\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-'"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBfk6_catalog\fP  \fBfk6_catalog\fP"
+
+.SS "typedef struct \fBfk6_field\fP  \fBfk6_field\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "int add_field (\fBfk6_field\fP * field, \fBfk6_catalog\fP * catalog)"
+
+.SS "int fk6_load (\fBCatalog\fP * catalog, FILE * file)"
+
+.SS "int get_field (char * line, int start, int end, char * dest)"
+trim the substring and copy it to a newly allocated string 
+.SS "int scan_line (FILE * file, const char * header)"
+
+.SH "Variable Documentation"
+.PP 
+.SS "const char* FK6_1_FIELDS = ' Bytes Format Units Label Explanations\\n'"
+
+.SS "const char* FK6_1_HEADER = 'Byte\-by\-byte Description of file: fk6_1\&.dat\\n'"
+
+.SS "const char* SEPARATOR = '\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-'"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

@@ -1,0 +1,13 @@
+var searchData=
+[
+  ['label',['Label',['../structfk6__field.html#a0be762a3d71ca116f4f508322fe2070e',1,'fk6_field']]],
+  ['latitude',['latitude',['../structon__surface.html#a76714bdbc5c536fa77dfb14533ff82a9',1,'on_surface::latitude()'],['../main_8h.html#a63205f1ad14afc714149004a931abbce',1,'LATITUDE():&#160;main.h']]],
+  ['leap_5fsecs',['leap_secs',['../struct_tracker.html#ad762d92dc4fcba312c9d2d11ff3a7e67',1,'Tracker']]],
+  ['light_5ftime',['light_time',['../novas_8c.html#a655da687de124ef9e0b35dd3315a0f4e',1,'light_time(double jd_tdb, object *ss_object, double pos_obs[3], double tlight0, short int accuracy, double pos[3], double *tlight):&#160;novas.c'],['../novas_8h.html#a655da687de124ef9e0b35dd3315a0f4e',1,'light_time(double jd_tdb, object *ss_object, double pos_obs[3], double tlight0, short int accuracy, double pos[3], double *tlight):&#160;novas.c']]],
+  ['limb_5fangle',['limb_angle',['../novas_8c.html#af5d0546c1a000691e684a56d59908e73',1,'limb_angle(double pos_obj[3], double pos_obs[3], double *limb_ang, double *nadir_ang):&#160;novas.c'],['../novas_8h.html#af5d0546c1a000691e684a56d59908e73',1,'limb_angle(double pos_obj[3], double pos_obs[3], double *limb_ang, double *nadir_ang):&#160;novas.c']]],
+  ['local_5fplanet',['local_planet',['../novas_8c.html#a4206ceb442561469fbe1e82ad0edc351',1,'local_planet(double jd_tt, object *ss_body, double delta_t, on_surface *position, short int accuracy, double *ra, double *dec, double *dis):&#160;novas.c'],['../novas_8h.html#a4206ceb442561469fbe1e82ad0edc351',1,'local_planet(double jd_tt, object *ss_body, double delta_t, on_surface *position, short int accuracy, double *ra, double *dec, double *dis):&#160;novas.c']]],
+  ['local_5fstar',['local_star',['../novas_8c.html#a0187c5ef2452cc511fcbe4d84fbd470f',1,'local_star(double jd_tt, double delta_t, cat_entry *star, on_surface *position, short int accuracy, double *ra, double *dec):&#160;novas.c'],['../novas_8h.html#a0187c5ef2452cc511fcbe4d84fbd470f',1,'local_star(double jd_tt, double delta_t, cat_entry *star, on_surface *position, short int accuracy, double *ra, double *dec):&#160;novas.c']]],
+  ['lock',['lock',['../struct_orion.html#a0abaf4b5d42c4e5d19190035fade3599',1,'Orion']]],
+  ['longitude',['longitude',['../structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6',1,'on_surface::longitude()'],['../main_8h.html#ab04a12985543a4277feae611d62718bf',1,'LONGITUDE():&#160;main.h']]],
+  ['lpt',['LPT',['../eph__manager_8c.html#ad0644039a2a0b1fcf47bf8f97af4d537',1,'LPT():&#160;eph_manager.c'],['../eph__manager_8h.html#ad0644039a2a0b1fcf47bf8f97af4d537',1,'LPT():&#160;eph_manager.c']]]
+];

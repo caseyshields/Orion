@@ -1,0 +1,441 @@
+.TH "src/novasc3.1/novas.h" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/novasc3.1/novas.h
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <math\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <ctype\&.h>\fP
+.br
+\fC#include 'novascon\&.h'\fP
+.br
+\fC#include 'solarsystem\&.h'\fP
+.br
+\fC#include 'nutation\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBcat_entry_struct\fP"
+.br
+.ti -1c
+.RI "struct \fBobject\fP"
+.br
+.ti -1c
+.RI "struct \fBon_surface\fP"
+.br
+.ti -1c
+.RI "struct \fBin_space\fP"
+.br
+.ti -1c
+.RI "struct \fBobserver\fP"
+.br
+.ti -1c
+.RI "struct \fBsky_pos\fP"
+.br
+.ti -1c
+.RI "struct \fBra_of_cio\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSIZE_OF_OBJ_NAME\fP   51"
+.br
+.ti -1c
+.RI "#define \fBSIZE_OF_CAT_NAME\fP   4"
+.br
+.ti -1c
+.RI "#define \fBBARYC\fP   0"
+.br
+.ti -1c
+.RI "#define \fBHELIOC\fP   1"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBcat_entry_struct\fP \fBcat_entry\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double * \fBreadeph\fP (int mp, char *name, double jd, int *err)"
+.br
+.ti -1c
+.RI "short int \fBapp_star\fP (double jd_tt, \fBcat_entry\fP *star, short int accuracy, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "short int \fBvirtual_star\fP (double jd_tt, \fBcat_entry\fP *star, short int accuracy, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "short int \fBastro_star\fP (double jd_tt, \fBcat_entry\fP *star, short int accuracy, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "short int \fBapp_planet\fP (double jd_tt, \fBobject\fP *ss_body, short int accuracy, double *ra, double *dec, double *dis)"
+.br
+.ti -1c
+.RI "short int \fBvirtual_planet\fP (double jd_tt, \fBobject\fP *ss_body, short int accuracy, double *ra, double *dec, double *dis)"
+.br
+.ti -1c
+.RI "short int \fBastro_planet\fP (double jd_tt, \fBobject\fP *ss_body, short int accuracy, double *ra, double *dec, double *dis)"
+.br
+.ti -1c
+.RI "short int \fBtopo_star\fP (double jd_tt, double delta_t, \fBcat_entry\fP *star, \fBon_surface\fP *position, short int accuracy, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "short int \fBlocal_star\fP (double jd_tt, double delta_t, \fBcat_entry\fP *star, \fBon_surface\fP *position, short int accuracy, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "short int \fBtopo_planet\fP (double jd_tt, \fBobject\fP *ss_body, double delta_t, \fBon_surface\fP *position, short int accuracy, double *ra, double *dec, double *dis)"
+.br
+.ti -1c
+.RI "short int \fBlocal_planet\fP (double jd_tt, \fBobject\fP *ss_body, double delta_t, \fBon_surface\fP *position, short int accuracy, double *ra, double *dec, double *dis)"
+.br
+.ti -1c
+.RI "short int \fBmean_star\fP (double jd_tt, double ra, double dec, short int accuracy, double *ira, double *idec)"
+.br
+.ti -1c
+.RI "short int \fBplace\fP (double jd_tt, \fBobject\fP *cel_object, \fBobserver\fP *location, double delta_t, short int coord_sys, short int accuracy, \fBsky_pos\fP *output)"
+.br
+.ti -1c
+.RI "void \fBequ2gal\fP (double rai, double deci, double *glon, double *glat)"
+.br
+.ti -1c
+.RI "short int \fBequ2ecl\fP (double jd_tt, short int coord_sys, short int accuracy, double ra, double dec, double *elon, double *elat)"
+.br
+.ti -1c
+.RI "short int \fBequ2ecl_vec\fP (double jd_tt, short int coord_sys, short int accuracy, double *pos1, double *pos2)"
+.br
+.ti -1c
+.RI "short int \fBecl2equ_vec\fP (double jd_tt, short int coord_sys, short int accuracy, double *pos1, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBequ2hor\fP (double jd_ut1, double delta_t, short int accuracy, double xp, double yp, \fBon_surface\fP *location, double ra, double dec, short int ref_option, double *zd, double *az, double *rar, double *decr)"
+.br
+.ti -1c
+.RI "short int \fBgcrs2equ\fP (double jd_tt, short int coord_sys, short int accuracy, double rag, double decg, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "short int \fBsidereal_time\fP (double jd_high, double jd_low, double delta_t, short int gst_type, short int method, short int accuracy, double *gst)"
+.br
+.ti -1c
+.RI "double \fBera\fP (double jd_high, double jd_low)"
+.br
+.ti -1c
+.RI "short int \fBter2cel\fP (double jd_ut_high, double jd_ut_low, double delta_t, short int method, short int accuracy, short int option, double xp, double yp, double *vec1, double *vec2)"
+.br
+.ti -1c
+.RI "short int \fBcel2ter\fP (double jd_ut_high, double jd_ut_low, double delta_t, short int method, short int accuracy, short int option, double xp, double yp, double *vec1, double *vec2)"
+.br
+.ti -1c
+.RI "void \fBspin\fP (double angle, double *pos1, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBwobble\fP (double tjd, short int direction, double xp, double yp, double *pos1, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBterra\fP (\fBon_surface\fP *location, double st, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "void \fBe_tilt\fP (double jd_tdb, short int accuracy, double *mobl, double *tobl, double *ee, double *dpsi, double *deps)"
+.br
+.ti -1c
+.RI "short int \fBcel_pole\fP (double tjd, short int type, double dpole1, double dpole2)"
+.br
+.ti -1c
+.RI "double \fBee_ct\fP (double jd_high, double jd_low, short int accuracy)"
+.br
+.ti -1c
+.RI "void \fBframe_tie\fP (double *pos1, short int direction, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBproper_motion\fP (double jd_tdb1, double *pos, double *vel, double jd_tdb2, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBbary2obs\fP (double *pos, double *pos_obs, double *pos2, double *lighttime)"
+.br
+.ti -1c
+.RI "short int \fBgeo_posvel\fP (double jd_tt, double delta_t, short int accuracy, \fBobserver\fP *obs, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "short int \fBlight_time\fP (double jd_tdb, \fBobject\fP *ss_object, double pos_obs[3], double tlight0, short int accuracy, double pos[3], double *tlight)"
+.br
+.ti -1c
+.RI "double \fBd_light\fP (double *pos1, double *pos_obs)"
+.br
+.ti -1c
+.RI "short int \fBgrav_def\fP (double jd_tdb, short int loc_code, short int accuracy, double *pos1, double *pos_obs, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBgrav_vec\fP (double *pos1, double *pos_obs, double *pos_body, double rmass, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBaberration\fP (double *pos, double *ve, double lighttime, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBrad_vel\fP (\fBobject\fP *cel_object, double *pos, double *vel, double *vel_obs, double d_obs_geo, double d_obs_sun, double d_obj_sun, double *rv)"
+.br
+.ti -1c
+.RI "short int \fBprecession\fP (double jd_tdb1, double *pos1, double jd_tdb2, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBnutation\fP (double jd_tdb, short int direction, short int accuracy, double *pos, double *pos2)"
+.br
+.ti -1c
+.RI "void \fBnutation_angles\fP (double t, short int accuracy, double *dpsi, double *deps)"
+.br
+.ti -1c
+.RI "void \fBfund_args\fP (double t, double a[5])"
+.br
+.ti -1c
+.RI "double \fBmean_obliq\fP (double jd_tdb)"
+.br
+.ti -1c
+.RI "short int \fBvector2radec\fP (double *pos, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "void \fBradec2vector\fP (double ra, double dec, double dist, double *vector)"
+.br
+.ti -1c
+.RI "void \fBstarvectors\fP (\fBcat_entry\fP *star, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "void \fBtdb2tt\fP (double tdb_jd, double *tt_jd, double *secdiff)"
+.br
+.ti -1c
+.RI "short int \fBcio_ra\fP (double jd_tt, short int accuracy, double *ra_cio)"
+.br
+.ti -1c
+.RI "short int \fBcio_location\fP (double jd_tdb, short int accuracy, double *ra_cio, short int *ref_sys)"
+.br
+.ti -1c
+.RI "short int \fBcio_basis\fP (double jd_tdb, double ra_cio, short int ref_sys, short int accuracy, double *x, double *y, double *z)"
+.br
+.ti -1c
+.RI "short int \fBcio_array\fP (double jd_tdb, long int n_pts, \fBra_of_cio\fP *cio)"
+.br
+.ti -1c
+.RI "double \fBira_equinox\fP (double jd_tdb, short int equinox, short int accuracy)"
+.br
+.ti -1c
+.RI "short int \fBephemeris\fP (double jd[2], \fBobject\fP *cel_obj, short int origin, short int accuracy, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "void \fBtransform_hip\fP (\fBcat_entry\fP *hipparcos, \fBcat_entry\fP *hip_2000)"
+.br
+.ti -1c
+.RI "short int \fBtransform_cat\fP (short int option, double date_incat, \fBcat_entry\fP *incat, double date_newcat, char newcat_id[\fBSIZE_OF_CAT_NAME\fP], \fBcat_entry\fP *newcat)"
+.br
+.ti -1c
+.RI "void \fBlimb_angle\fP (double pos_obj[3], double pos_obs[3], double *limb_ang, double *nadir_ang)"
+.br
+.ti -1c
+.RI "double \fBrefract\fP (\fBon_surface\fP *location, short int ref_option, double zd_obs)"
+.br
+.ti -1c
+.RI "double \fBjulian_date\fP (short int year, short int month, short int day, double hour)"
+.br
+.ti -1c
+.RI "void \fBcal_date\fP (double tjd, short int *year, short int *month, short int *day, double *hour)"
+.br
+.ti -1c
+.RI "double \fBnorm_ang\fP (double angle)"
+.br
+.ti -1c
+.RI "short int \fBmake_cat_entry\fP (char star_name[\fBSIZE_OF_OBJ_NAME\fP], char catalog[\fBSIZE_OF_CAT_NAME\fP], long int star_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double \fBrad_vel\fP, \fBcat_entry\fP *star)"
+.br
+.ti -1c
+.RI "short int \fBmake_object\fP (short int type, short int number, char name[\fBSIZE_OF_OBJ_NAME\fP], \fBcat_entry\fP *star_data, \fBobject\fP *cel_obj)"
+.br
+.ti -1c
+.RI "short int \fBmake_observer\fP (short int where, \fBon_surface\fP *obs_surface, \fBin_space\fP *obs_space, \fBobserver\fP *obs)"
+.br
+.ti -1c
+.RI "void \fBmake_observer_at_geocenter\fP (\fBobserver\fP *obs_at_geocenter)"
+.br
+.ti -1c
+.RI "void \fBmake_observer_on_surface\fP (double latitude, double longitude, double height, double temperature, double pressure, \fBobserver\fP *obs_on_surface)"
+.br
+.ti -1c
+.RI "void \fBmake_observer_in_space\fP (double sc_pos[3], double sc_vel[3], \fBobserver\fP *obs_in_space)"
+.br
+.ti -1c
+.RI "void \fBmake_on_surface\fP (double latitude, double longitude, double height, double temperature, double pressure, \fBon_surface\fP *obs_surface)"
+.br
+.ti -1c
+.RI "void \fBmake_in_space\fP (double sc_pos[3], double sc_vel[3], \fBin_space\fP *obs_space)"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define BARYC   0"
+
+.SS "#define HELIOC   1"
+
+.SS "#define SIZE_OF_CAT_NAME   4"
+
+.SS "#define SIZE_OF_OBJ_NAME   51"
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBcat_entry_struct\fP  \fBcat_entry\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "void aberration (double * pos, double * ve, double lighttime, double * pos2)"
+
+.SS "short int app_planet (double jd_tt, \fBobject\fP * ss_body, short int accuracy, double * ra, double * dec, double * dis)"
+
+.SS "short int app_star (double jd_tt, \fBcat_entry\fP * star, short int accuracy, double * ra, double * dec)"
+
+.SS "short int astro_planet (double jd_tt, \fBobject\fP * ss_body, short int accuracy, double * ra, double * dec, double * dis)"
+
+.SS "short int astro_star (double jd_tt, \fBcat_entry\fP * star, short int accuracy, double * ra, double * dec)"
+
+.SS "void bary2obs (double * pos, double * pos_obs, double * pos2, double * lighttime)"
+
+.SS "void cal_date (double tjd, short int * year, short int * month, short int * day, double * hour)"
+
+.SS "short int cel2ter (double jd_ut_high, double jd_ut_low, double delta_t, short int method, short int accuracy, short int option, double xp, double yp, double * vec1, double * vec2)"
+
+.SS "short int cel_pole (double tjd, short int type, double dpole1, double dpole2)"
+
+.SS "short int cio_array (double jd_tdb, long int n_pts, \fBra_of_cio\fP * cio)"
+
+.SS "short int cio_basis (double jd_tdb, double ra_cio, short int ref_sys, short int accuracy, double * x, double * y, double * z)"
+
+.SS "short int cio_location (double jd_tdb, short int accuracy, double * ra_cio, short int * ref_sys)"
+
+.SS "short int cio_ra (double jd_tt, short int accuracy, double * ra_cio)"
+
+.SS "double d_light (double * pos1, double * pos_obs)"
+
+.SS "void e_tilt (double jd_tdb, short int accuracy, double * mobl, double * tobl, double * ee, double * dpsi, double * deps)"
+
+.SS "short int ecl2equ_vec (double jd_tt, short int coord_sys, short int accuracy, double * pos1, double * pos2)"
+
+.SS "double ee_ct (double jd_high, double jd_low, short int accuracy)"
+
+.SS "short int ephemeris (double jd[2], \fBobject\fP * cel_obj, short int origin, short int accuracy, double * pos, double * vel)"
+
+.SS "short int equ2ecl (double jd_tt, short int coord_sys, short int accuracy, double ra, double dec, double * elon, double * elat)"
+
+.SS "short int equ2ecl_vec (double jd_tt, short int coord_sys, short int accuracy, double * pos1, double * pos2)"
+
+.SS "void equ2gal (double rai, double deci, double * glon, double * glat)"
+
+.SS "void equ2hor (double jd_ut1, double delta_t, short int accuracy, double xp, double yp, \fBon_surface\fP * location, double ra, double dec, short int ref_option, double * zd, double * az, double * rar, double * decr)"
+
+.SS "double era (double jd_high, double jd_low)"
+
+.SS "void frame_tie (double * pos1, short int direction, double * pos2)"
+
+.SS "void fund_args (double t, double a[5])"
+
+.SS "short int gcrs2equ (double jd_tt, short int coord_sys, short int accuracy, double rag, double decg, double * ra, double * dec)"
+
+.SS "short int geo_posvel (double jd_tt, double delta_t, short int accuracy, \fBobserver\fP * obs, double * pos, double * vel)"
+
+.SS "short int grav_def (double jd_tdb, short int loc_code, short int accuracy, double * pos1, double * pos_obs, double * pos2)"
+
+.SS "void grav_vec (double * pos1, double * pos_obs, double * pos_body, double rmass, double * pos2)"
+
+.SS "double ira_equinox (double jd_tdb, short int equinox, short int accuracy)"
+
+.SS "double julian_date (short int year, short int month, short int day, double hour)"
+
+.SS "short int light_time (double jd_tdb, \fBobject\fP * ss_object, double pos_obs[3], double tlight0, short int accuracy, double pos[3], double * tlight)"
+
+.SS "void limb_angle (double pos_obj[3], double pos_obs[3], double * limb_ang, double * nadir_ang)"
+
+.SS "short int local_planet (double jd_tt, \fBobject\fP * ss_body, double delta_t, \fBon_surface\fP * position, short int accuracy, double * ra, double * dec, double * dis)"
+
+.SS "short int local_star (double jd_tt, double delta_t, \fBcat_entry\fP * star, \fBon_surface\fP * position, short int accuracy, double * ra, double * dec)"
+
+.SS "short int make_cat_entry (char star_name[SIZE_OF_OBJ_NAME], char catalog[SIZE_OF_CAT_NAME], long int star_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, \fBcat_entry\fP * star)"
+
+.SS "void make_in_space (double sc_pos[3], double sc_vel[3], \fBin_space\fP * obs_space)"
+
+.SS "short int make_object (short int type, short int number, char name[SIZE_OF_OBJ_NAME], \fBcat_entry\fP * star_data, \fBobject\fP * cel_obj)"
+
+.SS "short int make_observer (short int where, \fBon_surface\fP * obs_surface, \fBin_space\fP * obs_space, \fBobserver\fP * obs)"
+
+.SS "void make_observer_at_geocenter (\fBobserver\fP * obs_at_geocenter)"
+
+.SS "void make_observer_in_space (double sc_pos[3], double sc_vel[3], \fBobserver\fP * obs_in_space)"
+
+.SS "void make_observer_on_surface (double latitude, double longitude, double height, double temperature, double pressure, \fBobserver\fP * obs_on_surface)"
+
+.SS "void make_on_surface (double latitude, double longitude, double height, double temperature, double pressure, \fBon_surface\fP * obs_surface)"
+
+.SS "double mean_obliq (double jd_tdb)"
+
+.SS "short int mean_star (double jd_tt, double ra, double dec, short int accuracy, double * ira, double * idec)"
+
+.SS "double norm_ang (double angle)"
+
+.SS "void nutation (double jd_tdb, short int direction, short int accuracy, double * pos, double * pos2)"
+
+.SS "void nutation_angles (double t, short int accuracy, double * dpsi, double * deps)"
+
+.SS "short int place (double jd_tt, \fBobject\fP * cel_object, \fBobserver\fP * location, double delta_t, short int coord_sys, short int accuracy, \fBsky_pos\fP * output)"
+
+.SS "short int precession (double jd_tdb1, double * pos1, double jd_tdb2, double * pos2)"
+
+.SS "void proper_motion (double jd_tdb1, double * pos, double * vel, double jd_tdb2, double * pos2)"
+
+.SS "void rad_vel (\fBobject\fP * cel_object, double * pos, double * vel, double * vel_obs, double d_obs_geo, double d_obs_sun, double d_obj_sun, double * rv)"
+
+.SS "void radec2vector (double ra, double dec, double dist, double * vector)"
+
+.SS "double * readeph (int mp, char * name, double jd, int * err)"
+
+.SS "double refract (\fBon_surface\fP * location, short int ref_option, double zd_obs)"
+
+.SS "short int sidereal_time (double jd_high, double jd_low, double delta_t, short int gst_type, short int method, short int accuracy, double * gst)"
+
+.SS "void spin (double angle, double * pos1, double * pos2)"
+
+.SS "void starvectors (\fBcat_entry\fP * star, double * pos, double * vel)"
+
+.SS "void tdb2tt (double tdb_jd, double * tt_jd, double * secdiff)"
+
+.SS "short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t, short int method, short int accuracy, short int option, double xp, double yp, double * vec1, double * vec2)"
+
+.SS "void terra (\fBon_surface\fP * location, double st, double * pos, double * vel)"
+
+.SS "short int topo_planet (double jd_tt, \fBobject\fP * ss_body, double delta_t, \fBon_surface\fP * position, short int accuracy, double * ra, double * dec, double * dis)"
+
+.SS "short int topo_star (double jd_tt, double delta_t, \fBcat_entry\fP * star, \fBon_surface\fP * position, short int accuracy, double * ra, double * dec)"
+
+.SS "short int transform_cat (short int option, double date_incat, \fBcat_entry\fP * incat, double date_newcat, char newcat_id[SIZE_OF_CAT_NAME], \fBcat_entry\fP * newcat)"
+
+.SS "void transform_hip (\fBcat_entry\fP * hipparcos, \fBcat_entry\fP * hip_2000)"
+
+.SS "short int vector2radec (double * pos, double * ra, double * dec)"
+
+.SS "short int virtual_planet (double jd_tt, \fBobject\fP * ss_body, short int accuracy, double * ra, double * dec, double * dis)"
+
+.SS "short int virtual_star (double jd_tt, \fBcat_entry\fP * star, short int accuracy, double * ra, double * dec)"
+
+.SS "void wobble (double tjd, short int direction, double xp, double yp, double * pos1, double * pos2)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

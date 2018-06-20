@@ -1,0 +1,72 @@
+.TH "src/h/vmath.h" 3 "Mon Jun 18 2018" "Version 1.0" "Orion" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/h/vmath.h
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math\&.h>\fP
+.br
+\fC#include 'vmath\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBscale\fP (double U[3], double k)"
+.br
+.ti -1c
+.RI "double \fBdot\fP (double U[3], double V[3])"
+.br
+.ti -1c
+.RI "void \fBcross\fP (double U[3], double V[3], double W[3])"
+.br
+.ti -1c
+.RI "double \fBmagnitude\fP (double U[3])"
+.br
+.ti -1c
+.RI "double \fBnormalize\fP (double U[3])"
+.br
+.ti -1c
+.RI "double \fBhours2radians\fP (double h)"
+.br
+.ti -1c
+.RI "double \fBdegrees2radians\fP (double d)"
+.br
+.ti -1c
+.RI "void \fBspherical2cartesian\fP (double theta, double phi, double \fBC\fP[3])"
+.br
+.ti -1c
+.RI "double \fBangular_separation\fP (double theta_1, double phi_1, double theta_2, double phi_2)"
+.br
+.ti -1c
+.RI "double \fBorthodromic_distance\fP (double theta_1, double phi_1, double theta_2, double phi_2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double angular_separation (double theta_1, double phi_1, double theta_2, double phi_2)"
+Determines the angle between two vectors which lie on the surface of the sphere, by taking the arcsin of the resulting chord\&. 
+.SS "void cross (double U[3], double V[3], double W[3])"
+
+.SS "double degrees2radians (double d)"
+
+.SS "double dot (double U[3], double V[3])"
+
+.SS "double hours2radians (double h)"
+
+.SS "double magnitude (double U[3])"
+returns the cartesian length of the vector 
+.SS "double normalize (double U[3])"
+normalizes the given vector and returns the magnitude\&. 
+.SS "double orthodromic_distance (double theta_1, double phi_1, double theta_2, double phi_2)"
+Determines the great-circle distance between two points on a sphere\&. arctan( ||VxU|| / V*U ) 
+.SS "void scale (double U[3], double k)"
+
+.SS "void spherical2cartesian (double theta, double phi, double C[3])"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Orion from the source code\&.

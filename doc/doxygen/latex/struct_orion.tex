@@ -1,0 +1,92 @@
+\hypertarget{struct_orion}{}\section{Orion Struct Reference}
+\label{struct_orion}\index{Orion@{Orion}}
+
+
+{\ttfamily \#include $<$orion.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_tracker}{Tracker}} \mbox{\hyperlink{struct_orion_a495e6bf1af7804551f312afd3bd7032a}{tracker}}
+\item 
+\mbox{\hyperlink{novas_8h_a262daaa71cede05205cfaa727313c1f3}{cat\+\_\+entry}} \mbox{\hyperlink{struct_orion_a4aa5babb303788c009f95322895c2e6c}{target}}
+\item 
+struct sockaddr\+\_\+in \mbox{\hyperlink{struct_orion_a367491879e8ce396250c54956bc6ed5e}{address}}
+\item 
+unsigned int \mbox{\hyperlink{struct_orion_a13301f1712f628ef6520dfe1f4e4b70d}{socket}}
+\item 
+pthread\+\_\+mutex\+\_\+t \mbox{\hyperlink{struct_orion_a0abaf4b5d42c4e5d19190035fade3599}{lock}}
+\item 
+pthread\+\_\+t \mbox{\hyperlink{struct_orion_a60e242a7925447f8aa006a5126e7d100}{control}}
+\item 
+volatile int \mbox{\hyperlink{struct_orion_afa9d6911164917fd0b12dbdf0df0ff3a}{mode}}
+\item 
+unsigned int \mbox{\hyperlink{struct_orion_adf42a979321286885fe5a447d48d14d6}{rate}}
+\item 
+char \mbox{\hyperlink{struct_orion_a2934b458b7d1f80c5034b207fcd05c31}{error}} \mbox{[}128\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \mbox{\hyperlink{struct_orion}{Orion}} server connects to a T\+A\+TS sensor over T\+CP and aims it at a selected celestial target. This incarnation runs the control loop in a thread, using a mutex to synchronise access to the server controls. 
+
+\subsection{Field Documentation}
+\mbox{\Hypertarget{struct_orion_a367491879e8ce396250c54956bc6ed5e}\label{struct_orion_a367491879e8ce396250c54956bc6ed5e}} 
+\index{Orion@{Orion}!address@{address}}
+\index{address@{address}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{address}{address}}
+{\footnotesize\ttfamily struct sockaddr\+\_\+in address}
+
+Address of the sensor \mbox{\Hypertarget{struct_orion_a60e242a7925447f8aa006a5126e7d100}\label{struct_orion_a60e242a7925447f8aa006a5126e7d100}} 
+\index{Orion@{Orion}!control@{control}}
+\index{control@{control}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{control}{control}}
+{\footnotesize\ttfamily pthread\+\_\+t control}
+
+Thread which runs the sensor control loop \mbox{\Hypertarget{struct_orion_a2934b458b7d1f80c5034b207fcd05c31}\label{struct_orion_a2934b458b7d1f80c5034b207fcd05c31}} 
+\index{Orion@{Orion}!error@{error}}
+\index{error@{error}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{error}{error}}
+{\footnotesize\ttfamily char error\mbox{[}128\mbox{]}}
+
+An error buffer for messages from a failed method \mbox{\Hypertarget{struct_orion_a0abaf4b5d42c4e5d19190035fade3599}\label{struct_orion_a0abaf4b5d42c4e5d19190035fade3599}} 
+\index{Orion@{Orion}!lock@{lock}}
+\index{lock@{lock}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{lock}{lock}}
+{\footnotesize\ttfamily pthread\+\_\+mutex\+\_\+t lock}
+
+Used to prevent race conditions between main loop and ui thread \mbox{\Hypertarget{struct_orion_afa9d6911164917fd0b12dbdf0df0ff3a}\label{struct_orion_afa9d6911164917fd0b12dbdf0df0ff3a}} 
+\index{Orion@{Orion}!mode@{mode}}
+\index{mode@{mode}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{mode}{mode}}
+{\footnotesize\ttfamily volatile int mode}
+
+Current state of the control thread. May equal O\+R\+I\+O\+N\+\_\+\+M\+O\+D\+E\+\_\+\+ON or O\+R\+I\+O\+N\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF. \mbox{\Hypertarget{struct_orion_adf42a979321286885fe5a447d48d14d6}\label{struct_orion_adf42a979321286885fe5a447d48d14d6}} 
+\index{Orion@{Orion}!rate@{rate}}
+\index{rate@{rate}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{rate}{rate}}
+{\footnotesize\ttfamily unsigned int rate}
+
+Update rate of the control thread \mbox{\Hypertarget{struct_orion_a13301f1712f628ef6520dfe1f4e4b70d}\label{struct_orion_a13301f1712f628ef6520dfe1f4e4b70d}} 
+\index{Orion@{Orion}!socket@{socket}}
+\index{socket@{socket}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{socket}{socket}}
+{\footnotesize\ttfamily unsigned int socket}
+
+Socket for the sensor \mbox{\Hypertarget{struct_orion_a4aa5babb303788c009f95322895c2e6c}\label{struct_orion_a4aa5babb303788c009f95322895c2e6c}} 
+\index{Orion@{Orion}!target@{target}}
+\index{target@{target}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{target}{target}}
+{\footnotesize\ttfamily \mbox{\hyperlink{novas_8h_a262daaa71cede05205cfaa727313c1f3}{cat\+\_\+entry}} target}
+
+Current target of the tracker \mbox{\Hypertarget{struct_orion_a495e6bf1af7804551f312afd3bd7032a}\label{struct_orion_a495e6bf1af7804551f312afd3bd7032a}} 
+\index{Orion@{Orion}!tracker@{tracker}}
+\index{tracker@{tracker}!Orion@{Orion}}
+\subsubsection{\texorpdfstring{tracker}{tracker}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_tracker}{Tracker}} tracker}
+
+A representation of the sensor being controlled 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/h/\mbox{\hyperlink{orion_8h}{orion.\+h}}\end{DoxyCompactItemize}
