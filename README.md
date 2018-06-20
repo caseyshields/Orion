@@ -6,6 +6,9 @@ The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library i
 The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.
 The front end is still in the conceptual phases, however a [UI experiment](https://caseyshields.github.io/starlog/index.html) has been written in [D3](https://d3js.org/).  
 
+[documentation](http://caseyshields.github.io/Orion/docs/doxygen/html/index.html)
+
+
 ## Components
  - vmath : utility library of vector and spherical math routines
  - novas : USNO's astrometric software package
