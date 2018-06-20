@@ -1,0 +1,12 @@
+sequenceDiagram
+participant User
+participant UI as Commandline
+participant Orion
+
+User->>UI: selects star
+UI ->>Orion: track(star)
+activate Orion
+loop 50 Hertz
+Orion->>Sensor:MIDC01
+end
+deactivate Orion

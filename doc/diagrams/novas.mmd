@@ -1,0 +1,33 @@
+graph LR
+
+A[Command Line UI]
+B[Sensor Simulator]
+
+subgraph Orion
+
+subgraph Engine
+C[Orion]
+end
+
+subgraph Access
+D[Catalog]
+E[Tracker]
+end
+
+end
+
+subgraph Data
+F(FK5)
+G(FK6)
+H(IERS-A)
+I(Orion Config)
+end
+
+A-- mutex ---C
+B== TATS TCP ===C
+C-.->D
+C-.->E
+D-.->F
+D-.->G
+E-.->H
+E-.->I
