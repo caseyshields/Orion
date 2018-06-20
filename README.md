@@ -1,22 +1,38 @@
 # Orion
 
-Star hunting software. Contains a planning component for loading astrometric catalogs and selecting suitable stars.
-The other component is a tracker which transforms catalog coordinates into a useable format and broadcasts them to client(s) over TATS.
-The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library is used to perform the transformations.
-The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.
-The front end is still in the conceptual phases, however a [UI experiment](https://caseyshields.github.io/starlog/index.html) has been written in [D3](https://d3js.org/).  
+Star hunting software. Provides tools to search the FK6 star catalog by brightness and current sky 
+position. TATS sensors can then be concurrently directed to target selected stars. Orion relies heavily 
+on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/)
 
-[documentation](http://caseyshields.github.io/Orion/docs/doxygen/html/index.html)
-
+Orion is developed using [CLion](https://www.jetbrains.com/clion/) and the [MinGW](http://mingw.org/) toolchain. Code
+is documented using [doxygen](www.doxygen.org/), [Mermaid]() and [PlantUML](http://plantuml.com/)
 
 ## Components
- - vmath : utility library of vector and spherical math routines
- - novas : USNO's astrometric software package
- - fk6 : loads raw FK6 catalogs into a catalog
+
+![Component organization](https://caseyshields.github.io/Orion/diagrams/novas.svg)
+
+ - orion : A command line interface which allows the user to search the catalog and target stars
  - catalog : module for filtering and sorting desired stars.
  - tracker : performs coordinate transforms according to the current time and location on earth 
- - sensor : a dummy server which simulates a slaved sensor
- - orion : main program which integrates all features
+ - simulator : a dummy server which simulates a slaved sensor
+ - vmath : utility library of vector and spherical math routines
+ - novasc3.1 : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
+ - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data.
+
+## Code documentation
+
+See generated [doxygen pages](https://caseyshields.github.io/Orion/index.html) here.
 
 ## Requirements
  - Orion is developed in CLion using MinGW
+
+## Future Plans
+ 
+  - Improve portability by switching to [cygwin](https://www.cygwin.com/) for full posix compliance
+  - Switch from winsock to sockets
+  - Add planet tracking by integrating JPL ephemeris
+  - Add [IERS-A bulletin](http://maia.usno.navy.mil/ser7/ser7.dat) projections to improve Novas accuraccy
+  - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
+  - Add web interface which utilizes [starmap](https://caseyshields.github.io/starlog/index.html) project to allow user interaction with the catalog
+  - 
+  

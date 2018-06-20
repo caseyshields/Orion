@@ -1,33 +1,40 @@
-graph LR
-
-A[Command Line UI]
-B[Sensor Simulator]
-
+graph TB
+simulator(Sensor Simulator)
 subgraph Orion
-
-subgraph Engine
-C[Orion]
+subgraph User Interface
+ui[Commandline UI]
+end
+subgraph Controllers
+orion[Orion Server]
+test[Test]
+end
+subgraph Engines
+catalog(Catalog)
+tracker(Tracker)
+end
+subgraph Data Access
+fk6(FK6)
+iers(IERS-A)
+config
+end
+subgraph Util
+novas(Novas 3.1)
+sockets(winsock)
+pthreads(pthreads)
+vmath(vmath)
+end
 end
 
-subgraph Access
-D[Catalog]
-E[Tracker]
-end
+ui-- mutexes-->orion
 
-end
+orion-.->catalog
+orion-.->tracker
+orion-->config
+orion-- TATS UDP-->simulator
 
-subgraph Data
-F(FK5)
-G(FK6)
-H(IERS-A)
-I(Orion Config)
-end
+tracker-.->iers
+catalog-.->fk6
 
-A-- mutex ---C
-B== TATS TCP ===C
-C-.->D
-C-.->E
-D-.->F
-D-.->G
-E-.->H
-E-.->I
+novas-.-pthreads
+pthreads-.-sockets
+sockets-.-vmath
