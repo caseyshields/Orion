@@ -11,8 +11,9 @@ is documented using [doxygen](www.doxygen.org/), [Mermaid]() and [PlantUML](http
 
 ![Component organization](https://caseyshields.github.io/Orion/diagrams/novas.svg)
 
- - orion : A command line interface which allows the user to search the catalog and target stars
- - catalog : module for filtering and sorting desired stars.
+ - main : A command line interface which allows the user to search the catalog and send targets to the orion server
+ - orion : A server which drives a TATS sensor, directing it at given targets
+ - catalog : module for filtering and sorting desired stars
  - tracker : performs coordinate transforms according to the current time and location on earth 
  - simulator : a dummy server which simulates a slaved sensor
  - vmath : utility library of vector and spherical math routines
@@ -22,9 +23,6 @@ is documented using [doxygen](www.doxygen.org/), [Mermaid]() and [PlantUML](http
 ## Code documentation
 
 See generated [doxygen pages](https://caseyshields.github.io/Orion/index.html) here.
-
-## Requirements
- - Orion is developed in CLion using MinGW
 
 ## Future Plans
  
