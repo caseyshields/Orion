@@ -24,9 +24,13 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Orion", "index.html", [
-    [ "Introduction", "index.html#intro_sec", null ],
-    [ "Components", "index.html#component_sec", [
-      [ "VMath", "index.html#vmath", null ]
+    [ "Building Orion", "index.html#building", null ],
+    [ "Running Orion", "index.html#running", null ],
+    [ "Using Orion", "index.html#using", [
+      [ "Search <min magnitude> <min az> <max az> <min zd> <max zd>", "index.html#search", null ],
+      [ "Start", "index.html#start", null ],
+      [ "Track <FK ID>", "index.html#track", null ],
+      [ "Exit", "index.html#exit", null ]
     ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],

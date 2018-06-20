@@ -35,28 +35,46 @@
 /*!
 \mainpage Orion
 
-\section intro_sec Introduction
+\section building Building Orion
 
-Star hunting software. Contains a planning component for loading astrometric catalogs and selecting suitable stars.
-The other component is a tracker which transforms catalog coordinates into a useable format and broadcasts them to client(s) over TATS.
-The [Novas 3.1](http://aa.usno.navy.mil/software/novas/novas_info.php) library is used to perform the transformations.
-The first part of [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) or [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) is currently used as a catalog.
-The front end is still in the conceptual phases, however a [UI experiment](https://caseyshields.github.io/starlog/index.html) has been written in [D3](https://d3js.org/).
+ Say, that'd be a really good thing to document
 
-\section component_sec Components
- - vmath : utility library of vector and spherical math routines
- - novas : USNO's astrometric software package
- - fk6 : loads raw FK6 catalogs into a catalog
- - catalog : module for filtering and sorting desired stars.
- - tracker : performs coordinate transforms according to the current time and location on earth
- - sensor : a dummy server which simulates a slaved sensor
- - orion : main program which integrates all features
+\section running Running Orion
 
-\subsection vmath VMath
-##vmath
+ Orion's main entry point is in main.c. Configuration of sensor location, atmospheric conditions and so forth, is
+ provided by command line arguments;
 
-## Requirements
- - Orion is developed in CLion using MinGW
+ - latitude [degrees] : geodetic location of sensor
+ - longitude [degrees]
+ - height [meters]
+ - ip [000.000.000.000] : ipv4 address of TATS sensor
+ - port [20000-60000] : port number of TATS sensor
+ - temperature [celsius] : temperature at sensor location
+ - pressure [millibars] : atmospheric pressure at sensor
+ - UT1_UTC [fractional seconds] : current offset between TAI and TT
+ - TAI_UTC [integer seconds] : Difference between TAI and UTC
+ - catalog [path] : A path to the FK6 dataset to be loaded.
+
+ If not specified they will revert to default values defined in main.c.
+
+\section using Using Orion
+ Once started Orion enters an interactive command line mode which accepts
+ the following commands;
+
+\subsection search Search <min magnitude> <min az> <max az> <min zd> <max zd>
+ Searches through the catalog for all bright stars currently within the given
+ patch of sky in local horizon coordinates.
+
+\subsection start Start
+Connects to the TATS sensor, and starts the server.
+
+\subsection track Track <FK ID>
+Sets a new target which the Orion server will direct the TATS sensor at
+
+\subsection exit Exit
+Closes the sensor connection, shuts down the Orion server, releases the
+ catalogs, and exits the program.
+
 */
 
 /** Provides an interactive command line interface to the Orion server. */
