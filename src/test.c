@@ -12,6 +12,8 @@
 #include "h/vmath.h"
 #include "h/fk6.h"
 
+// todo now that I have the interactive command line figured out, this should be turned into a battery of unit tests- or whatever is available in C
+
 /** A simple command line app for testing and exercising different features of
  * the star tracker. Accepts configuration parameters as command line arguments;
  * <ul>
