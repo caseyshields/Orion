@@ -25,12 +25,12 @@ vmath(vmath)
 end
 end
 
-ui-- mutexes-->orion
+ui-- mutexes -->orion
 
 orion-.->catalog
 orion-.->tracker
-orion-->config
-orion-- TATS UDP-->simulator
+orion-.->config
+orion-- TATS UDP -->simulator
 
 tracker-.->iers
 catalog-.->fk6
