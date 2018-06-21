@@ -5,7 +5,7 @@ position. TATS sensors can then be concurrently directed to target selected star
 on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/)
 
 Orion is developed using [CLion](https://www.jetbrains.com/clion/) and the [MinGW](http://mingw.org/) toolchain. Code
-is documented using [doxygen](www.doxygen.org/), [Mermaid]() and [PlantUML](http://plantuml.com/)
+is documented using [doxygen](www.doxygen.org/), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
 
 ## Components
 
@@ -19,6 +19,7 @@ is documented using [doxygen](www.doxygen.org/), [Mermaid]() and [PlantUML](http
  - vmath : utility library of vector and spherical math routines
  - novasc3.1 : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
  - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data.
+ - tats : provides structures and enumeration for dealing with TATS messages
 
 ## Code documentation
 
@@ -32,5 +33,4 @@ See generated [doxygen pages](https://caseyshields.github.io/Orion/index.html) h
   - Add [IERS-A bulletin](http://maia.usno.navy.mil/ser7/ser7.dat) projections to improve Novas accuraccy
   - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
   - Add web interface which utilizes [starmap](https://caseyshields.github.io/starlog/index.html) project to allow user interaction with the catalog
-  - 
   

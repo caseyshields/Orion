@@ -21,9 +21,9 @@
 #define PRESSURE "1010.0"
 
 /** (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation */
-#define UT1_UTC "0.108644"
+#define UT1_UTC "0.06809"
 
-/** delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018 */
+/** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
 
 #ifndef WIN32
