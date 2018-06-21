@@ -134,8 +134,8 @@ Functions</h2></td></tr>
 <tr class="separator:a8d33a956fb2833f8d4f82433b633b85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4a20cd46449a21dc9f02217e7eedb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="catalog_8h.html#afd4a20cd46449a21dc9f02217e7eedb0">catalog_search_patch</a> (<a class="el" href="struct_catalog.html">Catalog</a> *catalog, double ra_min, double ra_max, double dec_min, double dec_max, <a class="el" href="struct_catalog.html">Catalog</a> *results)</td></tr>
 <tr class="separator:afd4a20cd46449a21dc9f02217e7eedb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16afeebb360ad5a4f762cc8e21d22c27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="catalog_8h.html#a16afeebb360ad5a4f762cc8e21d22c27">catalog_orange</a> (<a class="el" href="struct_catalog.html">Catalog</a> *c, double min, double max, <a class="el" href="struct_catalog.html">Catalog</a> *results)</td></tr>
-<tr class="separator:a16afeebb360ad5a4f762cc8e21d22c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974bf6985e9a179017d44afdd81e408f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_entry.html">Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="catalog_8h.html#a974bf6985e9a179017d44afdd81e408f">catalog_select</a> (<a class="el" href="struct_catalog.html">Catalog</a> *catalog, unsigned long fkid)</td></tr>
+<tr class="separator:a974bf6985e9a179017d44afdd81e408f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affe05a1cc310a5dccbc0be027d61b862"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="catalog_8h.html#affe05a1cc310a5dccbc0be027d61b862">catalog_print</a> (<a class="el" href="struct_catalog.html">Catalog</a> *c)</td></tr>
 <tr class="separator:affe05a1cc310a5dccbc0be027d61b862"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae148da98964d934a09eb2ec42e02908d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="catalog_8h.html#ae148da98964d934a09eb2ec42e02908d">catalog_free_entries</a> (<a class="el" href="struct_catalog.html">Catalog</a> *c)</td></tr>
@@ -386,46 +386,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a16afeebb360ad5a4f762cc8e21d22c27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16afeebb360ad5a4f762cc8e21d22c27">&#9670;&nbsp;</a></span>catalog_orange()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_catalog.html">Catalog</a>* catalog_orange </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td>
-          <td class="paramname"><em>c</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td>
-          <td class="paramname"><em>results</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="affe05a1cc310a5dccbc0be027d61b862"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#affe05a1cc310a5dccbc0be027d61b862">&#9670;&nbsp;</a></span>catalog_print()</h2>
 
@@ -562,6 +522,42 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a974bf6985e9a179017d44afdd81e408f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a974bf6985e9a179017d44afdd81e408f">&#9670;&nbsp;</a></span>catalog_select()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_entry.html">Entry</a>* catalog_select </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td>
+          <td class="paramname"><em>catalog</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>fkid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Selects the first entry with the given Fundamental <a class="el" href="struct_catalog.html">Catalog</a> ID. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">catalog</td><td>the catalog to search </td></tr>
+    <tr><td class="paramname">fkid</td><td>The Hipparcos/Tycho catalog ID </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the star's entry, or NULL if it is not in the catalog </dd></dl>
 
 </div>
 </div>

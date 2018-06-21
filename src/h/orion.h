@@ -85,8 +85,8 @@ int orion_stop( Orion * orion );
 /** Disconnects the socket and disposes of resources. */
 void orion_disconnect( Orion * orion );
 
-/** Frees anciliary structures allocated by orion. */
-int orion_free( Orion * orion );
+/* Frees anciliary structures allocated by orion. */
+//int orion_free( Orion * orion );
 
 /** Best guess of whether the server is running. Thread safe.
  * @return True if the orion server was running recently. False otherwise.*/

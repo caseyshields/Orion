@@ -96,7 +96,8 @@ $(document).ready(function(){initNavTree('orion_8h.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;pthread.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="catalog_8h_source.html">catalog.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="catalog_8h_source.html">h/catalog.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tracker_8h_source.html">h/tracker.h</a>&quot;</code><br />
 </div>
 <p><a href="orion_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -130,8 +131,6 @@ Functions</h2></td></tr>
 <tr class="separator:ab48a953fa4789878bbd631ef1080dd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b007892d35cdb4ed2c42849311bc5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a25b007892d35cdb4ed2c42849311bc5f">orion_disconnect</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:a25b007892d35cdb4ed2c42849311bc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cb76c96eedd83a732514941fd999e71"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a8cb76c96eedd83a732514941fd999e71">orion_free</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
-<tr class="separator:a8cb76c96eedd83a732514941fd999e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2a04410d05c733769b5ef25beb50743"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#aa2a04410d05c733769b5ef25beb50743">orion_is_running</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:aa2a04410d05c733769b5ef25beb50743"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30d0255064c075920c03162a3c37b154"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a30d0255064c075920c03162a3c37b154">orion_is_connected</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
@@ -140,6 +139,8 @@ Functions</h2></td></tr>
 <tr class="separator:af99f733c05ea1a26aac41b9b5b4fe307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8fe7b6e30c13746f481d248572551ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#ad8fe7b6e30c13746f481d248572551ce">orion_clear_error</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:ad8fe7b6e30c13746f481d248572551ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e27c603fd7cb2bcba9df7dfd604c3e1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a9e27c603fd7cb2bcba9df7dfd604c3e1">orion_time</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
+<tr class="separator:a9e27c603fd7cb2bcba9df7dfd604c3e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a806c592730d1c9a33a5f41a8bef654c3"></a>
@@ -251,6 +252,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Connect a socket to the specified sensor using TCP. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">orion</td><td>pointer to an initialized orion structure </td></tr>
     <tr><td class="paramname">ip</td><td>a string holding the ip address of the sensor in dotted quad notation </td></tr>
     <tr><td class="paramname">port</td><td>the port of the sensor's socket </td></tr>
   </table>
@@ -275,7 +277,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Instantiates the given <a class="el" href="struct_orion.html">Orion</a> structure, allocating space if the argument is NULL. </p><dl class="section return"><dt>Returns</dt><dd>a pointer to the instantiated structure regardless if it was allocated. </dd></dl>
+<p>Instantiates the given <a class="el" href="struct_orion.html">Orion</a> structure, allocating space if the argument is NULL. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">orion</td><td>pointer to structure to instantiate, or NULL if a structure should be allocated </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the instantiated structure regardless if it was allocated. </dd></dl>
 
 </div>
 </div>
@@ -295,25 +303,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Disconnects the socket and disposes of resources. </p>
-
-</div>
-</div>
-<a id="a8cb76c96eedd83a732514941fd999e71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cb76c96eedd83a732514941fd999e71">&#9670;&nbsp;</a></span>orion_free()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int orion_free </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Frees anciliary structures allocated by orion. </p>
 
 </div>
 </div>
@@ -389,7 +378,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Starts the main control loop of the <a class="el" href="struct_orion.html">Orion</a> sensor in a separate thread. Thread safe. </p><dl class="section return"><dt>Returns</dt><dd>0 on success, 1 on failure. Check error buffer after a failure for cause. </dd></dl>
+<p>Starts the main control loop of the <a class="el" href="struct_orion.html">Orion</a> sensor in a separate thread. Thread safe. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">orion</td><td>Pointer to a connected orion server </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, 1 on failure. Check error buffer after a failure for cause. </dd></dl>
 
 </div>
 </div>
@@ -409,6 +404,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Safely stops the control loop and blocks until it returns. Thread safe. </p>
+
+</div>
+</div>
+<a id="a9e27c603fd7cb2bcba9df7dfd604c3e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e27c603fd7cb2bcba9df7dfd604c3e1">&#9670;&nbsp;</a></span>orion_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double orion_time </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
+          <td class="paramname"><em>orion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
