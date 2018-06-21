@@ -6,7 +6,8 @@
 #define STARTRACK_ORION_H
 
 #include <pthread.h>
-#include "catalog.h"
+#include "h/catalog.h"
+#include "h/tracker.h"
 
 #define ORION_MODE_OFF 0
 
@@ -58,16 +59,19 @@ typedef struct {
 // todo I should probably just make every method thread-safe to ease use
 
 /** Instantiates the given Orion structure, allocating space if the argument is NULL.
+ * @param orion pointer to structure to instantiate, or NULL if a structure should be allocated
  * @return a pointer to the instantiated structure regardless if it was allocated. */
 Orion * orion_create( Orion * orion );
 
 /** Connect a socket to the specified sensor using TCP.
+ * @param orion pointer to an initialized orion structure
  * @param ip a string holding the ip address of the sensor in dotted quad notation
  * @param port the port of the sensor's socket
  * @return 0 on success, 1 otherwise. Check error buffer after a failure for cause. */
 int orion_connect( Orion * orion, char * ip, unsigned short port );
 
 /** Starts the main control loop of the Orion sensor in a separate thread. Thread safe.
+ * @param orion Pointer to a connected orion server
  * @return 0 on success, 1 on failure. Check error buffer after a failure for cause. */
 int orion_start( Orion * orion );
 
@@ -98,6 +102,8 @@ double orion_mark_time( Orion * orion );
 
 /** Clears the internal error buffer. Thread safe. */
 void orion_clear_error( Orion * orion);
+
+double orion_time( Orion * orion );
 
 #endif //STARTRACK_ORION_H
 

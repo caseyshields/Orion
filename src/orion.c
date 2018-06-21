@@ -10,9 +10,10 @@
 
 #include <pthread.h>
 #include <winsock.h>
+#include <h/orion.h>
 
 #include "novasc3.1/novas.h"
-#include "h/tracker.h"
+
 #include "h/vmath.h"
 #include "h/orion.h"
 
@@ -100,7 +101,7 @@ void * orion_control_loop( void * arg ) {
     assert( orion->mode == ORION_MODE_ON );
     assert( orion->socket != INVALID_SOCKET );
 
-    // loop indefinately
+    // loop indefinitely
     do {
         // obtain lock
         pthread_mutex_lock( &(orion->lock) );
@@ -159,6 +160,9 @@ void * orion_control_loop( void * arg ) {
 }
 
 int orion_start( Orion * orion ) {
+    // ensure the sensor is connected
+    assert( orion->socket != INVALID_SOCKET );
+
     // check if server is already running
     pthread_mutex_lock( &(orion->lock) );
     if ( orion->mode == ORION_MODE_ON ) {
@@ -176,7 +180,7 @@ int orion_start( Orion * orion ) {
 
 void orion_track( Orion * orion, cat_entry target ) {
     // can this be called regardless if the server is on or not?
-    //assert( orion->mode == ORION_MODE_ON );
+    // assert( orion->mode == ORION_MODE_ON );
 
     // safely change the target
     pthread_mutex_lock( &(orion->lock) );
@@ -184,7 +188,7 @@ void orion_track( Orion * orion, cat_entry target ) {
     pthread_mutex_unlock( &(orion->lock) );
 }
 
-int orion_stop(Orion * orion) {
+int orion_stop( Orion * orion ) {
 
     // obtain lock since we need to change the mode
     pthread_mutex_lock( &(orion->lock) );
@@ -211,7 +215,7 @@ int orion_stop(Orion * orion) {
 
 void orion_disconnect( Orion * orion ) {
 
-    // sanity check, the control thread should be off
+    // sanity check, the control thread should be off and the socket valid
     assert( orion->mode == ORION_MODE_OFF );
     assert( orion->socket != INVALID_SOCKET );
 
@@ -243,6 +247,13 @@ void orion_disconnect( Orion * orion ) {
 #endif
 }
 
+double orion_time( Orion * orion ) {
+    pthread_mutex_lock( &(orion->lock) );
+    double time = orion->tracker.date;
+    pthread_mutex_unlock( &(orion->lock) );
+    return time;
+}
+
 double orion_mark_time( Orion * orion ) {
     struct timeval time;
     gettimeofday( &time, NULL ); // UTC timestamp in unix epoch
@@ -261,7 +272,7 @@ int orion_is_running ( Orion * orion ) {
     int running = orion->mode;
     pthread_mutex_unlock( &(orion->lock) );
     return running == ORION_MODE_ON;
-} //https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
+}
 
 void orion_clear_error( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );

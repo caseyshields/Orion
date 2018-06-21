@@ -13,6 +13,8 @@
 #include "h/catalog.h"
 #include "h/vmath.h"
 
+//https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
+
 // we only allow one controller and one sensor
 #define MAX_CONNECTIONS 2
 

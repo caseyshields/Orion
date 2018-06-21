@@ -6,33 +6,24 @@
 #include "h/main.h"
 
 int main( int argc, char *argv[] ) {
-    char *line = NULL;
-    size_t size = 0 ;
-    ssize_t read = 0;
-    int result;
 
-    // create the Orion server structure
+    // create and configure the Orion server
     Orion orion;
     orion_create( &orion );
+    configure_tracker( argc, argv, &(orion.tracker) );
 
-    // create and load a catalog of stars
-    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
-    Catalog catalog = {.size=0, .allocated=0, .stars = NULL};
+    // create and configure the FK6 catalog
+    Catalog catalog;
     catalog_create( &catalog, 1024 );
-    FILE *file = fopen(path, "r");
-    catalog_load_fk5(&catalog, file);
+    configure_catalog( argc, argv, &catalog);
     if (!catalog.size)
         goto CLEANUP;
-
-    // create main components according to program arguments
-    configure_tracker( argc, argv, &(orion.tracker) );
-    // TODO eventually move this configuration code to interactive commands and make a script instead...
 
     // get server address, should be in dotted quad notation
     char *ip = get_arg(argc, argv, "-ip", "127.0.0.1");
 
     // get server socket port number
-    unsigned short port; // port
+    unsigned short port;
     char *arg = get_arg(argc, argv, "-port", "43210");
     port = (unsigned short) atoi(arg);
 
@@ -50,8 +41,10 @@ int main( int argc, char *argv[] ) {
 //        tracker_print_time( &tracker );
 
         // todo print prompt and get next user command
-
-        read = get_input( "", &line, &size );
+        char *line = NULL;
+        int result;
+        size_t size = 0 ;
+        ssize_t read = get_input( "", &line, &size );
 
         // search name ////////////////////////////////////////////////////////
         if( strncmp( "name ", line, 5)==0 ) {
@@ -87,7 +80,7 @@ int main( int argc, char *argv[] ) {
                 printf("Sensor control thread already started.\n");
         }
 
-        // select a target
+        // select a target ////////////////////////////////////////////////////
         if (strncmp("track", line, 5) == 0) {
             long id = 0;
             result = sscanf( line, "track %ld\n", &id );
@@ -100,7 +93,7 @@ int main( int argc, char *argv[] ) {
             }
         }
 
-        // stop the sensor control thread and exit
+        // stop the sensor control thread and exit ////////////////////////////
         if( strncmp("exit", line, 4)==0 ) {
             orion_stop( &orion );
             break;
@@ -108,13 +101,7 @@ int main( int argc, char *argv[] ) {
 
         // get help with the commands /////////////////////////////////////////
         if( strncmp( "help", line, 4 )==0 ) {
-            char command[11] = {0,0,0,0,0,0,0,0,0,0,0};
-            result = sscanf(line, "help%10s\n", command);
-            if (strlen(command)==0) {//result == 0) {
-                printf("Commands:\nname <substr>\nsearch <> <> <> <> <>\ntrack <id>\nexit\n");
-            } else {
-                // todo print specific help
-            }
+            printf("Commands:\nname <substr>\nsearch <> <> <> <> <>\ntrack <id>\nexit\n");
         }
     }
 
@@ -124,6 +111,7 @@ int main( int argc, char *argv[] ) {
     CLEANUP:
     catalog_free_entries( &catalog );
     catalog_free( &catalog );
+//    orion_free( &orion );
 
     EXIT:
     if (orion.error) {
@@ -139,7 +127,8 @@ int search(
         Tracker * tracker,
         double az_min, double az_max,
         double zd_min, double zd_max,
-        float mag_min) {
+        float mag_min)
+{
     // first find the stars which are bright enough
     int is_bright( Entry * entry ) {
         return entry->magnitude >= mag_min;
@@ -289,32 +278,18 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
 //    address->sin_port = htons( port ); // server port
 //}
 
-//void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
-//    // get the location of the catalog data
-//    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
-//
-//    // create and load a catalog
-//    FILE *file = fopen(path, "r");
-//    catalog_load_fk5(catalog, file);
-//}
+void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
+    // get the location of the catalog data
+    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
 
+    // create and load a catalog
+    FILE *file = fopen(path, "r");
+    catalog_load_fk5(catalog, file);
+}
+// todo eventually move this configuration code to interactive commands and make a script instead...
 // mark time
 // set time
 // set orientation ( ut1-utc, leapsecs, x, y )
 // set location ( lat, longitude, height )
 // set weather ( temperature, pressure )
 // set sensor ( ip, port )
-
-// load catalog ( path ) //////////////////////////////////////////////
-//        if( strncmp( "load ", line, 5)==0) {
-//            char path[256];
-//            result = sscanf( line, "load %256s\n", path );
-//            if(result==0) {
-//                printf("usage: load <catalog path>");
-//                continue;
-//            }
-//            if( catalog.size>0 )
-//                catalog_free_entries( &catalog );
-//            FILE *file = fopen( path, "r" );
-//            catalog_load_fk5( &catalog, file );
-//        }
