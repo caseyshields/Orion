@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <h/catalog.h>
 #include "novasc3.1/novas.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
@@ -166,27 +167,27 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     return results;
 }
 
-Catalog* catalog_orange( Catalog* c, double ra_min, double ra_max, Catalog* results ) {
-    // wrap right ascension
-    volatile double min = fmod( ra_min, 24.0);
-    volatile double max = fmod( ra_max, 24.0);
-    int orange(Entry* e) {
-        // check for wrap-around assuming min to max direction is clockwise
-        if( min < max ) {
-            // continuous bound test
-            if( min <= (e->novas.ra) && (e->novas.ra) <= max )
-                return 1;
-        } else {
-            // disjoint bound test
-            if (min <= (e->novas.ra) || (e->novas.ra) <= max)
-                return 1;
-        }
-        return 0;
-    }
-    results = catalog_filter( c, orange, results );
-
-    return results;
-}
+//Catalog* catalog_orange( Catalog* c, double ra_min, double ra_max, Catalog* results ) {
+//    // wrap right ascension
+//    volatile double min = fmod( ra_min, 24.0);
+//    volatile double max = fmod( ra_max, 24.0);
+//    int orange(Entry* e) {
+//        // check for wrap-around assuming min to max direction is clockwise
+//        if( min < max ) {
+//            // continuous bound test
+//            if( min <= (e->novas.ra) && (e->novas.ra) <= max )
+//                return 1;
+//        } else {
+//            // disjoint bound test
+//            if (min <= (e->novas.ra) || (e->novas.ra) <= max)
+//                return 1;
+//        }
+//        return 0;
+//    }
+//    results = catalog_filter( c, orange, results );
+//
+//    return results;
+//}
 
 Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
                               Catalog *results ) {
@@ -218,6 +219,13 @@ Catalog* catalog_filter( Catalog *catalog, int (*predicate)(Entry *), Catalog *r
             catalog_add( results, catalog->stars[n] );
 
     return results;
+}
+
+Entry * catalog_select( Catalog * catalog, unsigned long fkid ) {
+    for(int n=0; n<catalog->size; n++)
+        if( catalog->stars[n]->novas.starnumber == fkid )
+            return catalog->stars[n];
+    return NULL;
 }
 
 void catalog_free( Catalog *catalog ) {

@@ -92,7 +92,13 @@ Catalog* catalog_search_dome( Catalog* catalog, double right_ascension, double d
  * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
 Catalog* catalog_search_patch( Catalog* catalog, double ra_min, double ra_max, double dec_min, double dec_max, Catalog* results );
 
-Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results);
+//Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results);
+
+/** Selects the first entry with the given Fundamental Catalog ID.
+ * @param catalog the catalog to search
+ * @param fkid The Hipparcos/Tycho catalog ID
+ * @return a pointer to the star's entry, or NULL if it is not in the catalog */
+Entry * catalog_select( Catalog * catalog, unsigned long fkid );
 
 /** Prints the given catalog to stdout in a default format. */
 void catalog_print( Catalog *c );
@@ -103,7 +109,7 @@ typedef void (*EntryComparison)(Entry*, Entry*);
 //void catalog_sort( Catalog* c, int (*comparison)(Entry*, Entry*) );
 //todo implement a sort function for ranking results
 
-/** Releases the Entries underlying the Catalog.  */
+/** Releases the Entries underlying the Catalog. */
 void catalog_free_entries( Catalog *c );
 
 /** Releases the Catalog and it's directory, but not the actual Entries. */
