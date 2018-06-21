@@ -165,19 +165,19 @@ int main( int argc, char *argv[] ) {
             catalog_free(results);
         }
 
-        // test an orange slice shaped section of sky
-        else if( strncmp("orange", line, 5)==0 ) {
-            get_input( "minimum right ascension hours", &line, &size );
-            double ra_min = atof( line );
-
-            get_input( "maximum right ascension hours", &line, &size );
-            double ra_max = atof( line );
-
-            Catalog* results = catalog_orange(catalog, ra_min, ra_max, NULL);
-            catalog_print(results);
-            printf( "\n%d stars found.\n", results->size );
-            catalog_free(results);
-        }
+//        // test an orange slice shaped section of sky
+//        else if( strncmp("orange", line, 5)==0 ) {
+//            get_input( "minimum right ascension hours", &line, &size );
+//            double ra_min = atof( line );
+//
+//            get_input( "maximum right ascension hours", &line, &size );
+//            double ra_max = atof( line );
+//
+//            Catalog* results = catalog_orange(catalog, ra_min, ra_max, NULL);
+//            catalog_print(results);
+//            printf( "\n%d stars found.\n", results->size );
+//            catalog_free(results);
+//        }
 
         // figure out spherical celestial coordinates of the local zenith
         else if( strncmp( "zenith", line, 6 )==0 ) {
@@ -198,10 +198,10 @@ int main( int argc, char *argv[] ) {
 
         else if( strncmp("fk6", line, 3)==0) {
 //            FILE *f = fopen("../data/fk6/fk6_1.dat", "r");
-            FILE *f = fopen("../data/fk6/ReadMe", "r");
-            FK6 *fk6 = fk6_load(NULL, 256);
-
-            fclose( f );
+//            FILE *f = fopen("../data/fk6/ReadMe", "r");
+//            FK6 *fk6 = fk6_load(NULL, 256);
+//
+//            fclose( f );
         }
 
         // clean up the program components and exit the program

@@ -71,11 +71,18 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
     goto EXIT;
 
     CLEANUP_SOCKET:
-    status = WSAGetLastError(); // winsock specific error reporting
-    closesocket(orion->socket); // just close() in POSIX
+#ifdef WIN32
+    status = WSAGetLastError();
+    closesocket( orion->socket );
+#else
+    status = 1;
+    close( orion->socket );
+#endif
 
     CLEANUP_WINSOCK:
-    WSACleanup(); // no posix equivalent
+#ifdef WIN32
+    WSACleanup();
+#endif
 
     EXIT:
     if (error)
@@ -141,6 +148,7 @@ void * orion_control_loop( void * arg ) {
 //        struct timespec ts;
 //        nanosleep( &ts, );
         // TODO use running average to set heartbeat rate
+        //toso tats itself uses nanosleep...
 
     } while( TRUE );
 
@@ -173,7 +181,7 @@ void orion_track( Orion * orion, cat_entry target ) {
     // safely change the target
     pthread_mutex_lock( &(orion->lock) );
     orion->target = target;
-    pthread_mutex_lock( &(orion->lock) );
+    pthread_mutex_unlock( &(orion->lock) );
 }
 
 int orion_stop(Orion * orion) {

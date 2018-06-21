@@ -87,13 +87,18 @@ int main( int argc, char *argv[] ) {
                 printf("Sensor control thread already started.\n");
         }
 
-//        // select a target
-//        if (strncmp("select", line, 6) == 0) {
-//            int id = 0;
-//            result = sscanf( line, "select %d\n", &id );
-//            if( orion_track( id, target ) )
-//                printf( "select failed");
-//        }
+        // select a target
+        if (strncmp("track", line, 5) == 0) {
+            long id = 0;
+            result = sscanf( line, "track %ld\n", &id );
+            Entry * entry = catalog_select( &catalog, id );
+            if( entry ) {
+                cat_entry target = entry->novas;
+                orion_track(&orion, target);
+            } else {
+                printf("Could not find star %ld in catalog\n", id);
+            }
+        }
 
         // stop the sensor control thread and exit
         if( strncmp("exit", line, 4)==0 ) {
