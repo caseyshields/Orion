@@ -5,17 +5,17 @@ subgraph User Interface
 ui[Commandline UI]
 end
 subgraph Controllers
-orion[Orion Server]
 test[Test]
+orion[Orion Server]
 end
 subgraph Engines
 catalog(Catalog)
 tracker(Tracker)
 end
 subgraph Data Access
+config(config)
 fk6(FK6)
 iers(IERS-A)
-config
 end
 subgraph Util
 novas(Novas 3.1)
@@ -26,11 +26,11 @@ end
 end
 
 ui-- mutexes -->orion
+ui-.->catalog
 
-orion-.->catalog
-orion-.->tracker
-orion-.->config
 orion-- TATS UDP -->simulator
+orion-.->config
+orion-.->tracker
 
 tracker-.->iers
 catalog-.->fk6
