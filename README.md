@@ -5,7 +5,7 @@ position. TATS sensors can then be concurrently directed to target selected star
 on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/)
 
 Orion is developed using [CLion](https://www.jetbrains.com/clion/) and the [MinGW](http://mingw.org/) toolchain. Code
-is documented using [doxygen](www.doxygen.org/), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
+is documented using [doxygen](www.doxygen.org), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
 
 ## Components
 
