@@ -10,7 +10,6 @@
 
 #include <pthread.h>
 #include <winsock.h>
-#include <h/orion.h>
 
 #include "novasc3.1/novas.h"
 
@@ -87,7 +86,7 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
 
     EXIT:
     if (error)
-        sprintf(orion->error, "[%d] %s\n\0", status, error); //
+        sprintf(orion->error, "[%d] %s\n\0", status, error);
     return status;
 }
 
@@ -112,6 +111,7 @@ void * orion_control_loop( void * arg ) {
 
         // update the current time
         double last_time = orion_mark_time(orion);
+        // todo We should have a mode that allows setting a historical time
 
         // create a tracking message if we have a target
         if (orion->target.starnumber) {
@@ -140,16 +140,19 @@ void * orion_control_loop( void * arg ) {
 
         // set error and exit if there was a transmission error
         if (sent < length) {
-            sprintf(orion->error, "[%d] Failed to send entire message, sent %d\n\0", WSAGetLastError(), sent);
+            sprintf(orion->error, "[%d] Failed to send entire message, sent %d bytes\n\0", WSAGetLastError(), sent);
             break;
         }
 
         // enter a idle state
+//ifdef WIN32
         sleep( orion->rate ); // in Windows this is in Milliseconds
+//else
 //        struct timespec ts;
 //        nanosleep( &ts, );
-        // TODO use running average to set heartbeat rate
-        //toso tats itself uses nanosleep...
+        //todo tats itself uses nanosleep...
+//endif
+// TODO use running average to set heartbeat rate
 
     } while( TRUE );
 
@@ -257,7 +260,7 @@ double orion_time( Orion * orion ) {
 double orion_mark_time( Orion * orion ) {
     struct timeval time;
     gettimeofday( &time, NULL ); // UTC timestamp in unix epoch
-    double julian_hours = time.tv_sec + (time.tv_usec / 1000000.0);
+    double julian_hours = (time.tv_sec + (time.tv_usec / 1000000.0)) / 3600.0;
     double last_time = orion->tracker.date;
     orion->tracker.date = julian_hours;
     return last_time;
