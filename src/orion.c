@@ -10,6 +10,7 @@
 
 #include <pthread.h>
 #include <winsock.h>
+#include <h/tracker.h>
 
 #include "novasc3.1/novas.h"
 
@@ -119,8 +120,16 @@ void * orion_control_loop( void * arg ) {
             // calculate the current location of the target
             tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);
 
+            // format the current time
+            time_t julian_seconds = (time_t)(3600.0 * orion->tracker.date);
+            //double microseconds = fmod( (long)julian_seconds, 1.0 );
+            struct tm * date = gmtime( &julian_seconds );
+            char time[32];
+            strftime( time , 32, "%Y/%m/%d %H:%M:%S\0", date );
+
             // devise the tracking message
-            sprintf(buffer, "%4s%ld %s (%lf, %lf)\n\0",
+            sprintf(buffer, "%s %4s%ld %s (%lf, %lf)\n\0",
+                    time,
                     orion->target.catalog,
                     orion->target.starnumber,
                     orion->target.starname,
