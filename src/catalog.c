@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-#include <h/catalog.h>
+
 #include "novasc3.1/novas.h"
 #include "h/catalog.h"
 #include "h/vmath.h"

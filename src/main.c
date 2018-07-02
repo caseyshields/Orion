@@ -114,7 +114,7 @@ int main( int argc, char *argv[] ) {
 //    orion_free( &orion );
 
     EXIT:
-    if (orion.error) {
+    if (strlen(orion.error)) {
         fprintf(stdout, orion.error);
         fflush(stdout);
         return 1;
