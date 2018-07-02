@@ -37,7 +37,18 @@
 
 \section building Building Orion
 
- Say, that'd be a really good thing to document
+ Orion is built using a CMake script(./CMakeLists.txt) which produces a number of executables;
+
+  - checkout : The test program packaged with Novas for testing the low accuracy mode. Output should match './data/novas/checkout-stars-usno.txt'.
+  - tester : An interactive command line program for running benchmarks and testing features. Only for development use.
+  - sensor : An server meant to mimic a TATS sensor. Will interact with orion if ip/port is configured.
+  - orion : The Orion server with a concurrent command-line interface.
+
+ The orion project is built using MinGW tools and libraries. MinGW is a very lightweight and thin
+ API, however it is not meant to be a full posix implementation. This leads to some difficulty
+ linking socket and threading code, as well as limiting Orion to a 32 bit executable. Since
+ efficiency doesn't appear to be a bottleneck, The cygwin toolchain will be investigated to improve
+ portability to linux.
 
 \section running Running Orion
 
