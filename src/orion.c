@@ -10,12 +10,12 @@
 
 #include <pthread.h>
 #include <winsock.h>
-#include <h/tracker.h>
 
 #include "novasc3.1/novas.h"
 
-#include "h/vmath.h"
 #include "h/orion.h"
+#include "h/vmath.h"
+#include "h/tracker.h"
 
 Orion* orion_create( Orion * orion ) {
     if (!orion)
@@ -122,14 +122,15 @@ void * orion_control_loop( void * arg ) {
 
             // format the current time
             time_t julian_seconds = (time_t)(3600.0 * orion->tracker.date);
-            //double microseconds = fmod( (long)julian_seconds, 1.0 );
+            int microseconds = (int)(1000000*fmod( 3600.0 * orion->tracker.date, 1.0 ));
             struct tm * date = gmtime( &julian_seconds );
             char time[32];
             strftime( time , 32, "%Y/%m/%d %H:%M:%S\0", date );
 
             // devise the tracking message
-            sprintf(buffer, "%s %4s%ld %s (%lf, %lf)\n\0",
+            sprintf(buffer, "%s.%d %4s%ld %s (%lf, %lf)\n\0",
                     time,
+                    microseconds,
                     orion->target.catalog,
                     orion->target.starnumber,
                     orion->target.starname,
