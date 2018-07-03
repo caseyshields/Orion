@@ -34,6 +34,7 @@ char* get_arg( int argc, char *argv[], char *name, char* default_value );
 ssize_t get_input(char* prompt, char **line, size_t *size );
 
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
+void test_conversions();
 
 /** a simple CLI interface for exercising various orion components. */
 int main( int argc, char *argv[] ) {
@@ -196,6 +197,10 @@ int main( int argc, char *argv[] ) {
             benchmark( catalog, &tracker, 100 );
         }
 
+        else if(strncmp( "convert", line, 7)==0 ) {
+            test_conversions();
+        }
+
         else if( strncmp("fk6", line, 3)==0) {
 //            FILE *f = fopen("../data/fk6/fk6_1.dat", "r");
 //            FILE *f = fopen("../data/fk6/ReadMe", "r");
@@ -287,6 +292,20 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     }
 
     printf( "stars: %d\ntrials: %d\ntime: %lf\nspeed: %lf\n\n", catalog->size, trials, duration, duration/(trials*catalog->size) );
+}
+
+void test_conversions() {
+    int d,h,m;
+    double s, degrees, second = (1.0/24/60/60);
+    for (long seconds=0; seconds<360*24*60*60; seconds++) {
+        double degrees = ((double)seconds)/(24.0*60.0*60.0);
+        degrees2dhms(degrees, &d, &h, &m, &s);
+        double d2 = dhms2degrees(d, h, m, s);
+        char * str = dhms2str(d, h, m, s);
+//        printf("%lds\t=\t%f°\t=\t%s\n", seconds, degrees, str);
+        free(str);
+        assert( fabs(degrees-d2) < 0.0000001 );
+    }
 }
 
 void search_dome() {

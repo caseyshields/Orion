@@ -2,6 +2,9 @@
 // Created by Casey Shields on 5/3/2018.
 //
 #include <math.h>
+#include <mem.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "h/vmath.h"
 
 void scale( double U[3], double k ) {
@@ -34,12 +37,49 @@ double normalize( double U[3] ) {
 
 double hours2radians( double h ) { return (h/24.0)*M_PI; }
 
-double degrees2radians( double d ) {return (d/360.0)*M_PI; }
+double degrees2radians( double d ) { return (d/360.0)*M_PI; }
 
 void spherical2cartesian(double theta, double phi, double C[3] ) {
     C[0] = sin(theta)*cos(phi);
     C[1] = sin(theta)*sin(phi);
     C[2] = cos(theta);
+}
+
+void degrees2dhms(double degrees, int *deg, int * hour, int * min, double * sec) {
+    double t, d, h, m;
+    t = modf( degrees, &d );
+    t *= 24.0;
+    t = modf( t, &h );
+    t *= 60.0;
+    t = modf( t, &m );
+    t *= 60.0;
+
+    *deg = (int) d;
+    *hour = (int) h;
+    *min = (int) m;
+    *sec = t;//t = modf( t, s );
+}
+
+double dhms2degrees(int degrees, int hours, int minutes, double seconds) {
+    double d = degrees;
+    d += hours/24.0;
+    d += minutes/(24.0*60.0);
+    d += seconds/(24.0*60.0*60.0);
+    return d;
+}
+
+char* degrees2str(double degrees) {
+    int d, h, m;
+    double s;
+    degrees2dhms(degrees, &d, &h, &m, &s);
+    return dhms2str(d, h, m, s);
+}
+
+char* dhms2str(int degrees, int hours, int minutes, double seconds) {
+    char * str = calloc(64, sizeof(char));
+    memset(str, 0, sizeof(str));
+    sprintf(str, "%d°%d'%d\"%1.3lf\0", degrees, hours, minutes, seconds);
+    return str;
 }
 
 /** Determines the angle between two vectors which lie on the surface of the sphere, by taking the arcsin of the resulting chord. */
