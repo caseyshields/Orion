@@ -38,7 +38,6 @@ void test_conversions();
 void test_FK6();
 
 int main( int argc, char *argv[] ) {
-    char *test = malloc( 64 );
     test_FK6();
 }
 
@@ -311,20 +310,24 @@ void test_conversions() {
 }
 
 void test_FK6() {
-    FILE * file = fopen("../data/fk6/ReadMe", "r");
-    assert(NULL != file); // FK6 Readme missing
+    FILE * readme = fopen("../data/fk6/ReadMe", "r");
+    assert(NULL != readme);
 
     // load first part
     FK6 * fk6_1 = fk6_create();
-    fk6_load_fields( fk6_1, file, FK6_1_HEADER );
+    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
     // todo check data
 
     // load third part
     FK6 * fk6_3 = fk6_create();
-    fk6_load_fields( fk6_3, file, FK6_3_HEADER );
+    fk6_load_fields( fk6_3, readme, FK6_3_HEADER );
+    FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
+    assert(NULL != data3);
+    fk6_load_entries( fk6_3, data3 );
     // todo check data
 
-    fclose( file );
+    fclose( readme );
+    fclose( data3 );
     fk6_free( fk6_1 );
     fk6_free( fk6_3 );
 }

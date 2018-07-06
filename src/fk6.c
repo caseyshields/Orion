@@ -115,11 +115,7 @@ void fk6_add_field( FK6 * fk6, FK6_Field * field ) {
     // TODO don't allocate field, instantiate it in place
 }
 
-/*// read each value in the row
-        char* cell = strtok( line, "|" );
-        while( cell != NULL ) {
-*/
-/** trim the substring and copy it to a newly allocated string, return the size of the resulting string. */
+/* trim the substring and copy it to a newly allocated string, return the size of the resulting string. */
 int get_field( char* line, int start, int end, char* dest ) {
     // trim leading whitspace
     while (start <= end)
@@ -158,17 +154,49 @@ int scan_line(FILE *file, const char *header) {
     }
 }
 
-//ssize_t get_line(char **line, size_t *size) {
-//    if (*line) {
-//        free(*line);
-//        *line = NULL;
-//        *size = 0;
-//    }
-//    return getline(line, size, stdin);
-//}
-
 void fk6_print_field( FK6_Field * f, FILE * file ) {
     fprintf(file, "%s (%s, %s, %d-%d) : %s\n",
            f->Label, f->Units, f->Format, f->start, f->end, f->Explanations);
     fflush(file);
 }
+
+int fk6_load_entries( FK6 * fk6, FILE * file ) {
+    int count = 0;
+    // read lines from the input
+    while (true) {
+        size_t size = 0;
+        char * data = NULL;
+
+        // check for end of file
+        if( getline(&data, &size, file) == -1 )
+            break;
+
+        char test[1000000];//, strlen(line)+1, sizeof(char) );
+
+        // read each field
+        for( int c=0; c<fk6->cols; c++ ) {
+            FK6_Field * field = &(fk6->fields[c]);
+
+            char val[1000000];//field->end - field->start + 1];
+            get_field(data, field->start-1, field->end-1, val);
+
+            // just print a debug string for now
+            strcat(test, val);
+            strcat(test, ", ");
+            val[0] = '\0';//free(val);
+        }
+
+        if(count++==3270)
+            printf("wtf\n");
+        strcat(test, "\n");
+        printf(test);
+        test[0]='\0';
+//        free(test);
+    }
+    return 0;
+}
+
+/*// read each value in the row
+        char* cell = strtok( line, "|" );
+        while( cell != NULL ) {
+*/
