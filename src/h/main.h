@@ -105,3 +105,5 @@ char* get_arg( int argc, char *argv[], char *name, char* default_value );
 ssize_t get_input(char* prompt, char **line, size_t *size );
 
 #endif //STARTRACK_MAIN_H
+
+//Henderson Location:  W114°58'48.0", N36°03'00.0",     0m

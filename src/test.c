@@ -35,9 +35,15 @@ ssize_t get_input(char* prompt, char **line, size_t *size );
 
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 void test_conversions();
+void test_FK6();
+
+int main( int argc, char *argv[] ) {
+    char *test = malloc( 64 );
+    test_FK6();
+}
 
 /** a simple CLI interface for exercising various orion components. */
-int main( int argc, char *argv[] ) {
+int xmain( int argc, char *argv[] ) {
     double latitude, longitude, height;
     double celsius, millibars;
     double ut1_utc, leap_secs;
@@ -202,11 +208,7 @@ int main( int argc, char *argv[] ) {
         }
 
         else if( strncmp("fk6", line, 3)==0) {
-//            FILE *f = fopen("../data/fk6/fk6_1.dat", "r");
-//            FILE *f = fopen("../data/fk6/ReadMe", "r");
-//            FK6 *fk6 = fk6_load(NULL, 256);
-//
-//            fclose( f );
+            test_FK6();
         }
 
         // clean up the program components and exit the program
@@ -306,6 +308,18 @@ void test_conversions() {
         free(str);
         assert( fabs(degrees-d2) < 0.0000001 );
     }
+}
+
+void test_FK6() {
+    FILE * file = fopen("../data/fk6/ReadMe", "r");
+    assert(NULL != file); // FK6 Readme missing
+    FK6 * catalog = fk6_create();
+    fk6_load( catalog, file );
+
+    // todo check data
+
+    fclose( file );
+    fk6_free( catalog );
 }
 
 void search_dome() {

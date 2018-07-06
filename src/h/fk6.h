@@ -24,12 +24,13 @@ typedef struct {
 } FK6_Field;
 
 typedef struct {
-    int rows, cols;
-    FK6_Field* fields;
-    char** data;
+    size_t rows, cols;
+    FK6_Field * fields;
+    //char* data[][100];
 } FK6;
 
+FK6 * fk6_create();
 int fk6_load( FK6* fk6, FILE* file );
-
+void fk6_free( FK6 * fk6 );
 
 #endif //STARTRACK_FK6_H

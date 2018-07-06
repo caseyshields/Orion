@@ -13,6 +13,8 @@
 
 #define ORION_MODE_ON 1
 
+#define ORION_MODE_REAL_TIME 2
+
 #define ORION_RATE 1
 //todo eventually put it to 50 hertz...
 
