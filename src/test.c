@@ -313,13 +313,20 @@ void test_conversions() {
 void test_FK6() {
     FILE * file = fopen("../data/fk6/ReadMe", "r");
     assert(NULL != file); // FK6 Readme missing
-    FK6 * catalog = fk6_create();
-    fk6_load( catalog, file );
 
+    // load first part
+    FK6 * fk6_1 = fk6_create();
+    fk6_load_fields( fk6_1, file, FK6_1_HEADER );
+    // todo check data
+
+    // load third part
+    FK6 * fk6_3 = fk6_create();
+    fk6_load_fields( fk6_3, file, FK6_3_HEADER );
     // todo check data
 
     fclose( file );
-    fk6_free( catalog );
+    fk6_free( fk6_1 );
+    fk6_free( fk6_3 );
 }
 
 void search_dome() {

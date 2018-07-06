@@ -12,6 +12,8 @@
 
 #define FK6_1_HEADER "Byte-by-byte Description of file: fk6_1.dat\n"
 #define FK6_1_FIELDS "   Bytes Format Units    Label     Explanations\n"
+#define FK6_3_HEADER "Byte-by-byte Description of file: fk6_3.dat\n"
+#define FK6_3_FIELDS "   Bytes Format Units    Label     Explanations\n"
 #define SEPARATOR "--------------------------------------------------------------------------------\n"
 
 typedef struct {
@@ -20,7 +22,7 @@ typedef struct {
     char Format[5];
     char Units[7];
     char Label[13];
-    char Explanations[80];
+    char Explanations[100];
 } FK6_Field;
 
 typedef struct {
@@ -30,7 +32,15 @@ typedef struct {
 } FK6;
 
 FK6 * fk6_create();
-int fk6_load( FK6* fk6, FILE* file );
+
+int fk6_load_fields( FK6* fk6, FILE* readme, const char* header );
+
+void fk6_add_field( FK6 * fk6, FK6_Field * field );
+
+int fk6_load_entries( FK6 * fk6, FILE * file );
+
 void fk6_free( FK6 * fk6 );
+
+void fk6_print_field( FK6_Field * field, FILE * file );
 
 #endif //STARTRACK_FK6_H
