@@ -162,14 +162,18 @@ void fk6_print_field( FK6_Field * f, FILE * file ) {
 
 int fk6_load_entries( FK6 * fk6, FILE * file ) {
     int count = 0;
+    size_t size = 0;
+    char * data = NULL;
+
     // read lines from the input
     while (true) {
-        size_t size = 0;
-        char * data = NULL;
 
         // check for end of file
-        if( getline(&data, &size, file) == -1 )
+        int result = getline(&data, &size, file);
+        if( result == -1 )
             break;
+//        if(feof(file))
+//            break;
 
         char test[1000000];//, strlen(line)+1, sizeof(char) );
 
