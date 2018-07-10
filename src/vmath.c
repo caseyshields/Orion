@@ -45,40 +45,66 @@ void spherical2cartesian(double theta, double phi, double C[3] ) {
     C[2] = cos(theta);
 }
 
-void degrees2dhms(double degrees, int *deg, int * hour, int * min, double * sec) {
-    double t, d, h, m;
+void degrees2dms(double degrees, int *deg, int * min, double * sec) {
+    double t, d, m;
     t = modf( degrees, &d );
-    t *= 24.0;
-    t = modf( t, &h );
     t *= 60.0;
     t = modf( t, &m );
     t *= 60.0;
 
     *deg = (int) d;
-    *hour = (int) h;
     *min = (int) m;
-    *sec = t;//t = modf( t, s );
+    *sec = t;
 }
 
-double dhms2degrees(int degrees, int hours, int minutes, double seconds) {
-    double d = degrees;
-    d += hours/24.0;
-    d += minutes/(24.0*60.0);
-    d += seconds/(24.0*60.0*60.0);
-    return d;
+void degrees2hms(double degrees, int * hour, int * min, double * sec) {
+    double t, h, m;
+    t *= (24.0/360.0);
+    t = modf( t, &h );
+    t *= 60.0;
+    t = modf( t, &m );
+    t *= 60.0;
+
+    *hour = (int) h;
+    *min = (int) m;
+    *sec = t;
+}
+
+double dms2degrees(int degrees, int minutes, double seconds) {
+    double angle = degrees;
+    angle += minutes/(60.0);
+    angle += seconds/(3600.0);
+    return angle;
+}
+
+double hms2degrees(int hours, int minutes, double seconds) {
+    double angle = seconds;
+    angle /= 60.0;
+    angle += minutes;
+    angle /= 60.0;
+    angle += hours;
+    angle *= (360.0/24.0);
+    return angle;
 }
 
 char* degrees2str(double degrees) {
     int d, h, m;
     double s;
-    degrees2dhms(degrees, &d, &h, &m, &s);
-    return dhms2str(d, h, m, s);
+    degrees2dms(degrees, &d, &m, &s);
+    return dms2str(d, m, s);
 }
 
-char* dhms2str(int degrees, int hours, int minutes, double seconds) {
+char* dms2str(int degrees, int minutes, double seconds) {
     char * str = calloc(64, sizeof(char));
     memset(str, 0, sizeof(str));
-    sprintf(str, "%d°%d'%d\"%1.3lf\0", degrees, hours, minutes, seconds);
+    sprintf(str, "%d°%d'%1.3lf\"\0", degrees, minutes, seconds);
+    return str;
+}
+
+char* hms2str(int hours, int minutes, double seconds) {
+    char * str = calloc(64, sizeof(char));
+    memset(str, 0, sizeof(str));
+    sprintf(str, "%d:%d:%1.3lf\0", hours, minutes, seconds);
     return str;
 }
 
