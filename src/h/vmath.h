@@ -27,13 +27,19 @@ double degrees2radians( double d );
 
 void spherical2cartesian(double theta, double phi, double C[3] );
 
-void degrees2dhms(double degrees, int *deg, int * hour, int * min, double * sec);
+void degrees2hms(double degrees, int * hour, int * min, double * sec);
 
-double dhms2degrees(int degrees, int hours, int minutes, double seconds);
+void degrees2dms(double degrees, int * deg, int * min, double * sec);
+
+double dms2degrees(int degrees, int minutes, double seconds);
+
+double hms2degrees(int hours, int minutes, double seconds);
 
 char* degrees2str(double degrees);
 
-char* dhms2str(int degrees, int hours, int minutes, double seconds);
+char* dms2str(int degrees, int minutes, double seconds);
+
+char* hms2str(int hours, int minutes, double seconds);
 
 double angular_separation( double theta_1, double phi_1, double theta_2, double phi_2 );
 
