@@ -298,11 +298,11 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
 void test_conversions() {
     int d,h,m;
     double s, degrees, second = (1.0/24/60/60);
-    for (long seconds=0; seconds<360*24*60*60; seconds++) {
-        double degrees = ((double)seconds)/(24.0*60.0*60.0);
-        degrees2dhms(degrees, &d, &h, &m, &s);
-        double d2 = dhms2degrees(d, h, m, s);
-        char * str = dhms2str(d, h, m, s);
+    for (long seconds=0; seconds<360*60*60; seconds++) {
+        double degrees = ((double)seconds)/(60.0*60.0);
+        degrees2dms(degrees, &d, &m, &s);
+        double d2 = dms2degrees(d, m, s);
+        char * str = dms2str(d, m, s);
 //        printf("%lds\t=\t%f°\t=\t%s\n", seconds, degrees, str);
         free(str);
         assert( fabs(degrees-d2) < 0.0000001 );
@@ -313,22 +313,25 @@ void test_FK6() {
     FILE * readme = fopen("../data/fk6/ReadMe", "r");
     assert(NULL != readme);
 
-    // load first part
-    FK6 * fk6_1 = fk6_create();
-    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
-    // todo check data
+//    // load first part
+//    FK6 * fk6_1 = fk6_create();
+//    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
+//    // todo check data
 
     // load third part
     FK6 * fk6_3 = fk6_create();
     fk6_load_fields( fk6_3, readme, FK6_3_HEADER );
+
     FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
     assert(NULL != data3);
-    fk6_load_entries( fk6_3, data3 );
-    // todo check data
+    //fk6_load_entries( fk6_3, data3 );
+    Catalog * catalog = catalog_load_fk6_1(NULL, fk6_3, data3);
+
+    catalog_print( catalog );
 
     fclose( readme );
     fclose( data3 );
-    fk6_free( fk6_1 );
+//    fk6_free( fk6_1 );
     fk6_free( fk6_3 );
 }
 

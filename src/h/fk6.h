@@ -37,6 +37,12 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header );
 
 void fk6_add_field( FK6 * fk6, FK6_Field * field );
 
+FK6_Field * fk6_get_field( FK6 * fk6, const char * label );
+
+FK6_Field * fk6_get_index( FK6 * fk6, const int index );
+
+int fk6_get_value( char * line, FK6_Field * field, void * dest );
+
 int fk6_load_entries( FK6 * fk6, FILE * file );
 
 void fk6_free( FK6 * fk6 );

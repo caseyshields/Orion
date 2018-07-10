@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include "novasc3.1/novas.h"
+#include "h/fk6.h"
 
 /** Represents celestial object in a star catalog. Extended from Novas's struct cat_entry to add
  * some more parameters and transformed coordinates.*/
@@ -55,6 +56,9 @@ void catalog_add( Catalog* c, Entry *e );
 
 /** Loads a FK5 catalog printout from the given file. */
 Catalog* catalog_load_fk5(Catalog * c, FILE * f);
+
+/**  */
+Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file );
 
 typedef void (*EntryFunction)(Entry*);
 

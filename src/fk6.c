@@ -8,7 +8,7 @@
 #include "h/fk6.h"
 
 int scan_line( FILE* file, const char* header );
-int get_field( char* line, int start, int end, char* dest );
+int get_value( const char *line, int start, int end, char *dest);
 
 FK6 * fk6_create() {
     // allocate the structure if necessary
@@ -51,10 +51,10 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
             break;
 
         // if the second column is blank the row is an addendum to the explanation
-        if( !get_field(line, 5, 7, end) ) {
+        if( !get_value(line, 5, 7, end) ) {
             // read and append the rest of the explanation
             char rest[100] = " ";
-            get_field( line, 35, strlen(line)-1, rest+1 );
+            get_value(line, 35, strlen(line) - 1, rest + 1);
             strncat( field->Explanations, rest, 100-strlen(field->Explanations)-1 );
         }
 
@@ -65,6 +65,7 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
                 fk6_add_field(fk6, field);
                 fk6_print_field( field, stdout );
                 n++;
+                free( field ); // TODO I should just really load this in place rather than making these copies
             }
 
             // allocate a new field structure
@@ -76,15 +77,15 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
             field->end = atoi(end);
 
             // starting byte is absent in the case of single byte fields
-            get_field(line, 1, 3, start);
+            get_value(line, 1, 3, start);
             if( strcmp("", start) == 0 )
                 field->start = field->end;
             else field->start = atoi( start );
 
-            get_field( line, 8, 15, field->Format );
-            get_field( line, 16, 22, field->Units );
-            get_field( line, 23, 34, field->Label );
-            get_field( line, 35, strlen(line)-1, field->Explanations );
+            get_value(line, 8, 15, field->Format);
+            get_value(line, 16, 22, field->Units);
+            get_value(line, 23, 34, field->Label);
+            get_value(line, 35, strlen(line) - 1, field->Explanations);
         }
 
         free(line);
@@ -104,7 +105,7 @@ void fk6_free( FK6 * fk6 ) {
 void fk6_add_field( FK6 * fk6, FK6_Field * field ) {
     size_t n = fk6->cols;
 
-    // resize whenever n gets larger than a powers of 2
+    // resize whenever n gets larger than a power of 2
     if( n>1 && !(n&(n-1)) )
         fk6->fields = realloc(
                 fk6->fields, 2*n*sizeof(FK6_Field) );
@@ -115,8 +116,45 @@ void fk6_add_field( FK6 * fk6, FK6_Field * field ) {
     // TODO don't allocate field, instantiate it in place
 }
 
+FK6_Field * fk6_get_field(FK6 * fk6, const char * label ) {
+    for(int n=0; n<fk6->cols; n++) {
+        FK6_Field * field = &(fk6->fields[n]);
+        if( strcmp(label, field->Label)==0 )
+            return field;
+    }
+    return NULL;
+}
+
+FK6_Field * fk6_get_index(FK6 * fk6, const int index ) {
+    //return fk6->fields + (index*sizeof(FK6_Field));
+    return &(fk6->fields[index]);
+}
+
+int fk6_get_value( char * line, FK6_Field * field, void * dest ) {
+    char * buffer = NULL;
+    int count = 0;
+
+    // check for a string type so we can avoid an unnecessary buffer allocation
+    if( field->Format[0] == 'A' )
+        return get_value( line, field->start-1, field->end, (char*)dest );
+
+    // allocate intermediate buffer and copy value string into it
+    buffer = (char*) calloc( (size_t)(field->end - field->start + 2), sizeof(char) );
+    count = get_value( line, field->start-1, field->end, buffer );
+
+    // convert and set catalog value
+    if( field->Format[0] == 'I' )
+        *((long int*)dest) = (long int) atoi( buffer );
+    else if( field->Format[0]=='F' )
+        *((double*)dest) = (double) atof( buffer );
+    // note: we might want to use of the precision info in the Field format...
+
+    free( buffer );
+    return count;
+}
+
 /* trim the substring and copy it to a newly allocated string, return the size of the resulting string. */
-int get_field( char* line, int start, int end, char* dest ) {
+int get_value(const char *line, int start, int end, char *dest) {
     // trim leading whitspace
     while (start <= end)
         if (line[start] == ' ' || line[start] == '\n')
@@ -140,6 +178,12 @@ int get_field( char* line, int start, int end, char* dest ) {
     return end - start + 1;
 }
 
+void fk6_print_field( FK6_Field * f, FILE * file ) {
+    fprintf(file, "%s (%s, %s, %d-%d) : %s\n",
+            f->Label, f->Units, f->Format, f->start, f->end, f->Explanations);
+    fflush(file);
+}
+
 int scan_line(FILE *file, const char *header) {
     int count = 0;
     while (true) {
@@ -154,12 +198,6 @@ int scan_line(FILE *file, const char *header) {
     }
 }
 
-void fk6_print_field( FK6_Field * f, FILE * file ) {
-    fprintf(file, "%s (%s, %s, %d-%d) : %s\n",
-           f->Label, f->Units, f->Format, f->start, f->end, f->Explanations);
-    fflush(file);
-}
-
 int fk6_load_entries( FK6 * fk6, FILE * file ) {
     int count = 0;
     size_t size = 0;
@@ -172,8 +210,6 @@ int fk6_load_entries( FK6 * fk6, FILE * file ) {
         int result = getline(&data, &size, file);
         if( result == -1 )
             break;
-//        if(feof(file))
-//            break;
 
         char test[1000000];//, strlen(line)+1, sizeof(char) );
 
@@ -182,7 +218,7 @@ int fk6_load_entries( FK6 * fk6, FILE * file ) {
             FK6_Field * field = &(fk6->fields[c]);
 
             char val[1000000];//field->end - field->start + 1];
-            get_field(data, field->start-1, field->end-1, val);
+            get_value(data, field->start - 1, field->end - 1, val);
 
             // just print a debug string for now
             strcat(test, val);

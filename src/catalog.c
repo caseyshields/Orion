@@ -5,10 +5,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <h/catalog.h>
 
 #include "novasc3.1/novas.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
+#include "h/fk6.h"
 
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // If they request a new catalog but don't provide a size hint just guess a default.
@@ -39,73 +41,6 @@ Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // clear the index by zeroing the size;
     catalog->size = 0;
 
-    return catalog;
-}
-
-Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
-    char buf[1024], *s;
-    double hour, min, sec;
-    double deg, arcmin, arcsec;
-    int n=0;
-
-    // create a catalog if no reference was given
-    if( !catalog )
-        catalog = catalog_create(NULL, 128);
-
-    // parse FK6 entries from file
-    while(n<10) { // skip first ten lines
-        s = fgets(buf, 1024, f);
-        n++;
-    }
-    n=0;
-    do {
-        // get a line from the catalog
-        s = fgets(buf, 1024, f);
-        if(!s) break;
-
-        // allocate a new entry
-        Entry* entry = malloc( sizeof(Entry) );
-        assert( entry );
-        memset( entry, '\0', sizeof(Entry) );
-
-        // uhh, I might want to make a smarter parser...
-        sscanf(buf+1, " %li ", &(entry->novas.starnumber)); // col 1
-        sscanf(buf+17, " %19c ", entry->novas.starname); // col 3
-        strcpy(entry->novas.catalog, "FK6"); // FK6
-        sscanf(buf+38, " %lf %lf %lf ", &hour, &min, &sec); // col 4
-        sscanf(buf+59, " %lf %lf %lf ", &deg, &arcmin, &arcsec); // col 5
-        sscanf(buf+77, " %lf ", &(entry->novas.promora)); // col 6?
-        sscanf(buf+89, " %lf ", &(entry->novas.promodec)); // col 7?
-        sscanf(buf+153, " %lf ", &(entry->novas.parallax)); // col 14
-        sscanf(buf+179, " %lf ", &(entry->novas.radialvelocity)); // col
-        sscanf(buf+186, " %f ", &(entry->magnitude)); // col 18
-        /*TODO use make_cat_entry(
-                          char star_name[SIZE_OF_OBJ_NAME],
-                          char catalog[SIZE_OF_CAT_NAME],
-                          long int star_num, double ra, double dec,
-                          double pm_ra, double pm_dec, double parallax,
-                          double rad_vel,
-                          cat_entry *star)*/
-
-        // combine hours minutes and seconds
-        entry->novas.ra = hour+(min/60.0)+(sec/3600.0);
-        if(buf[58]=='+')
-            entry->novas.dec = deg+(arcmin/60.0)+(arcsec/3600.0);
-        else
-            entry->novas.dec = -deg-(arcmin/60.0)-(arcsec/3600.0);
-
-        if(buf[76]=='-')
-            entry->novas.promora*=-1.0;
-        if(buf[88]=='-')
-            entry->novas.promodec*=-1.0;
-        if(buf[178]=='-')
-            entry->novas.radialvelocity*=-1.0;
-
-        // actually add the Entry to the catalog
-        catalog_add( catalog, entry );
-
-        n++;
-    } while(1);
     return catalog;
 }
 
@@ -257,6 +192,148 @@ void entry_print( Entry *star ) {
             star->magnitude );
     fflush(0);
 }
+
+Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
+    char buf[1024], *s;
+    double hour, min, sec;
+    double deg, arcmin, arcsec;
+    int n=0;
+
+    // create a catalog if no reference was given
+    if( !catalog )
+        catalog = catalog_create(NULL, 128);
+
+    // parse FK6 entries from file
+    while(n<10) { // skip first ten lines
+        s = fgets(buf, 1024, f);
+        n++;
+    }
+    n=0;
+    do {
+        // get a line from the catalog
+        s = fgets(buf, 1024, f);
+        if(!s) break;
+
+        // allocate a new entry
+        Entry* entry = malloc( sizeof(Entry) );
+        assert( entry );
+        memset( entry, '\0', sizeof(Entry) );
+
+        // uhh, I might want to make a smarter parser...
+        sscanf(buf+1, " %li ", &(entry->novas.starnumber)); // col 1
+        sscanf(buf+17, " %19c ", entry->novas.starname); // col 3
+        strcpy(entry->novas.catalog, "FK6"); // FK6
+        sscanf(buf+38, " %lf %lf %lf ", &hour, &min, &sec); // col 4
+        sscanf(buf+59, " %lf %lf %lf ", &deg, &arcmin, &arcsec); // col 5
+        sscanf(buf+77, " %lf ", &(entry->novas.promora)); // col 6?
+        sscanf(buf+89, " %lf ", &(entry->novas.promodec)); // col 7?
+        sscanf(buf+153, " %lf ", &(entry->novas.parallax)); // col 14
+        sscanf(buf+179, " %lf ", &(entry->novas.radialvelocity)); // col
+        sscanf(buf+186, " %f ", &(entry->magnitude)); // col 18
+        /*TODO use make_cat_entry(
+                          char star_name[SIZE_OF_OBJ_NAME],
+                          char catalog[SIZE_OF_CAT_NAME],
+                          long int star_num, double ra, double dec,
+                          double pm_ra, double pm_dec, double parallax,
+                          double rad_vel,
+                          cat_entry *star)*/
+
+        // combine hours minutes and seconds
+        entry->novas.ra = hour+(min/60.0)+(sec/3600.0);
+        if(buf[58]=='+')
+            entry->novas.dec = deg+(arcmin/60.0)+(arcsec/3600.0);
+        else
+            entry->novas.dec = -deg-(arcmin/60.0)-(arcsec/3600.0);
+
+        if(buf[76]=='-')
+            entry->novas.promora*=-1.0;
+        if(buf[88]=='-')
+            entry->novas.promodec*=-1.0;
+        if(buf[178]=='-')
+            entry->novas.radialvelocity*=-1.0;
+
+        // actually add the Entry to the catalog
+        catalog_add( catalog, entry );
+
+        n++;
+    } while(1);
+    return catalog;
+}
+
+Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file ) {
+    int count = 0;
+    size_t size = 0;
+    char * record = NULL;
+
+    // create a catalog if no reference was given
+    if( !catalog )
+        catalog = catalog_create(NULL, 128);
+
+    // first find the needed columns in the FK6 metadata
+    FK6_Field * starname = fk6_get_field( fk6, "Name" );
+    FK6_Field * starnumber = fk6_get_field( fk6, "FK6" );
+    FK6_Field * rah = fk6_get_field( fk6, "RAh" ); // hours
+    FK6_Field * ram = fk6_get_field( fk6, "RAm" ); // minutes
+    FK6_Field * ras = fk6_get_field( fk6, "RAs" ); // seconds
+    FK6_Field * sign = fk6_get_field( fk6, "DE-" ); // [-, ]
+    FK6_Field * decd = fk6_get_field( fk6, "DEd" ); // degrees
+    FK6_Field * decm = fk6_get_field( fk6, "DEm" ); // arcmin
+    FK6_Field * decs = fk6_get_field( fk6, "DEs" ); // arcsec
+    FK6_Field * promora = fk6_get_field( fk6, "pmRA*" ); // mas/yr
+    FK6_Field * promodec = fk6_get_field( fk6, "pmDE" ); // mas/yr
+    FK6_Field * parallax = fk6_get_field( fk6, "plx" );
+    FK6_Field * radialvelocity = fk6_get_field( fk6, "RV" );
+    FK6_Field * magnitude = fk6_get_field( fk6, "Vmag" );
+
+//    // function for transforming a FK6 data record into a Catalog Entry
+//    Entry * create_entry( char * record ) {
+//        Entry * entry = calloc( 1, sizeof(Entry) );
+//        fk6_get_value( record, starname, entry->novas.starname );
+//        strcpy( "FK6", entry->novas.catalog );//fk6_get_value( record, survey, entry->novas.catalog );
+//        fk6_get_value( record, starnumber, &(entry->novas.starnumber) );
+//        // todo finish the rest of the fields
+//        return entry;
+//    }
+
+    // read lines from the input
+    while (true) {
+
+        // check for end of file
+        int result = getline(&record, &size, file);
+        if( result == -1 )
+            break;
+
+        // create a catalog entry from the FK6 catalog
+        Entry * entry = calloc( 1, sizeof(Entry) );
+        fk6_get_value( record, starname, entry->novas.starname );
+        strcpy( entry->novas.catalog, "FK6" ); // fk6_get_value( record, survey, entry->novas.catalog );
+        fk6_get_value( record, starnumber, &(entry->novas.starnumber) );
+        double d=0, h=0, m=0, s=0;
+        fk6_get_value( record, rah, &h );
+        fk6_get_value( record, ram, &m );
+        fk6_get_value( record, ras, &s );
+        entry->novas.ra = h + (m/60.0) + (s/3600.0);
+        char p[2] = "\0\0";
+        fk6_get_value( record, sign, &p );
+        fk6_get_value( record, decd, &d );
+        fk6_get_value( record, decm, &m );
+        fk6_get_value( record, decs, &s );
+        entry->novas.dec = d + (m/60.0) + (s/3600.0);
+        if( strcmp("-", p)==0 )
+            entry->novas.dec*=-1;
+        fk6_get_value( record, promora, &(entry->novas.promora) );
+        fk6_get_value( record, promodec, &(entry->novas.promodec) );
+        fk6_get_value( record, parallax, &(entry->novas.parallax) );
+        fk6_get_value( record, radialvelocity, &(entry->novas.ra) );
+        fk6_get_value( record, magnitude, &(entry->magnitude) );
+
+        catalog_add(catalog, entry);
+    }
+
+    free( record );
+    return 0;
+}
+
 
 // doesn't work because the stack variables that affect the behavior of the function
 // are out of scope when the function is called. C does not have closures.
