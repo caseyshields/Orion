@@ -313,10 +313,15 @@ void test_FK6() {
     FILE * readme = fopen("../data/fk6/ReadMe", "r");
     assert(NULL != readme);
 
-//    // load first part
-//    FK6 * fk6_1 = fk6_create();
-//    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
-//    // todo check data
+    // load first part
+    FK6 * fk6_1 = fk6_create();
+    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
+
+    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
+    assert(NULL != data1);
+    Catalog * catalog1 = catalog_load_fk6(NULL, fk6_1, data1);
+    fclose( data1 );
+    catalog_print( catalog1 );
 
     // load third part
     FK6 * fk6_3 = fk6_create();
@@ -324,14 +329,12 @@ void test_FK6() {
 
     FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
     assert(NULL != data3);
-    //fk6_load_entries( fk6_3, data3 );
-    Catalog * catalog = catalog_load_fk6_1(NULL, fk6_3, data3);
-
-    catalog_print( catalog );
+    Catalog * catalog3 = catalog_load_fk6(NULL, fk6_3, data3);
+    fclose( data3 );
+    catalog_print( catalog3 );
 
     fclose( readme );
-    fclose( data3 );
-//    fk6_free( fk6_1 );
+    fk6_free( fk6_1 );
     fk6_free( fk6_3 );
 }
 

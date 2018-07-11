@@ -51,10 +51,10 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
             break;
 
         // if the second column is blank the row is an addendum to the explanation
-        if( !get_value(line, 5, 7, end) ) {
+        if( !get_value(line, 5, 8, end) ) {
             // read and append the rest of the explanation
             char rest[100] = " ";
-            get_value(line, 35, strlen(line) - 1, rest + 1);
+            get_value(line, 35, strlen(line), rest + 1);
             strncat( field->Explanations, rest, 100-strlen(field->Explanations)-1 );
         }
 
@@ -77,15 +77,15 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
             field->end = atoi(end);
 
             // starting byte is absent in the case of single byte fields
-            get_value(line, 1, 3, start);
+            get_value(line, 1, 4, start);
             if( strcmp("", start) == 0 )
                 field->start = field->end;
             else field->start = atoi( start );
 
-            get_value(line, 8, 15, field->Format);
+            get_value(line, 10, 14, field->Format);
             get_value(line, 16, 22, field->Units);
             get_value(line, 23, 34, field->Label);
-            get_value(line, 35, strlen(line) - 1, field->Explanations);
+            get_value(line, 35, strlen(line), field->Explanations);
         }
 
         free(line);
@@ -153,29 +153,32 @@ int fk6_get_value( char * line, FK6_Field * field, void * dest ) {
     return count;
 }
 
-/* trim the substring and copy it to a newly allocated string, return the size of the resulting string. */
+/* Trim the substring and copy it to a newly allocated string, return the size of the resulting
+ * string. The indexing conventions match the FK6 Readme idiom, that is; 1 indexed, inclusive.
+ * @param start */
 int get_value(const char *line, int start, int end, char *dest) {
     // trim leading whitspace
-    while (start <= end)
+    while (start < end)
         if (line[start] == ' ' || line[start] == '\n')
             start++;
         else break;
 
     // trim trailing whitespace
-    while (start <= end)
-        if (line[end] == ' ' || line[end] == '\n')
+    while (start < end)
+        if (line[end-1] == ' ' || line[end-1] == '\n')
             end--;
         else break;
 
     // copy characters over
-    for (int n = 0; n <= end - start; n++)
+    int len = end - start;
+    for (int n = 0; n < len; n++)
         dest[n] = line[n + start];
 
     // terminate the c-style string
-    dest[end - start + 1] = '\0';
+    dest[len] = '\0';
 
     // return the number of characters copied
-    return end - start + 1;
+    return len;
 }
 
 void fk6_print_field( FK6_Field * f, FILE * file ) {
@@ -198,43 +201,43 @@ int scan_line(FILE *file, const char *header) {
     }
 }
 
-int fk6_load_entries( FK6 * fk6, FILE * file ) {
-    int count = 0;
-    size_t size = 0;
-    char * data = NULL;
-
-    // read lines from the input
-    while (true) {
-
-        // check for end of file
-        int result = getline(&data, &size, file);
-        if( result == -1 )
-            break;
-
-        char test[1000000];//, strlen(line)+1, sizeof(char) );
-
-        // read each field
-        for( int c=0; c<fk6->cols; c++ ) {
-            FK6_Field * field = &(fk6->fields[c]);
-
-            char val[1000000];//field->end - field->start + 1];
-            get_value(data, field->start - 1, field->end - 1, val);
-
-            // just print a debug string for now
-            strcat(test, val);
-            strcat(test, ", ");
-            val[0] = '\0';//free(val);
-        }
-
-        if(count++==3270)
-            printf("wtf\n");
-        strcat(test, "\n");
-        printf(test);
-        test[0]='\0';
-//        free(test);
-    }
-    return 0;
-}
+//int fk6_load_entries( FK6 * fk6, FILE * file ) {
+//    int count = 0;
+//    size_t size = 0;
+//    char * data = NULL;
+//
+//    // read lines from the input
+//    while (true) {
+//
+//        // check for end of file
+//        int result = getline(&data, &size, file);
+//        if( result == -1 )
+//            break;
+//
+//        char test[1000000];//, strlen(line)+1, sizeof(char) );
+//
+//        // read each field
+//        for( int c=0; c<fk6->cols; c++ ) {
+//            FK6_Field * field = &(fk6->fields[c]);
+//
+//            char val[1000000];//field->end - field->start + 1];
+//            get_value(data, field->start - 1, field->end, val);
+//
+//            // just print a debug string for now
+//            strcat(test, val);
+//            strcat(test, ", ");
+//            val[0] = '\0';//free(val);
+//        }
+//
+//        if(count++==3270)
+//            printf("wtf\n");
+//        strcat(test, "\n");
+//        printf(test);
+//        test[0]='\0';
+////        free(test);
+//    }
+//    return 0;
+//}
 
 /*// read each value in the row
         char* cell = strtok( line, "|" );

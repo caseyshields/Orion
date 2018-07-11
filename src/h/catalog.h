@@ -17,7 +17,7 @@ typedef struct {
     cat_entry novas;
 
     /** The visual magnitude of the star. */
-    float magnitude;
+    double magnitude;
 
     /** Scratch-space for transformed horizon coordinates- only makes sense in the context of a Tracker */
     double zenith_distance, topocentric_azimuth;
@@ -58,7 +58,7 @@ void catalog_add( Catalog* c, Entry *e );
 Catalog* catalog_load_fk5(Catalog * c, FILE * f);
 
 /**  */
-Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file );
+Catalog * catalog_load_fk6(Catalog *catalog, FK6 *fk6, FILE *file);
 
 typedef void (*EntryFunction)(Entry*);
 

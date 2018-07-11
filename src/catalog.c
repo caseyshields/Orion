@@ -260,7 +260,7 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
     return catalog;
 }
 
-Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file ) {
+Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
     int count = 0;
     size_t size = 0;
     char * record = NULL;
@@ -284,16 +284,20 @@ Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file ) {
     FK6_Field * parallax = fk6_get_field( fk6, "plx" );
     FK6_Field * radialvelocity = fk6_get_field( fk6, "RV" );
     FK6_Field * magnitude = fk6_get_field( fk6, "Vmag" );
-
-//    // function for transforming a FK6 data record into a Catalog Entry
-//    Entry * create_entry( char * record ) {
-//        Entry * entry = calloc( 1, sizeof(Entry) );
-//        fk6_get_value( record, starname, entry->novas.starname );
-//        strcpy( "FK6", entry->novas.catalog );//fk6_get_value( record, survey, entry->novas.catalog );
-//        fk6_get_value( record, starnumber, &(entry->novas.starnumber) );
-//        // todo finish the rest of the fields
-//        return entry;
-//    }
+    assert( starname );
+    assert( starnumber );
+    assert( rah );
+    assert( ram );
+    assert( ras );
+    assert( sign );
+    assert( decd );
+    assert( decm );
+    assert( decs );
+    assert( promodec );
+    assert( promora );
+    assert( parallax );
+    assert( radialvelocity );
+    assert( magnitude );
 
     // read lines from the input
     while (true) {
@@ -308,7 +312,8 @@ Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file ) {
         fk6_get_value( record, starname, entry->novas.starname );
         strcpy( entry->novas.catalog, "FK6" ); // fk6_get_value( record, survey, entry->novas.catalog );
         fk6_get_value( record, starnumber, &(entry->novas.starnumber) );
-        double d=0, h=0, m=0, s=0;
+        long int d=0, h=0, m=0;
+        double s=0;
         fk6_get_value( record, rah, &h );
         fk6_get_value( record, ram, &m );
         fk6_get_value( record, ras, &s );
@@ -324,14 +329,14 @@ Catalog * catalog_load_fk6_1( Catalog * catalog, FK6 * fk6, FILE * file ) {
         fk6_get_value( record, promora, &(entry->novas.promora) );
         fk6_get_value( record, promodec, &(entry->novas.promodec) );
         fk6_get_value( record, parallax, &(entry->novas.parallax) );
-        fk6_get_value( record, radialvelocity, &(entry->novas.ra) );
+        fk6_get_value( record, radialvelocity, &(entry->novas.radialvelocity) );
         fk6_get_value( record, magnitude, &(entry->magnitude) );
 
         catalog_add(catalog, entry);
     }
 
     free( record );
-    return 0;
+    return catalog;
 }
 
 
