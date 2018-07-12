@@ -229,7 +229,7 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
         sscanf(buf+89, " %lf ", &(entry->novas.promodec)); // col 7?
         sscanf(buf+153, " %lf ", &(entry->novas.parallax)); // col 14
         sscanf(buf+179, " %lf ", &(entry->novas.radialvelocity)); // col
-        sscanf(buf+186, " %f ", &(entry->magnitude)); // col 18
+        sscanf(buf+186, " %lf ", &(entry->magnitude)); // col 18
         /*TODO use make_cat_entry(
                           char star_name[SIZE_OF_OBJ_NAME],
                           char catalog[SIZE_OF_CAT_NAME],
