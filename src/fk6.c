@@ -29,7 +29,6 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
     if(
         scan_line(readme, header) < 0 ||
         scan_line(readme, SEPARATOR) < 0 ||
-        //scan_line(file, FK6_1_FIELDS) < 0 ||
         scan_line(readme, SEPARATOR) < 0
     ) {
         perror( "Invalid format" );
@@ -91,16 +90,7 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
         free(line);
     }
     return 0;
-}
-
-void fk6_free( FK6 * fk6 ) {
-    // free metadata
-    free(fk6->fields);
-
-    // free catalog data
-//    for( int n=0; n<fk6->rows; n++)
-//        free( )
-}
+} // TODO it seems the column indices are not very static, looking between vizier catalogs. I should switch to a whitespace splitting approach...
 
 void fk6_add_field( FK6 * fk6, FK6_Field * field ) {
     size_t n = fk6->cols;
@@ -153,6 +143,21 @@ int fk6_get_value( char * line, FK6_Field * field, void * dest ) {
     return count;
 }
 
+
+int scan_line(FILE *file, const char *header) {
+    int count = 0;
+    while (true) {
+        char *line = NULL;
+        size_t size = 0;
+        if (getline(&line, &size, file) == -1)
+            return -count;
+        if (strcmp(line, header) == 0)
+            return count;
+        count++;
+        free(line);
+    }
+}
+
 /* Trim the substring and copy it to a newly allocated string, return the size of the resulting
  * string. The indexing conventions match the FK6 Readme idiom, that is; 1 indexed, inclusive.
  * @param start */
@@ -187,20 +192,10 @@ void fk6_print_field( FK6_Field * f, FILE * file ) {
     fflush(file);
 }
 
-int scan_line(FILE *file, const char *header) {
-    int count = 0;
-    while (true) {
-        char *line = NULL;
-        size_t size = 0;
-        if (getline(&line, &size, file) == -1)
-            return -count;
-        if (strcmp(line, header) == 0)
-            return count;
-        count++;
-        free(line);
-    }
+void fk6_free( FK6 * fk6 ) {
+    // free metadata
+    free(fk6->fields);
 }
-
 //int fk6_load_entries( FK6 * fk6, FILE * file ) {
 //    int count = 0;
 //    size_t size = 0;
@@ -239,7 +234,3 @@ int scan_line(FILE *file, const char *header) {
 //    return 0;
 //}
 
-/*// read each value in the row
-        char* cell = strtok( line, "|" );
-        while( cell != NULL ) {
-*/

@@ -36,6 +36,7 @@ ssize_t get_input(char* prompt, char **line, size_t *size );
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 void test_conversions();
 void test_FK6();
+void test_BSC5();
 
 /** a simple CLI interface for exercising various orion components. */
 int main( int argc, char *argv[] ) {
@@ -334,6 +335,31 @@ void test_FK6() {
     fclose( readme );
     fk6_free( fk6_1 );
     fk6_free( fk6_3 );
+}
+
+// try using the metadata loader to load the yale
+void test_BSC5() {
+
+    // TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
+    // it could probably be made to work by splitting on whitespace.
+
+
+    FILE * readme = fopen("../data/bsc5/ReadMe", "r");
+    assert(NULL != readme);
+
+    // load first part
+    char* header = "Byte-by-byte Description of file: catalog\n";
+    FK6 * bsc5 = fk6_create();
+    fk6_load_fields( bsc5, readme, header );//FK6_1_HEADER );
+
+    FILE * data = fopen("../data/bsc5/catalog", "r");
+    assert(NULL != data);
+    Catalog * catalog = catalog_load_fk6(NULL, bsc5, data);
+    fclose( data );
+    catalog_print( catalog );
+
+    fclose( readme );
+    fk6_free( bsc5 );
 }
 
 void search_dome() {

@@ -102,28 +102,6 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     return results;
 }
 
-//Catalog* catalog_orange( Catalog* c, double ra_min, double ra_max, Catalog* results ) {
-//    // wrap right ascension
-//    volatile double min = fmod( ra_min, 24.0);
-//    volatile double max = fmod( ra_max, 24.0);
-//    int orange(Entry* e) {
-//        // check for wrap-around assuming min to max direction is clockwise
-//        if( min < max ) {
-//            // continuous bound test
-//            if( min <= (e->novas.ra) && (e->novas.ra) <= max )
-//                return 1;
-//        } else {
-//            // disjoint bound test
-//            if (min <= (e->novas.ra) || (e->novas.ra) <= max)
-//                return 1;
-//        }
-//        return 0;
-//    }
-//    results = catalog_filter( c, orange, results );
-//
-//    return results;
-//}
-
 Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
                               Catalog *results ) {
     // create an output catalog if no reference was given
@@ -318,7 +296,7 @@ Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
         fk6_get_value( record, ram, &m );
         fk6_get_value( record, ras, &s );
         entry->novas.ra = h + (m/60.0) + (s/3600.0);
-        char p[2] = "\0\0";
+        char p[2] = "\0";
         fk6_get_value( record, sign, &p );
         fk6_get_value( record, decd, &d );
         fk6_get_value( record, decm, &m );
@@ -338,7 +316,6 @@ Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
     free( record );
     return catalog;
 }
-
 
 // doesn't work because the stack variables that affect the behavior of the function
 // are out of scope when the function is called. C does not have closures.
