@@ -12,7 +12,7 @@
 #include "h/tracker.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
-
+#include "h/util.h"
 //https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
 // we only allow one controller and one sensor
@@ -20,9 +20,7 @@
 
 #define MAX_BUFFER_SIZE 2<<10
 
-double get_time();
 unsigned int configure_server( int argc, char* argv[] );
-char* get_arg( int argc, char *argv[], char *name, char* default_value );
 void terminate( int status, char* msg );
 
 int mode = 1;
@@ -80,7 +78,7 @@ int main( int argc, char *argv[] ) {
         client = accept(server, NULL, NULL);
         if (client == INVALID_SOCKET) {
             //terminate(WSAGetLastError(), "failed to accept client connection\n");
-            printf( "[%ld] Failed to accept client connection\n\0", WSAGetLastError() );
+            printf( "[%d] Failed to accept client connection\n\0", WSAGetLastError() );
             continue;
         }
 
@@ -96,12 +94,12 @@ int main( int argc, char *argv[] ) {
 
             } else if (result == 0) {
                 // terminate(0, NULL);
-                printf( "[%ld] Client closed connection\n\0", WSAGetLastError());
+                printf( "[%d] Client closed connection\n\0", WSAGetLastError());
                 closesocket( client );
                 break;
             } else {
                 //terminate(WSAGetLastError(), "Failed to read from client\n");
-                printf( "[%ld] Failed to read from client\n\0", WSAGetLastError());
+                printf( "[%d] Failed to read from client\n\0", WSAGetLastError());
                 closesocket( client );
                 break;
             }
@@ -110,28 +108,6 @@ int main( int argc, char *argv[] ) {
     }
 
     terminate(0, NULL);
-}
-
-/** Gets an accurate UTC timestamp from the system in seconds since the unix epoch */
-double get_time() {
-    struct timeval time;
-    gettimeofday( &time, NULL );
-    return time.tv_sec + (time.tv_usec / 1000000.0);
-}
-
-/** retrieves the value subsequent to the specified option. If the default_value
- * is supplied, the function will return it. otherwise the method will print an
- * error message and abort. */
-char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
-    for( int n=0; n<argc; n++ )
-        if( !strcmp(name, argv[n]) )
-            return argv[n+1];
-    if( default_value ) {
-        printf("Parameter '%s' defaulting to '%s'\n", name, default_value);
-        return default_value;
-    }
-    sprintf( "Error: missing parameter '%s'\n", name );
-    exit( 1 );
 }
 
 void terminate(int status, char* msg) {

@@ -1,12 +1,13 @@
 #include <sys/time.h>
 #include <winsock.h>
+#include <h/catalog.h>
 #include "h/tracker.h"
 #include "h/orion.h"
 #include "h/catalog.h"
 #include "h/main.h"
+#include "h/util.h"
 
 int main( int argc, char *argv[] ) {
-
     // create and configure the Orion server
     Orion orion;
     orion_create( &orion );
@@ -168,56 +169,15 @@ int search(
     }
     catalog_each( results, print_star );
 
+    int count = results->size;
+
     // release catalogs
     catalog_free_entries( bright_stars );
     free( bright_stars );
     catalog_free_entries( results );
     free( results );
 
-    return 0;
-}
-
-/** Gets an accurate UTC timestamp from the system in seconds since the unix epoch */
-double get_time() {
-    struct timeval time;
-    gettimeofday( &time, NULL );
-    return time.tv_sec + (time.tv_usec / 1000000.0);
-}
-
-/** retrieves the value subsequent to the specified option. If the default_value
- * is supplied, the function will return it. otherwise the method will print an
- * error message and abort. */
-char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
-    for( int n=0; n<argc; n++ )
-        if( !strcmp(name, argv[n]) )
-            return argv[n+1];
-    if( default_value ) {
-        printf("Parameter '%s' defaulting to '%s'\n", name, default_value);
-        fflush(stdout);
-        return default_value;
-    }
-    sprintf( "Error: missing parameter '%s'\n", name );
-    exit( 1 );
-}
-
-/** Frees any data line is pointing to, then prompts the user, allocates a buffer, and reads the input.
- * Be sure to free the buffer after your last call to get_input! */
-ssize_t get_input(char* prompt, char **line, size_t *size ) {
-    if( *line ) {
-        free( *line );
-        *line = NULL;
-        *size = 0;
-    }
-    printf("%s : ", prompt);
-    fflush( stdout );
-    ssize_t read = getline( line, size, stdin );
-
-    if( read == -1 ) {
-        printf("Error: input stream closed");
-        exit( 2 );
-    }
-    (*line)[read] = '\0'; // trim trailing
-    return read;
+    return count;
 }
 
 /** extracts tracker information from the program arguments and constructs a model of a tracker */

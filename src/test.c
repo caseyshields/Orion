@@ -11,6 +11,7 @@
 #include "h/catalog.h"
 #include "h/vmath.h"
 #include "h/fk6.h"
+#include "h/util.h"
 
 // todo now that I have the interactive command line figured out, this should be turned into a battery of unit tests- or whatever is available in C
 
@@ -28,10 +29,6 @@
  * </ul>
  * @author Casey Shields
  */
-
-double get_time();
-char* get_arg( int argc, char *argv[], char *name, char* default_value );
-ssize_t get_input(char* prompt, char **line, size_t *size );
 
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 void test_conversions();
@@ -222,47 +219,6 @@ int main( int argc, char *argv[] ) {
             printf( "Commands include \n\tstar\n\tzenith\n\tdome\n\tpatch\n\tprint\n\tbench\n\texit\n" );
         }
     }
-}
-
-/** uses the GNU gettime of day method to get a accurate system time, then converts it to seconds since the unix epoch */
-double get_time() {
-    struct timeval time;
-    gettimeofday( &time, NULL );
-    return time.tv_sec + (time.tv_usec / 1000000.0);
-}
-
-/** retrieves the value subsequent to the specified option. If the default_value is supplied, the function will return
- * it if the option is not included. otherwise the method will print an error message and abort. */
-char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
-    for( int n=0; n<argc; n++ )
-        if( !strcmp(name, argv[n]) )
-            return argv[n+1];
-    if( default_value ) {
-        printf("Parameter '%s' defaulting to '%s'\n", name, default_value);
-        return default_value;
-    }
-    printf( "Error: missing parameter '%s'\n", name );
-    exit( 1 );
-}
-
-/** Frees any data line is pointing to, then prompts the user, allocates a buffer, and reads the input.
- * Be sure to free the buffer after your last call to get_input! */
-ssize_t get_input(char* prompt, char **line, size_t *size ) {
-    if( *line ) {
-        free( *line );
-        *line = NULL;
-        *size = 0;
-    }
-    printf("%s : ", prompt);
-    fflush( stdout );
-    ssize_t read = getline( line, size, stdin );
-    (*line)[read-1] = '\0'; // trim trailing
-
-    if( read == -1 ) {
-        printf("Error: input stream closed");
-        exit( 2 );
-    }
-    return read;
 }
 
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */

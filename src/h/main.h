@@ -91,18 +91,17 @@ Closes the sensor connection, shuts down the Orion server, releases the
 /** Provides an interactive command line interface to the Orion server. */
 int main( int argc, char * argv[] );
 
+/** Builds a tracker object using the given commandline arguments. */
 void configure_tracker( int argc, char* argv[], Tracker* tracker );
 
+/** Builds a catalog using the given commandline arguments */
 void configure_catalog( int argc, char* argv[], Catalog* catalog );
 
+/** Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria.
+ * The results are then printed to stdout.
+ * @return The number of stars fitting the criteria*/
 int search( Catalog * catalog, Tracker * tracker,
             double az_min, double az_max, double zd_min, double zd_max, float mag_min);
-
-double get_time();
-
-char* get_arg( int argc, char *argv[], char *name, char* default_value );
-
-ssize_t get_input(char* prompt, char **line, size_t *size );
 
 #endif //STARTRACK_MAIN_H
 

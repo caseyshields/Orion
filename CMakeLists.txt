@@ -31,7 +31,7 @@ set( ORION_SOURCE
         src/catalog.c
         src/fk6.c
         src/vmath.c
-        )
+        src/util.c)
 
 # This is an interactive commandline program for benchmarking and testing program components
 add_executable( tester ${ORION_SOURCE} src/test.c)
