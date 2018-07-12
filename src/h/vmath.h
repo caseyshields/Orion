@@ -1,13 +1,6 @@
-//
-// Created by Casey Shields on 5/3/2018.
-//
-
 #ifndef STARTRACK_VMATH_H
 #define STARTRACK_VMATH_H
 
-//
-// Created by Casey Shields on 5/3/2018.
-//
 #include <math.h>
 #include "vmath.h"
 

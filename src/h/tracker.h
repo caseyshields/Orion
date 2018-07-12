@@ -1,7 +1,3 @@
-//
-// Created by Casey Shields on 4/27/2018.
-//
-
 #ifndef STARTRACK_TRACKER_H
 #define STARTRACK_TRACKER_H
 

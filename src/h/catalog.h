@@ -1,7 +1,3 @@
-//
-// Created by Casey Shields on 4/27/2018.
-//
-
 #ifndef STARTRACK_CATALOG_H
 #define STARTRACK_CATALOG_H
 
@@ -10,7 +6,8 @@
 #include "h/fk6.h"
 
 /** Represents celestial object in a star catalog. Extended from Novas's struct cat_entry to add
- * some more parameters and transformed coordinates.*/
+ * some more parameters and transformed coordinates.
+ * @author Casey Shields*/
 typedef struct {
 
     /** The Novas structure which contains all the information needed to perform astrometric calculations. */
@@ -30,7 +27,8 @@ typedef struct {
 
 void entry_print( Entry *e );
 
-/** A catalog of stars. provides methods for loading, searching, filtering and printing entries. */
+/** A catalog of stars. provides methods for loading, searching, filtering and printing entries.
+ * @author Casey Shields*/
 typedef struct {
 
     /** Current number of stars in the catalog */

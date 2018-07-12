@@ -1,7 +1,3 @@
-//
-// Created by Casey Shields on 5/14/2018.
-//
-
 #ifndef STARTRACK_FK6_H
 #define STARTRACK_FK6_H
 
@@ -15,7 +11,8 @@
 #define SEPARATOR "--------------------------------------------------------------------------------\n"
 //define FK6_3_FIELDS "   Bytes Format Units    Label     Explanations\n"
 
-/** Holds metadata for a field in a CDS VizieR ReadMe files. Each field describes a parameter in an ascii line of data. */
+/** Holds metadata for a field in a CDS VizieR ReadMe files. Each field describes a parameter in an ascii line of data.
+ * @author Casey Shields*/
 typedef struct {
     /** The starting index of the field, 1-indexed, inclusive. */
     int start;
@@ -37,7 +34,8 @@ typedef struct {
     char Explanations[100];
 } FK6_Field;
 
-/** Describes a CDS VizieR record. It is used to parse and convert values from a VizieR catalog record. */
+/** Describes a CDS VizieR record. It is used to parse and convert values from a VizieR catalog record.
+ * @author Casey Shields*/
 typedef struct {
     size_t cols;
     FK6_Field * fields;

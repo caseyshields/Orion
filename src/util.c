@@ -1,11 +1,8 @@
-//
-// Created by Casey Shields on 7/12/2018.
-//
-
 #include <sys/time.h>
 #include <mem.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "h/util.h"
 
 double get_time() {

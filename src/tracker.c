@@ -1,11 +1,8 @@
-//
-// Created by Casey Shields on 4/27/2018.
-//
-
-#include <novasc3.1/novas.h>
 #include <assert.h>
 #include <time.h>
+
 #include "h/tracker.h"
+#include "novasc3.1/novas.h"
 
 int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
 

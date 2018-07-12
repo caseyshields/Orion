@@ -1,7 +1,3 @@
-//
-// Created by Casey Shields on 6/13/2018.
-//
-
 #ifndef STARTRACK_TATS_H
 #define STARTRACK_TATS_H
 
