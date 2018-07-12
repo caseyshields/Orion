@@ -63,7 +63,7 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
             // flush the field
             if( field != NULL ) {
                 fk6_add_field(fk6, field);
-                fk6_print_field( field, stdout );
+//                fk6_print_field( field, stdout );
                 n++;
                 free( field ); // TODO I should just really load this in place rather than making these copies
             }

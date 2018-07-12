@@ -37,16 +37,12 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 void test_conversions();
 void test_FK6();
 
-int main( int argc, char *argv[] ) {
-    test_FK6();
-}
-
 /** a simple CLI interface for exercising various orion components. */
-int xmain( int argc, char *argv[] ) {
+int main( int argc, char *argv[] ) {
     double latitude, longitude, height;
     double celsius, millibars;
     double ut1_utc, leap_secs;
-    char *arg, *path;
+    char *arg;//, *path;
 
     // geodetic coordinates in degrees
     arg = get_arg( argc, argv, "-latitude", "38.88972222222222" );
@@ -75,8 +71,8 @@ int xmain( int argc, char *argv[] ) {
     arg = get_arg( argc, argv, "-leap_secs", "37.000000" );
     if( arg ) leap_secs = atof( arg );
 
-    // get the location of the catalog data
-    path = get_arg( argc, argv, "-catalog", "../data/FK6.txt");
+//    // get the location of the catalog data
+//    path = get_arg( argc, argv, "-catalog", "../data/FK6.txt");
 
     // create the tracker
     Tracker tracker;
@@ -91,9 +87,25 @@ int xmain( int argc, char *argv[] ) {
     tracker_set_weather(&tracker, celsius, millibars);
     tracker_print_site(&tracker);
 
-    // create and load a catalog
-    FILE *file = fopen(path, "r");
-    Catalog* catalog = catalog_load_fk5(NULL, file);
+    Catalog * catalog = catalog_create( NULL, 1024 );
+    FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
+
+    // load the first part of FK6
+    FK6 * fk6_1 = fk6_create();
+    fk6_load_fields(fk6_1, readme, FK6_1_HEADER);
+    FILE * data1 = fopen( "../data/fk6/fk6_1.dat", "r" );
+    catalog_load_fk6(catalog, fk6_1, data1);
+    fk6_free( fk6_1 );
+    fclose( data1 );
+
+    // load the third part
+    FK6 * fk6_3 = fk6_create();
+    fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
+    FILE * data3 = fopen( "../data/fk6/fk6_3.dat", "r" );
+    catalog_load_fk6(catalog, fk6_3, data3);
+    fk6_free( fk6_3 );
+    fclose( data3 );
+    fclose( readme );
 
     char *line = NULL;
     size_t size = 0 ;
@@ -170,20 +182,6 @@ int xmain( int argc, char *argv[] ) {
             printf( "\n%d stars found.\n", results->size );
             catalog_free(results);
         }
-
-//        // test an orange slice shaped section of sky
-//        else if( strncmp("orange", line, 5)==0 ) {
-//            get_input( "minimum right ascension hours", &line, &size );
-//            double ra_min = atof( line );
-//
-//            get_input( "maximum right ascension hours", &line, &size );
-//            double ra_max = atof( line );
-//
-//            Catalog* results = catalog_orange(catalog, ra_min, ra_max, NULL);
-//            catalog_print(results);
-//            printf( "\n%d stars found.\n", results->size );
-//            catalog_free(results);
-//        }
 
         // figure out spherical celestial coordinates of the local zenith
         else if( strncmp( "zenith", line, 6 )==0 ) {

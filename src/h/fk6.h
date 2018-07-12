@@ -11,10 +11,9 @@
 #include <stdio.h>
 
 #define FK6_1_HEADER "Byte-by-byte Description of file: fk6_1.dat\n"
-#define FK6_1_FIELDS "   Bytes Format Units    Label     Explanations\n"
 #define FK6_3_HEADER "Byte-by-byte Description of file: fk6_3.dat\n"
-#define FK6_3_FIELDS "   Bytes Format Units    Label     Explanations\n"
 #define SEPARATOR "--------------------------------------------------------------------------------\n"
+//define FK6_3_FIELDS "   Bytes Format Units    Label     Explanations\n"
 
 typedef struct {
     int start;

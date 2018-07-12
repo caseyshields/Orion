@@ -14,6 +14,7 @@ int main( int argc, char *argv[] ) {
 
     // create and configure the FK6 catalog
     Catalog catalog;
+    memset(&catalog, 0, sizeof(catalog));
     catalog_create( &catalog, 1024 );
     configure_catalog( argc, argv, &catalog);
     if (!catalog.size)
@@ -279,13 +280,46 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
 //}
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
-    // get the location of the catalog data
-    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
 
-    // create and load a catalog
-    FILE *file = fopen(path, "r");
-    catalog_load_fk5(catalog, file);
+    FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
+
+    // load the first part of FK6
+    FK6 * fk6_1 = fk6_create();
+    fk6_load_fields(fk6_1, readme, FK6_1_HEADER);
+    FILE * data1 = fopen( "../data/fk6/fk6_1.dat", "r" );
+    catalog_load_fk6(catalog, fk6_1, data1);
+    fk6_free( fk6_1 );
+    fclose( data1 );
+
+    // load the third part
+    FK6 * fk6_3 = fk6_create();
+    fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
+    FILE * data3 = fopen( "../data/fk6/fk6_3.dat", "r" );
+    catalog_load_fk6(catalog, fk6_3, data3);
+    fk6_free( fk6_3 );
+    fclose( data3 );
+    fclose( readme );
+
+    // TODO add some arguments to control the catalog loaded
+//    // get the location of the catalog data
+//    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
+//    // create and load a catalog
+//    FILE *file = fopen(path, "r");
+//    catalog_load_fk5(catalog, file);
+
+
+    // TODO add some other notable stars, such as polaris
+//    cat_entry polaris = {"alpha UMi", "HIP",   0,  2.530301028,  89.264109444,
+//                    44.22, -11.75,  7.56, -17.4};
+//    stars[N_STARS] = {
+//            {"Delta ORI", "HIP", 1,  5.533444639,  -0.299091944,
+//                    1.67,   0.56,  3.56,  16.0},
+//            {"Theta CAR", "HIP", 2, 10.715944806, -64.394450000,
+//                    -18.87, 12.06,  7.43,  24.0}};
+//    catalog_add( catalog, polaris );
+
 }
+
 // todo eventually move this configuration code to interactive commands and make a script instead...
 // mark time
 // set time
