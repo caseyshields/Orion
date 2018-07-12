@@ -205,7 +205,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Adds the given field to the record metadata </p>
+<p>Adds the given field to the record metadata </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fk6</td><td>CDS VizieR metadata structure </td></tr>
+    <tr><td class="paramname">field</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -271,6 +277,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Retrieves field with the given name </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fk6</td><td>CDS VizieR metadata structure </td></tr>
+    <tr><td class="paramname">label</td><td>name found in the 'Label' field of the 'ReadMe' metadata </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the first field with the given name, or NULL if no such field exists </dd></dl>
 
 </div>
@@ -300,6 +313,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Retrieves field data at the given index </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fk6</td><td>CDS VizieR metadata structure </td></tr>
+    <tr><td class="paramname">index</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the field at the given index. </dd></dl>
 
 </div>
@@ -338,8 +358,8 @@ Functions</h2></td></tr>
 <p>Uses the given metadata to parse the field from the record and convert it to the appropriate type. Fields with a format of 'A' are converted to C strings. 'I' fields are converted to long integers. 'F' fields are converted to doubles. Make sure the destination pinter is appropriately typed! </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">record</td><td>A line of text from a Vizier/CDS record </td></tr>
-    <tr><td class="paramname">the</td><td>metadata of the desired field </td></tr>
-    <tr><td class="paramname">a</td><td>ponter whose value will be set to the value of the requested field. </td></tr>
+    <tr><td class="paramname">field</td><td>the metadata of the desired field </td></tr>
+    <tr><td class="paramname">dest</td><td>a ponter whose value will be set to the value of the requested field. </td></tr>
   </table>
   </dd>
 </dl>
