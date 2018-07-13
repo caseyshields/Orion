@@ -71,24 +71,24 @@ int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_dista
 int tracker_zenith(Tracker *tracker, double *right_ascension, double *declination);
 
 // todo should take a stream
-void tracker_print_time(Tracker *tracker);
+void tracker_print_time(const Tracker *tracker);
 
-void tracker_print_site(Tracker *tracker);
+void tracker_print_site(const Tracker *tracker);
 
-//TODO For time there are quite a fex scales, epochs, offsets and representations; I might need to break this out into it's own module...
+//TODO For time there are quite a few scales, epochs, offsets and representations; I might need to break this out into it's own module...
 
 /** Sets the current time for the star tracker
  * @param utc_unix_seconds Seconds since the unix epoch(January 1, 1970) in Universal Coordinated Time */
 void tracker_set_time(Tracker *tracker, double utc_unix_seconds); // set UTC
 
-void tracker_get_date(Tracker * tracker,
+void tracker_get_date(const Tracker * tracker,
                       short int * year, short int * month, short int * day,
                       short int * hour, short int * minute, double * seconds );
 
 void tracker_set_date(Tracker * tracker,
                       int year, int month, int day, int hour, int minute, double seconds );
 
-char * tracker_get_stamp(Tracker * tracker);
+char * tracker_get_stamp(const Tracker * tracker);
 
 int tracker_set_stamp(Tracker * tracker, char * stamp);
 

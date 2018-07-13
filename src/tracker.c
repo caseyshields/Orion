@@ -2,7 +2,6 @@
 #include <time.h>
 
 #include "h/tracker.h"
-#include "novasc3.1/novas.h"
 
 int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
 
@@ -39,14 +38,16 @@ void tracker_set_time(Tracker *tracker, double utc_unix_seconds) {
     );
 }
 
-void tracker_get_date(Tracker * tracker,
+void tracker_get_date(const Tracker * tracker,
                       short int * year, short int * month, short int * day,
                       short int * hour, short int * minute, double * seconds )
 {
-    double hours = 0;
-    cal_date( tracker->jd_utc, year, month, day, &hours );
-
-    // todo further subdivide hours
+    double h, m;
+    cal_date( tracker->jd_utc, year, month, day, seconds);
+    *seconds = modf(*seconds, &h) * 60;
+    *seconds = modf(*seconds, &m) * 60;
+    *hour = (short int)h;
+    *minute = (short int)m;
 }
 
 void tracker_set_date( Tracker * tracker, int year, int month, int day, int hour, int min, double seconds ) {
@@ -61,14 +62,12 @@ void tracker_set_date( Tracker * tracker, int year, int month, int day, int hour
             hours );
 }
 
-char * tracker_get_stamp(Tracker * tracker) {
-    short int year, month, day;
-    double hour, minute, f;
-    cal_date( tracker->jd_utc, &year, &month, &day, &f);
-    f = modf(f, &hour) * 60;
-    f = modf(f, &minute) * 60;
-    char * stamp = calloc( 32, sizeof(char));
-    sprintf(stamp, TIMESTAMP_OUTPUT, year, month, day, (int)hour, (int)minute, f );
+char * tracker_get_stamp( const Tracker * tracker ) {
+    short int year, month, day, hour, minute;
+    double seconds;
+    tracker_get_date( tracker, &year, &month, &day, &hour, &minute, &seconds );
+    char * stamp = calloc( 24, sizeof(char) );
+    sprintf(stamp, TIMESTAMP_OUTPUT, year, month, day, hour, minute, seconds );
     return stamp;
 }
 
@@ -92,22 +91,22 @@ int tracker_set_stamp( Tracker * tracker, char * stamp ) {
 }
 
 /** @returns terrestrial time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
-double tracker_get_TT(Tracker *tracker) {
+double tracker_get_TT(const Tracker *tracker) {
     return tracker->jd_utc + (tracker->leap_secs + DELTA_TT) / SECONDS_IN_DAY;
 }
 
 /** @return The time in UT1, a time scale which depends on the non-uniform rotation of the earth.
  * It is derived by adding an empirically determined offset to UTC */
-double tracker_get_UT1(Tracker *tracker) {
+double tracker_get_UT1(const Tracker *tracker) {
     return tracker->jd_utc + tracker->ut1_utc / SECONDS_IN_DAY;
 }
 
 /** @return The Universal Coordinated Time in Julian hours. */
-double tracker_get_UTC(Tracker *tracker) {
+double tracker_get_UTC(const Tracker *tracker) {
     return tracker->jd_utc;
 }
 
-double tracker_get_DeltaT(Tracker *tracker) {
+double tracker_get_DeltaT(const Tracker *tracker) {
     return DELTA_TT + tracker->leap_secs - tracker->ut1_utc;
 }
 
@@ -127,8 +126,8 @@ on_surface tracker_get_location(Tracker *tracker) {
 
 int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth) {
     short int error;
-    double jd_tt = tracker_get_TT(tracker);
-    double deltaT = tracker_get_DeltaT(tracker);
+    double jd_tt = tracker_get_TT( tracker );
+    double deltaT = tracker_get_DeltaT( tracker );
     double right_ascension=0, declination=0;
 
     // get the GCRS coordinates
@@ -194,7 +193,7 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
     assert(error==0);
 }
 
-void tracker_print_time(Tracker *tracker) {
+void tracker_print_time( const Tracker *tracker) {
     short int year, month, day;
     double hour;
 
@@ -210,7 +209,7 @@ void tracker_print_time(Tracker *tracker) {
     fflush(0);
 }
 
-void tracker_print_site(Tracker *tracker) {
+void tracker_print_site(const Tracker *tracker) {
     printf("latitude:\t%f hours\n", tracker->site.latitude);
     printf("longitude:\t%f degrees\n", tracker->site.longitude);
     printf("elevation:\t%f meters\n", tracker->site.height);
