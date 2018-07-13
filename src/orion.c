@@ -121,8 +121,8 @@ void * orion_control_loop( void * arg ) {
             tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);
 
             // format the current time
-            time_t julian_seconds = (time_t)(3600.0 * orion->tracker.date);
-            int microseconds = (int)(1000000*fmod( 3600.0 * orion->tracker.date, 1.0 ));
+            time_t julian_seconds = (time_t)(3600.0 * orion->tracker.jd_utc);
+            int microseconds = (int)(1000000*fmod( 3600.0 * orion->tracker.jd_utc, 1.0 ));
             struct tm * date = gmtime( &julian_seconds );
             char time[32];
             strftime( time , 32, "%Y/%m/%d %H:%M:%S\0", date );
@@ -279,7 +279,7 @@ void orion_set_time( Orion * orion, double time ) {
 
 double orion_time( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );
-    double time = orion->tracker.date;
+    double time = orion->tracker.jd_utc;
     pthread_mutex_unlock( &(orion->lock) );
     return time;
 }
@@ -288,8 +288,8 @@ double orion_mark_time( Orion * orion ) {
     struct timeval time;
     gettimeofday( &time, NULL ); // UTC timestamp in unix epoch
     double julian_hours = (time.tv_sec + (time.tv_usec / 1000000.0)) / 3600.0;
-    double last_time = orion->tracker.date;
-    orion->tracker.date = julian_hours;
+    double last_time = orion->tracker.jd_utc;
+    orion->tracker.jd_utc = julian_hours;
     return last_time;
 } // we might want to lock the tracker time...
 

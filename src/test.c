@@ -118,7 +118,7 @@ int xmain( int argc, char *argv[] ) {
 
         // update the current time and print a prompt
         tracker_set_time(&tracker, get_time());
-        printf( "orion[%lf]", tracker_get_UTC(&tracker) );
+        printf( "orion[%s]", tracker_get_stamp(&tracker) );
         read = get_input( "", &line, &size );
 
         // select a specific star by number
@@ -305,7 +305,6 @@ void test_BSC5() {
     // TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
     // it could probably be made to work by splitting on whitespace.
 
-
     FILE * readme = fopen("../data/bsc5/ReadMe", "r");
     assert(NULL != readme);
 
@@ -331,38 +330,24 @@ void test_time() {
     tracker_set_location(&tracker, 38.88972222222222, -77.0075, 125.0);
     tracker_set_weather(&tracker, 10.0, 1010.0);
     tracker_set_time(&tracker, get_time());
+//    tracker_print_time(&tracker);
 
-    tracker_print_time(&tracker);
+    // check that lenient input formatting interprets the timestamp consistently
+    char * inputs[] = {"2000/1/2 3:4:5.006",
+                       "2000/1/2 03:04:05.006123"};
 
-    // set the location
-    char * stamp = tracker_get_stamp( &tracker );
-    printf( "%s\n", stamp );
+    // output formatting is consistent
+    char * output = "2000/01/02 03:04:05.006";
 
-    free(stamp);
-
-//    double time = get_time();
-//    printf( "current time: %lf\n", time );
-//
-////    double s = 0.0;
-////    double f = modf(time, &s);
-//    long s = (long) time;
-//    double f = time - s;
-//    printf( "seconds : %ld\nfraction : %lf\n", s, f );
-//
-//    // get the calendar date
-//    struct tm* utc = gmtime( &s );
-//
-//    // figure out julian hours by adding back in the fractional seconds
-//    double hours = ((double)utc->tm_hour)
-//                   + (double) utc->tm_min / 60.0
-//                   + (utc->tm_sec + f) / 3600.0;
-//
-//    // convert it to a julian date, which is days since noon, Jan 1, 4713 BC
-//    double novas_time = julian_date(
-//            (short) (utc->tm_year + 1900),
-//            (short) (utc->tm_mon + 1),
-//            (short) utc->tm_mday,
-//            hours );
+    // check that the retrieved timestamp is correct for each input
+    for( int n = 0; n<2; n++ ) {
+        int result = tracker_set_stamp( &tracker, inputs[n] );
+        assert( !result );
+        char *copy = tracker_get_stamp( &tracker );
+        assert( strcmp(output, copy) == 0);
+        free(copy);
+    }
 
     fflush(stdout);
+
 }

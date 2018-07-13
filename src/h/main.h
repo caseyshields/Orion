@@ -1,7 +1,3 @@
-//
-// Created by Casey Shields on 6/15/2018.
-//
-
 #ifndef STARTRACK_MAIN_H
 #define STARTRACK_MAIN_H
 
@@ -80,6 +76,10 @@ Sets a new target which the Orion server will direct the TATS sensor at
 Closes the sensor connection, shuts down the Orion server, releases the
  catalogs, and exits the program.
 
+\section tests Test Suite
+ TODO compile all the one-off tests into a test suite
+
+ @author Casey Shields
 */
 
 /** Provides an interactive command line interface to the Orion server. */
