@@ -1,7 +1,7 @@
 #include <sys/time.h>
-#include <mem.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "h/util.h"
 

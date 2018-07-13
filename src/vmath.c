@@ -1,5 +1,4 @@
 #include <math.h>
-#include <mem.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -92,14 +91,14 @@ char* degrees2str(double degrees) {
 
 char* dms2str(int degrees, int minutes, double seconds) {
     char * str = calloc(64, sizeof(char));
-    memset(str, 0, sizeof(str));
+//    memset(str, 0, sizeof(str));
     sprintf(str, "%d°%d'%1.3lf\"\0", degrees, minutes, seconds);
     return str;
 }
 
 char* hms2str(int hours, int minutes, double seconds) {
     char * str = calloc(64, sizeof(char));
-    memset(str, 0, sizeof(str));
+//    memset(str, 0, sizeof(str));
     sprintf(str, "%d:%d:%1.3lf\0", hours, minutes, seconds);
     return str;
 }

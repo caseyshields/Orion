@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <winsock.h>
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdbool.h>
+
+#include <winsock.h>
 
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"

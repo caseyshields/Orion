@@ -3,8 +3,9 @@
 //
 
 #include <malloc.h>
-#include <mem.h>
-#include <h/fk6.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include "h/fk6.h"
 
 int scan_line( FILE* file, const char* header );
@@ -12,8 +13,8 @@ int get_value( const char *line, int start, int end, char *dest);
 
 FK6 * fk6_create() {
     // allocate the structure if necessary
-    FK6 * fk6 = malloc( sizeof(FK6) );
-    memset(fk6, 0, sizeof(FK6));
+    FK6 * fk6 = calloc( 1, sizeof(FK6) );
+    //memset(fk6, 0, sizeof(FK6));
     assert( fk6 );
 
     // allocate the metadata array

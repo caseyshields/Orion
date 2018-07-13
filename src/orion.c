@@ -8,9 +8,14 @@
 #include <sys/types.h>
 #include <pthread.h>
 
+#ifdef WIN32
 #include <winsock.h>
-#include <h/tracker.h>
-#include <h/orion.h>
+#else
+#include <netdb.h>
+//include <netinet/in.h>
+#define INVALID_SOCKET
+#endif
+
 
 #include "novasc3.1/novas.h"
 #include "h/orion.h"
