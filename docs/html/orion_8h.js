@@ -5,7 +5,6 @@ var orion_8h =
     [ "ORION_MODE_ON", "orion_8h.html#afbaa3494dd65d5b21168b7e6d009d582", null ],
     [ "ORION_MODE_REAL_TIME", "orion_8h.html#a53ba95798f706f2e4708dde94249bf1d", null ],
     [ "ORION_RATE", "orion_8h.html#a24d28d68b4eba9d5883b94637883f1b9", null ],
-    [ "SLEEP_RESOLUTION", "orion_8h.html#a6e2572f3cd6bcbb2bfe23ed799d7ea69", null ],
     [ "orion_clear_error", "orion_8h.html#ad8fe7b6e30c13746f481d248572551ce", null ],
     [ "orion_connect", "orion_8h.html#adafd601281e0519b26db46a06046c4f7", null ],
     [ "orion_create", "orion_8h.html#a33f2460264fc3f9e9939fb3f291c4de5", null ],

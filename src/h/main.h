@@ -4,6 +4,8 @@
 /*!
 \mainpage Orion
 
+@author Casey Shields
+
 \section building Building Orion
 
  Orion is built using a CMake script(./CMakeLists.txt) which produces a number of executables;
@@ -57,8 +59,6 @@ Closes the sensor connection, shuts down the Orion server, releases the
 
 \section tests Test Suite
  TODO compile all the one-off tests into a test suite
-
- @author Casey Shields
 */
 
 /** default latitude of sensor in degrees */

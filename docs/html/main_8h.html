@@ -113,10 +113,6 @@ Macros</h2></td></tr>
 <tr class="separator:acb8d9992b7153e8e2e10ff45f6c7839b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674c73b859e77550a8e3b0a3a541a8d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a674c73b859e77550a8e3b0a3a541a8d2">TAI_UTC</a>&#160;&#160;&#160;&quot;37.000000&quot;</td></tr>
 <tr class="separator:a674c73b859e77550a8e3b0a3a541a8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26769957ec1a2beaf223f33b66ee64ab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a26769957ec1a2beaf223f33b66ee64ab">INVALID_SOCKET</a>&#160;&#160;&#160;(unsigned int)(~0)</td></tr>
-<tr class="separator:a26769957ec1a2beaf223f33b66ee64ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a633b0396ff93d336a088412a190a5072"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a633b0396ff93d336a088412a190a5072">SOCKET_ERROR</a>&#160;&#160;&#160;-1</td></tr>
-<tr class="separator:a633b0396ff93d336a088412a190a5072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -128,12 +124,6 @@ Functions</h2></td></tr>
 <tr class="separator:a09ca1e71647a282781bde5ed8eaf2207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab58e603ed5f6f24085346ed8bc0ff8c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#ab58e603ed5f6f24085346ed8bc0ff8c0">search</a> (<a class="el" href="struct_catalog.html">Catalog</a> *catalog, <a class="el" href="struct_tracker.html">Tracker</a> *tracker, double az_min, double az_max, double zd_min, double zd_max, float mag_min)</td></tr>
 <tr class="separator:ab58e603ed5f6f24085346ed8bc0ff8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7ab092ab10d65db3b9051a12420fa52"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#af7ab092ab10d65db3b9051a12420fa52">get_time</a> ()</td></tr>
-<tr class="separator:af7ab092ab10d65db3b9051a12420fa52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64b65215b6290fccb20fcf7d76e09267"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a64b65215b6290fccb20fcf7d76e09267">get_arg</a> (int argc, char *argv[], char *name, char *default_value)</td></tr>
-<tr class="separator:a64b65215b6290fccb20fcf7d76e09267"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28f1ee281e9ac949e9ed5bf8ec41365e"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a28f1ee281e9ac949e9ed5bf8ec41365e">get_input</a> (char *prompt, char **line, size_t *size)</td></tr>
-<tr class="separator:a28f1ee281e9ac949e9ed5bf8ec41365e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aed89bd71aee8be823e8a20ec4e093c1e"></a>
@@ -148,21 +138,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>default geodetic height of sensor in meters </p>
-
-</div>
-</div>
-<a id="a26769957ec1a2beaf223f33b66ee64ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26769957ec1a2beaf223f33b66ee64ab">&#9670;&nbsp;</a></span>INVALID_SOCKET</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define INVALID_SOCKET&#160;&#160;&#160;(unsigned int)(~0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>some winsock constants I use </p>
 
 </div>
 </div>
@@ -208,20 +183,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>default atmospheric pressure at site in millibars </p>
-
-</div>
-</div>
-<a id="a633b0396ff93d336a088412a190a5072"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a633b0396ff93d336a088412a190a5072">&#9670;&nbsp;</a></span>SOCKET_ERROR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SOCKET_ERROR&#160;&#160;&#160;-1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -302,6 +263,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Builds a catalog using the given commandline arguments </p>
 
 </div>
 </div>
@@ -336,97 +298,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a64b65215b6290fccb20fcf7d76e09267"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64b65215b6290fccb20fcf7d76e09267">&#9670;&nbsp;</a></span>get_arg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* get_arg </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>argc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>argv</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>default_value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a28f1ee281e9ac949e9ed5bf8ec41365e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28f1ee281e9ac949e9ed5bf8ec41365e">&#9670;&nbsp;</a></span>get_input()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ssize_t get_input </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>prompt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>line</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af7ab092ab10d65db3b9051a12420fa52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7ab092ab10d65db3b9051a12420fa52">&#9670;&nbsp;</a></span>get_time()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double get_time </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Builds a tracker object using the given commandline arguments. </p>
 
 </div>
 </div>
@@ -514,6 +386,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria. The results are then printed to stdout. </p><dl class="section return"><dt>Returns</dt><dd>The number of stars fitting the criteria </dd></dl>
 
 </div>
 </div>

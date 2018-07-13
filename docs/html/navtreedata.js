@@ -32,6 +32,7 @@ var NAVTREE =
       [ "Track <FK ID>", "index.html#track", null ],
       [ "Exit", "index.html#exit", null ]
     ] ],
+    [ "Test Suite", "index.html#tests", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],

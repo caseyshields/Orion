@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['label',['Label',['../struct_f_k6___field.html#a0be762a3d71ca116f4f508322fe2070e',1,'FK6_Field']]],
-  ['leap_5fsecs',['leap_secs',['../struct_tracker.html#ad762d92dc4fcba312c9d2d11ff3a7e67',1,'Tracker']]],
-  ['lock',['lock',['../struct_orion.html#a0abaf4b5d42c4e5d19190035fade3599',1,'Orion']]]
+  ['magnitude',['magnitude',['../struct_entry.html#a7ad825616c5a39ab6e7f71bb6b320e77',1,'Entry']]],
+  ['midc',['midc',['../struct_m_i_d_c01.html#a4e26ddc4da6da6fea6901c0caee2e7fd',1,'MIDC01']]],
+  ['mode',['mode',['../struct_orion.html#afa9d6911164917fd0b12dbdf0df0ff3a',1,'Orion']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['units',['Units',['../struct_f_k6___field.html#a0d5858a3e50c210b03037826dacca502',1,'FK6_Field']]],
-  ['ut1_5futc',['ut1_utc',['../struct_tracker.html#a9eef053f0153643589ed50d5f193afe7',1,'Tracker']]]
+  ['zenith_5fdistance',['zenith_distance',['../struct_entry.html#a3c2f9054e85abef611e387ff641fe831',1,'Entry']]]
 ];

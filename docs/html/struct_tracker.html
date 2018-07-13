@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('struct_tracker.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a6c9423e9bfc2c6dfcbae6c1276e0bfc0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a6c9423e9bfc2c6dfcbae6c1276e0bfc0">date</a></td></tr>
-<tr class="separator:a6c9423e9bfc2c6dfcbae6c1276e0bfc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39f0c446c468380a7a748a2f061bc724"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a39f0c446c468380a7a748a2f061bc724">utc</a></td></tr>
+<tr class="separator:a39f0c446c468380a7a748a2f061bc724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eef053f0153643589ed50d5f193afe7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a9eef053f0153643589ed50d5f193afe7">ut1_utc</a></td></tr>
 <tr class="separator:a9eef053f0153643589ed50d5f193afe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad762d92dc4fcba312c9d2d11ff3a7e67"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#ad762d92dc4fcba312c9d2d11ff3a7e67">leap_secs</a></td></tr>
@@ -112,21 +112,6 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="struct_tracker.html">Tracker</a> module represents a sensor on the surface of the earth at a specific time, observing a celestial object. It can transform star coordinates between celestial and horizon, using Novas 3.1 to handle orbit, spin, precession, parallax, atmospheric refraction and relativistic aberration, whatever that is. </p><dl class="section author"><dt>Author</dt><dd>Casey Shields </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a6c9423e9bfc2c6dfcbae6c1276e0bfc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c9423e9bfc2c6dfcbae6c1276e0bfc0">&#9670;&nbsp;</a></span>date</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double date</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Julian hours; the number of hours since noon, January 1, 4713 BC- Which Joseph Justice Scaliger estimated to be the beginning of history. </p>
-
-</div>
-</div>
 <a id="ae1beefa1f286be116b00f0e8ad83d002"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1beefa1f286be116b00f0e8ad83d002">&#9670;&nbsp;</a></span>earth</h2>
 
@@ -184,6 +169,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time </p>
+
+</div>
+</div>
+<a id="a39f0c446c468380a7a748a2f061bc724"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39f0c446c468380a7a748a2f061bc724">&#9670;&nbsp;</a></span>utc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> utc</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The current UTC time in Julian Days. </p>
 
 </div>
 </div>

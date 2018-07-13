@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['date2jday',['date2jday',['../jday_8h.html#afe108d38ac4c4b5fec305228eb542acc',1,'jday.h']]],
   ['degrees2dms',['degrees2dms',['../vmath_8h.html#a2479ac70823b8e0264e4981a802f2a06',1,'vmath.h']]],
   ['degrees2hms',['degrees2hms',['../vmath_8h.html#a638b5eadfb02258f9b1bba9494deaa14',1,'vmath.h']]],
   ['degrees2radians',['degrees2radians',['../vmath_8h.html#a7659845680859fe5ba41298103cf10f0',1,'vmath.h']]],

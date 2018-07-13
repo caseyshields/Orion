@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['site',['site',['../struct_tracker.html#afb38e182752f31d6a08f82d960955438',1,'Tracker']]],
-  ['size',['size',['../struct_catalog.html#a854352f53b148adc24983a58a1866d66',1,'Catalog']]],
-  ['socket',['socket',['../struct_orion.html#a13301f1712f628ef6520dfe1f4e4b70d',1,'Orion']]],
-  ['stars',['stars',['../struct_catalog.html#ae9a5d6bc40976d00eef67a78d939d3d3',1,'Catalog']]],
-  ['start',['start',['../struct_f_k6___field.html#a37722a150250e2a5a98e5e0d11e53449',1,'FK6_Field']]],
-  ['symbol_5ftype',['symbol_type',['../struct_m_i_d_c01.html#a10ae4966d28a3e8356b329080e73e037',1,'MIDC01']]]
+  ['target',['target',['../struct_orion.html#a4aa5babb303788c009f95322895c2e6c',1,'Orion']]],
+  ['tcn_5ftime',['tcn_time',['../struct_m_i_d_c01.html#a445d2a2e3e4ac1f29a426d3a1a617bfc',1,'MIDC01']]],
+  ['topocentric_5fazimuth',['topocentric_azimuth',['../struct_entry.html#a3aedc50fa1c1d11c9d2c89c341a0b866',1,'Entry']]],
+  ['track_5fid',['track_id',['../struct_m_i_d_c01.html#ab9a4981dc4f20d168da9ffb2db377584',1,'MIDC01']]],
+  ['track_5fstatus',['track_status',['../struct_m_i_d_c01.html#aa0ab1eef0f6c81401665b11a7e91c9d5',1,'MIDC01']]],
+  ['tracker',['tracker',['../struct_orion.html#a495e6bf1af7804551f312afd3bd7032a',1,'Orion']]]
 ];
