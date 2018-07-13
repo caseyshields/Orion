@@ -1,9 +1,6 @@
 #ifndef STARTRACK_FK6_H
 #define STARTRACK_FK6_H
 
-
-#include <stdbool.h>
-#include <assert.h>
 #include <stdio.h>
 
 #define FK6_1_HEADER "Byte-by-byte Description of file: fk6_1.dat\n"

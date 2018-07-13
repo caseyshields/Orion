@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "h/fk6.h"
 
@@ -35,7 +36,7 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
     // read rows from the file
     int n = 0;
     FK6_Field *field = NULL;
-    while (true) {
+    while (1) {
         size_t size = 0;
         char *line = NULL;
         char start[4] = "\0\0\0", end[4] = "\0\0\0";
@@ -143,7 +144,7 @@ int fk6_get_value( char * line, FK6_Field * field, void * dest ) {
 
 int scan_line(FILE *file, const char *header) {
     int count = 0;
-    while (true) {
+    while (1) {
         char *line = NULL;
         size_t size = 0;
         if (getline(&line, &size, file) == -1)

@@ -1,15 +1,8 @@
-#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "h/util.h"
-
-double get_time() {
-    struct timeval time;
-    gettimeofday( &time, NULL );
-    return time.tv_sec + (time.tv_usec / 1000000.0);
-}
 
 char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
     for( int n=0; n<argc; n++ )

@@ -1,12 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <time.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdbool.h>
-
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"
 #include "h/catalog.h"
@@ -103,7 +94,7 @@ int main( int argc, char *argv[] ) {
                 break;
             }
 
-        } while (true);
+        } while (1);
     }
 
     terminate(0, NULL);

@@ -1,5 +1,3 @@
-#include <sys/time.h>
-
 #include "h/tracker.h"
 #include "h/orion.h"
 #include "h/catalog.h"
@@ -56,7 +54,7 @@ int main( int argc, char *argv[] ) {
             char stamp[32];
             result = sscanf( line, "time %s\n", stamp);
             if( result==0 ) {
-                char * stamp = tracker_get_stamp( &(orion.tracker) );
+                char * stamp = jday2stamp( tracker_get_time(&(orion.tracker)) );
                 printf( "current time %s\n", stamp );
                 continue;
             } else {
@@ -211,7 +209,7 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
     tracker_create(tracker, ut1_utc, leap_secs);
 
     // set the tracker's time in UTC
-    tracker_set_time(tracker, get_time());
+    tracker_set_time(tracker, jday_current());
 
     // geodetic coordinates
     arg = get_arg(argc, argv, "-latitude", LATITUDE);

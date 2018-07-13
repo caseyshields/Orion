@@ -1,11 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <assert.h>
 
-#include "novasc3.1/novas.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
-#include "h/fk6.h"
 
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // If they request a new catalog but don't provide a size hint just guess a default.
@@ -273,7 +269,7 @@ Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
     assert( magnitude );
 
     // read lines from the input
-    while (true) {
+    while (1) {
 
         // check for end of file
         int result = getline(&record, &size, file);

@@ -1,27 +1,6 @@
 #ifndef STARTRACK_MAIN_H
 #define STARTRACK_MAIN_H
 
-/** default latitude of sensor in degrees */
-#define LATITUDE "38.88972222222222"
-
-/** default longitude of sensor in degrees */
-#define LONGITUDE "-77.0075"
-
-/** default geodetic height of sensor in meters */
-#define HEIGHT "125.0"
-
-/** default site temperature in degrees celsius */
-#define TEMPERATURE "10.0"
-
-/** default atmospheric pressure at site in millibars */
-#define PRESSURE "1010.0"
-
-/** (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation */
-#define UT1_UTC "0.06809"
-
-/** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
-#define TAI_UTC "37.000000"
-
 /*!
 \mainpage Orion
 
@@ -81,6 +60,27 @@ Closes the sensor connection, shuts down the Orion server, releases the
 
  @author Casey Shields
 */
+
+/** default latitude of sensor in degrees */
+#define LATITUDE "38.88972222222222"
+
+/** default longitude of sensor in degrees */
+#define LONGITUDE "-77.0075"
+
+/** default geodetic height of sensor in meters */
+#define HEIGHT "125.0"
+
+/** default site temperature in degrees celsius */
+#define TEMPERATURE "10.0"
+
+/** default atmospheric pressure at site in millibars */
+#define PRESSURE "1010.0"
+
+/** (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation */
+#define UT1_UTC "0.06809"
+
+/** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
+#define TAI_UTC "37.000000"
 
 /** Provides an interactive command line interface to the Orion server. */
 int main( int argc, char * argv[] );

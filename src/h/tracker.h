@@ -2,12 +2,10 @@
 #define STARTRACK_TRACKER_H
 
 #include "novasc3.1/novas.h"
+#include "h/jday.h"
 
-#define SECONDS_IN_DAY 86400.0
-#define DELTA_TT 32.184
+/** Novas in reduced accuracy mode can be expected to have 1 arcsecond accuracy when properly configured. */
 #define REDUCED_ACCURACY 1
-#define TIMESTAMP_OUTPUT "%04u/%02u/%02u %02u:%02u:%06.3lf"
-#define TIMESTAMP_INPUT "%u/%u/%u %u:%u:%lf"
 
 /** The Tracker module represents a sensor on the surface of the earth at a specific time, observing
  * a celestial object. It can transform star coordinates between celestial and horizon, using Novas
@@ -16,8 +14,8 @@
  * @author Casey Shields*/
 typedef struct {
 
-    /** Julian days; the number of days since noon, January 1, 4713 BC- Which Joseph Justice Scaliger estimated to be the beginning of history. */
-    double jd_utc;
+    /** The current UTC time in Julian Days. */
+    jday utc;
 
     /** Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time */
     double ut1_utc;
@@ -39,6 +37,13 @@ typedef struct {
  * @param leap_secs Current number of leap seconds in TAI, usually obtained from IERS bulletin A
  * @return a pointer to the initialized or allocated structure */
 int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs);
+
+/** return The tracker's current UTC time in Julian day format */
+jday tracker_get_time(Tracker *tracker);
+
+/** Sets the current time for the star tracker
+ * @param utc The desired tracker's UTC time in julian day format */
+void tracker_set_time(Tracker *tracker, jday utc);
 
 /** Sets the location of the tracker on earth geoid.
  * @param tracker object whose coordinates are set
@@ -70,27 +75,8 @@ int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_dista
  * @returns Zero on success, otherwise a Novas error code. */
 int tracker_zenith(Tracker *tracker, double *right_ascension, double *declination);
 
-// todo should take a stream
-void tracker_print_time(const Tracker *tracker);
+void tracker_print_time(const Tracker *tracker, FILE * file);
 
-void tracker_print_site(const Tracker *tracker);
-
-//TODO For time there are quite a few scales, epochs, offsets and representations; I might need to break this out into it's own module...
-
-/** Sets the current time for the star tracker
- * @param utc_unix_seconds Seconds since the unix epoch(January 1, 1970) in Universal Coordinated Time */
-void tracker_set_time(Tracker *tracker, double utc_unix_seconds); // set UTC
-
-void tracker_get_date(const Tracker * tracker,
-                      short int * year, short int * month, short int * day,
-                      short int * hour, short int * minute, double * seconds );
-
-void tracker_set_date(Tracker * tracker,
-                      int year, int month, int day, int hour, int minute, double seconds );
-
-char * tracker_get_stamp(const Tracker * tracker);
-
-int tracker_set_stamp(Tracker * tracker, char * stamp);
-
+void tracker_print_site(const Tracker *tracker, FILE * file);
 
 #endif //STARTRACK_TRACKER_H

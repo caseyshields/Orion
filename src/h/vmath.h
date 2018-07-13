@@ -1,8 +1,6 @@
 #ifndef STARTRACK_VMATH_H
 #define STARTRACK_VMATH_H
 
-#include <math.h>
-
 void scale( double U[3], double k );
 
 double dot( double U[3], double V[3] );

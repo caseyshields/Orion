@@ -1,17 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
-#include <time.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdbool.h>
 
-#include "novasc3.1/novas.h"
 #include "h/tracker.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
-#include "h/fk6.h"
 #include "h/util.h"
 
 // todo now that I have the interactive command line figured out, this should be turned into a battery of unit tests- or whatever is available in C
@@ -83,13 +74,13 @@ int xmain( int argc, char *argv[] ) {
     tracker_create(&tracker, ut1_utc, leap_secs);
 
     // set the tracker's time in UTC
-    tracker_set_time(&tracker, get_time());
-    tracker_print_time(&tracker);
+    tracker_set_time(&tracker, jday_current());
+    tracker_print_time(&tracker, stdout);
 
     // set the location
     tracker_set_location(&tracker, latitude, longitude, height);
     tracker_set_weather(&tracker, celsius, millibars);
-    tracker_print_site(&tracker);
+    tracker_print_site(&tracker, stdout);
 
     Catalog * catalog = catalog_create( NULL, 1024 );
     FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
@@ -114,11 +105,11 @@ int xmain( int argc, char *argv[] ) {
     char *line = NULL;
     size_t size = 0 ;
     ssize_t read = 0;
-    while(true) {
+    while(1) {
 
         // update the current time and print a prompt
-        tracker_set_time(&tracker, get_time());
-        printf( "orion[%s]", tracker_get_stamp(&tracker) );
+        tracker_set_time(&tracker, jday_current());
+        printf( "orion[%s]", jday2stamp(tracker.utc) );
         read = get_input( "", &line, &size );
 
         // select a specific star by number
@@ -230,7 +221,7 @@ int xmain( int argc, char *argv[] ) {
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */
 void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // start the timer
-    double start = get_time();
+    double start = jday_current();
     int size = catalog->size;
 
     // track every star in the FK6 catalog
@@ -243,8 +234,8 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     }
 
     // get the time
-    double end = get_time();
-    double duration = end - start;
+    double end = jday_current();
+    double duration = (end - start)*SECONDS_IN_DAY;
 
     // print the catalog with corresponding tracks
     for( int n=0; n<catalog->size; n++ ) {
@@ -324,14 +315,6 @@ void test_BSC5() {
 }
 
 void test_time() {
-    // create the tracker
-    Tracker tracker;
-    tracker_create(&tracker, 0.108644, 37.000000);
-    tracker_set_location(&tracker, 38.88972222222222, -77.0075, 125.0);
-    tracker_set_weather(&tracker, 10.0, 1010.0);
-    tracker_set_time(&tracker, get_time());
-//    tracker_print_time(&tracker);
-
     // check that lenient input formatting interprets the timestamp consistently
     char * inputs[] = {"2000/1/2 3:4:5.006",
                        "2000/1/2 03:04:05.006123"};
@@ -341,9 +324,9 @@ void test_time() {
 
     // check that the retrieved timestamp is correct for each input
     for( int n = 0; n<2; n++ ) {
-        int result = tracker_set_stamp( &tracker, inputs[n] );
-        assert( !result );
-        char *copy = tracker_get_stamp( &tracker );
+        jday time = stamp2jday(inputs[n]);
+        assert( jday_is_valid(time) );
+        char *copy = jday2stamp(time);
         assert( strcmp(output, copy) == 0);
         free(copy);
     }
