@@ -7,7 +7,17 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+#ifdef WIN32
 #include <winsock.h>
+#else
+#include <netdb.h>
+#include <memory.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#define INVALID_SOCKET (unsigned int)(~0)
+#define SOCKET_ERROR -1
+#endif
 
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"
