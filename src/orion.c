@@ -3,16 +3,16 @@
 #include <unistd.h>
 #include <assert.h>
 #include <stdbool.h>
-
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
-
 #include <pthread.h>
+
 #include <winsock.h>
+#include <h/tracker.h>
+#include <h/orion.h>
 
 #include "novasc3.1/novas.h"
-
 #include "h/orion.h"
 #include "h/vmath.h"
 #include "h/tracker.h"
@@ -101,6 +101,9 @@ void * orion_control_loop( void * arg ) {
     assert( orion->mode == ORION_MODE_ON );
     assert( orion->socket != INVALID_SOCKET );
 
+    // set the current time
+    double last_time = orion_mark_time(orion);
+
     // loop indefinitely
     do {
         // obtain lock
@@ -110,9 +113,9 @@ void * orion_control_loop( void * arg ) {
         if (orion->mode == ORION_MODE_OFF)
             break;
 
-        // update the current time
-        double last_time = orion_mark_time(orion);
-        // todo We should have a mode that allows setting a historical time
+        // update the current time if we are in real time mode
+        else if (orion->mode == ORION_MODE_REAL_TIME)
+            last_time = orion_mark_time(orion);
 
         // create a tracking message if we have a target
         if (orion->target.starnumber) {
@@ -258,6 +261,23 @@ void orion_disconnect( Orion * orion ) {
     // posix version
     close( orion->socket );
 #endif
+}
+
+void orion_date( Orion * orion, int year, int month, int day, int hour, int min, double second ) {
+    double time =
+}
+
+void orion_set_time( Orion * orion, double time ) {
+    // obtain the lock
+    pthread_mutex_lock( &(orion->lock) );
+
+    // if the server is in real time mode, set it to static
+    if ( orion->mode == ORION_MODE_REAL_TIME )
+        orion->mode = ORION_MODE_ON;
+
+    // set the time and release the lock
+    tracker_set_time( &(orion->tracker), time );
+    pthread_mutex_unlock( &(orion->lock) );
 }
 
 double orion_time( Orion * orion ) {

@@ -1,10 +1,8 @@
-//
-// Created by Casey Shields on 5/3/2018.
-//
 #include <math.h>
 #include <mem.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "h/vmath.h"
 
 void scale( double U[3], double k ) {
@@ -23,12 +21,10 @@ void cross( double U[3], double V[3], double W[3] ) {
     W[2] = U[0]*V[1] - U[1]*V[0];
 }
 
-/** returns the cartesian length of the vector */
 double magnitude( double U[3] ) {
     return sqrt( U[0]*U[0] + U[1]*U[1] + U[2]*U[2] );
 }
 
-/** normalizes the given vector and returns the magnitude. */
 double normalize( double U[3] ) {
     double m = magnitude(U);
     scale( U, 1.0/m );
@@ -108,7 +104,6 @@ char* hms2str(int hours, int minutes, double seconds) {
     return str;
 }
 
-/** Determines the angle between two vectors which lie on the surface of the sphere, by taking the arcsin of the resulting chord. */
 double angular_separation( double theta_1, double phi_1, double theta_2, double phi_2 ) {
     double dX = cos(phi_2) * cos(theta_2) - cos(phi_1) * cos(theta_1);
     double dY = cos(phi_2) * sin(theta_2) - cos(phi_1) * sin(theta_1);
@@ -118,7 +113,6 @@ double angular_separation( double theta_1, double phi_1, double theta_2, double 
     return dA;
 }
 
-/** Determines the great-circle distance between two points on a sphere. arctan( ||VxU|| / V*U ) */
 double orthodromic_distance( double theta_1, double phi_1, double theta_2, double phi_2 ) {
     double U[3] = {0,0,0};
     spherical2cartesian( theta_1, phi_1, U );

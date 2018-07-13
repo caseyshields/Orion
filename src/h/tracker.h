@@ -91,4 +91,8 @@ void tracker_print_time(Tracker *tracker);
 
 void tracker_print_site(Tracker *tracker);
 
+char * tracker_get_stamp(Tracker * tracker);
+
+void tracker_get_date(Tracker * tracker, short int * year, short int * month, short int * day, double * hour);
+
 #endif //STARTRACK_TRACKER_H

@@ -1,7 +1,3 @@
-//
-// Created by Casey Shields on 6/6/2018.
-//
-
 #ifndef STARTRACK_ORION_H
 #define STARTRACK_ORION_H
 
@@ -27,6 +23,7 @@
 /** The Orion server connects to a TATS sensor over TCP and aims it at a selected celestial target.
  * This incarnation runs the control loop in a thread, using a mutex to synchronise access to the
  * server controls.
+ * @author Casey Shields
  */
 typedef struct {
 

@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdbool.h>
+
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"
 #include "h/catalog.h"
@@ -34,9 +35,14 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 void test_conversions();
 void test_FK6();
 void test_BSC5();
+void test_time();
+
+int main( int argc, char * argv[] ) {
+    test_time();
+}
 
 /** a simple CLI interface for exercising various orion components. */
-int main( int argc, char *argv[] ) {
+int xmain( int argc, char *argv[] ) {
     double latitude, longitude, height;
     double celsius, millibars;
     double ut1_utc, leap_secs;
@@ -318,6 +324,45 @@ void test_BSC5() {
     fk6_free( bsc5 );
 }
 
-void search_dome() {
+void test_time() {
+    // create the tracker
+    Tracker tracker;
+    tracker_create(&tracker, 0.108644, 37.000000);
+    tracker_set_location(&tracker, 38.88972222222222, -77.0075, 125.0);
+    tracker_set_weather(&tracker, 10.0, 1010.0);
+    tracker_set_time(&tracker, get_time());
 
+    tracker_print_time(&tracker);
+
+    // set the location
+    char * stamp = tracker_get_stamp( &tracker );
+    printf( "%s\n", stamp );
+
+    free(stamp);
+
+//    double time = get_time();
+//    printf( "current time: %lf\n", time );
+//
+////    double s = 0.0;
+////    double f = modf(time, &s);
+//    long s = (long) time;
+//    double f = time - s;
+//    printf( "seconds : %ld\nfraction : %lf\n", s, f );
+//
+//    // get the calendar date
+//    struct tm* utc = gmtime( &s );
+//
+//    // figure out julian hours by adding back in the fractional seconds
+//    double hours = ((double)utc->tm_hour)
+//                   + (double) utc->tm_min / 60.0
+//                   + (utc->tm_sec + f) / 3600.0;
+//
+//    // convert it to a julian date, which is days since noon, Jan 1, 4713 BC
+//    double novas_time = julian_date(
+//            (short) (utc->tm_year + 1900),
+//            (short) (utc->tm_mon + 1),
+//            (short) utc->tm_mday,
+//            hours );
+
+    fflush(stdout);
 }

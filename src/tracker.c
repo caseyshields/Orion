@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <time.h>
+#include <h/tracker.h>
 
 #include "h/tracker.h"
 #include "novasc3.1/novas.h"
@@ -38,6 +39,21 @@ void tracker_set_time(Tracker *tracker, double utc_unix_seconds) {
             (short) (utc->tm_mon + 1),
             (short) utc->tm_mday,
             hours );
+}
+
+void tracker_get_date(Tracker * tracker, short int * year, short int * month, short int * day, double * hour) {
+    cal_date( tracker->date, year, month, day, hour);
+}
+
+char * tracker_get_stamp(Tracker * tracker) {
+    short int year, month, day;
+    double hour, minute, f;
+    cal_date( tracker->date, &year, &month, &day, &f);
+    f = modf(f, &hour) * 60;
+    f = modf(f, &minute) * 60;
+    char * stamp = calloc( 32, sizeof(char));
+    sprintf(stamp, "%d/%d/%d %d:%d:%1.3f", year, month, day, (int)hour, (int)minute, f );
+    return stamp;
 }
 
 double tracker_get_TT(Tracker *tracker) {

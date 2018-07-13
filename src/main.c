@@ -48,6 +48,22 @@ int main( int argc, char *argv[] ) {
         size_t size = 0 ;
         ssize_t read = get_input( "", &line, &size );
 
+        // set current time ///////////////////////////////////////////////////
+        if( strncmp("time ", line, 5)==0 ) {
+            int year, month, day, hour, minute;
+            double seconds;
+
+            char stamp[32];
+            result = sscanf( line, "time %s\n", stamp);
+            if( result==0 ) {
+                char * stamp = tracker_get_stamp( &(orion.tracker) );
+                printf( "current time %s\n", stamp );
+                continue;
+            } else {
+
+            }
+        }
+
         // search name ////////////////////////////////////////////////////////
         if( strncmp( "name ", line, 5)==0 ) {
             char name[32];
