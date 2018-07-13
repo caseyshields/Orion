@@ -8,19 +8,11 @@
 #include <sys/types.h>
 #include <pthread.h>
 
-#ifdef WIN32
-#include <winsock.h>
-#else
-#include <netdb.h>
-//include <netinet/in.h>
-#define INVALID_SOCKET
-#endif
-
-
 #include "novasc3.1/novas.h"
 #include "h/orion.h"
 #include "h/vmath.h"
 #include "h/tracker.h"
+#include "h/sockets.h"
 
 Orion* orion_create( Orion * orion ) {
     if (!orion)
@@ -197,7 +189,7 @@ int orion_start( Orion * orion ) {
     pthread_create( &(orion->control), NULL, orion_control_loop, orion);
     pthread_mutex_unlock( &(orion->lock) );
     return 0;
-}
+} // helpful tutorial: https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
 void orion_track( Orion * orion, cat_entry target ) {
     // can this be called regardless if the server is on or not?
@@ -269,7 +261,7 @@ void orion_disconnect( Orion * orion ) {
 }
 
 void orion_date( Orion * orion, int year, int month, int day, int hour, int min, double second ) {
-    double time =
+    //tracker_set_time();
 }
 
 void orion_set_time( Orion * orion, double time ) {

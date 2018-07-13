@@ -7,24 +7,12 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-#ifdef WIN32
-#include <winsock.h>
-#else
-#include <netdb.h>
-#include <memory.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#define INVALID_SOCKET (unsigned int)(~0)
-#define SOCKET_ERROR -1
-#endif
-
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"
 #include "h/catalog.h"
 #include "h/vmath.h"
 #include "h/util.h"
-//https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
+#include "h/sockets.h"
 
 // we only allow one controller and one sensor
 #define MAX_CONNECTIONS 2

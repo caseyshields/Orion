@@ -26,12 +26,6 @@
 /** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
 
-#ifndef WIN32
-/** some winsock constants I use */
-#define INVALID_SOCKET (unsigned int)(~0)
-#define SOCKET_ERROR -1
-#endif
-
 /*!
 \mainpage Orion
 

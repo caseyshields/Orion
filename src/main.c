@@ -1,11 +1,11 @@
 #include <sys/time.h>
-#include <winsock.h>
-#include <h/catalog.h>
+
 #include "h/tracker.h"
 #include "h/orion.h"
 #include "h/catalog.h"
 #include "h/main.h"
 #include "h/util.h"
+#include "h/sockets.h"
 
 int main( int argc, char *argv[] ) {
     // create and configure the Orion server

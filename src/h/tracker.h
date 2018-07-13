@@ -1,7 +1,7 @@
 #ifndef STARTRACK_TRACKER_H
 #define STARTRACK_TRACKER_H
 
-#include "novas.h"
+#include "novasc3.1/novas.h"
 
 #define SECONDS_IN_DAY 86400.0
 #define DELTA_TT 32.184

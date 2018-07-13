@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include "h/catalog.h"
 #include "h/tracker.h"
+#include "h/sockets.h"
 
 #define ORION_MODE_OFF 0
 
@@ -13,12 +14,6 @@
 
 #define ORION_RATE 1
 //todo eventually put it to 50 hertz...
-
-#ifdef WIN32
-#define SLEEP_RESOLUTION 1000
-#else
-#define SLEEP_RESOLUTION 1
-#endif
 
 /** The Orion server connects to a TATS sensor over TCP and aims it at a selected celestial target.
  * This incarnation runs the control loop in a thread, using a mutex to synchronise access to the

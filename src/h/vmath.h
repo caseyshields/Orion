@@ -2,7 +2,6 @@
 #define STARTRACK_VMATH_H
 
 #include <math.h>
-#include "vmath.h"
 
 void scale( double U[3], double k );
 

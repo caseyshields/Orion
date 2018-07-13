@@ -1,11 +1,6 @@
-//
-// Created by Casey Shields on 4/27/2018.
-//
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-#include <h/catalog.h>
 
 #include "novasc3.1/novas.h"
 #include "h/catalog.h"
