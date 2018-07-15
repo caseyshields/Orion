@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "h/fk6.h"
+#include "h/util.h"
 
 int scan_line( FILE* file, const char* header );
 int get_value( const char *line, int start, int end, char *dest);
@@ -141,49 +142,6 @@ int fk6_get_value( char * line, FK6_Field * field, void * dest ) {
     return count;
 }
 
-
-int scan_line(FILE *file, const char *header) {
-    int count = 0;
-    while (1) {
-        char *line = NULL;
-        size_t size = 0;
-        if (getline(&line, &size, file) == -1)
-            return -count;
-        if (strcmp(line, header) == 0)
-            return count;
-        count++;
-        free(line);
-    }
-}
-
-/* Trim the substring and copy it to a newly allocated string, return the size of the resulting
- * string. The indexing conventions match the FK6 Readme idiom, that is; 1 indexed, inclusive.
- * @param start */
-int get_value(const char *line, int start, int end, char *dest) {
-    // trim leading whitspace
-    while (start < end)
-        if (line[start] == ' ' || line[start] == '\n')
-            start++;
-        else break;
-
-    // trim trailing whitespace
-    while (start < end)
-        if (line[end-1] == ' ' || line[end-1] == '\n')
-            end--;
-        else break;
-
-    // copy characters over
-    int len = end - start;
-    for (int n = 0; n < len; n++)
-        dest[n] = line[n + start];
-
-    // terminate the c-style string
-    dest[len] = '\0';
-
-    // return the number of characters copied
-    return len;
-}
-
 void fk6_print_field( FK6_Field * f, FILE * file ) {
     fprintf(file, "%s (%s, %s, %d-%d) : %s\n",
             f->Label, f->Units, f->Format, f->start, f->end, f->Explanations);
@@ -194,41 +152,3 @@ void fk6_free( FK6 * fk6 ) {
     // free metadata
     free(fk6->fields);
 }
-//int fk6_load_entries( FK6 * fk6, FILE * file ) {
-//    int count = 0;
-//    size_t size = 0;
-//    char * data = NULL;
-//
-//    // read lines from the input
-//    while (true) {
-//
-//        // check for end of file
-//        int result = getline(&data, &size, file);
-//        if( result == -1 )
-//            break;
-//
-//        char test[1000000];//, strlen(line)+1, sizeof(char) );
-//
-//        // read each field
-//        for( int c=0; c<fk6->cols; c++ ) {
-//            FK6_Field * field = &(fk6->fields[c]);
-//
-//            char val[1000000];//field->end - field->start + 1];
-//            get_value(data, field->start - 1, field->end, val);
-//
-//            // just print a debug string for now
-//            strcat(test, val);
-//            strcat(test, ", ");
-//            val[0] = '\0';//free(val);
-//        }
-//
-//        if(count++==3270)
-//            printf("wtf\n");
-//        strcat(test, "\n");
-//        printf(test);
-//        test[0]='\0';
-////        free(test);
-//    }
-//    return 0;
-//}
-

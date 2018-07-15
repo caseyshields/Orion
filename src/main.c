@@ -34,7 +34,7 @@ int main( int argc, char *argv[] ) {
         goto DISCONNECT;
 
     // start the main ui loop
-    while( TRUE ) {
+    while( 1 ) {
 
 //        // update and print out the time
 //        tracker_set_time( &tracker, get_time() );

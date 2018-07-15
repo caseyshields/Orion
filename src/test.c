@@ -28,12 +28,8 @@ void test_FK6();
 void test_BSC5();
 void test_time();
 
-int main( int argc, char * argv[] ) {
-    test_time();
-}
-
 /** a simple CLI interface for exercising various orion components. */
-int xmain( int argc, char *argv[] ) {
+int main( int argc, char *argv[] ) {
     double latitude, longitude, height;
     double celsius, millibars;
     double ut1_utc, leap_secs;
@@ -83,17 +79,19 @@ int xmain( int argc, char *argv[] ) {
     tracker_print_site(&tracker, stdout);
 
     Catalog * catalog = catalog_create( NULL, 1024 );
-    FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
 
     // load the first part of FK6
+    FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
     FK6 * fk6_1 = fk6_create();
     fk6_load_fields(fk6_1, readme, FK6_1_HEADER);
     FILE * data1 = fopen( "../data/fk6/fk6_1.dat", "r" );
     catalog_load_fk6(catalog, fk6_1, data1);
     fk6_free( fk6_1 );
     fclose( data1 );
+    fclose( readme );
 
     // load the third part
+    readme = fopen( "../data/fk6/ReadMe", "r" );
     FK6 * fk6_3 = fk6_create();
     fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
     FILE * data3 = fopen( "../data/fk6/fk6_3.dat", "r" );
