@@ -33,6 +33,7 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
     // read rows from the file
     int n = 0;
     FK6_Field *field = NULL;
+    int separator_length = strlen( SEPARATOR );
     while (1) {
         size_t size = 0;
         char *line = NULL;
@@ -41,7 +42,7 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
         // check for end of file and end of record
         if (getline(&line, &size, readme) == -1)
             return 1;
-        else if (strcmp(line, SEPARATOR) == 0)
+        else if (strncmp(line, SEPARATOR, separator_length) == 0)
             break;
 
         // if the second column is blank the row is an addendum to the explanation
