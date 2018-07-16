@@ -79,26 +79,32 @@ int main( int argc, char *argv[] ) {
     tracker_print_site(&tracker, stdout);
 
     Catalog * catalog = catalog_create( NULL, 1024 );
+    Catalog * results = catalog_create( NULL, 64 );
 
-    // load the first part of FK6
-    FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
+    // load metadata from readme
+    FILE * readme = fopen("../data/fk6/ReadMe", "r");
+    assert(NULL != readme);
     FK6 * fk6_1 = fk6_create();
-    fk6_load_fields(fk6_1, readme, FK6_1_HEADER);
-    FILE * data1 = fopen( "../data/fk6/fk6_1.dat", "r" );
-    catalog_load_fk6(catalog, fk6_1, data1);
-    fk6_free( fk6_1 );
-    fclose( data1 );
-    fclose( readme );
-
-    // load the third part
-    readme = fopen( "../data/fk6/ReadMe", "r" );
+    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
     FK6 * fk6_3 = fk6_create();
-    fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
-    FILE * data3 = fopen( "../data/fk6/fk6_3.dat", "r" );
+    fk6_load_fields( fk6_3, readme, FK6_3_HEADER );
+    fclose(readme);
+
+    // load first part of FK6
+    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
+    assert(NULL != data1);
+    catalog_load_fk6( catalog, fk6_1, data1 );
+    fclose( data1 );
+    fk6_free( fk6_1 );
+    free( fk6_1 );
+
+    // load third part of FK6
+    FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
+    assert(NULL != data3);
     catalog_load_fk6(catalog, fk6_3, data3);
-    fk6_free( fk6_3 );
     fclose( data3 );
-    fclose( readme );
+    fk6_free( fk6_3 );
+    free( fk6_3 );
 
     char *line = NULL;
     size_t size = 0 ;
@@ -110,38 +116,12 @@ int main( int argc, char *argv[] ) {
         printf("orion[%s]", jday2stamp(tracker.utc));
         read = get_input("", &line, &size);
 
-        // select a specific star by number
-        if (strncmp("id", line, 2)==0) {
-//            // filter by ID
-//            int catalog_id = atoi(line);
-//            int check_id( Entry *entry ) {
-//                return entry->starnumber == catalog_id ? 1 : 0;
-//            }
-//            Catalog* results = catalog_filter(catalog, &check_id, NULL);
-
-        // this is not standard C, but a GNU C extension.
-        // would have been nice...
-//            // filter by name
-//            int check_name( Entry *entry ) {
-//                return NULL != strstr(entry->novas.starname, line );
-//            }
-//            Catalog* results = catalog_filter(catalog, &check_name, NULL);
-
-//            // transform each star to local coordinates
-//            void process( Entry *entry ) {
-//                double zd=0, az=0;
-//                tracker_to_horizon(&tracker, &(entry->novas), &zd, &az);
-//                entry_print( entry );
-//                printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
-//            }
-//            catalog_each( results, process );
-        }
-
-        else if( strncmp( "name", line, 4 ) == 0 ) {
+        // select stars whose name contains a given substring
+        if( strncmp( "name", line, 4 ) == 0 ) {
             get_input("containing", &line, &size);
-            Catalog * results = catalog_search_name(catalog, line, NULL);
+            catalog_search_name(catalog, line, results);
             catalog_print(results);
-            catalog_free(results);
+            catalog_clear(results);
         }
 
         // search within a lesser circle of the catalog
@@ -155,10 +135,10 @@ int main( int argc, char *argv[] ) {
             get_input( "radius degrees", &line, &size );
             double rad = atof( line );//degrees2radians( atof( line ) );
 
-            Catalog* results = catalog_search_dome(catalog, ra, dec, rad, NULL);
+            catalog_search_dome(catalog, ra, dec, rad, results);
             catalog_print(results);
             printf( "\n%d stars found.\n", results->size );
-            catalog_free(results);
+            catalog_clear( results );
         }
 
         // search within a lesser circle of the catalog
@@ -175,10 +155,10 @@ int main( int argc, char *argv[] ) {
             get_input( "maximum declination degrees", &line, &size );
             double dec_max = atof( line );
 
-            Catalog* results = catalog_search_patch(catalog, ra_min, ra_max, dec_min, dec_max, NULL);
-            catalog_print(results);
+            catalog_search_patch(catalog, ra_min, ra_max, dec_min, dec_max, results);
+            catalog_print( results );
             printf( "\n%d stars found.\n", results->size );
-            catalog_free(results);
+            catalog_clear( results );
         }
 
         // figure out spherical celestial coordinates of the local zenith
@@ -189,32 +169,37 @@ int main( int argc, char *argv[] ) {
         }
 
         // print the entire catalog contents
-        else if( strncmp( "print", line, 5 )==0 ) {
-            catalog_print(catalog);
-        }
+        else if( strncmp( "print", line, 5 )==0 )
+            catalog_print( catalog );
 
         // run the benchmark
-        else if( strncmp( "bench", line, 5 )==0 ) {
+        else if( strncmp( "bench", line, 5 )==0 )
             benchmark( catalog, &tracker, 100 );
-        }
 
-        else if(strncmp( "convert", line, 7)==0 ) {
+        else if( strncmp( "convert", line, 7)==0 )
             test_conversions();
-        }
 
-        else if( strncmp("fk6", line, 3)==0) {
+        else if( strncmp("fk6", line, 3)==0 )
             test_FK6();
-        }
 
-        else if( strncmp("jday", line, 4)==0) {
+        else if( strncmp("jday", line, 4)==0 )
             test_time();
-        }
 
         // clean up the program components and exit the program
         else if( strncmp( "exit", line, 4 )==0 ) {
-            catalog_free_entries(catalog);
-            catalog_free(catalog);
+
+            catalog_clear( results );
+            catalog_free( results );
+            free( results );
+            results = 0;
+
+            catalog_free( catalog );
+            free( catalog );
+            catalog = 0;
+
             free( line );
+            line = 0;
+
             exit(0);
         }
 
@@ -269,56 +254,65 @@ void test_conversions() {
 }
 
 void test_FK6() {
+    Catalog * catalog = catalog_create( 0, 1024 );
+
+    // load metadata from readme
     FILE * readme = fopen("../data/fk6/ReadMe", "r");
     assert(NULL != readme);
-
-    // load first part
     FK6 * fk6_1 = fk6_create();
     fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
-
-    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
-    assert(NULL != data1);
-    Catalog * catalog1 = catalog_load_fk6(NULL, fk6_1, data1);
-    fclose( data1 );
-    catalog_print( catalog1 );
-
-    // load third part
     FK6 * fk6_3 = fk6_create();
     fk6_load_fields( fk6_3, readme, FK6_3_HEADER );
+    fclose(readme);
 
+    // load first part of FK6
+    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
+    assert(NULL != data1);
+    catalog_load_fk6( catalog, fk6_1, data1 );
+    fclose( data1 );
+    fk6_free( fk6_1 );
+    free( fk6_1 );
+
+    // load third part of FK6
     FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
     assert(NULL != data3);
-    Catalog * catalog3 = catalog_load_fk6(NULL, fk6_3, data3);
+    catalog_load_fk6(catalog, fk6_3, data3);
     fclose( data3 );
-    catalog_print( catalog3 );
-
-    fclose( readme );
-    fk6_free( fk6_1 );
     fk6_free( fk6_3 );
+    free( fk6_3 );
+
+    catalog_print( catalog );
+
+    catalog_free( catalog );
+    free( catalog );
+    catalog = 0;
 }
 
 // try using the metadata loader to load the yale
 void test_BSC5() {
-
     // TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
     // it could probably be made to work by splitting on whitespace.
+    Catalog * catalog = catalog_create( 0, 1024 );
 
     FILE * readme = fopen("../data/bsc5/ReadMe", "r");
     assert(NULL != readme);
 
-    // load first part
     char* header = "Byte-by-byte Description of file: catalog\n";
     FK6 * bsc5 = fk6_create();
     fk6_load_fields( bsc5, readme, header );//FK6_1_HEADER );
+    fclose( readme );
 
     FILE * data = fopen("../data/bsc5/catalog", "r");
     assert(NULL != data);
-    Catalog * catalog = catalog_load_fk6(NULL, bsc5, data);
+    catalog_load_fk6(catalog, bsc5, data);
     fclose( data );
+    fk6_free( bsc5 );
+    free( bsc5 );
+
     catalog_print( catalog );
 
-    fclose( readme );
-    fk6_free( bsc5 );
+    catalog_free( catalog );
+    free( catalog );
 }
 
 void test_time() {
@@ -341,3 +335,20 @@ void test_time() {
     fflush(stdout);
 
 }
+
+// this is not standard C, but a GNU C extension.
+// would have been nice...
+//            // filter by name
+//            int check_name( Entry *entry ) {
+//                return NULL != strstr(entry->novas.starname, line );
+//            }
+//            Catalog* results = catalog_filter(catalog, &check_name, NULL);
+
+//            // transform each star to local coordinates
+//            void process( Entry *entry ) {
+//                double zd=0, az=0;
+//                tracker_to_horizon(&tracker, &(entry->novas), &zd, &az);
+//                entry_print( entry );
+//                printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
+//            }
+//            catalog_each( results, process );

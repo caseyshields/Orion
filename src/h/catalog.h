@@ -118,10 +118,11 @@ typedef void (*EntryComparison)(Entry*, Entry*);
 //void catalog_sort( Catalog* c, int (*comparison)(Entry*, Entry*) );
 //todo implement a sort function for ranking results
 
-/** Releases the Entries underlying the Catalog. */
-void catalog_free_entries( Catalog *c );
+/** Clears all entries from the Catalog, without affecting the underlying Entries.
+ * @param c The catalog to empty.*/
+void catalog_clear( Catalog *c );
 
-/** Releases the Catalog and it's directory, but not the actual Entries. */
+/** Releases the Catalog and it's directory, but not the actual Entries.*/
 void catalog_free( Catalog *c );
 
 // todo we might want to flesh out the model to include the current pointing direction of the tracker, which we can obtain through TATS sources...

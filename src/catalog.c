@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <h/catalog.h>
 
 #include "h/catalog.h"
 #include "h/vmath.h"
@@ -50,10 +51,15 @@ void catalog_add( Catalog *catalog, Entry *entry ) {
     catalog->stars[ catalog->size++ ] = entry;
 }
 
+Entry * catalog_get( Catalog * catalog, int index ) {
+    assert( catalog && index>0 && index<catalog->size);
+    return catalog->stars[index];
+}
+
 Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r, Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
-        results = catalog_create( NULL, catalog->size / 4 );
+        results = catalog_create( NULL, 0 );
 
 //    // find a direction vector for the axis of the search cone
 //    double A[3], S[3];
@@ -96,7 +102,7 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
 Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results ) {
     // create a catalog to hold the results if the user did not supply one
     if( !results )
-        results = catalog_create( NULL, 64 );
+        results = catalog_create( NULL, 0 );
 
     // for every catalog entry
     for( int n=0; n<catalog->size; n++ ) {
@@ -114,7 +120,7 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
                               Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
-        results = catalog_create( NULL, catalog->size / 4 );
+        results = catalog_create( NULL, 0 );
 
     // if the entry's unit vectors is within or on the patch, add it to the results
     for( int n=0; n<catalog->size; n++ ) {
@@ -133,7 +139,7 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
 Catalog* catalog_filter( Catalog *catalog, int (*predicate)(Entry *), Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
-        results = catalog_create( NULL, catalog->size / 4 );
+        results = catalog_create( NULL, 0 );
 
     for( int n=0; n<catalog->size; n++ )
         if( (*predicate)(catalog->stars[n]) )
@@ -149,13 +155,32 @@ Entry * catalog_select( Catalog * catalog, unsigned long fkid ) {
     return NULL;
 }
 
-void catalog_free( Catalog *catalog ) {
-    free( catalog->stars );
-    free( catalog );
+void catalog_clear( Catalog *catalog ) {
+    assert(catalog && catalog->stars);
+
+    memset(catalog->stars, 0, catalog->size * sizeof(Entry*) );
+    catalog->size = 0;
 }
 
-void catalog_free_entries( Catalog *catalog ) {
-    catalog_each( catalog, (EntryFunction)free );
+/** Frees all Catalog Entries, then frees the Catalog's list. */
+void catalog_free( Catalog * catalog ) {
+    assert( catalog && catalog->stars );
+
+    // free every allocated catalog entry
+    for( int n=0; n<catalog->size; n++ ) {
+        Entry * entry = catalog->stars[n];
+        free( entry );
+        catalog->stars[n] = 0;
+    }
+    // catalog_each(catalog, (EntryFunction) free); // I'm suspicious how memory safe this is
+
+    // then free the catalog's array of pointers
+    free( catalog->stars );
+
+    // zero out the Catalog's structure
+    catalog->stars = 0;
+    catalog->size = 0;
+    catalog->allocated = 0;
 }
 
 void catalog_print( Catalog *catalog ) {
@@ -165,8 +190,8 @@ void catalog_print( Catalog *catalog ) {
 void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
     int n = 0;
     while ( n < catalog->size) {
-        if( n==1192 )
-            printf("wtf");
+//        if( n==1192 )
+//            printf("wtf");
         function(catalog->stars[n]);
         n++;
     }
@@ -181,7 +206,7 @@ void entry_print( Entry *star ) {
             star->novas.dec,
             star->novas.parallax,
             star->magnitude );
-    fflush(0);
+    fflush( stdout );
 }
 
 Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
@@ -192,7 +217,7 @@ Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
 
     // create a catalog if no reference was given
     if( !catalog )
-        catalog = catalog_create(NULL, 128);
+        catalog = catalog_create( NULL, 0 );
 
     // parse FK6 entries from file
     while(n<10) { // skip first ten lines
@@ -258,7 +283,7 @@ Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
 
     // create a catalog if no reference was given
     if( !catalog )
-        catalog = catalog_create(NULL, 128);
+        catalog = catalog_create(NULL, 0);
 
     // first find the needed columns in the FK6 metadata
     FK6_Field * starname = fk6_get_field( fk6, "Name" );

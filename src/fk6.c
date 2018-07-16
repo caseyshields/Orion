@@ -146,5 +146,7 @@ void fk6_print_field( FK6_Field * f, FILE * file ) {
 }
 
 void fk6_free( FK6 * fk6 ) {
+    assert( fk6 );
     free(fk6->fields);
+    fk6->fields = 0;
 }

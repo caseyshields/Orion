@@ -36,7 +36,6 @@ typedef struct {
 typedef struct {
     size_t cols;
     FK6_Field * fields;
-    //char* data[][100];
 } FK6;
 
 /** Initializes a FK6 structure. */
