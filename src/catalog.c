@@ -93,6 +93,23 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     return results;
 }
 
+Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results ) {
+    // create a catalog to hold the results if the user did not supply one
+    if( !results )
+        results = catalog_create( NULL, 64 );
+
+    // for every catalog entry
+    for( int n=0; n<catalog->size; n++ ) {
+        Entry * entry = catalog->stars[n];
+
+        // if the name of the catalog entry contains the search phrase, add it to the results
+        if( strstr( entry->novas.starname, substring )!=NULL )
+            catalog_add( results, entry );
+    }
+
+    return results;
+}
+
 Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
                               Catalog *results ) {
     // create an output catalog if no reference was given
@@ -146,8 +163,13 @@ void catalog_print( Catalog *catalog ) {
 }
 
 void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
-    for( int n=0; n<catalog->size; n++ )
-        function( catalog->stars[n] );
+    int n = 0;
+    while ( n < catalog->size) {
+        if( n==1192 )
+            printf("wtf");
+        function(catalog->stars[n]);
+        n++;
+    }
 }
 
 void entry_print( Entry *star ) {

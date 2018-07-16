@@ -94,6 +94,13 @@ Catalog* catalog_search_dome( Catalog* catalog, double right_ascension, double d
  * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
 Catalog* catalog_search_patch( Catalog* catalog, double ra_min, double ra_max, double dec_min, double dec_max, Catalog* results );
 
+/** Searched a catalog for entries with names that contain the given substring.
+ * No effort is taken to remove duplicates from the results
+ * @param catalog The catalog to be searched
+ * @param substring A case sensitive sub-string to search entry names for
+ * @param A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
+Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results );
+
 //Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results);
 
 /** Selects the first entry with the given Fundamental Catalog ID.

@@ -107,35 +107,40 @@ int main( int argc, char *argv[] ) {
 
         // update the current time and print a prompt
         tracker_set_time(&tracker, jday_current());
-        printf( "orion[%s]", jday2stamp(tracker.utc) );
-        read = get_input( "", &line, &size );
+        printf("orion[%s]", jday2stamp(tracker.utc));
+        read = get_input("", &line, &size);
 
         // select a specific star by number
-        if( strncmp( "star", line, 4 ) == 0 ) {
+        if (strncmp("id", line, 2)==0) {
 //            // filter by ID
-//            get_input("catalog number", &line, &size);
 //            int catalog_id = atoi(line);
 //            int check_id( Entry *entry ) {
 //                return entry->starnumber == catalog_id ? 1 : 0;
 //            }
 //            Catalog* results = catalog_filter(catalog, &check_id, NULL);
 
-            // filter by name
-            get_input("catalog name", &line, &size);
-            int check_name( Entry *entry ) {
-                return NULL != strstr(entry->novas.starname, line );
-            }
-            Catalog* results = catalog_filter(catalog, &check_name, NULL);
+        // this is not standard C, but a GNU C extension.
+        // would have been nice...
+//            // filter by name
+//            int check_name( Entry *entry ) {
+//                return NULL != strstr(entry->novas.starname, line );
+//            }
+//            Catalog* results = catalog_filter(catalog, &check_name, NULL);
 
-            // transform each star to local coordinates
-            void process( Entry *entry ) {
-                double zd=0, az=0;
-                tracker_to_horizon(&tracker, &(entry->novas), &zd, &az);
-                entry_print( entry );
-                printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
-            }
-            catalog_each( results, process );
+//            // transform each star to local coordinates
+//            void process( Entry *entry ) {
+//                double zd=0, az=0;
+//                tracker_to_horizon(&tracker, &(entry->novas), &zd, &az);
+//                entry_print( entry );
+//                printf( "\tlocal : { zd:%lf, az:%lf}\n", zd, az );
+//            }
+//            catalog_each( results, process );
+        }
 
+        else if( strncmp( "name", line, 4 ) == 0 ) {
+            get_input("containing", &line, &size);
+            Catalog * results = catalog_search_name(catalog, line, NULL);
+            catalog_print(results);
             catalog_free(results);
         }
 
@@ -199,6 +204,10 @@ int main( int argc, char *argv[] ) {
 
         else if( strncmp("fk6", line, 3)==0) {
             test_FK6();
+        }
+
+        else if( strncmp("jday", line, 4)==0) {
+            test_time();
         }
 
         // clean up the program components and exit the program

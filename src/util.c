@@ -31,7 +31,13 @@ ssize_t get_input(char* prompt, char **line, size_t *size ) {
         printf("Error: input stream closed");
         exit( 2 );
     }
-    (*line)[read] = '\0'; // trim trailing
+
+    // trim trailing whitespace.
+    while (read>0 &&
+           ((*line)[read-1]=='\r' || (*line)[read-1]=='\n' || (*line)[read-1]==' ') )
+        (*line)[--read] = '\0'; // trim trailing
+    // Apparently getline's return value seems to differ by one between my test compilers. Fun.
+
     return read;
 }
 

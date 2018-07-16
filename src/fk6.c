@@ -6,13 +6,9 @@
 #include "h/fk6.h"
 #include "h/util.h"
 
-int scan_line( FILE* file, const char* header );
-int get_value( const char *line, int start, int end, char *dest);
-
 FK6 * fk6_create() {
     // allocate the structure if necessary
     FK6 * fk6 = calloc( 1, sizeof(FK6) );
-    //memset(fk6, 0, sizeof(FK6));
     assert( fk6 );
 
     // allocate the metadata array
@@ -115,7 +111,6 @@ FK6_Field * fk6_get_field(FK6 * fk6, const char * label ) {
 }
 
 FK6_Field * fk6_get_index(FK6 * fk6, const int index ) {
-    //return fk6->fields + (index*sizeof(FK6_Field));
     return &(fk6->fields[index]);
 }
 
@@ -134,6 +129,7 @@ int fk6_get_value( char * line, FK6_Field * field, void * dest ) {
     // convert and set catalog value
     if( field->Format[0] == 'I' )
         *((long int*)dest) = (long int) atoi( buffer );
+
     else if( field->Format[0]=='F' )
         *((double*)dest) = (double) atof( buffer );
     // note: we might want to use of the precision info in the Field format...
@@ -149,6 +145,5 @@ void fk6_print_field( FK6_Field * f, FILE * file ) {
 }
 
 void fk6_free( FK6 * fk6 ) {
-    // free metadata
     free(fk6->fields);
 }
