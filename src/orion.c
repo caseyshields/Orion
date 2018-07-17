@@ -1,14 +1,19 @@
 #include <unistd.h>
 #include <assert.h>
+#include <h/tats.h>
+#include <h/orion.h>
 
 #include "h/orion.h"
 #include "h/vmath.h"
 
-Orion* orion_create( Orion * orion ) {
+MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 );
+
+Orion* orion_create( Orion * orion, unsigned short int id ) {
     if (!orion)
         orion = malloc(sizeof(orion));
     if (orion) {
         memset( orion, 0, sizeof(Orion) );
+        orion->id = id;
         orion->mode = ORION_MODE_OFF;
         orion->socket = INVALID_SOCKET;
         pthread_mutex_init( &(orion->lock), NULL);
@@ -81,6 +86,7 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
 void * orion_control_loop( void * arg ) {
     Orion * orion = (Orion*)arg;
     double zd, az;
+    int length = 0;
     char buffer[1024];
     memset(&buffer, 0, 1024);
 
@@ -101,41 +107,19 @@ void * orion_control_loop( void * arg ) {
             break;
 
         // update the current time if we are in real time mode
-        else if (orion->mode == ORION_MODE_REAL_TIME)
+        //else if (orion->mode == ORION_MODE_REAL_TIME)
             last_time = orion_mark_time(orion);
 
-        // create a tracking message if we have a target
-        if (orion->target.starnumber) {
-
-            // calculate the current location of the target
-            tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);
-
-            // format the current time
-            time_t julian_seconds = (time_t)(3600.0 * orion->tracker.utc);
-            int microseconds = (int)(1000000*fmod( 3600.0 * orion->tracker.utc, 1.0 ));
-            struct tm * date = gmtime( &julian_seconds );
-            char time[32];
-            strftime( time , 32, "%Y/%m/%d %H:%M:%S\0", date );
-
-            // devise the tracking message
-            sprintf(buffer, "%s.%d %4s%ld %s (%lf, %lf)\n\0",
-                    time,
-                    microseconds,
-                    orion->target.catalog,
-                    orion->target.starnumber,
-                    orion->target.starname,
-                    az, zd);
-            // todo use TATS MIDC01
-
-        } else { // otherwise send an idle message
-            sprintf(buffer, "IDLE\n\0");
-        }
+        // create a tracking message
+        MIDC01 * message = (void*) buffer;
+        create_tracking_message(orion, message);
+        length = sizeof( MIDC01 );
 
         // we no longer need tracker internals or mode, so we can release the lock
         pthread_mutex_unlock( &(orion->lock) );
 
         // send the tracking message
-        int length = strlen( buffer );
+        //int length = strlen( buffer );
         int sent = send( orion->socket, buffer, length, 0 );
 
         // set error and exit if there was a transmission error
@@ -298,4 +282,89 @@ void orion_clear_error( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );
     memset( &(orion->error), 0, 128);
     pthread_mutex_unlock( &(orion->lock) );
+}
+
+MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
+    double zd, az;
+
+    // either allocate of initialize the provided pointer
+    if(midc01)
+        memset(midc01, 0, sizeof(MIDC01));
+    else
+        midc01 = calloc( 1, sizeof(MIDC01));
+
+    // Tracking Message id
+    midc01->midc = TATS_TRK_DATA;
+
+    // we assume this simlator is posing as a RIU
+    midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
+
+    // compute timer value from sensor time...
+    unsigned short int milliseconds = (unsigned short int)
+            (1000 * fmod( orion->tracker.utc * SECONDS_IN_DAY, 1.0 ) );
+    midc01->tcn_time = milliseconds;
+
+    // if there is an assigned coordinate
+    if( orion->target.starnumber ) {
+
+        // calculate the current location of the target
+        tracker_to_horizon(&(orion->tracker), &(orion->target), &zd, &az);
+        midc01->E = (int) (zd * 3600); // converting to arcseconds as a stopgap...
+        midc01->F = (int) (az * 3600);
+        midc01->G = 0;
+        // TODO I need a proxy range...
+        // TODO I need a local to EFG conversion...
+
+        // set the tracker status
+        midc01->track_status = (TATS_STATUS_SIM | TATS_STATUS_POS_DATA);
+        // we may want to set quality flag, or acquiring flag depending on orion state...
+    }
+
+    // otherwise supply an idle message
+    else {
+        midc01->E = 0;
+        midc01->F = 0;
+        midc01->G = 0;
+        midc01->track_status = (TATS_STATUS_AQUIRE);
+    }
+
+    // IFF code of the target
+    midc01->symbol_type = TATS_NONPLAYER;
+        // right now we're just calibrating stars...
+
+    // For single target sensors, track ID is always zero
+    midc01->track_id = 0;
+        // we may eventually simulate multiple targets...
+
+    // compute the checksum
+    midc01->crc = 0;
+    // TODO find a good CRC-16 implementation
+
+    return midc01;
+    //TODO check byte orders!
+}
+
+void orion_print_status(Orion * orion, FILE * file) {
+    //        if (orion->target.starnumber) {
+//            // calculate the current location of the target
+//            tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);
+//
+//            // format the current time
+//            time_t julian_seconds = (time_t)(3600.0 * orion->tracker.utc);
+//            int microseconds = (int)(1000000*fmod( 3600.0 * orion->tracker.utc, 1.0 ));
+//            struct tm * date = gmtime( &julian_seconds );
+//            char time[32];
+//            strftime( time , 32, "%Y/%m/%d %H:%M:%S\0", date );
+//
+//            // devise the tracking message
+//            sprintf(buffer, "%s.%d %4s%ld %s (%lf, %lf)\n\0",
+//                    time,
+//                    microseconds,
+//                    orion->target.catalog,
+//                    orion->target.starnumber,
+//                    orion->target.starname,
+//                    az, zd);
+//        } else { // otherwise send an idle message
+//            sprintf(buffer, "IDLE\n\0");
+//        }
 }

@@ -6,6 +6,7 @@
 #include "h/catalog.h"
 #include "h/tracker.h"
 #include "h/sockets.h"
+#include "h/tats.h"
 
 #define ORION_MODE_OFF 0
 
@@ -22,6 +23,9 @@
  * @author Casey Shields
  */
 typedef struct {
+
+    /** A RIU id number for the simulator to emit */
+    unsigned short id;
 
     /** A representation of the sensor being controlled */
     Tracker tracker;
@@ -56,7 +60,7 @@ typedef struct {
 /** Instantiates the given Orion structure, allocating space if the argument is NULL.
  * @param orion pointer to structure to instantiate, or NULL if a structure should be allocated
  * @return a pointer to the instantiated structure regardless if it was allocated. */
-Orion * orion_create( Orion * orion );
+Orion * orion_create( Orion * orion, unsigned short int id );
 
 /** Connect a socket to the specified sensor using TCP.
  * @param orion pointer to an initialized orion structure

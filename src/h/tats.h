@@ -1,6 +1,8 @@
 #ifndef STARTRACK_TATS_H
 #define STARTRACK_TATS_H
 
+#include <stdio.h>
+
 /** This header contains a bunch of declarations and methods canabalized from the TPOD project.
  * Removing it from the company network is non-trivial so these limited excerpts will have to
  * suffice until I can finish all the paperwork and process to move the code as a whole.
@@ -68,12 +70,14 @@ typedef enum {
     TATS_STATUS_LAST
 } TATS_STATUS_ETYPE;
 
-/***/
+#pragma pack(push)
+#pragma pack(1)
+
 typedef struct {
-
-} tats_msg1;
-
-
+    unsigned char midc;
+    unsigned char data[19];
+    unsigned short crc;
+} TCN_Message;
 
 /** Standard TCN data message. Documentation taken from TATS IRS documentation V2.2*/
 typedef struct {
@@ -94,33 +98,53 @@ typedef struct {
     /** 32 bit signed integers with LSB=0.00390625 (1/256) meters. */
     int E, F, G;
 
-    /**  */
+    /** A bitmask showing system status. Bit values are obtained by bitwise ORing values from TATS_STATUS_ETYPE  */
     unsigned char track_status;
 
-    union {
-        /**  */
-        unsigned short track_id;
+    /** For single target sensors this field is zero filled. If source is a Multi-Target sensor
+     * then bytes 18 and 19 are the track ID. */
+    unsigned short int track_id : 14;
 
-        /**  */
-        unsigned char symbol_type;
-    };
+    /** If source is an IFF system then byte 19 is zero filled. Byte 18's value is the Symbol type
+     * as follows:
+     *  - 0 = Foe
+     *  - 1 = Non-Player
+     *  - 2 = Friend
+     * As enumerated in TATS_IFF_ETYPE*/
+    unsigned short int symbol_type : 2;
 
     /** A 16-bit error checksum, Cyclic Redundancy Check. The CRC field consists of the Consultative Committee
      * International for Telegraphy and Telephone (CCITT)/(ITU) V.41 polynomial, x^16 + x^12 + x^5 + 1, with
      * the CRC accumulator preset ti 1's. */
     unsigned short crc;
 } MIDC01;
+#pragma pack(pop)
 
+//// original tats.h declaration
+//#pragma pack(push)
+//#pragma pack(1)
+//typedef struct {
+//    UINT8 midc;
+//    UINT16 tidc;
+//    UINT16 time;
+//    INT32 e;
+//    INT32 f;
+//    INT32 g;
+//    UINT8 status;
+//    UINT16 trk_id : 14;
+//    UINT16 symbol : 2;
+//} /*PACKED*/ TATS_MSG1_STYPE;
+//// not sure where the packed macro is defined...
+//#pragma pack(pop)
 
-MIDC01 * midc01_create(
-
-        );
+/** Prints a diagnostic message string of the given message to the file. */
+void tats_print_midc01( MIDC01 * midc01, FILE * file );
 
 ///** General message structure for the TATS Control Network */
-//typedef struct {
-//    unsigned char midc;
-//    char tats_msg[19];
-//} tcn_gen_msg;
+typedef struct {
+    unsigned char midc;
+    char tats_msg[19];
+} tcn_gen_msg;
 
 ///** Template for TCN receive messages */
 //typedef struct {

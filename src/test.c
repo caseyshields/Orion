@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <h/tats.h>
 
 #include "h/tracker.h"
 #include "h/catalog.h"
@@ -27,9 +28,15 @@ void test_conversions();
 void test_FK6();
 void test_BSC5();
 void test_time();
+void test_tats();
+
+int main() {
+    test_tats();
+    return 0;
+}
 
 /** a simple CLI interface for exercising various orion components. */
-int main( int argc, char *argv[] ) {
+int xmain( int argc, char *argv[] ) {
     double latitude, longitude, height;
     double celsius, millibars;
     double ut1_utc, leap_secs;
@@ -334,6 +341,12 @@ void test_time() {
 
     fflush(stdout);
 
+}
+
+void test_tats() {
+    // make sure 1 byte alignment is working...
+    assert( 22 == sizeof(MIDC01) );
+    assert( 22 == sizeof(TCN_Message));
 }
 
 // this is not standard C, but a GNU C extension.

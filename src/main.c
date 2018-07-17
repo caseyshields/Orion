@@ -8,7 +8,7 @@
 int main( int argc, char *argv[] ) {
     // create and configure the Orion server
     Orion orion;
-    orion_create( &orion );
+    orion_create( &orion, 1 );
     configure_tracker( argc, argv, &(orion.tracker) );
 
     // create and configure the FK6 catalog

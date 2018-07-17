@@ -1,3 +1,4 @@
+#include <h/tats.h>
 #include "novasc3.1/novas.h"
 #include "h/tracker.h"
 #include "h/catalog.h"
@@ -22,6 +23,7 @@ unsigned int client = INVALID_SOCKET;
  * @author Casey Shields
  */
 int main( int argc, char *argv[] ) {
+    MIDC01 * midc01 = 0;
     buffer = malloc( MAX_BUFFER_SIZE );
     memset( buffer, 0, MAX_BUFFER_SIZE );
 
@@ -77,7 +79,26 @@ int main( int argc, char *argv[] ) {
             memset(buffer, 0, MAX_BUFFER_SIZE);
             int result = recv(client, buffer, MAX_BUFFER_SIZE, 0);
             if (result > 0) {
-                printf("Recieved message:\n%s\n", buffer);
+
+                char midc = *((char*)buffer);
+                switch( midc ) {
+                    case TATS_TRK_DATA:
+                        midc01 = (MIDC01*)buffer;
+                        tats_print_midc01( midc01, stdout );
+                        break;
+
+                    case TATS_LAST_MSG:
+                        printf("Recieved message:\n%s\n", buffer);
+                        break;
+
+                    default:
+                        printf("unknown message:\n\t" );
+                        for(int n=0; n<result; n++)
+                            printf( "%X ", buffer[n]);
+                        printf("\n");
+                        fflush(stdout);
+                }
+
 //          result = send( socket, &entry, sizeof(entry), 0);
 //          if( result == SOCKET_ERROR )
 //              terminate( WSAGetLastError(), "Failed to send back the entry");
