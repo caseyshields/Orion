@@ -67,7 +67,7 @@ int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_dista
 
     // get the GCRS coordinates
     error = topo_star(
-                jd_tt,//tracker->date,
+                jd_tt,
                 deltaT,
                 target,
                 &tracker->site,
@@ -79,7 +79,7 @@ int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_dista
     // then convert them to horizon coordinates
     double ra, dec;
     equ2hor(
-            jd_tt,//tracker->date,
+            jd_tt,
             deltaT,
             REDUCED_ACCURACY,
             0.0, 0.0, // TODO ITRS poles... scrub from bulletin!
