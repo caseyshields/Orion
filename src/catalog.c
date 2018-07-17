@@ -5,33 +5,29 @@
 #include "h/vmath.h"
 
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
-    // If they request a new catalog but don't provide a size hint just guess a default.
-    if( !catalog && allocate<=0 )
-        allocate = 64;
-
     // allocate a catalog if none is provided
-    if( !catalog ) {
-        catalog = malloc(sizeof(Catalog));
+    if( catalog ) {
+        memset( catalog, 0, sizeof(Catalog) );
+    } else {
+        catalog = calloc(1, sizeof(Catalog));
         if (!catalog) {
             perror("Catalog allocation failed");
-            exit(1);
+            return 0;
         }
     }
+
+    // If they don't provide a size hint just guess a default.
+    if( allocate>0 )
+        catalog->allocated = allocate;
+    else catalog->allocated = 64;
+    catalog->size = 0;
 
     // allocate the Entry index if a hint is given
-    if( allocate > 0 ) {
-        if( catalog->stars )
-            free(catalog->stars);
-        catalog->stars = calloc( (size_t)allocate, sizeof(Entry) );
-        catalog->allocated = allocate;
-        if( !catalog->stars ) {
-            perror("Catalog directory allocation failed");
-            exit(1);
-        }
+    catalog->stars = calloc( (size_t)allocate, sizeof(Entry) );
+    if( !catalog->stars ) {
+        catalog->allocated = 0;
+        // we should probably allocate this first so we can fail fast...
     }
-
-    // clear the index by zeroing the size;
-    catalog->size = 0;
 
     return catalog;
 }
@@ -49,7 +45,7 @@ void catalog_add( Catalog *catalog, Entry *entry ) {
 
     // add the new entry
     catalog->stars[ catalog->size++ ] = entry;
-}
+} // TODO use realloc
 
 Entry * catalog_get( Catalog * catalog, int index ) {
     assert( catalog && index>0 && index<catalog->size);

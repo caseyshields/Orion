@@ -13,9 +13,8 @@ int main( int argc, char *argv[] ) {
 
     // create and configure the FK6 catalog
     Catalog catalog;
-    memset(&catalog, 0, sizeof(catalog));
     catalog_create( &catalog, 1024 );
-    configure_catalog( argc, argv, &catalog);
+    configure_catalog( argc, argv, &catalog );
     if (!catalog.size)
         goto CLEANUP;
 
@@ -35,16 +34,14 @@ int main( int argc, char *argv[] ) {
 
     // start the main ui loop
     while( 1 ) {
-
-//        // update and print out the time
-//        tracker_set_time( &tracker, get_time() );
-//        tracker_print_time( &tracker );
-
-        // todo print prompt and get next user command
-        char *line = NULL;
         int result;
+
+        // print prompt and get next user command
+        //char * stamp = jday2stamp( jday_current() );
+        char *line = NULL;
         size_t size = 0 ;
         ssize_t read = get_input( "", &line, &size );
+        //free( stamp );
 
         // set current time ///////////////////////////////////////////////////
         if( strncmp("time ", line, 5)==0 ) {
@@ -125,7 +122,6 @@ int main( int argc, char *argv[] ) {
     orion_disconnect( &orion );
 
     CLEANUP:
-    catalog_free_entries( &catalog );
     catalog_free( &catalog );
 //    orion_free( &orion );
 
@@ -186,9 +182,9 @@ int search(
     int count = results->size;
 
     // release catalogs
-    catalog_free_entries( bright_stars );
+    catalog_free( bright_stars );
     free( bright_stars );
-    catalog_free_entries( results );
+    catalog_free( results );
     free( results );
 
     return count;
@@ -255,24 +251,27 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
 
+    // load the FK6 metadata
     FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
-
-    // load the first part of FK6
     FK6 * fk6_1 = fk6_create();
     fk6_load_fields(fk6_1, readme, FK6_1_HEADER);
+    FK6 * fk6_3 = fk6_create();
+    fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
+    fclose( readme );
+
+    // load the first part of FK6
     FILE * data1 = fopen( "../data/fk6/fk6_1.dat", "r" );
     catalog_load_fk6(catalog, fk6_1, data1);
     fk6_free( fk6_1 );
+    free( fk6_1 );
     fclose( data1 );
 
     // load the third part
-    FK6 * fk6_3 = fk6_create();
-    fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
     FILE * data3 = fopen( "../data/fk6/fk6_3.dat", "r" );
     catalog_load_fk6(catalog, fk6_3, data3);
     fk6_free( fk6_3 );
+    free( fk6_3 );
     fclose( data3 );
-    fclose( readme );
 
     // TODO add some arguments to control the catalog loaded
 //    // get the location of the catalog data
