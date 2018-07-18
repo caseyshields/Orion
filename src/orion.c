@@ -2,6 +2,9 @@
 #include <assert.h>
 #include <h/tats.h>
 #include <h/orion.h>
+#include <h/tracker.h>
+#include <novasc3.1/novas.h>
+#include <h/catalog.h>
 
 #include "h/orion.h"
 #include "h/vmath.h"
@@ -165,7 +168,7 @@ int orion_start( Orion * orion ) {
     return 0;
 } // helpful tutorial: https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
-void orion_track( Orion * orion, cat_entry target ) {
+void orion_track( Orion * orion, Entry target ) {
     // can this be called regardless if the server is on or not?
     // assert( orion->mode == ORION_MODE_ON );
 
@@ -297,7 +300,9 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     midc01->midc = TATS_TRK_DATA;
 
     // we assume this simlator is posing as a RIU
-    midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
+    midc01->sensor_type = TATS_TIDC_RIU;
+    midc01->sensor_id = orion->id;
+    //midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
 
     // compute timer value from sensor time...
     unsigned short int milliseconds = (unsigned short int)
@@ -305,12 +310,15 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     midc01->tcn_time = milliseconds;
 
     // if there is an assigned coordinate
-    if( orion->target.starnumber ) {
+    if( orion->target.novas.starnumber ) {
 
         // calculate the current location of the target
-        tracker_to_horizon(&(orion->tracker), &(orion->target), &zd, &az);
-        midc01->E = (int) (zd * 3600); // converting to arcseconds as a stopgap...
-        midc01->F = (int) (az * 3600);
+        tracker_to_horizon(
+                &(orion->tracker), &(orion->target.novas),
+                &zd, &az
+        );
+        midc01->E = (int) (zd * 1000); // converting to arcseconds as a stopgap...
+        midc01->F = (int) (az * 1000);
         midc01->G = 0;
         // TODO I need a proxy range...
         // TODO I need a local to EFG conversion...
@@ -329,12 +337,13 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     }
 
     // IFF code of the target
-    midc01->symbol_type = TATS_NONPLAYER;
-        // right now we're just calibrating stars...
+    midc01->symbol_type = 0;//TATS_NONPLAYER;
+        // not an IFF system right now we're just calibrating stars...
 
     // For single target sensors, track ID is always zero
-    midc01->track_id = 0;
-        // we may eventually simulate multiple targets...
+    midc01->track_id = (unsigned short int) orion->target.novas.starnumber;
+        // but we're going to put in the catalog ID, since we technically can track any one
+        // watch for overflow!
 
     // compute the checksum
     midc01->crc = 0;
@@ -345,6 +354,26 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
 }
 
 void orion_print_status(Orion * orion, FILE * file) {
+
+    pthread_mutex_lock( &(orion->lock) );
+
+    Tracker * tracker = &(orion->tracker);
+    Entry * target = &(orion->target);
+
+    tracker_print_time( tracker, file );
+    tracker_print_site( tracker, file );
+    entry_print( target ); // todo send to file...
+
+    MIDC01 midc01;
+    create_tracking_message(orion, &midc01);
+    tats_print_midc01( &midc01, file );
+
+    pthread_mutex_unlock( &(orion->lock) );
+    //char * stamp = jday2stamp( tracker_get_time( tracker ) );
+//    fprintf( file, "%s (%8.4lf, %8.4lf, %8.4lf) ",
+//             stamp, site->longitude, site->latitude, site->height
+//    );
+
     //        if (orion->target.starnumber) {
 //            // calculate the current location of the target
 //            tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);

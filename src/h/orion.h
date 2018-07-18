@@ -31,7 +31,7 @@ typedef struct {
     Tracker tracker;
 
     /** Current target of the tracker */
-    cat_entry target;
+    Entry target;
 
     /** Address of the sensor */
     struct sockaddr_in address;
@@ -76,7 +76,7 @@ int orion_start( Orion * orion );
 
 /** Specify a target which the control thread will instruct the sensor to track. Thread safe.
  * @param target A novas structure holding the celestial location of the target. */
-void orion_track( Orion * orion, cat_entry target );
+void orion_track( Orion * orion, Entry target );
 
 /** Safely stops the control loop and blocks until it returns. Thread safe. */
 int orion_stop( Orion * orion );
@@ -103,6 +103,8 @@ double orion_mark_time( Orion * orion );
 void orion_clear_error( Orion * orion);
 
 double orion_time( Orion * orion );
+
+void orion_print_status(Orion * orion, FILE * file);
 
 #endif //STARTRACK_ORION_H
 
