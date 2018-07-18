@@ -204,3 +204,8 @@ void terminate(int status, char* msg) {
 //
 //    return server;
 //}
+
+/* Debug note; if sensor crashes you need to release the socket. On windows try;
+ * netstat -ano | findstr <port>
+ * taskkill /f /im <pid>
+ * */

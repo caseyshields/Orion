@@ -239,7 +239,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // print the catalog with corresponding tracks
     for( int n=0; n<catalog->size; n++ ) {
         Entry* entry = catalog->stars[n];
-        entry_print(entry);
+        entry_print( entry );
         printf( "Horizon : (zd:%lf, az:%lf)\n\n", tracks[n][0], tracks[n][1] );
     }
 

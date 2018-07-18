@@ -99,11 +99,15 @@ int main( int argc, char *argv[] ) {
             result = sscanf( line, "track %ld\n", &id );
             Entry * entry = catalog_select( &catalog, id );
             if( entry ) {
-                cat_entry target = entry->novas;
-                orion_track(&orion, target);
+                orion_track(&orion, *entry);
             } else {
                 printf("Could not find star %ld in catalog\n", id);
             }
+        }
+
+        // Print out the current status of the tracker
+        if( strncmp("status", line, 6)==0 ) {
+            orion_print_status( &orion, stdout );
         }
 
         // stop the sensor control thread and exit ////////////////////////////

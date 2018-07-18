@@ -84,12 +84,14 @@ typedef struct {
     /** Identifies message type. (Message Type 1 RIU tracking data). */
     unsigned char midc;
 
+    /** Sensor ID (TIDC) - 000-FFF HEX code unique for each sensor.*/
+    unsigned short sensor_id : 12;
+
     /** TIDC.
      *  - 0 Hex. Indicates IFF codes.
      *  - 1 Hex. Indicates RIU Sensor ID.
-     *  - 2 Hex. Indicates GPS pod numbers.
-     * Sensor ID (TIDC) - 000-FFF HEX code unique for each sensor.*/
-    unsigned short riu_sensor_id;
+     *  - 2 Hex. Indicates GPS pod numbers.*/
+    unsigned short sensor_type : 4;
 
     /** Unsigned integer. LSB = 1 millisecond. Maximum count is 59.999 seconds. TCN time is used to
      * calculate latency. It is also used by some receiving systems for delta calculations. */
