@@ -37,27 +37,27 @@ int main( int argc, char *argv[] ) {
         int result;
 
         // print prompt and get next user command
-        //char * stamp = jday2stamp( jday_current() );
+        char * stamp = jday2stamp( jday_current() );
         char *line = NULL;
         size_t size = 0 ;
-        ssize_t read = get_input( "", &line, &size );
-        //free( stamp );
+        ssize_t read = get_input( stamp, &line, &size );
+        free( stamp );
 
         // set current time ///////////////////////////////////////////////////
-        if( strncmp("time ", line, 5)==0 ) {
-            int year, month, day, hour, minute;
-            double seconds;
-
-            char stamp[32];
-            result = sscanf( line, "time %s\n", stamp);
-            if( result==0 ) {
-                char * stamp = jday2stamp( tracker_get_time(&(orion.tracker)) );
-                printf( "current time %s\n", stamp );
-                continue;
-            } else {
-
-            }
-        }
+//        if( strncmp("time ", line, 5)==0 ) {
+//            int year, month, day, hour, minute;
+//            double seconds;
+//
+//            char stamp[32];
+//            result = sscanf( line, "time %s\n", stamp);
+//            if( result==0 ) {
+//                char * stamp = jday2stamp( tracker_get_time(&(orion.tracker)) );
+//                printf( "current time %s\n", stamp );
+//                continue;
+//            } else {
+//
+//            }
+//        }
 
         // search name ////////////////////////////////////////////////////////
         if( strncmp( "name ", line, 5)==0 ) {

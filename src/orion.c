@@ -88,17 +88,17 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
 
 void * orion_control_loop( void * arg ) {
     Orion * orion = (Orion*)arg;
-    double zd, az;
+    double zd, az, last_time;
     int length = 0;
     char buffer[1024];
     memset(&buffer, 0, 1024);
 
     // sanity check
-    assert( orion->mode == ORION_MODE_ON );
+    assert( orion->mode != ORION_MODE_OFF );
     assert( orion->socket != INVALID_SOCKET );
 
     // set the current time
-    double last_time = orion_mark_time(orion);
+    //double last_time = orion->tracker.utc;
 
     // loop indefinitely
     do {
@@ -110,8 +110,10 @@ void * orion_control_loop( void * arg ) {
             break;
 
         // update the current time if we are in real time mode
-        //else if (orion->mode == ORION_MODE_REAL_TIME)
-            last_time = orion_mark_time(orion);
+        else if (orion->mode == ORION_MODE_REAL_TIME) {
+            last_time = orion->tracker.utc;
+            orion->tracker.utc = jday_current();
+        }
 
         // create a tracking message
         MIDC01 * message = (void*) buffer;
@@ -155,14 +157,14 @@ int orion_start( Orion * orion ) {
 
     // check if server is already running
     pthread_mutex_lock( &(orion->lock) );
-    if ( orion->mode == ORION_MODE_ON ) {
+    if ( orion->mode != ORION_MODE_OFF ) {
         sprintf(orion->error, "[%d] %s\n\0", 1, "Server is already running.");
         pthread_mutex_unlock( &(orion->lock) );
         return 1;
     }
 
     // start the server control thread
-    orion->mode = ORION_MODE_ON;
+    orion->mode = ORION_MODE_STATIC;
     pthread_create( &(orion->control), NULL, orion_control_loop, orion);
     pthread_mutex_unlock( &(orion->lock) );
     return 0;
@@ -170,7 +172,7 @@ int orion_start( Orion * orion ) {
 
 void orion_track( Orion * orion, Entry target ) {
     // can this be called regardless if the server is on or not?
-    // assert( orion->mode == ORION_MODE_ON );
+    // assert( orion->mode != ORION_MODE_OFF );
 
     // safely change the target
     pthread_mutex_lock( &(orion->lock) );
@@ -237,48 +239,39 @@ void orion_disconnect( Orion * orion ) {
 #endif
 }
 
-void orion_date( Orion * orion, int year, int month, int day, int hour, int min, double second ) {
-    //tracker_set_time();
-}
-
-void orion_set_time( Orion * orion, double time ) {
-    // obtain the lock
+jday orion_set_time( Orion * orion, jday time ) {
     pthread_mutex_lock( &(orion->lock) );
 
     // if the server is in real time mode, set it to static
     if ( orion->mode == ORION_MODE_REAL_TIME )
-        orion->mode = ORION_MODE_ON;
+        orion->mode = ORION_MODE_STATIC;
 
-    // set the time and release the lock
-    tracker_set_time( &(orion->tracker), time );
+    // cache the last time
+    jday last = orion->tracker.utc;
+
+    // set the new time
+    orion->tracker.utc = time;
+
     pthread_mutex_unlock( &(orion->lock) );
+    return last;
 }
 
-double orion_time( Orion * orion ) {
+double orion_get_time(Orion *orion) {
     pthread_mutex_lock( &(orion->lock) );
     double time = orion->tracker.utc;
     pthread_mutex_unlock( &(orion->lock) );
     return time;
 }
 
-double orion_mark_time( Orion * orion ) {
-    struct timeval time;
-    gettimeofday( &time, NULL ); // UTC timestamp in unix epoch
-    double julian_hours = (time.tv_sec + (time.tv_usec / 1000000.0)) / 3600.0;
-    double last_time = orion->tracker.utc;
-    orion->tracker.utc = julian_hours;
-    return last_time;
-} // we might want to lock the tracker time...
-
 int orion_is_connected (Orion * orion) {
     return orion->socket != INVALID_SOCKET;
 }
 
-int orion_is_running ( Orion * orion ) {
+int orion_get_mode ( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );
-    int running = orion->mode;
+    int mode = orion->mode;
     pthread_mutex_unlock( &(orion->lock) );
-    return running == ORION_MODE_ON;
+    return mode;
 }
 
 void orion_clear_error( Orion * orion ) {

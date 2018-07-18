@@ -10,7 +10,7 @@
 
 #define ORION_MODE_OFF 0
 
-#define ORION_MODE_ON 1
+#define ORION_MODE_STATIC 1
 
 #define ORION_MODE_REAL_TIME 2
 
@@ -84,9 +84,6 @@ int orion_stop( Orion * orion );
 /** Disconnects the socket and disposes of resources. */
 void orion_disconnect( Orion * orion );
 
-/* Frees anciliary structures allocated by orion. */
-//int orion_free( Orion * orion );
-
 /** Best guess of whether the server is running. Thread safe.
  * @return True if the orion server was running recently. False otherwise.*/
 int orion_is_running( Orion * orion );
@@ -94,15 +91,15 @@ int orion_is_running( Orion * orion );
 /** @return True if the sensor is connected to the orion server. */
 int orion_is_connected( Orion * orion );
 
-/** gets a millisecond accurate timestamp from the system, converts it to Julian hours(see Novas
- * 3.1 documentation), then sets the current tracker time.
- * @returns the last marked timestamp.*/
-double orion_mark_time( Orion * orion );
-
 /** Clears the internal error buffer. Thread safe. */
 void orion_clear_error( Orion * orion);
 
-double orion_time( Orion * orion );
+/** gets a millisecond accurate timestamp from the system, converts it to Julian hours(see Novas
+ * 3.1 documentation), then sets the current tracker time.
+ * @returns the last marked timestamp.*/
+jday orion_set_time( Orion *orion, jday time );
+
+jday orion_get_time( Orion *orion );
 
 void orion_print_status(Orion * orion, FILE * file);
 
