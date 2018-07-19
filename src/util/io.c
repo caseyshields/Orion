@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "util.h"
+#include "io.h"
 
 char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
     for( int n=0; n<argc; n++ )

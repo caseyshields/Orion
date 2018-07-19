@@ -31,7 +31,7 @@ set( ORION_SOURCE
         src/engine/catalog.c
         src/data/fk6.c
         src/util/vmath.c
-        src/util/util.c
+        src/util/io.c
         src/util/jday.c
         src/data/tats.c)
 

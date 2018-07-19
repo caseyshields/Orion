@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "fk6.h"
-#include "util/util.h"
+#include "util/io.h"
 
 FK6 * fk6_create() {
     // allocate the structure if necessary

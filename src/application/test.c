@@ -4,7 +4,7 @@
 #include "engine/tracker.h"
 #include "engine/catalog.h"
 #include "util/vmath.h"
-#include "util/util.h"
+#include "util/io.h"
 
 // todo now that I have the interactive command line figured out, this should be turned into a battery of unit tests- or whatever is available in C
 
