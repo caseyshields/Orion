@@ -2,7 +2,7 @@
 #define STARTRACK_TRACKER_H
 
 #include "novasc3.1/novas.h"
-#include "h/jday.h"
+#include "util/jday.h"
 
 /** Novas in reduced accuracy mode can be expected to have 1 arcsecond accuracy when properly configured. */
 #define REDUCED_ACCURACY 1

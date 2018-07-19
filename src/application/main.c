@@ -1,9 +1,9 @@
-#include "h/tracker.h"
-#include "h/orion.h"
-#include "h/catalog.h"
-#include "h/main.h"
-#include "h/util.h"
-#include "h/sockets.h"
+#include "engine/tracker.h"
+#include "controller/orion.h"
+#include "engine/catalog.h"
+#include "main.h"
+#include "util/util.h"
+#include "util/sockets.h"
 
 int main( int argc, char *argv[] ) {
     // create and configure the Orion server

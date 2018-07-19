@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "h/fk6.h"
-#include "h/util.h"
+#include "fk6.h"
+#include "util/util.h"
 
 FK6 * fk6_create() {
     // allocate the structure if necessary

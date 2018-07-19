@@ -3,10 +3,10 @@
 
 #include <pthread.h>
 
-#include "h/catalog.h"
-#include "h/tracker.h"
-#include "h/sockets.h"
-#include "h/tats.h"
+#include "engine/catalog.h"
+#include "engine/tracker.h"
+#include "util/sockets.h"
+#include "data/tats.h"
 
 #define ORION_MODE_OFF 0
 

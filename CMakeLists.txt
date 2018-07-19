@@ -27,20 +27,20 @@ target_link_libraries( checkout novas )
 
 # These file comprise the source of the Orion star hunter software
 set( ORION_SOURCE
-        src/tracker.c
-        src/catalog.c
-        src/fk6.c
-        src/vmath.c
-        src/util.c
-        src/jday.c
-        src/tats.c)
+        src/engine/tracker.c
+        src/engine/catalog.c
+        src/data/fk6.c
+        src/util/vmath.c
+        src/util/util.c
+        src/util/jday.c
+        src/data/tats.c)
 
 # This is an interactive commandline program for benchmarking and testing program components
-add_executable( tester ${ORION_SOURCE} src/test.c)
+add_executable( tester ${ORION_SOURCE} src/application/test.c)
 target_link_libraries( tester novas )
 
-add_executable( sensor ${ORION_SOURCE} src/sockets.c src/sensor.c )
+add_executable( sensor ${ORION_SOURCE} src/util/sockets.c src/application/sensor.c)
 target_link_libraries( sensor novas wsock32 ws2_32 )
 
-add_executable( orion ${ORION_SOURCE} src/sockets.c src/orion.c src/main.c)
+add_executable( orion ${ORION_SOURCE} src/util/sockets.c src/controller/orion.c src/application/main.c)
 target_link_libraries( orion novas pthread wsock32 ws2_32 )

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "novasc3.1/novas.h"
-#include "h/fk6.h"
+#include "data/fk6.h"
 
 /** Represents celestial object in a star catalog. Extended from Novas's struct cat_entry to add
  * some more parameters and transformed coordinates.

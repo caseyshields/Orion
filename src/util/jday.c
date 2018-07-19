@@ -1,5 +1,5 @@
 #include "novasc3.1/novas.h"
-#include "h/jday.h"
+#include "jday.h"
 
 int jday_is_valid(jday time) {
     return time != NAN;

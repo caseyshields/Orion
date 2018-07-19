@@ -1,10 +1,10 @@
 #include <assert.h>
-#include <h/tats.h>
+#include <data/tats.h>
 
-#include "h/tracker.h"
-#include "h/catalog.h"
-#include "h/vmath.h"
-#include "h/util.h"
+#include "engine/tracker.h"
+#include "engine/catalog.h"
+#include "util/vmath.h"
+#include "util/util.h"
 
 // todo now that I have the interactive command line figured out, this should be turned into a battery of unit tests- or whatever is available in C
 

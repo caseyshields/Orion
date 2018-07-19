@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "h/vmath.h"
+#include "vmath.h"
 
 void scale( double U[3], double k ) {
     U[0] *= k;

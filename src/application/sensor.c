@@ -1,6 +1,6 @@
-#include "h/tats.h"
-#include "h/util.h"
-#include "h/sockets.h"
+#include "data/tats.h"
+#include "util/util.h"
+#include "util/sockets.h"
 
 // we only allow one controller and one sensor
 #define MAX_CONNECTIONS 2

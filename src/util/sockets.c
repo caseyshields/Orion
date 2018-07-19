@@ -1,4 +1,4 @@
-#include "h/sockets.h"
+#include "sockets.h"
 
 int socket_load() {
     int result = 0;
