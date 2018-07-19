@@ -1,10 +1,10 @@
 #include <assert.h>
-#include <data/tats.h>
-
-#include "engine/tracker.h"
-#include "engine/catalog.h"
+#include "util/crc.h"
 #include "util/vmath.h"
 #include "util/io.h"
+#include "data/tats.h"
+#include "engine/tracker.h"
+#include "engine/catalog.h"
 
 // todo now that I have the interactive command line figured out, this should be turned into a battery of unit tests- or whatever is available in C
 
@@ -29,9 +29,11 @@ void test_FK6();
 void test_BSC5();
 void test_time();
 void test_tats();
+void test_crc();
 
 int main() {
-    test_tats();
+    //test_tats();
+    test_crc();
     return 0;
 }
 
@@ -347,6 +349,34 @@ void test_tats() {
     // make sure 1 byte alignment is working...
     assert( 22 == sizeof(MIDC01) );
     assert( 22 == sizeof(TCN_Message));
+}
+
+void test_crc() {
+    // modified from http://www.drdobbs.com/implementing-the-ccitt-cyclical-redundan/199904926
+    static unsigned char string[40];
+    string[0] = 'T';
+    string[1] = (unsigned char)0xd9;
+    string[2] = (unsigned char)0xe4;
+    string[3] = '\0';
+
+    printf ("The crc of \"T\" is 0xD9E4. crc16 returned 0x%X.\r\n\n",
+            crc16(string, (short)1));
+
+    printf ("The crc of \"T 0xD9 0xE4\" is %x. The value of crc_ok is 0x%X.\r\n\n",
+            crc16(string, (short)3), crc_ok);
+
+    strcpy(string, "THE,QUICK,BROWN,FOX,0123456789");
+    printf("The crc of \"%s\" is 0x6E20. crc16 returned 0x%X.\r\n\n",
+           string, crc16 (string, strlen(string)));
+
+    string[0] = (unsigned char)0x03;
+    string[1] = (unsigned char)0x3F;
+    puts("CCITT Recommendation X.25 (1984) Appendix I example:");
+    printf("\tThe crc of 0x03 0x3F is 0x5BEC. crc16 returned 0x%X.\r\n\n",
+           crc16(string, (short)2));
+
+    puts("strike RETURN to continue...");
+        getchar();
 }
 
 // this is not standard C, but a GNU C extension.

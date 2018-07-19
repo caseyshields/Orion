@@ -1,6 +1,8 @@
 #ifndef STARTRACK_UTIL_H
 #define STARTRACK_UTIL_H
 
+#include <stdio.h>
+
 /** Retrieves the value subsequent to the specified option in the given command line options. If
  * the default_value is supplied, the function will return it. otherwise the method will print an
  * error message and abort.
@@ -10,15 +12,15 @@
  * @param default_value*/
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
 
-/** Frees any data line is pointing to, then prompts the user, allocates a buffer, and reads the input.
- * Be sure to free the buffer after your last call to get_input!
+/** Frees any data 'line' is pointing to, then prompts the user, allocates a buffer, and reads the
+ * input, trimming trailing whitespace. Be sure to free the buffer after your last call to get_input!
  * @param prompt
  * @param line
  * @param size */
 ssize_t get_input(char* prompt, char **line, size_t *size );
 
 /** Trim the substring and copy it to a newly allocated string, return the size of the resulting
- * string. The indexing conventions match the FK6 Readme idiom, that is; 1 indexed, inclusive.
+ * string. The indexing conventions match the FK6 Readme idiom, that is; 1-indexed, inclusive.
  * @param line
  * @param start
  * @param end

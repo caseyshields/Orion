@@ -2,11 +2,14 @@
 #define STARTRACK_CATALOG_H
 
 #include <stdio.h>
+#include <assert.h>
+
 #include "novasc3.1/novas.h"
+#include "util/vmath.h"
 #include "data/fk6.h"
 
-/** Represents celestial object in a star catalog. Extended from Novas's struct cat_entry to add
- * some more parameters and transformed coordinates.
+/** Represents a celestial object in a star catalog. Extended from Novas's struct cat_entry to add
+ * some more parameters and various transformed coordinates.
  * @author Casey Shields*/
 typedef struct {
 
@@ -21,7 +24,7 @@ typedef struct {
 
     /** A pointing vector in geocentric coordinates, only makes sense in the context of a Tracker */
     double E, F, G;
-    // todo To follow better encapsulation principles we may want to extract transformed coordinates into a structure which references the catalog entry.
+    // todo To follow better encapsulation principles we may want to extract transformed coordinates into a structure which references the catalog entry
 
 } Entry;
 
@@ -100,8 +103,6 @@ Catalog* catalog_search_patch( Catalog* catalog, double ra_min, double ra_max, d
  * @param substring A case sensitive sub-string to search entry names for
  * @param A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
 Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results );
-
-//Catalog* catalog_orange( Catalog* c, double min, double max, Catalog* results);
 
 /** Selects the first entry with the given Fundamental Catalog ID.
  * @param catalog the catalog to search

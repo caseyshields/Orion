@@ -1,9 +1,4 @@
-
-
-#include <data/tats.h>
-#include <controller/orion.h>
-#include <assert.h>
-#include <unistd.h>
+#include "controller/orion.h"
 
 MIDC01 * create_tracking_message(Orion * orion, MIDC01 * midc01 );
 
@@ -312,8 +307,7 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
         // watch for overflow!
 
     // compute the checksum
-    midc01->crc = 0;
-    // TODO find a good CRC-16 implementation
+    midc01->crc = crc16( (char*)midc01, sizeof(MIDC01)-2 );
 
     return midc01;
     //TODO check byte orders!

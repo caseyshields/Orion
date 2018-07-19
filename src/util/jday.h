@@ -1,6 +1,10 @@
 #ifndef STARTRACK_JDAY_H
 #define STARTRACK_JDAY_H
 
+#include <sys/time.h>
+
+#include "novasc3.1/novas.h"
+
 #define SECONDS_IN_DAY 86400.0
 
 #define DELTA_TT 32.184
@@ -8,8 +12,6 @@
 #define TIMESTAMP_OUTPUT "%04u/%02u/%02u %02u:%02u:%06.3lf"
 
 #define TIMESTAMP_INPUT "%u/%u/%u %u:%u:%lf"
-
-#include <sys/time.h>
 
 /** Julian days; the number of days since noon, January 1, 4713 BC- Which Joseph Justice Scaliger
  * estimated to be the beginning of history. This is a common time format used by Novas, so we

@@ -1,6 +1,12 @@
 #ifndef STARTRACK_MAIN_H
 #define STARTRACK_MAIN_H
 
+#include "util/io.h"
+#include "util/sockets.h"
+#include "engine/tracker.h"
+#include "engine/catalog.h"
+#include "controller/orion.h"
+
 /*!
 \mainpage Orion
 

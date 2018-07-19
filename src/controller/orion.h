@@ -2,11 +2,14 @@
 #define STARTRACK_ORION_H
 
 #include <pthread.h>
+#include <assert.h>
+#include <unistd.h>
 
+#include "util/sockets.h"
+#include "util/crc.h"
+#include "data/tats.h"
 #include "engine/catalog.h"
 #include "engine/tracker.h"
-#include "util/sockets.h"
-#include "data/tats.h"
 
 #define ORION_MODE_OFF 0
 
@@ -39,7 +42,7 @@ typedef struct {
     /** Socket for the sensor */
     unsigned int socket;
 
-    /** Used to prevent race conditions between main loop and ui thread */
+    /** Used to prevent race conditions between control loop and ui thread */
     pthread_mutex_t lock;
 
     /** Thread which runs the sensor control loop */

@@ -27,13 +27,15 @@ target_link_libraries( checkout novas )
 
 # These file comprise the source of the Orion star hunter software
 set( ORION_SOURCE
-        src/engine/tracker.c
-        src/engine/catalog.c
-        src/data/fk6.c
         src/util/vmath.c
         src/util/io.c
         src/util/jday.c
-        src/data/tats.c)
+        src/util/crc.c
+        src/data/fk6.c
+        src/data/tats.c
+        src/engine/tracker.c
+        src/engine/catalog.c
+        )
 
 # This is an interactive commandline program for benchmarking and testing program components
 add_executable( tester ${ORION_SOURCE} src/application/test.c)

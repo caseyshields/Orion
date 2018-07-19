@@ -1,8 +1,4 @@
-#include <assert.h>
-#include <engine/catalog.h>
-
-#include "catalog.h"
-#include "util/vmath.h"
+#include "engine/catalog.h"
 
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // allocate a catalog if none is provided

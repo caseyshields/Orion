@@ -1,6 +1,7 @@
-#include "data/tats.h"
+#include "util/crc.h"
 #include "util/io.h"
 #include "util/sockets.h"
+#include "data/tats.h"
 
 // we only allow one controller and one sensor
 #define MAX_CONNECTIONS 2
@@ -80,6 +81,8 @@ int main( int argc, char *argv[] ) {
                     case TATS_TRK_DATA:
                         midc01 = (MIDC01*)buffer;
                         tats_print_midc01( midc01, stdout );
+                        int crc = crc16( (char*) midc01, 20);
+                        printf("sent : %04X\ncalc : %04X\n", midc01->crc, crc);
                         break;
 
                     case TATS_LAST_MSG:
@@ -91,9 +94,7 @@ int main( int argc, char *argv[] ) {
                         for(int n=0; n<result; n++)
                             printf( "%X ", buffer[n]);
                         printf("\n");
-                        fflush(stdout);
                 }
-
 //          result = send( socket, &entry, sizeof(entry), 0);
 //          if( result == SOCKET_ERROR )
 //              terminate( WSAGetLastError(), "Failed to send back the entry");
@@ -109,7 +110,7 @@ int main( int argc, char *argv[] ) {
                 socket_close( client );
                 break;
             }
-
+            fflush(stdout);
         } while (1);
     }
 

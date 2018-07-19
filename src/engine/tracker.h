@@ -1,6 +1,8 @@
 #ifndef STARTRACK_TRACKER_H
 #define STARTRACK_TRACKER_H
 
+#include <assert.h>
+
 #include "novasc3.1/novas.h"
 #include "util/jday.h"
 
