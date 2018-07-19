@@ -18,7 +18,7 @@ is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://mermaid
  - simulator : a dummy server which simulates a slaved sensor
  - vmath : utility library of vector and spherical math routines
  - novasc3.1 : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
- - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data.
+ - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data. Project [page](http://wwwadd.zah.uni-heidelberg.de/datenbanken/fk6/index.php.de).
  - tats : provides structures and enumeration for dealing with TATS messages
 
 ## Code documentation
@@ -33,4 +33,5 @@ See generated [doxygen pages](https://caseyshields.github.io/Orion/index.html) h
   - Add [IERS-A bulletin](http://maia.usno.navy.mil/ser7/ser7.dat) projections to improve Novas accuraccy
   - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
   - Add web interface which utilizes [starmap](https://caseyshields.github.io/starlog/index.html) project to allow user interaction with the catalog
+  - Add more Vizier catalogs like the Yale Bright Star [Catalog](http://tdc-www.harvard.edu/catalogs/bsc5.html)
   
