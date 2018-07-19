@@ -1,9 +1,12 @@
 #ifndef STARTRACK_SOCKETS_H
 #define STARTRACK_SOCKETS_H
 
-/** This header is just an adapter to the sockets implementation of the build environment */
+/** This header is just an adapter to the sockets implementation of the build environment. It is
+ * not a completly insulating layer; there is enough overlap between winsock and posix sockets
+ * that we use the same method names and just swap out the header for all but a few methods.*/
 
 #ifdef WIN32
+
 #include <winsock.h>
 
 #define SLEEP_RESOLUTION 1000
@@ -22,5 +25,17 @@
 #define SLEEP_RESOLUTION 1
 
 #endif // WIN32
+
+/** Loads socket resources for the platform. */
+int socket_load();
+
+/** Obtains more detailed platform error information, if available */
+int socket_error();
+
+/** Close the connection then close the socket. */
+int socket_close( unsigned int socket );
+
+/** Release any platform resources needed for sockets */
+int socket_unload();
 
 #endif //STARTRACK_SOCKETS_H

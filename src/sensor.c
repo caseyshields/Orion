@@ -1,8 +1,4 @@
-#include <h/tats.h>
-#include "novasc3.1/novas.h"
-#include "h/tracker.h"
-#include "h/catalog.h"
-#include "h/vmath.h"
+#include "h/tats.h"
 #include "h/util.h"
 #include "h/sockets.h"
 
@@ -35,11 +31,10 @@ int main( int argc, char *argv[] ) {
     char* arg = get_arg( argc, argv, "-port", "43210" );//8080" );
     if( arg ) port = atoi( arg );
 
-    // load the winsock library
-    WSADATA wsadata;
-    int result = WSAStartup( MAKEWORD(2, 2), &wsadata);
+    // load sockets
+    int result = socket_load();
     if( result != 0 )
-        terminate( result, "Failed to initialize winsock" );
+        terminate( result, "Failed to initialize sockets" );
 
     // create a TCP socket for connecting to the server
     server = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -106,12 +101,12 @@ int main( int argc, char *argv[] ) {
             } else if (result == 0) {
                 // terminate(0, NULL);
                 printf( "[%d] Client closed connection\n\0", WSAGetLastError());
-                closesocket( client );
+                socket_close( client );
                 break;
             } else {
                 //terminate(WSAGetLastError(), "Failed to read from client\n");
                 printf( "[%d] Failed to read from client\n\0", WSAGetLastError());
-                closesocket( client );
+                socket_close( client );
                 break;
             }
 
@@ -130,13 +125,13 @@ void terminate(int status, char* msg) {
         free( buffer );
 
     if( server != INVALID_SOCKET )
-        closesocket( server );
+        socket_close( server );
 
     if( client != INVALID_SOCKET )
-        closesocket( client );
+        socket_close( client );
 
-    // winsock cleanup routine
-    WSACleanup();
+    // release socket resources
+    socket_unload();
 
     exit( status );
 }

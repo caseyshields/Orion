@@ -1,15 +1,11 @@
-#include <unistd.h>
-#include <assert.h>
+
+
 #include <h/tats.h>
 #include <h/orion.h>
-#include <h/tracker.h>
-#include <novasc3.1/novas.h>
-#include <h/catalog.h>
+#include <assert.h>
+#include <unistd.h>
 
-#include "h/orion.h"
-#include "h/vmath.h"
-
-MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 );
+MIDC01 * create_tracking_message(Orion * orion, MIDC01 * midc01 );
 
 Orion* orion_create( Orion * orion, unsigned short int id ) {
     if (!orion)
@@ -42,8 +38,7 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
     };
 
     // load the winsock library
-    WSADATA wsadata;
-    status = WSAStartup( MAKEWORD(2, 2), &wsadata);
+    status = socket_load();
     if( status != 0 ) {
         error = "Failed to initialize winsock";
         goto EXIT;
@@ -67,18 +62,11 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
     goto EXIT;
 
     CLEANUP_SOCKET:
-#ifdef WIN32
-    status = WSAGetLastError();
-    closesocket( orion->socket );
-#else
-    status = 1;
-    close( orion->socket );
-#endif
+    status = socket_error();
+    socket_close( orion->socket );
 
     CLEANUP_WINSOCK:
-#ifdef WIN32
-    WSACleanup();
-#endif
+    socket_unload();
 
     EXIT:
     if (error)
@@ -171,9 +159,6 @@ int orion_start( Orion * orion ) {
 } // helpful tutorial: https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
 void orion_track( Orion * orion, Entry target ) {
-    // can this be called regardless if the server is on or not?
-    // assert( orion->mode != ORION_MODE_OFF );
-
     // safely change the target
     pthread_mutex_lock( &(orion->lock) );
     orion->target = target;
@@ -181,7 +166,6 @@ void orion_track( Orion * orion, Entry target ) {
 }
 
 int orion_stop( Orion * orion ) {
-
     // obtain lock since we need to change the mode
     pthread_mutex_lock( &(orion->lock) );
 
@@ -223,20 +207,9 @@ void orion_disconnect( Orion * orion ) {
 //        return 1;
 //    }
 
-#ifdef WIN32
-    // winsock specific, close the network connection
-    if( shutdown(orion->socket, SD_SEND) == SOCKET_ERROR )
-        ;// well we tried
-
     // close the socket
-    closesocket( orion->socket );
-
-    // unloads the winsock libraries
-    WSACleanup(); // no posix equivalent
-#else
-    // posix version
-    close( orion->socket );
-#endif
+    socket_close( orion->socket );
+    socket_unload();
 }
 
 jday orion_set_time( Orion * orion, jday time ) {
