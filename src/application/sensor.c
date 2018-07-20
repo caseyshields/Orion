@@ -82,7 +82,8 @@ int main( int argc, char *argv[] ) {
                         midc01 = (MIDC01*)buffer;
                         tats_print_midc01( midc01, stdout );
                         int crc = crc16( (char*) midc01, 20);
-                        printf("sent : %04X\ncalc : %04X\n", midc01->crc, crc);
+                        if(midc01->crc!=crc)
+                            printf("Error: sent=%04X, calc=%04X\n", midc01->crc, crc);
                         break;
 
                     case TATS_LAST_MSG:

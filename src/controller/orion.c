@@ -1,4 +1,8 @@
+#include <novasc3.1/novas.h>
+#include <engine/tracker.h>
+#include <engine/catalog.h>
 #include "controller/orion.h"
+#include "orion.h"
 
 MIDC01 * create_tracking_message(Orion * orion, MIDC01 * midc01 );
 
@@ -224,7 +228,7 @@ jday orion_set_time( Orion * orion, jday time ) {
     return last;
 }
 
-double orion_get_time(Orion *orion) {
+jday orion_get_time(Orion *orion) {
     pthread_mutex_lock( &(orion->lock) );
     double time = orion->tracker.utc;
     pthread_mutex_unlock( &(orion->lock) );
@@ -317,43 +321,54 @@ void orion_print_status(Orion * orion, FILE * file) {
 
     pthread_mutex_lock( &(orion->lock) );
 
+    fprintf( file, "\n" );
+
+    // print out the time
     Tracker * tracker = &(orion->tracker);
+    char * stamp = jday2stamp( orion->tracker.utc );
+    fprintf( file, "%s UTC (%+05.3lf UT1)\n", stamp, tracker->ut1_utc );
+
+    // print out location details
+    on_surface * site = &(tracker->site);
+    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
+    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
+    fprintf( file, "%10.6lf %c, %10.6lf %c, %6.1lf m\n",
+             site->latitude, ns, site->longitude, ew, site->height );
+
+    // print atmospheric details
+    fprintf( file, "%5.1lf°C %4.3f bar\n", site->temperature, site->pressure/1000.0 );
+
+    // print out the target
     Entry * target = &(orion->target);
+    if( target->novas.starnumber ) {
+        cat_entry *entry = &(target->novas);
+        double zd = 0.0, az = 0.0;
+        tracker_to_horizon(tracker, entry, &zd, &az);
+        fprintf(file, "%s % 4ld % 8.4lf°zd % 8.4lf°az %3.1lfv %s\n",
+                entry->catalog, entry->starnumber, zd, az, target->magnitude, entry->starname);
 
-    tracker_print_time( tracker, file );
-    tracker_print_site( tracker, file );
-    entry_print( target ); // todo send to file...
+        // print out an example midc01 message
+        MIDC01 midc01;
+        create_tracking_message(orion, &midc01);
+        tats_print_midc01(&midc01, file);
+    }
 
-    MIDC01 midc01;
-    create_tracking_message(orion, &midc01);
-    tats_print_midc01( &midc01, file );
+    fprintf( file, "\n" );
 
     pthread_mutex_unlock( &(orion->lock) );
-    //char * stamp = jday2stamp( tracker_get_time( tracker ) );
-//    fprintf( file, "%s (%8.4lf, %8.4lf, %8.4lf) ",
-//             stamp, site->longitude, site->latitude, site->height
-//    );
 
-    //        if (orion->target.starnumber) {
-//            // calculate the current location of the target
-//            tracker_to_horizon( &(orion->tracker), &(orion->target), &zd, &az);
-//
-//            // format the current time
-//            time_t julian_seconds = (time_t)(3600.0 * orion->tracker.utc);
-//            int microseconds = (int)(1000000*fmod( 3600.0 * orion->tracker.utc, 1.0 ));
-//            struct tm * date = gmtime( &julian_seconds );
-//            char time[32];
-//            strftime( time , 32, "%Y/%m/%d %H:%M:%S\0", date );
-//
-//            // devise the tracking message
-//            sprintf(buffer, "%s.%d %4s%ld %s (%lf, %lf)\n\0",
-//                    time,
-//                    microseconds,
-//                    orion->target.catalog,
-//                    orion->target.starnumber,
-//                    orion->target.starname,
-//                    az, zd);
-//        } else { // otherwise send an idle message
-//            sprintf(buffer, "IDLE\n\0");
-//        }
+}
+
+on_surface orion_get_location( Orion * orion ) {
+    pthread_mutex_lock( &(orion->lock) );
+    on_surface location = orion->tracker;
+    pthread_mutex_unlock( &(orion->lock) );
+    return location;
+}
+
+Entry orion_get_target( Orion * orion ) {
+    pthread_mutex_lock( &(orion->lock) );
+    Entry target = orion->target;
+    pthread_mutex_unlock( &(orion->lock) );
+    return target;
 }

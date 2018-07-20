@@ -1,4 +1,7 @@
+#include <engine/catalog.h>
 #include "application/main.h"
+
+
 
 int main( int argc, char *argv[] ) {
     // create and configure the Orion server
@@ -74,12 +77,28 @@ int main( int argc, char *argv[] ) {
         if (strncmp("search ", line, 7) == 0) {
             float mag;
             double az_0, az_1, zd_0, zd_1;
-            result = scanf("search %f %lf %lf %lf %lf\n", &mag, &az_0, &az_1, &zd_0, &zd_1 );
+            result = sscanf(line, "search %f %lf %lf %lf %lf\n", &mag, &az_0, &az_1, &zd_0, &zd_1 );
             if( result == 0) {
                 printf( "usage: search <min magnitude> <min az> <max az> <min zd> <max zd>\n");
                 continue;
             }
             search( &catalog, &(orion.tracker), az_0, az_1, zd_0, zd_1, mag );
+        }
+
+        // search by Visual Magnitude
+        if( strncmp("mag ", line, 4)==0 ) {
+            float mag;
+            result = sscanf(line, "mag %f\n", &mag );
+            if( result == 0) {
+                printf( "usage: mag <min>\n");
+                continue;
+            }
+            int check_magnitude( Entry *entry ) {
+                return entry->magnitude <= mag;
+            }
+            Catalog* results = catalog_filter(&catalog, check_magnitude, NULL);
+            catalog_each( results, entry_print );
+            free( results );
         }
 
         // start the sensor control thread ////////////////////////////////////
@@ -142,7 +161,7 @@ int search(
 {
     // first find the stars which are bright enough
     int is_bright( Entry * entry ) {
-        return entry->magnitude >= mag_min;
+        return entry->magnitude <= mag_min;
     }
     Catalog * bright_stars = catalog_filter( catalog, is_bright, NULL );
 
@@ -181,8 +200,11 @@ int search(
     int count = results->size;
 
     // release catalogs
+    catalog_clear( bright_stars );
     catalog_free( bright_stars );
     free( bright_stars );
+
+    catalog_clear( results );
     catalog_free( results );
     free( results );
 
