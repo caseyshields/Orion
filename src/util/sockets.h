@@ -18,6 +18,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define INVALID_SOCKET (unsigned int)(~0)
 #define SOCKET_ERROR -1

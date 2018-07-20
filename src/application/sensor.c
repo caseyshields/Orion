@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "util/crc.h"
 #include "util/io.h"
 #include "util/sockets.h"
@@ -40,7 +42,7 @@ int main( int argc, char *argv[] ) {
     // create a TCP socket for connecting to the server
     server = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if( server == INVALID_SOCKET )
-        terminate( WSAGetLastError(), "Failed to create socket");
+        terminate( socket_error(), "Failed to create socket");
 
     // construct server address structure
     struct sockaddr_in address;
@@ -52,7 +54,7 @@ int main( int argc, char *argv[] ) {
     // bind socket to host network
     result = bind( server, (struct sockaddr *) &address, sizeof(address) );
     if( result == SOCKET_ERROR )
-        terminate( WSAGetLastError(), "Failed to bind server socket" );
+        terminate( socket_error(), "Failed to bind server socket" );
 
     // set socket to listen for incoming connections
     result = listen( server, MAX_CONNECTIONS );
@@ -66,7 +68,7 @@ int main( int argc, char *argv[] ) {
         client = accept(server, NULL, NULL);
         if (client == INVALID_SOCKET) {
             //terminate(WSAGetLastError(), "failed to accept client connection\n");
-            printf( "[%d] Failed to accept client connection\n\0", WSAGetLastError() );
+            printf( "[%d] Failed to accept client connection\n\0", socket_error() );
             continue;
         }
 
@@ -102,12 +104,12 @@ int main( int argc, char *argv[] ) {
 
             } else if (result == 0) {
                 // terminate(0, NULL);
-                printf( "[%d] Client closed connection\n\0", WSAGetLastError());
+                printf( "[%d] Client closed connection\n\0", socket_error());
                 socket_close( client );
                 break;
             } else {
                 //terminate(WSAGetLastError(), "Failed to read from client\n");
-                printf( "[%d] Failed to read from client\n\0", WSAGetLastError());
+                printf( "[%d] Failed to read from client\n\0", socket_error());
                 socket_close( client );
                 break;
             }
