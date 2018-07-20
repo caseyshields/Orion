@@ -15,8 +15,8 @@ void terminate( int status, char* msg );
 
 int mode = 1;
 char *buffer;
-unsigned int server = INVALID_SOCKET;
-unsigned int client = INVALID_SOCKET;
+int server = INVALID_SOCKET;
+int client = INVALID_SOCKET;
 
 /** A simulator of a TATS sensor used for testing Orion.
  * @author Casey Shields

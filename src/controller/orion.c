@@ -116,7 +116,7 @@ void * orion_control_loop( void * arg ) {
 
         // set error and exit if there was a transmission error
         if (sent < length) {
-            sprintf(orion->error, "[%d] Failed to send entire message, sent %d bytes\n\0", WSAGetLastError(), sent);
+            sprintf(orion->error, "[%d] Failed to send entire message, sent %d bytes\n\0", socket_error(), sent);
             break;
         }
 
@@ -130,7 +130,7 @@ void * orion_control_loop( void * arg ) {
 //endif
 // TODO use running average to set heartbeat rate
 
-    } while( TRUE );
+    } while( 1 );
 
     // release the lock after we abort the control loop
     pthread_mutex_unlock( &(orion->lock) );
@@ -359,12 +359,12 @@ void orion_print_status(Orion * orion, FILE * file) {
 
 }
 
-on_surface orion_get_location( Orion * orion ) {
-    pthread_mutex_lock( &(orion->lock) );
-    on_surface location = orion->tracker;
-    pthread_mutex_unlock( &(orion->lock) );
-    return location;
-}
+//on_surface orion_get_location( Orion * orion ) {
+//    pthread_mutex_lock( &(orion->lock) );
+//    on_surface location = orion->tracker;
+//    pthread_mutex_unlock( &(orion->lock) );
+//    return location;
+//}
 
 Entry orion_get_target( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );
