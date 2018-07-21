@@ -23,7 +23,11 @@ add_library( novas STATIC ${NOVAS_SOURCE} )
 # This is the test program that came with Novas for reduced accuracy mode;
 # Its output is meant to match "data/novas/checkout-stars-usno.txt"
 add_executable( checkout src/novasc3.1/test/checkout-stars.c )
-target_link_libraries( checkout novas )
+if(WIN32)
+    target_link_libraries( checkout novas )
+else(WIN32)
+    target_link_libraries( checkout novas m )
+endif(WIN32)
 
 # These file comprise the source of the Orion star hunter software
 set( ORION_SOURCE
@@ -39,13 +43,17 @@ set( ORION_SOURCE
 
 # This is an interactive commandline program for benchmarking and testing program components
 add_executable( tester ${ORION_SOURCE} src/application/test.c)
-target_link_libraries( tester novas )
+if(WIN32)
+    target_link_libraries( tester novas )
+else(WIN32)
+    target_link_libraries( tester novas m )
+endif(WIN32)
 
 add_executable( sensor ${ORION_SOURCE} src/util/sockets.c src/application/sensor.c)
 if (WIN32)
     target_link_libraries( sensor novas wsock32 ws2_32 )
 else(WIN32)
-    target_link_libraries( sensor novas )
+    target_link_libraries( sensor novas m )
 endif(WIN32)
 
 #add_executable( sensor2 ${ORION_SOURCE} src/util/sockets.c src/application/sensor.c)
@@ -55,5 +63,5 @@ add_executable( orion ${ORION_SOURCE} src/util/sockets.c src/controller/orion.c 
 if (WIN32)
     target_link_libraries( orion novas pthread wsock32 ws2_32 )
 else (WIN32)
-    target_link_libraries( orion novas pthread )
+    target_link_libraries( orion novas pthread m )
 endif (WIN32)

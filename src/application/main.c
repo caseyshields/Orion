@@ -1,8 +1,6 @@
 #include <engine/catalog.h>
 #include "application/main.h"
 
-
-
 int main( int argc, char *argv[] ) {
     // create and configure the Orion server
     Orion orion;

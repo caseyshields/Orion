@@ -1,8 +1,4 @@
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "vmath.h"
+#include "util/vmath.h"
 
 void scale( double U[3], double k ) {
     U[0] *= k;
