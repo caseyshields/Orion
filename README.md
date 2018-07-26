@@ -4,8 +4,9 @@ Star hunting software. Provides tools to search the FK6 star catalog by brightne
 position. TATS sensors can then be concurrently directed to target selected stars. Orion relies heavily 
 on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/)
 
-Orion is developed using [CLion](https://www.jetbrains.com/clion/) and the [MinGW](http://mingw.org/) toolchain. Code
-is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
+Orion is developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and 
+[MinGW](http://mingw.org/) toolchains. Code is documented using [doxygen](http://www.doxygen.org), 
+[Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
 
 ## Components
 
@@ -27,8 +28,6 @@ See generated [doxygen pages](https://caseyshields.github.io/Orion/index.html) h
 
 ## Future Plans
  
-  - Improve portability by switching to [cygwin](https://www.cygwin.com/) for full posix compliance
-  - Switch from winsock to sockets
   - Add planet tracking by integrating JPL ephemeris
   - Add [IERS-A bulletin](http://maia.usno.navy.mil/ser7/ser7.dat) projections to improve Novas accuraccy
   - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
