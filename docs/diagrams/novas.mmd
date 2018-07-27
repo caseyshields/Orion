@@ -1,27 +1,36 @@
 graph TB
 simulator(Sensor Simulator)
 subgraph Orion
+
 subgraph User Interface
 ui[Commandline UI]
 end
+
 subgraph Controllers
 test[Test]
 orion[Orion Server]
 end
+
 subgraph Engines
 catalog(Catalog)
 tracker(Tracker)
 end
+
 subgraph Data Access
 config(config)
 fk6(FK6)
 iers(IERS-A)
 end
+
 subgraph Util
 novas(Novas 3.1)
-sockets(winsock)
+sockets(sockets)
 pthreads(pthreads)
 vmath(vmath)
+jday(jday)
+tats(tats)
+crc(crc)
+io(io)
 end
 end
 
@@ -38,3 +47,7 @@ catalog-.->fk6
 novas-.-pthreads
 pthreads-.-sockets
 sockets-.-vmath
+
+jday-.-tats
+tats-.-crc
+crc-.-io
