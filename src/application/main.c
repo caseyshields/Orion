@@ -22,11 +22,11 @@ int main( int argc, char *argv[] ) {
     char *arg = get_arg(argc, argv, "-port", "43210");
     port = (unsigned short) atoi(arg);
 
-    // connect and start the orion server
-    if (orion_connect( &orion, ip, port ))
-        goto EXIT;
-    if (orion_start( &orion ))
-        goto DISCONNECT;
+//    // connect and start the orion server
+//    if (orion_connect( &orion, ip, port ))
+//        goto EXIT;
+//    if (orion_start( &orion ))
+//        goto DISCONNECT;
 
     // start the main ui loop
     while( 1 ) {
@@ -101,8 +101,11 @@ int main( int argc, char *argv[] ) {
 
         // start the sensor control thread ////////////////////////////////////
         if (strncmp( "start", line, 5 ) == 0) {
+            // connect and start the orion server
+            if (orion_connect( &orion, ip, port ))
+                goto EXIT;
             if (orion_start( &orion ))
-                printf("Sensor control thread already started.\n");
+                goto DISCONNECT;
         }
 
         // select a target ////////////////////////////////////////////////////

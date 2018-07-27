@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <signal.h>
 
 #include "util/crc.h"
 #include "util/io.h"
@@ -11,7 +12,15 @@
 #define MAX_BUFFER_SIZE 2<<10
 
 unsigned int configure_server( int argc, char* argv[] );
+
+// convenience method for printing diagnostic methods
 void terminate( int status, char* msg );
+
+// interrupt handler for abnormal program termination
+void stop( int signal );
+
+// releases all the resources
+void cleanup();
 
 int mode = 1;
 char *buffer;
@@ -33,6 +42,15 @@ int main( int argc, char *argv[] ) {
     unsigned short port; // port
     char* arg = get_arg( argc, argv, "-port", "43210" );//8080" );
     if( arg ) port = atoi( arg );
+
+    // register an event handler for abnormal exit
+    signal( SIGTERM , cleanup );
+    signal( SIGABRT , cleanup );
+    signal( SIGINT , cleanup );
+    // sigaction(); // is this linux specific?
+
+    // register a cleanup routine with program termination
+    atexit( cleanup );
 
     // load sockets
     int result = socket_load();
@@ -65,10 +83,11 @@ int main( int argc, char *argv[] ) {
     while( mode ) { // todo need a way to gracefully exit
 
         printf("Awaiting client.\n");
-        client = accept(server, NULL, NULL);
+        client = accept(server, NULL, NULL); // Ctrl-C happens on the accept() thread, so my registered Handler doesn't run?
         if (client == INVALID_SOCKET) {
             //terminate(WSAGetLastError(), "failed to accept client connection\n");
-            printf( "[%d] Failed to accept client connection\n\0", socket_error() );
+//            printf( "[%d] Failed to accept client connection\n\0", socket_error() );
+//            mode = 0;
             continue;
         }
 
@@ -84,7 +103,7 @@ int main( int argc, char *argv[] ) {
                         midc01 = (MIDC01*)buffer;
                         tats_print_midc01( midc01, stdout );
                         int crc = crc16( (char*) midc01, 20);
-                        if(midc01->crc!=crc)
+                        if( midc01->crc != crc )
                             printf("Error: sent=%04X, calc=%04X\n", midc01->crc, crc);
                         break;
 
@@ -98,15 +117,16 @@ int main( int argc, char *argv[] ) {
                             printf( "%X ", buffer[n]);
                         printf("\n");
                 }
-//          result = send( socket, &entry, sizeof(entry), 0);
-//          if( result == SOCKET_ERROR )
-//              terminate( WSAGetLastError(), "Failed to send back the entry");
+//              result = send( socket, &entry, sizeof(entry), 0);
+//              if( result == SOCKET_ERROR )
+//                  terminate( WSAGetLastError(), "Failed to send back the entry");
 
             } else if (result == 0) {
                 // terminate(0, NULL);
                 printf( "[%d] Client closed connection\n\0", socket_error());
                 socket_close( client );
                 break;
+
             } else {
                 //terminate(WSAGetLastError(), "Failed to read from client\n");
                 printf( "[%d] Failed to read from client\n\0", socket_error());
@@ -114,15 +134,28 @@ int main( int argc, char *argv[] ) {
                 break;
             }
             fflush(stdout);
-        } while (1);
+        } while ( mode );
     }
+
+    fprintf( stderr, "Main loop exited [%d]\n", mode );
 
     terminate(0, NULL);
 }
 
 void terminate(int status, char* msg) {
-    if( msg!=NULL )
-        printf( "Error : %s : %d", msg, status );
+    if (msg != NULL)
+        fprintf(stderr, "Error : %s : %d\n", msg, status);
+    exit( status );
+}
+
+void stop( int signal ) {
+    fprintf(stdout, "signal handler invoked [%d]\n", signal );
+    fflush( stdout );
+    mode = 0;
+}
+
+void cleanup() {
+    fprintf( stderr, "entering cleanup\n" );
 
     // release resources
     if( buffer != NULL )
@@ -136,8 +169,6 @@ void terminate(int status, char* msg) {
 
     // release socket resources
     socket_unload();
-
-    exit( status );
 }
 
 // retrieve a list of available sockets for the server
