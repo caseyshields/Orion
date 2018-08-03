@@ -17,6 +17,8 @@
 
 #define ORION_MODE_REAL_TIME 2
 
+#define ORION_MODE_KILL_SIM 3
+
 #define ORION_RATE 1
 //todo eventually put it to 50 hertz...
 
@@ -102,10 +104,13 @@ void orion_clear_error( Orion * orion);
  * @returns the last marked timestamp.*/
 jday orion_set_time( Orion *orion, jday time );
 
+/** @return the current julian date in UTC in days @see jday.h */
 jday orion_get_time( Orion *orion );
 
+/** @return a thread-safe copy of the orion server's current tracker */
 Tracker orion_get_tracker( Orion * orion );
 
+/** @return a thread safe copy of the current target of the Orion server. */
 Entry orion_get_target( Orion * orion );
 
 void orion_print_status(Orion * orion, FILE * file);

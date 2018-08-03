@@ -63,6 +63,27 @@ Sets a new target which the Orion server will direct the TATS sensor at
 Closes the sensor connection, shuts down the Orion server, releases the
  catalogs, and exits the program.
 
+ status
+ Prints the current status of the orion server to the screen, including the control thread state, tracker location, time, current target, and example tracking message
+
+ search mag Az0 Zd0 Az1 Zd1
+searches the current night sky in topocentric coordinates
+
+ name substr
+ searches the catalog by starname
+
+ track id
+ sets the current target to the catalog entry with the given starnumber
+
+ start ip port
+ opens a connection with the given sensor
+
+ stop
+ closes the sensor connection and ends the control thread
+
+ report time step count
+ prints a report
+
 \section tests Test Suite
  TODO compile all the one-off tests into a test suite
 */

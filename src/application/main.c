@@ -40,19 +40,51 @@ int main( int argc, char *argv[] ) {
         free( stamp );
 
         // set current time ///////////////////////////////////////////////////
-//        if( strncmp("time ", line, 5)==0 ) {
-//            int year, month, day, hour, minute;
-//            double seconds;
-//
-//            char stamp[32];
-//            result = sscanf( line, "time %s\n", stamp);
-//            if( result==0 ) {
-//                char * stamp = jday2stamp( tracker_get_time(&(orion.tracker)) );
-//                printf( "current time %s\n", stamp );
+        if( strncmp("time ", line, 5)==0 ) {
+            int year, month, day, hour, min, count;
+            double secs, step;
+            result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
+                            &year, &month, &day, &hour, &min, &secs, &step, &count );
+            if( result < 6) {
+                printf( "usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>\nnote time should be int UTC\n");
+                continue;
+            }
+            jday time = date2jday(year, month, day, hour, min, secs);
+            orion_set_time( &orion, time );
+        } // todo add leap seconds and ut1 offset as optional parameters
+
+        // set current location ///////////////////////////////////////////////
+        if( strncmp("location ", line, 9)==0 ) {
+            double lat=0, lon=0, height=0;
+            result = sscanf(line, "location %lf %lf %lf\n", &lat, &lon, &height );
+            if(result < 3) {
+                printf( "usage: location <Lat:-90.0 to 90.0> <Lon:0.0 to 360> <height: meters>\n" );
+                continue;
+            }
+            //orion_set_location( lat, lon, height );
+        }
+
+        // set current atmosphere /////////////////////////////////////////////
+        else if(strncmp("weather ", line, 8)==0 ) {
+            double temperature=0, pressure=0;
+            result = sscanf(line, "weather %lf %u\n" );
+            if( result<2 ) {
+                printf("usage: weather <temperature:celsius> <pressure:millibars>\n");
+                continue;
+            }
+            //orion_set_weather( temperature, pressure );
+        }
+
+//        // load a vizier catalog //////////////////////////////////////////////
+//        else if( strncmp("load ", line, 5)==0 ) {
+//            char* meta=0, data=0;
+//            result = sscanf(line, "load %s %s\n");
+//            if(result<2) {
+//                printf("usage: load <meta:path> <data:path>");
 //                continue;
-//            } else {
-//
 //            }
+//            // how do we determine the metadata to use? filename of the data?
+//
 //        }
 
         // search name ////////////////////////////////////////////////////////
@@ -83,7 +115,8 @@ int main( int argc, char *argv[] ) {
             search( &catalog, &(orion.tracker), az_0, az_1, zd_0, zd_1, mag );
         }
 
-        // search by Visual Magnitude
+        // search by Visual Magnitude /////////////////////////////////////////
+        //TODO combine with search by making patch arguments optional
         if( strncmp("mag ", line, 4)==0 ) {
             float mag;
             result = sscanf(line, "mag %f\n", &mag );
@@ -130,7 +163,7 @@ int main( int argc, char *argv[] ) {
             double secs, step;
             result = sscanf(line, "report %u/%u/%u %u:%u:%lf %lf %u\n",
                     &year, &month, &day, &hour, &min, &secs, &step, &count );
-            if( result == 0) {
+            if( result < 8) {
                 printf( "usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss> <step> <count>\n");
                 continue;
             }
@@ -229,15 +262,28 @@ int search(
 
 void report( Tracker * tracker, Entry * target, jday start, double step, int count, FILE * stream ) {
     double az, zd;
+
+    // print tracker information
+    tracker_print_site( tracker, stream );
+    // TODO print target information
+
+    // print the header
     fprintf( stream, "UTC\tAZ\tZD\n" );
+
+    // step over the given time interval
+    step /= SECONDS_IN_DAY;
     jday end = start + (step*count);
-    while( start<end ) {
+    while( start < end ) {
+
+        // calculate coordinates at the given time
         tracker_set_time( tracker, start );
         tracker_to_horizon( tracker, &(target->novas), &az, &zd );
+
+        // print report entry
         char * ts = jday2stamp( start );
         fprintf( stream, "%s\t%010.6lf\t%010.6lf\n", ts, az, zd );
         free( ts );
-        start += end;
+        start += step;
     }
 }
 
