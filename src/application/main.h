@@ -103,6 +103,15 @@ void configure_catalog( int argc, char* argv[], Catalog* catalog );
 int search( Catalog * catalog, Tracker * tracker,
             double az_min, double az_max, double zd_min, double zd_max, float mag_min);
 
+/** produces a tsv report of a targets coordinates over the specified time interval
+ * @param tracker
+ * @param target a catalog entry of a desired celestial target
+ * @param start the beginnning time of the report in UTC
+ * @param step the number of fractional seconds to increment the report time by
+ * @param count the total number of steps to take
+ * @param stream the file to write the report to*/
+void report( Tracker * tracker, Entry * target, jday start, double step, int count, FILE * stream );
+
 #endif //STARTRACK_MAIN_H
 
 //Henderson Location:  W114°58'48.0", N36°03'00.0",     0m

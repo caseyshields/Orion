@@ -125,6 +125,21 @@ int main( int argc, char *argv[] ) {
             orion_print_status( &orion, stdout );
         }
 
+        if( strncmp("report", line, 6)==0 ) {
+            int year, month, day, hour, min, count;
+            double secs, step;
+            result = sscanf(line, "report %u/%u/%u %u:%u:%lf %lf %u\n",
+                    &year, &month, &day, &hour, &min, &secs, &step, &count );
+            if( result == 0) {
+                printf( "usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss> <step> <count>\n");
+                continue;
+            }
+            Tracker tracker = orion_get_tracker( &orion );
+            Entry target = orion_get_target( &orion );
+            jday time = date2jday(year, month, day, hour, min, secs);
+            report( &tracker, &target, time, step, count, stdout );
+        }
+
         // stop the sensor control thread and exit ////////////////////////////
         if( strncmp("exit", line, 4)==0 ) {
             orion_stop( &orion );
@@ -210,6 +225,20 @@ int search(
     free( results );
 
     return count;
+}
+
+void report( Tracker * tracker, Entry * target, jday start, double step, int count, FILE * stream ) {
+    double az, zd;
+    fprintf( stream, "UTC\tAZ\tZD\n" );
+    jday end = start + (step*count);
+    while( start<end ) {
+        tracker_set_time( tracker, start );
+        tracker_to_horizon( tracker, &(target->novas), &az, &zd );
+        char * ts = jday2stamp( start );
+        fprintf( stream, "%s\t%010.6lf\t%010.6lf\n", ts, az, zd );
+        free( ts );
+        start += end;
+    }
 }
 
 /** extracts tracker information from the program arguments and constructs a model of a tracker */
