@@ -104,6 +104,10 @@ jday orion_set_time( Orion *orion, jday time );
 
 jday orion_get_time( Orion *orion );
 
+Tracker orion_get_tracker( Orion * orion );
+
+Entry orion_get_target( Orion * orion );
+
 void orion_print_status(Orion * orion, FILE * file);
 
 #endif //STARTRACK_ORION_H

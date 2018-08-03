@@ -235,6 +235,22 @@ jday orion_get_time(Orion *orion) {
     return time;
 }
 
+Tracker orion_get_tracker( Orion * orion ) {
+    Tracker tracker;
+    pthread_mutex_lock( &(orion->lock) );
+    memcpy( &tracker, &(orion->tracker), sizeof( Tracker ) );
+    pthread_mutex_unlock( &(orion->lock) );
+    return tracker;
+}
+
+Entry orion_get_target( Orion * orion ) {
+    Entry target;
+    pthread_mutex_lock( &(orion->lock) );
+    memcpy( &target, &(orion->target), sizeof(Entry) );
+    pthread_mutex_unlock( &(orion->lock) );
+    return target;
+}
+
 int orion_is_connected (Orion * orion) {
     return orion->socket != INVALID_SOCKET;
 }
@@ -357,18 +373,4 @@ void orion_print_status(Orion * orion, FILE * file) {
 
     pthread_mutex_unlock( &(orion->lock) );
 
-}
-
-//on_surface orion_get_location( Orion * orion ) {
-//    pthread_mutex_lock( &(orion->lock) );
-//    on_surface location = orion->tracker;
-//    pthread_mutex_unlock( &(orion->lock) );
-//    return location;
-//}
-
-Entry orion_get_target( Orion * orion ) {
-    pthread_mutex_lock( &(orion->lock) );
-    Entry target = orion->target;
-    pthread_mutex_unlock( &(orion->lock) );
-    return target;
 }
