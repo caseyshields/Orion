@@ -107,8 +107,10 @@ int main( int argc, char *argv[] ) {
                             printf("Error: sent=%04X, calc=%04X\n", midc01->crc, crc);
                         break;
 
+                    // this is not normally a valid message, but we'll use it to force a shutdown.
                     case TATS_LAST_MSG:
-                        printf("Recieved message:\n%s\n", buffer);
+                        printf( "Recieved last message:\n", buffer );
+                        mode = 0;
                         break;
 
                     default:
@@ -149,8 +151,9 @@ void terminate(int status, char* msg) {
 }
 
 void stop( int signal ) {
-    fprintf(stdout, "signal handler invoked [%d]\n", signal );
-    fflush( stdout );
+    // probably shouldn't do IO in a signal handler
+//    fprintf(stdout, "signal handler invoked [%d]\n", signal );
+//    fflush( stdout );
     mode = 0;
 }
 
