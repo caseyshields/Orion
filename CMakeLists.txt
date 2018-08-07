@@ -29,6 +29,13 @@ else(WIN32)
     target_link_libraries( checkout novas m )
 endif(WIN32)
 
+
+# These files make up the C Unit Test library
+set( CUTEST_SOURCE
+        lib/cutest-1.5/CuTest.h
+        lib/cutest-1.5/CuTest.c )
+add_library( cutest STATIC ${CUTEST_SOURCE} )
+
 # These file comprise the source of the Orion star hunter software
 set( ORION_SOURCE
         src/util/vmath.c
@@ -44,9 +51,9 @@ set( ORION_SOURCE
 # This is an interactive commandline program for benchmarking and testing program components
 add_executable( tester ${ORION_SOURCE} src/application/test.c)
 if(WIN32)
-    target_link_libraries( tester novas )
+    target_link_libraries( tester novas cutest )
 else(WIN32)
-    target_link_libraries( tester novas m )
+    target_link_libraries( tester novas cutest m )
 endif(WIN32)
 
 add_executable( sensor ${ORION_SOURCE} src/util/sockets.c src/application/sensor.c)
@@ -65,3 +72,6 @@ if (WIN32)
 else (WIN32)
     target_link_libraries( orion novas pthread m )
 endif (WIN32)
+
+# this is the test program for the test library
+#add_executable( cutest CUTEST_SOURCE )

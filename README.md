@@ -4,9 +4,9 @@ Star hunting software. Provides tools to search the FK6 star catalog by brightne
 position. TATS sensors can then be concurrently directed to target selected stars. Orion relies heavily 
 on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/)
 
-Orion is developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and 
-[MinGW](http://mingw.org/) toolchains. Code is documented using [doxygen](http://www.doxygen.org), 
-[Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
+Orion is developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and [MinGW](http://mingw.org/) toolchains.
+Lightweight unit testing is done with [CuTest](http://cutest.sourceforge.net/).
+Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
 
 ## Components
 

@@ -1,5 +1,8 @@
 #include "util/crc.h"
 
+// Obtained from http://www.drdobbs.com/implementing-the-ccitt-cyclical-redundan/199904926
+// Written by Bob Felice
+
 int     crc_ok = 0x470F;
 
 unsigned short crc16(data_p, length)
