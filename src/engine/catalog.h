@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "novasc3.1/novas.h"
+#include "../lib/novasc3.1/novas.h"
 #include "util/vmath.h"
 #include "data/fk6.h"
 

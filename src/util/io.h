@@ -2,6 +2,8 @@
 #define STARTRACK_UTIL_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /** Retrieves the value subsequent to the specified option in the given command line options. If
  * the default_value is supplied, the function will return it. otherwise the method will print an

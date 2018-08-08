@@ -2,6 +2,12 @@
 #define STARTRACK_FK6_H
 
 #include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+
+#include "util/io.h"
 
 #define FK6_1_HEADER "Byte-by-byte Description of file: fk6_1.dat"
 #define FK6_3_HEADER "Byte-by-byte Description of file: fk6_3.dat"

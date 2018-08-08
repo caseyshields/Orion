@@ -3,7 +3,7 @@
 
 #include <sys/time.h>
 
-#include "novasc3.1/novas.h"
+#include "../lib/novasc3.1/novas.h"
 
 #define SECONDS_IN_DAY 86400.0
 

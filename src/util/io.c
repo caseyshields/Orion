@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "io.h"
 
 char* get_arg( int argc, char *argv[], char *name, char* default_value ) {

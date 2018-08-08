@@ -1,8 +1,4 @@
-#include <novasc3.1/novas.h>
-#include <engine/tracker.h>
-#include <engine/catalog.h>
 #include "controller/orion.h"
-#include "orion.h"
 
 MIDC01 * create_tracking_message(Orion * orion, MIDC01 * midc01 );
 

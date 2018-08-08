@@ -5,7 +5,7 @@
 #include "data/tats.h"
 #include "engine/tracker.h"
 #include "engine/catalog.h"
-#include "../../lib/cutest-1.5/CuTest.h"
+#include "../lib/cutest-1.5/CuTest.h"
 
 void benchmark( Catalog* catalog, Tracker* tracker, int trials );
 void test_conversions( CuTest * test );

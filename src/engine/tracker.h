@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-#include "novasc3.1/novas.h"
+#include "../lib/novasc3.1/novas.h"
 #include "util/jday.h"
 
 /** Novas in reduced accuracy mode can be expected to have 1 arcsecond accuracy when properly configured. */

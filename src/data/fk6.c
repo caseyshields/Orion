@@ -1,10 +1,4 @@
-#include <malloc.h>
-#include <string.h>
-#include <stdlib.h>
-#include <assert.h>
-
-#include "fk6.h"
-#include "util/io.h"
+#include "data/fk6.h"
 
 FK6 * fk6_create() {
     // allocate the structure if necessary
