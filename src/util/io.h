@@ -32,7 +32,7 @@ int get_value(const char *line, int start, int end, char *dest);
 /** Reads lines from the given file until a line matching the header is reached.
  * @param header A pointer to the line of text we are searching for.
  * @param file Filed handle to the file to be scanned
- * @retrun returns the number of line read, or a negative number if the line is not found.*/
+ * @return returns the number of line read, or a negative number if the line is not found.*/
 int scan_line(FILE *file, const char *header);
 
 #endif //STARTRACK_UTIL_H

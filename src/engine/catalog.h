@@ -75,7 +75,7 @@ typedef int (*EntryPredicate)(Entry*);
  * @param predicate a pointer to a boolean function of an Entry
  * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
  * @return a pointer to the resulting catalog, regardless if the result parameter was set to NULL. */
-Catalog* catalog_filter(Catalog * catalog, EntryPredicate predicate, Catalog * result );
+Catalog* catalog_filter(Catalog * catalog, EntryPredicate predicate, Catalog * results );
 
 /** Searches a catalog for entries within the geometry and returns a catalog holding the results.
  * No effort is taken to remove duplicates from the results.
@@ -101,7 +101,7 @@ Catalog* catalog_search_patch( Catalog* catalog, double ra_min, double ra_max, d
  * No effort is taken to remove duplicates from the results
  * @param catalog The catalog to be searched
  * @param substring A case sensitive sub-string to search entry names for
- * @param A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
+ * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
 Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results );
 
 /** Selects the first entry with the given Fundamental Catalog ID.

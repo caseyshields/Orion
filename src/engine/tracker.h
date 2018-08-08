@@ -44,6 +44,7 @@ int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs);
 jday tracker_get_time(Tracker *tracker);
 
 /** Sets the current time for the star tracker
+ * @param tracker
  * @param utc The desired tracker's UTC time in julian day format */
 void tracker_set_time(Tracker *tracker, jday utc);
 
@@ -58,6 +59,7 @@ void tracker_set_location(Tracker *tracker, double latitude, double longitude, d
 on_surface tracker_get_location(Tracker *tracker);
 
 /** A simple model is used to estimate atmospheric refraction by novas. This sets it's coefficients.
+ * @param tracker
  * @param temperature the temperature at the sensor in degrees Celsius.
  * @param pressure the air pressure at the sensor in millibars.*/
 void tracker_set_weather(Tracker *tracker, double temperature, double pressure);

@@ -64,6 +64,7 @@ typedef struct {
 
 /** Instantiates the given Orion structure, allocating space if the argument is NULL.
  * @param orion pointer to structure to instantiate, or NULL if a structure should be allocated
+ * @param id A sensor ID for the Orion server to use when comunicating with Tats devices
  * @return a pointer to the instantiated structure regardless if it was allocated. */
 Orion * orion_create( Orion * orion, unsigned short int id );
 
@@ -80,6 +81,7 @@ int orion_connect( Orion * orion, char * ip, unsigned short port );
 int orion_start( Orion * orion );
 
 /** Specify a target which the control thread will instruct the sensor to track. Thread safe.
+ * @param orion The server which will track the target
  * @param target A novas structure holding the celestial location of the target. */
 void orion_track( Orion * orion, Entry target );
 
