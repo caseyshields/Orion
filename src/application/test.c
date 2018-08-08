@@ -12,13 +12,13 @@ void test_conversions( CuTest * test );
 void test_time( CuTest * test );
 void test_tats( CuTest * test );
 void test_crc( CuTest * test );
-void test_FK6();
+void test_FK6( CuTest * test );
 void test_BSC5();
 
 int main() {
     CuSuite * suite = CuSuiteNew();
     SUITE_ADD_TEST( suite, test_conversions );
-//    SUITE_ADD_TEST( suite, test_FK6 );
+    SUITE_ADD_TEST( suite, test_FK6 );
     SUITE_ADD_TEST( suite, test_time );
     SUITE_ADD_TEST( suite, test_tats );
     SUITE_ADD_TEST( suite, test_crc );
@@ -32,8 +32,8 @@ int main() {
 }
 
 void test_conversions( CuTest * test ) {
-    int d,h,m;
-    double s, degrees, second = (1.0/24/60/60);
+    int d = 0, m = 0;
+    double s = 0.0;
     for (long seconds=0; seconds<360*60*60; seconds++) {
         double degrees = ((double)seconds)/(60.0*60.0);
         degrees2dms(degrees, &d, &m, &s);
@@ -43,68 +43,6 @@ void test_conversions( CuTest * test ) {
         free(str);
         CuAssertTrue( test, fabs(degrees-d2) < 0.0000001 );
     }
-}
-
-void test_FK6() {
-    Catalog * catalog = catalog_create( 0, 1024 );
-
-    // load metadata from readme
-    FILE * readme = fopen("../data/fk6/ReadMe", "r");
-    assert(NULL != readme);
-    FK6 * fk6_1 = fk6_create();
-    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
-    FK6 * fk6_3 = fk6_create();
-    fk6_load_fields( fk6_3, readme, FK6_3_HEADER );
-    fclose(readme);
-
-    // load first part of FK6
-    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
-    assert(NULL != data1);
-    catalog_load_fk6( catalog, fk6_1, data1 );
-    fclose( data1 );
-    fk6_free( fk6_1 );
-    free( fk6_1 );
-
-    // load third part of FK6
-    FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
-    assert(NULL != data3);
-    catalog_load_fk6(catalog, fk6_3, data3);
-    fclose( data3 );
-    fk6_free( fk6_3 );
-    free( fk6_3 );
-
-    catalog_print( catalog );
-
-    catalog_free( catalog );
-    free( catalog );
-    catalog = 0;
-}
-
-// try using the metadata loader to load the yale
-void test_BSC5() {
-    // TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
-    // it could probably be made to work by splitting on whitespace.
-    Catalog * catalog = catalog_create( 0, 1024 );
-
-    FILE * readme = fopen("../data/bsc5/ReadMe", "r");
-    assert(NULL != readme);
-
-    char* header = "Byte-by-byte Description of file: catalog\n";
-    FK6 * bsc5 = fk6_create();
-    fk6_load_fields( bsc5, readme, header );//FK6_1_HEADER );
-    fclose( readme );
-
-    FILE * data = fopen("../data/bsc5/catalog", "r");
-    assert(NULL != data);
-    catalog_load_fk6(catalog, bsc5, data);
-    fclose( data );
-    fk6_free( bsc5 );
-    free( bsc5 );
-
-    catalog_print( catalog );
-
-    catalog_free( catalog );
-    free( catalog );
 }
 
 void test_time( CuTest * test ) {
@@ -120,7 +58,7 @@ void test_time( CuTest * test ) {
         jday time = stamp2jday(inputs[n]);
         CuAssertTrue( test, jday_is_valid(time) );
         char *copy = jday2stamp(time);
-        CuAssertTrue( test, strcmp(output, copy) == 0 );
+        CuAssertStrEquals( test, output, copy );
         free(copy);
     }
 }
@@ -163,6 +101,60 @@ void test_crc( CuTest * test ) {
 
 //    puts("strike RETURN to continue...");
 //        getchar();
+}
+
+void test_FK6( CuTest * test ) {
+    Catalog * catalog = catalog_create( 0, 1024 );
+
+    // load metadata for the first part of FK6
+    FILE * readme = fopen("../data/fk6/ReadMe", "r");
+    CuAssertPtrNotNullMsg( test, "Could not find FK6 readme", readme );
+    FK6 * fk6_1 = fk6_create();
+    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
+//    for(int n=0; n<fk6_1->cols; n++)
+//        fk6_print_field( &(fk6_1->fields[n]), stdout );
+    CuAssertIntEquals( test, 93, fk6_1->cols );
+
+    // load first part of FK6
+    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
+    CuAssertPtrNotNullMsg( test, "Could not find FK6 Part I", data1);
+    catalog_load_fk6( catalog, fk6_1, data1 );
+    fclose( data1 );
+    CuAssertIntEquals( test, 878, catalog->size );
+    // How can I test the validity of this data a bit more thoroughly...
+
+    // release all objects
+    fk6_free( fk6_1 );
+    free( fk6_1 );
+    catalog_free( catalog );
+    free( catalog );
+}
+
+// TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
+// try using the metadata loader to load the yale
+void test_BSC5() {
+    // it could probably be made to work by splitting on whitespace.
+    Catalog * catalog = catalog_create( 0, 1024 );
+
+    FILE * readme = fopen("../data/bsc5/ReadMe", "r");
+    assert(NULL != readme);
+
+    char* header = "Byte-by-byte Description of file: catalog\n";
+    FK6 * bsc5 = fk6_create();
+    fk6_load_fields( bsc5, readme, header );//FK6_1_HEADER );
+    fclose( readme );
+
+    FILE * data = fopen("../data/bsc5/catalog", "r");
+    assert(NULL != data);
+    catalog_load_fk6(catalog, bsc5, data);
+    fclose( data );
+    fk6_free( bsc5 );
+    free( bsc5 );
+
+    catalog_print( catalog );
+
+    catalog_free( catalog );
+    free( catalog );
 }
 
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */

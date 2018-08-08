@@ -85,6 +85,11 @@ int fk6_load_fields( FK6* fk6, FILE* readme, const char* header ) {
 
         free(line);
     }
+    // flush the field
+    if( field != NULL ) {
+        fk6_add_field(fk6, field);
+        free( field );
+    }
     return 0;
 } // TODO it seems the column indices are not very static, looking between vizier catalogs. I should switch to a whitespace splitting approach...
 
