@@ -13,6 +13,13 @@ char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
     exit( 1 );
 }
 
+int has_arg( int argc, char*argv[], char *name ) {
+    for( int n=0; n<argc; n++ )
+        if( !strcmp(name, argv[n]) )
+            return 1;
+    return 0;
+}
+
 ssize_t get_input(char* prompt, char **line, size_t *size ) {
     if( *line ) {
         free( *line );

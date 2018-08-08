@@ -1,37 +1,28 @@
-#include <assert.h>
-#include "util/crc.h"
-#include "util/vmath.h"
-#include "util/io.h"
-#include "data/tats.h"
-#include "engine/tracker.h"
-#include "engine/catalog.h"
-#include "../lib/cutest-1.5/CuTest.h"
+#include "test.h"
 
-void benchmark( Catalog* catalog, Tracker* tracker, int trials );
-void test_conversions( CuTest * test );
-void test_time( CuTest * test );
-void test_tats( CuTest * test );
-void test_crc( CuTest * test );
-void test_FK6( CuTest * test );
-void test_BSC5();
-
-int main() {
-    CuSuite * suite = CuSuiteNew();
-    SUITE_ADD_TEST( suite, test_conversions );
-    SUITE_ADD_TEST( suite, test_FK6 );
-    SUITE_ADD_TEST( suite, test_time );
-    SUITE_ADD_TEST( suite, test_tats );
-    SUITE_ADD_TEST( suite, test_crc );
-    // note you can add suites to suites if you want to add a bit more organization to the tests
-
+void test_run() {
+    CuSuite * suite = test_suite();
     CuString * output = CuStringNew();
     CuSuiteRun( suite );
     CuSuiteSummary( suite, output );
     CuSuiteDetails( suite, output );
     printf("%s\n", output->buffer);
+    CuSuiteDelete(suite);
+    CuStringDelete(output);
+    exit( suite->failCount );
 }
 
-void test_conversions( CuTest * test ) {
+CuSuite * test_suite() {
+    CuSuite *suite = CuSuiteNew();
+    SUITE_ADD_TEST(suite, test_angles);
+    SUITE_ADD_TEST(suite, test_FK6);
+    SUITE_ADD_TEST(suite, test_time);
+    SUITE_ADD_TEST(suite, test_tats);
+    SUITE_ADD_TEST(suite, test_crc);
+    return suite;
+}   // note you can add suites to suites if you want to add a bit more organization to the tests
+
+void test_angles( CuTest * test ) {
     int d = 0, m = 0;
     double s = 0.0;
     for (long seconds=0; seconds<360*60*60; seconds++) {
@@ -121,6 +112,7 @@ void test_FK6( CuTest * test ) {
     catalog_load_fk6( catalog, fk6_1, data1 );
     fclose( data1 );
     CuAssertIntEquals( test, 878, catalog->size );
+
     // How can I test the validity of this data a bit more thoroughly...
 
     // release all objects
@@ -177,13 +169,16 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     double duration = (end - start)*SECONDS_IN_DAY;
 
     // print the catalog with corresponding tracks
-    for( int n=0; n<catalog->size; n++ ) {
-        Entry* entry = catalog->stars[n];
-        entry_print( entry );
-        printf( "Horizon : (zd:%lf, az:%lf)\n\n", tracks[n][0], tracks[n][1] );
-    }
+//    for( int n=0; n<catalog->size; n++ ) {
+//        Entry* entry = catalog->stars[n];
+//        entry_print( entry );
+//        printf( "Horizon : (zd:%lf, az:%lf)\n\n", tracks[n][0], tracks[n][1] );
+//    }
 
-    printf( "stars: %d\ntrials: %d\ntime: %lf\nspeed: %lf\n\n", catalog->size, trials, duration, duration/(trials*catalog->size) );
+    printf( "stars: %d\ntrials: %d\ntime: %lf\nspeed: %lf\n\n",
+            catalog->size, trials, duration, duration/(trials*catalog->size) );
+
+//    CuAssert( test, "Can't update positions of entire catalog at 50 Hz.", (duration/trials) < 0.02 );
 }
 
 // this is not standard C, but a GNU C extension.

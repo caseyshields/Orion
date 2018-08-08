@@ -1,6 +1,11 @@
 #include "application/main.h"
 
 int main( int argc, char *argv[] ) {
+
+    // divert to running all unit test if flagged
+    if( has_arg(argc, argv, "-test") )
+        test_run();
+
     // create and configure the Orion server
     Orion orion;
     orion_create( &orion, 1 );

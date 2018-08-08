@@ -48,14 +48,6 @@ set( ORION_SOURCE
         src/engine/catalog.c
         )
 
-# This is an interactive commandline program for benchmarking and testing program components
-add_executable( tester ${ORION_SOURCE} src/application/test.c)
-if(WIN32)
-    target_link_libraries( tester novas cutest )
-else(WIN32)
-    target_link_libraries( tester novas cutest m )
-endif(WIN32)
-
 add_executable( sensor ${ORION_SOURCE} src/util/sockets.c src/application/sensor.c)
 if (WIN32)
     target_link_libraries( sensor novas wsock32 ws2_32 )
@@ -63,15 +55,25 @@ else(WIN32)
     target_link_libraries( sensor novas m )
 endif(WIN32)
 
-#add_executable( sensor2 ${ORION_SOURCE} src/util/sockets.c src/application/sensor.c)
-#target_link_libraries( sensor2 novas )
-
-add_executable( orion ${ORION_SOURCE} src/util/sockets.c src/controller/orion.c src/application/main.c)
+add_executable( orion
+        ${ORION_SOURCE}
+        src/util/sockets.c
+        src/controller/orion.c
+        src/application/main.c
+        src/application/test.c )
 if (WIN32)
-    target_link_libraries( orion novas pthread wsock32 ws2_32 )
+    target_link_libraries( orion cutest novas pthread wsock32 ws2_32 )
 else (WIN32)
-    target_link_libraries( orion novas pthread m )
+    target_link_libraries( orion cutest novas pthread m )
 endif (WIN32)
 
 # this is the test program for the test library
 #add_executable( cutest CUTEST_SOURCE )
+
+## This is an interactive commandline program for benchmarking and testing program components
+#add_executable( tester ${ORION_SOURCE} src/application/test.c)
+#if(WIN32)
+#    target_link_libraries( tester novas cutest )
+#else(WIN32)
+#    target_link_libraries( tester novas cutest m )
+#endif(WIN32)

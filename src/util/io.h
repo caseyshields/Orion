@@ -14,6 +14,12 @@
  * @param default_value*/
 char* get_arg( int argc, char *argv[], char *name, char* default_value );
 
+/** @param argc
+ * @param argv
+ * @param name
+ * @return True, or 1, when the given tag is included in the argument list, 0 otherwise. */
+int has_arg( int argc, char*argv[], char *name );
+
 /** Frees any data 'line' is pointing to, then prompts the user, allocates a buffer, and reads the
  * input, trimming trailing whitespace. Be sure to free the buffer after your last call to get_input!
  * @param prompt

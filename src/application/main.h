@@ -6,6 +6,7 @@
 #include "engine/tracker.h"
 #include "engine/catalog.h"
 #include "controller/orion.h"
+#include "application/test.h"
 
 /*!
 \mainpage Orion
