@@ -19,6 +19,7 @@ CuSuite * test_suite() {
     SUITE_ADD_TEST(suite, test_time);
     SUITE_ADD_TEST(suite, test_tats);
     SUITE_ADD_TEST(suite, test_crc);
+    SUITE_ADD_TEST(suite, test_novas);
     return suite;
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
@@ -122,6 +123,82 @@ void test_FK6( CuTest * test ) {
     free( catalog );
 }
 
+#define N_STARS 3
+#define N_TIMES 4
+/** Adapted from Novas' checkout-stars.c */
+void test_novas( CuTest * test ) {
+    double answers[N_TIMES][N_STARS][2] = {
+            {{2.446989227,89.24635169},{5.530110735,-0.30571717},{10.714525532,-64.38130568}},
+            {{2.446989227,89.24635169},{5.530110735,-0.30571717},{10.714525532,-64.38130568}},
+            {{2.509479607,89.25196807},{5.531195895,-0.30301953},{10.714444762,-64.37366521}},
+            {{2.481178365,89.24254418},{5.530372302,-0.30231627},{10.713575398,-64.37966984}}
+    };
+
+    /*
+   Main function to check out many parts of NOVAS-C by calling
+   function 'topo_star' with version 3 of function 'solarsystem'.
+
+   For use with NOVAS-C Version 3.1.
+*/
+
+    short int error = 0;
+    short int accuracy = 1;
+    short int i, j;
+
+/*
+   'deltat' is the difference in time scales, TT - UT1.
+
+    The array 'tjd' contains four selected Julian dates at which the
+    star positions will be evaluated.
+*/
+
+    double deltat = 60.0;
+    double tjd[N_TIMES] = {2450203.5, 2450203.5, 2450417.5, 2450300.5};
+    double ra, dec;
+
+/*
+   Hipparcos (ICRS) catalog data for three selected stars.
+*/
+
+    cat_entry stars[N_STARS] = {
+            {"POLARIS", "HIP",   0,  2.530301028,  89.264109444,
+                    44.22, -11.75,  7.56, -17.4},
+            {"Delta ORI", "HIP", 1,  5.533444639,  -0.299091944,
+                    1.67,   0.56,  3.56,  16.0},
+            {"Theta CAR", "HIP", 2, 10.715944806, -64.394450000,
+                    -18.87, 12.06,  7.43,  24.0}};
+
+/*
+   The observer's terrestrial coordinates (latitude, longitude, height).
+*/
+
+    on_surface geo_loc = {45.0, -75.0, 0.0, 10.0, 1010.0};
+
+/*
+   Compute the topocentric places of the three stars at the four
+   selected Julian dates.
+*/
+
+    for (i = 0; i < N_TIMES; i++)
+    {
+        for (j = 0; j < N_STARS; j++)
+        {
+            error = topo_star (tjd[i],deltat,&stars[j],&geo_loc, accuracy, &ra,&dec);
+
+//                printf ("Error %d from topo_star. Star %d  Time %d\n",
+//                        error, j, i);
+            CuAssertIntEquals_Msg( test, "topo_star failed", 0, error );
+
+//            printf ("JD = %f  Star = %s\n", tjd[i], stars[j].starname);
+//            printf ("RA = %12.9f  Dec = %12.8f\n", ra, dec);
+//            printf ("\n");
+            CuAssertDblEquals(test, answers[i][j][0], ra, 0.0000001);
+            CuAssertDblEquals(test, answers[i][j][1], dec, 0.0000001);
+        }
+        printf ("\n");
+    }
+}
+
 // TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
 // try using the metadata loader to load the yale
 void test_BSC5() {
@@ -198,185 +275,3 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
 //            }
 //            catalog_each( results, process );
 
-
-/* a simple CLI interface for exercising various orion components. */
-//int xmain( int argc, char *argv[] ) {
-//    double latitude, longitude, height;
-//    double celsius, millibars;
-//    double ut1_utc, leap_secs;
-//    char *arg;//, *path;
-//
-//    // geodetic coordinates in degrees
-//    arg = get_arg( argc, argv, "-latitude", "38.88972222222222" );
-//    if( arg ) latitude = atof( arg );
-//
-//    arg = get_arg( argc, argv, "-longitude", "-77.0075" );
-//    if( arg ) longitude = atof( arg );
-//
-//    // geodetic height in meters
-//    arg = get_arg( argc, argv, "-height", "125.0" );
-//    if( arg ) height = atof( arg );
-//
-//    // site temperature in degrees celsius
-//    arg = get_arg( argc, argv, "-celsius", "10.0" );
-//    if( arg ) celsius = atof( arg );
-//
-//    // atmospheric pressure at site in millibars
-//    arg = get_arg( argc, argv, "-millibars", "1010.0" );
-//    if( arg ) millibars = atof( arg );
-//
-//    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
-//    arg = get_arg( argc, argv, "-ut1_utc", "0.108644" );
-//    if( arg ) ut1_utc = atof( arg );
-//
-//    // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
-//    arg = get_arg( argc, argv, "-leap_secs", "37.000000" );
-//    if( arg ) leap_secs = atof( arg );
-//
-////    // get the location of the catalog data
-////    path = get_arg( argc, argv, "-catalog", "../data/FK6.txt");
-//
-//    // create the tracker
-//    Tracker tracker;
-//    tracker_create(&tracker, ut1_utc, leap_secs);
-//
-//    // set the tracker's time in UTC
-//    tracker_set_time(&tracker, jday_current());
-//    tracker_print_time(&tracker, stdout);
-//
-//    // set the location
-//    tracker_set_location(&tracker, latitude, longitude, height);
-//    tracker_set_weather(&tracker, celsius, millibars);
-//    tracker_print_site(&tracker, stdout);
-//
-//    Catalog * catalog = catalog_create( NULL, 1024 );
-//    Catalog * results = catalog_create( NULL, 64 );
-//
-//    // load metadata from readme
-//    FILE * readme = fopen("../data/fk6/ReadMe", "r");
-//    assert(NULL != readme);
-//    FK6 * fk6_1 = fk6_create();
-//    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
-//    FK6 * fk6_3 = fk6_create();
-//    fk6_load_fields( fk6_3, readme, FK6_3_HEADER );
-//    fclose(readme);
-//
-//    // load first part of FK6
-//    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
-//    assert(NULL != data1);
-//    catalog_load_fk6( catalog, fk6_1, data1 );
-//    fclose( data1 );
-//    fk6_free( fk6_1 );
-//    free( fk6_1 );
-//
-//    // load third part of FK6
-//    FILE * data3 = fopen("../data/fk6/fk6_3.dat", "r");
-//    assert(NULL != data3);
-//    catalog_load_fk6(catalog, fk6_3, data3);
-//    fclose( data3 );
-//    fk6_free( fk6_3 );
-//    free( fk6_3 );
-//
-//    char *line = NULL;
-//    size_t size = 0 ;
-//    ssize_t read = 0;
-//    while(1) {
-//
-//        // update the current time and print a prompt
-//        tracker_set_time(&tracker, jday_current());
-//        printf("orion[%s]", jday2stamp(tracker.utc));
-//        read = get_input("", &line, &size);
-//
-//        // select stars whose name contains a given substring
-//        if( strncmp( "name", line, 4 ) == 0 ) {
-//            get_input("containing", &line, &size);
-//            catalog_search_name(catalog, line, results);
-//            catalog_print(results);
-//            catalog_clear(results);
-//        }
-//
-//            // search within a lesser circle of the catalog
-//        else if( strncmp( "dome", line, 4 )==0 ) {
-//            get_input( "right ascension hours", &line, &size );
-//            double ra = atof( line );//hours2radians( atof( line ) );
-//
-//            get_input( "declination degrees", &line, &size );
-//            double dec = atof( line );//degrees2radians( atof( line ) );
-//
-//            get_input( "radius degrees", &line, &size );
-//            double rad = atof( line );//degrees2radians( atof( line ) );
-//
-//            catalog_search_dome(catalog, ra, dec, rad, results);
-//            catalog_print(results);
-//            printf( "\n%d stars found.\n", results->size );
-//            catalog_clear( results );
-//        }
-//
-//            // search within a lesser circle of the catalog
-//        else if( strncmp( "patch", line, 5 )==0 ) {
-//            get_input( "minimum right ascension hours", &line, &size );
-//            double ra_min = atof( line );
-//
-//            get_input( "maximum right ascension hours", &line, &size );
-//            double ra_max = atof( line );
-//
-//            get_input( "minimum declination degrees", &line, &size );
-//            double dec_min = atof( line );
-//
-//            get_input( "maximum declination degrees", &line, &size );
-//            double dec_max = atof( line );
-//
-//            catalog_search_patch(catalog, ra_min, ra_max, dec_min, dec_max, results);
-//            catalog_print( results );
-//            printf( "\n%d stars found.\n", results->size );
-//            catalog_clear( results );
-//        }
-//
-//            // figure out spherical celestial coordinates of the local zenith
-//        else if( strncmp( "zenith", line, 6 )==0 ) {
-//            double ra = 0, dec = 0;
-//            tracker_zenith(&tracker, &ra, &dec);
-//            printf( "Current zenith coodinates : (ra:%lf, dec:%lf)\n", ra, dec );
-//        }
-//
-//            // print the entire catalog contents
-//        else if( strncmp( "print", line, 5 )==0 )
-//            catalog_print( catalog );
-//
-//            // run the benchmark
-//        else if( strncmp( "bench", line, 5 )==0 )
-//            benchmark( catalog, &tracker, 100 );
-//
-//        else if( strncmp( "convert", line, 7)==0 )
-//            test_conversions();
-//
-//        else if( strncmp("fk6", line, 3)==0 )
-//            test_FK6();
-//
-//        else if( strncmp("jday", line, 4)==0 )
-//            test_time();
-//
-//            // clean up the program components and exit the program
-//        else if( strncmp( "exit", line, 4 )==0 ) {
-//
-//            catalog_clear( results );
-//            catalog_free( results );
-//            free( results );
-//            results = 0;
-//
-//            catalog_free( catalog );
-//            free( catalog );
-//            catalog = 0;
-//
-//            free( line );
-//            line = 0;
-//
-//            exit(0);
-//        }
-//
-//            // print available commands
-//        else {
-//            printf( "Commands include \n\tstar\n\tzenith\n\tdome\n\tpatch\n\tprint\n\tbench\n\texit\n" );
-//        }
-//    }
-//}

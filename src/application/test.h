@@ -37,4 +37,8 @@ void test_crc( CuTest * test );
  * @param test the CuTest structure which holds test results. */
 void test_FK6( CuTest * test );
 
+/** Performs some calculations on a small set of stars and tests them against precomputed coordinates
+ * @param test the CuTest structure which holds test results. */
+void test_novas( CuTest * test );
+
 #endif //STARTRACK_TEST_H
