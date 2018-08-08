@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['jday2date',['jday2date',['../jday_8h.html#afead64f2185e4894dfa9ebaa8d4271b3',1,'jday.h']]],
-  ['jday2stamp',['jday2stamp',['../jday_8h.html#a2419fbb9d3045da187d95249d22e1b38',1,'jday.h']]],
-  ['jday_5fcurrent',['jday_current',['../jday_8h.html#a56812a70e63fc6124800ff7c62bc0e53',1,'jday.h']]],
-  ['jday_5fis_5fvalid',['jday_is_valid',['../jday_8h.html#a146ba8af2d33494fbfdf0e89ebc4ef40',1,'jday.h']]]
+  ['hms2degrees',['hms2degrees',['../vmath_8c.html#a3132abda4e7e78c2eec1cbfc6b3e3a06',1,'hms2degrees(int hours, int minutes, double seconds):&#160;vmath.c'],['../vmath_8h.html#a3132abda4e7e78c2eec1cbfc6b3e3a06',1,'hms2degrees(int hours, int minutes, double seconds):&#160;vmath.c']]],
+  ['hms2str',['hms2str',['../vmath_8c.html#a245664db4f217a83aaab8439cdcc6c05',1,'hms2str(int hours, int minutes, double seconds):&#160;vmath.c'],['../vmath_8h.html#a245664db4f217a83aaab8439cdcc6c05',1,'hms2str(int hours, int minutes, double seconds):&#160;vmath.c']]],
+  ['hours2radians',['hours2radians',['../vmath_8c.html#acf2bd0dca620c7af1506490c2a4ba23a',1,'hours2radians(double h):&#160;vmath.c'],['../vmath_8h.html#acf2bd0dca620c7af1506490c2a4ba23a',1,'hours2radians(double h):&#160;vmath.c']]]
 ];

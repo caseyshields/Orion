@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Orion: src/h/sockets.h File Reference</title>
+<title>Orion: src/util/sockets.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,7 +88,8 @@ $(document).ready(function(){initNavTree('sockets_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">sockets.h File Reference</div>  </div>
 </div><!--header-->
@@ -98,6 +99,7 @@ $(document).ready(function(){initNavTree('sockets_8h.html','');});
 <code>#include &lt;netinet/in.h&gt;</code><br />
 <code>#include &lt;arpa/inet.h&gt;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &lt;errno.h&gt;</code><br />
 </div>
 <p><a href="sockets_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -109,6 +111,17 @@ Macros</h2></td></tr>
 <tr class="separator:a633b0396ff93d336a088412a190a5072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2572f3cd6bcbb2bfe23ed799d7ea69"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sockets_8h.html#a6e2572f3cd6bcbb2bfe23ed799d7ea69">SLEEP_RESOLUTION</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a6e2572f3cd6bcbb2bfe23ed799d7ea69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a45d138a46dc14d37085ee870e94dc459"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sockets_8h.html#a45d138a46dc14d37085ee870e94dc459">socket_load</a> ()</td></tr>
+<tr class="separator:a45d138a46dc14d37085ee870e94dc459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f23f7bbae8b618e5dfd2e7bf7e3157b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sockets_8h.html#a3f23f7bbae8b618e5dfd2e7bf7e3157b">socket_error</a> ()</td></tr>
+<tr class="separator:a3f23f7bbae8b618e5dfd2e7bf7e3157b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80647af28473da09463013ebdc80dca6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sockets_8h.html#a80647af28473da09463013ebdc80dca6">socket_close</a> (unsigned int socket)</td></tr>
+<tr class="separator:a80647af28473da09463013ebdc80dca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a102876978cafed2751ca81906fce94ec"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sockets_8h.html#a102876978cafed2751ca81906fce94ec">socket_unload</a> ()</td></tr>
+<tr class="separator:a102876978cafed2751ca81906fce94ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a26769957ec1a2beaf223f33b66ee64ab"></a>
@@ -122,7 +135,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This header is just an adapter to the sockets implementation of the build environment </p>
+<p>This header is just an adapter to the sockets implementation of the build environment. It is not a completly insulating layer; there is enough overlap between winsock and posix sockets that we use the same method names and just swap out the header for all but a few methods. </p>
 
 </div>
 </div>
@@ -154,12 +167,86 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a80647af28473da09463013ebdc80dca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80647af28473da09463013ebdc80dca6">&#9670;&nbsp;</a></span>socket_close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int socket_close </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>socket</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Close the connection then close the socket. </p>
+
+</div>
+</div>
+<a id="a3f23f7bbae8b618e5dfd2e7bf7e3157b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f23f7bbae8b618e5dfd2e7bf7e3157b">&#9670;&nbsp;</a></span>socket_error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int socket_error </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Obtains more detailed platform error information, if available </p>
+
+</div>
+</div>
+<a id="a45d138a46dc14d37085ee870e94dc459"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45d138a46dc14d37085ee870e94dc459">&#9670;&nbsp;</a></span>socket_load()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int socket_load </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads socket resources for the platform. </p>
+
+</div>
+</div>
+<a id="a102876978cafed2751ca81906fce94ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a102876978cafed2751ca81906fce94ec">&#9670;&nbsp;</a></span>socket_unload()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int socket_unload </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Release any platform resources needed for sockets </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_91e09e7569ccd19553b6fd3d442a4b1c.html">h</a></li><li class="navelem"><a class="el" href="sockets_8h.html">sockets.h</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b7878ad5ecbf2506f4125b9d34c97e45.html">util</a></li><li class="navelem"><a class="el" href="sockets_8h.html">sockets.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

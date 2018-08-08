@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['rate',['rate',['../struct_orion.html#adf42a979321286885fe5a447d48d14d6',1,'Orion']]],
-  ['reduced_5faccuracy',['REDUCED_ACCURACY',['../tracker_8h.html#a75ea28c2387f205969da88b9917c621a',1,'tracker.h']]],
-  ['riu_5fsensor_5fid',['riu_sensor_id',['../struct_m_i_d_c01.html#a69763ba083a498ead8e43afecc94b4d7',1,'MIDC01']]]
+  ['poly',['POLY',['../crc_8h.html#aa55bbb692b1c5e89d3a5c3bee1ce8399',1,'crc.h']]],
+  ['pressure',['PRESSURE',['../main_8h.html#a67bafb91da1f123097b90c52747bcf36',1,'main.h']]]
 ];

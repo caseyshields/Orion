@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['site',['site',['../struct_tracker.html#afb38e182752f31d6a08f82d960955438',1,'Tracker']]],
-  ['size',['size',['../struct_catalog.html#a854352f53b148adc24983a58a1866d66',1,'Catalog']]],
-  ['socket',['socket',['../struct_orion.html#a13301f1712f628ef6520dfe1f4e4b70d',1,'Orion']]],
-  ['stars',['stars',['../struct_catalog.html#ae9a5d6bc40976d00eef67a78d939d3d3',1,'Catalog']]],
-  ['start',['start',['../struct_f_k6___field.html#a37722a150250e2a5a98e5e0d11e53449',1,'FK6_Field']]],
-  ['symbol_5ftype',['symbol_type',['../struct_m_i_d_c01.html#a10ae4966d28a3e8356b329080e73e037',1,'MIDC01']]]
+  ['magnitude',['magnitude',['../struct_entry.html#a7ad825616c5a39ab6e7f71bb6b320e77',1,'Entry']]],
+  ['midc',['midc',['../struct_t_c_n___message.html#a4e26ddc4da6da6fea6901c0caee2e7fd',1,'TCN_Message::midc()'],['../struct_m_i_d_c01.html#a4e26ddc4da6da6fea6901c0caee2e7fd',1,'MIDC01::midc()'],['../structtcn__gen__msg.html#a4e26ddc4da6da6fea6901c0caee2e7fd',1,'tcn_gen_msg::midc()']]],
+  ['mode',['mode',['../struct_orion.html#afa9d6911164917fd0b12dbdf0df0ff3a',1,'Orion::mode()'],['../sensor_8c.html#a1ea5d0cb93f22f7d0fdf804bd68c3326',1,'mode():&#160;sensor.c']]]
 ];

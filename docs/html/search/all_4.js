@@ -1,19 +1,13 @@
 var searchData=
 [
-  ['f',['F',['../struct_entry.html#ae3520ebb3ff8d6feab3e6afb47ed4040',1,'Entry::F()'],['../struct_m_i_d_c01.html#a83e4d55f5823e12da6439ef69be4a42a',1,'MIDC01::F()']]],
-  ['fields',['fields',['../struct_f_k6.html#a38f1ef8549007d9cca74d78a59cf179c',1,'FK6']]],
-  ['fk6',['FK6',['../struct_f_k6.html',1,'']]],
-  ['fk6_2eh',['fk6.h',['../fk6_8h.html',1,'']]],
-  ['fk6_5f1_5fheader',['FK6_1_HEADER',['../fk6_8h.html#a05d07d0051deb3d294774dae09d306a1',1,'fk6.h']]],
-  ['fk6_5f3_5fheader',['FK6_3_HEADER',['../fk6_8h.html#a03c89b94c16c6046c7f2e73cbfd9ca46',1,'fk6.h']]],
-  ['fk6_5fadd_5ffield',['fk6_add_field',['../fk6_8h.html#a7489e2a1926b2dc34fb48179e00a1a5b',1,'fk6.h']]],
-  ['fk6_5fcreate',['fk6_create',['../fk6_8h.html#af229c8176f4ca5ff4ffb4d1227c96fc1',1,'fk6.h']]],
-  ['fk6_5ffield',['FK6_Field',['../struct_f_k6___field.html',1,'']]],
-  ['fk6_5ffree',['fk6_free',['../fk6_8h.html#a6e521035a5edb36b52c6d53c1bbf4848',1,'fk6.h']]],
-  ['fk6_5fget_5ffield',['fk6_get_field',['../fk6_8h.html#af81538e1cf1f9e1bffc51d2486cc84e2',1,'fk6.h']]],
-  ['fk6_5fget_5findex',['fk6_get_index',['../fk6_8h.html#a2d0bf7cf23e5402ceb326ed6ab0b8cd4',1,'fk6.h']]],
-  ['fk6_5fget_5fvalue',['fk6_get_value',['../fk6_8h.html#abba5814941486e2b5cae9a352a0da5fe',1,'fk6.h']]],
-  ['fk6_5fload_5ffields',['fk6_load_fields',['../fk6_8h.html#abdda4bb8891a38ac61a3bed4c4f0a29a',1,'fk6.h']]],
-  ['fk6_5fprint_5ffield',['fk6_print_field',['../fk6_8h.html#a3b807838e677ba58aea14c90899e28c4',1,'fk6.h']]],
-  ['format',['Format',['../struct_f_k6___field.html#aaca41c3398ccc1173d7f8a18327977e2',1,'FK6_Field']]]
+  ['e',['E',['../struct_m_i_d_c01.html#a105a63272424d04208f33bac739acf98',1,'MIDC01::E()'],['../struct_entry.html#a1eb62b8cb1f5e5f571d51179718e7d4c',1,'Entry::E()']]],
+  ['earth',['earth',['../struct_tracker.html#ae1beefa1f286be116b00f0e8ad83d002',1,'Tracker']]],
+  ['end',['end',['../struct_f_k6___field.html#abce9f5dc9c83f2639b72024fdee5d388',1,'FK6_Field']]],
+  ['entry',['Entry',['../struct_entry.html',1,'']]],
+  ['entry_5fprint',['entry_print',['../catalog_8c.html#aaae428f18337cfeec9ae0af65aa97bb5',1,'entry_print(Entry *star):&#160;catalog.c'],['../catalog_8h.html#af968c4e999d12e7733d0a3a53a4e2cde',1,'entry_print(Entry *e):&#160;catalog.c']]],
+  ['entrycomparison',['EntryComparison',['../catalog_8h.html#ab552c4f7e3eccd306bd7ecf3bc9dd5eb',1,'catalog.h']]],
+  ['entryfunction',['EntryFunction',['../catalog_8h.html#a6a1f2c5aad5b843fb77ccd6d1b1264df',1,'catalog.h']]],
+  ['entrypredicate',['EntryPredicate',['../catalog_8h.html#a3fe12269c689f80670e9777b5984fb26',1,'catalog.h']]],
+  ['error',['error',['../struct_orion.html#a2934b458b7d1f80c5034b207fcd05c31',1,'Orion']]],
+  ['explanations',['Explanations',['../struct_f_k6___field.html#a43d1bcf084fc0cf5bf643251ac81714d',1,'FK6_Field']]]
 ];

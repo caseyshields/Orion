@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['tats_2eh',['tats.h',['../tats_8h.html',1,'']]],
-  ['tracker_2eh',['tracker.h',['../tracker_8h.html',1,'']]]
+  ['sensor_2ec',['sensor.c',['../sensor_8c.html',1,'']]],
+  ['sockets_2ec',['sockets.c',['../sockets_8c.html',1,'']]],
+  ['sockets_2eh',['sockets.h',['../sockets_8h.html',1,'']]]
 ];

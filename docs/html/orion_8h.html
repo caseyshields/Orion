@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Orion: src/h/orion.h File Reference</title>
+<title>Orion: src/controller/orion.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,9 +96,13 @@ $(document).ready(function(){initNavTree('orion_8h.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;pthread.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="catalog_8h_source.html">h/catalog.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="tracker_8h_source.html">h/tracker.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="sockets_8h_source.html">h/sockets.h</a>&quot;</code><br />
+<code>#include &lt;assert.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="sockets_8h_source.html">util/sockets.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="crc_8h_source.html">util/crc.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tats_8h_source.html">data/tats.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="catalog_8h_source.html">engine/catalog.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tracker_8h_source.html">engine/tracker.h</a>&quot;</code><br />
 </div>
 <p><a href="orion_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -111,23 +115,25 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a806c592730d1c9a33a5f41a8bef654c3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a806c592730d1c9a33a5f41a8bef654c3">ORION_MODE_OFF</a>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a806c592730d1c9a33a5f41a8bef654c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbaa3494dd65d5b21168b7e6d009d582"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#afbaa3494dd65d5b21168b7e6d009d582">ORION_MODE_ON</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:afbaa3494dd65d5b21168b7e6d009d582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7fea0be2382ff8496633bed5fdb386c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#ac7fea0be2382ff8496633bed5fdb386c">ORION_MODE_STATIC</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ac7fea0be2382ff8496633bed5fdb386c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53ba95798f706f2e4708dde94249bf1d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a53ba95798f706f2e4708dde94249bf1d">ORION_MODE_REAL_TIME</a>&#160;&#160;&#160;2</td></tr>
 <tr class="separator:a53ba95798f706f2e4708dde94249bf1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9836e0ca174e955f850fbd3fb3923510"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a9836e0ca174e955f850fbd3fb3923510">ORION_MODE_KILL_SIM</a>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:a9836e0ca174e955f850fbd3fb3923510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24d28d68b4eba9d5883b94637883f1b9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a24d28d68b4eba9d5883b94637883f1b9">ORION_RATE</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a24d28d68b4eba9d5883b94637883f1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a33f2460264fc3f9e9939fb3f291c4de5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a33f2460264fc3f9e9939fb3f291c4de5">orion_create</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
-<tr class="separator:a33f2460264fc3f9e9939fb3f291c4de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a13013200b805ce5ef03efe726e913"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#ad0a13013200b805ce5ef03efe726e913">orion_create</a> (<a class="el" href="struct_orion.html">Orion</a> *orion, unsigned short int id)</td></tr>
+<tr class="separator:ad0a13013200b805ce5ef03efe726e913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adafd601281e0519b26db46a06046c4f7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#adafd601281e0519b26db46a06046c4f7">orion_connect</a> (<a class="el" href="struct_orion.html">Orion</a> *orion, char *ip, unsigned short port)</td></tr>
 <tr class="separator:adafd601281e0519b26db46a06046c4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50ad846a48b4f9a9e6a0bf3daf1edef6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a50ad846a48b4f9a9e6a0bf3daf1edef6">orion_start</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:a50ad846a48b4f9a9e6a0bf3daf1edef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b9aa05485996bc3a2ebfcf027e50471"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a9b9aa05485996bc3a2ebfcf027e50471">orion_track</a> (<a class="el" href="struct_orion.html">Orion</a> *orion, cat_entry target)</td></tr>
-<tr class="separator:a9b9aa05485996bc3a2ebfcf027e50471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71a40fe4e67ca8c1155b18381b797ac8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a71a40fe4e67ca8c1155b18381b797ac8">orion_track</a> (<a class="el" href="struct_orion.html">Orion</a> *orion, <a class="el" href="struct_entry.html">Entry</a> target)</td></tr>
+<tr class="separator:a71a40fe4e67ca8c1155b18381b797ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab48a953fa4789878bbd631ef1080dd33"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#ab48a953fa4789878bbd631ef1080dd33">orion_stop</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:ab48a953fa4789878bbd631ef1080dd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b007892d35cdb4ed2c42849311bc5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a25b007892d35cdb4ed2c42849311bc5f">orion_disconnect</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
@@ -136,14 +142,34 @@ Functions</h2></td></tr>
 <tr class="separator:aa2a04410d05c733769b5ef25beb50743"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30d0255064c075920c03162a3c37b154"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a30d0255064c075920c03162a3c37b154">orion_is_connected</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:a30d0255064c075920c03162a3c37b154"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af99f733c05ea1a26aac41b9b5b4fe307"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#af99f733c05ea1a26aac41b9b5b4fe307">orion_mark_time</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
-<tr class="separator:af99f733c05ea1a26aac41b9b5b4fe307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8fe7b6e30c13746f481d248572551ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#ad8fe7b6e30c13746f481d248572551ce">orion_clear_error</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:ad8fe7b6e30c13746f481d248572551ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e27c603fd7cb2bcba9df7dfd604c3e1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a9e27c603fd7cb2bcba9df7dfd604c3e1">orion_time</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
-<tr class="separator:a9e27c603fd7cb2bcba9df7dfd604c3e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f7da370829e33a9ab11ec260e547fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#ad4f7da370829e33a9ab11ec260e547fc">orion_set_time</a> (<a class="el" href="struct_orion.html">Orion</a> *orion, <a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> time)</td></tr>
+<tr class="separator:ad4f7da370829e33a9ab11ec260e547fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca36f475034b77c4e3ed059171e15e8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#aca36f475034b77c4e3ed059171e15e8b">orion_get_time</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
+<tr class="separator:aca36f475034b77c4e3ed059171e15e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3286a4560f83ca168f0fe5e030bcb4b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_tracker.html">Tracker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a3286a4560f83ca168f0fe5e030bcb4b3">orion_get_tracker</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
+<tr class="separator:a3286a4560f83ca168f0fe5e030bcb4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dc740fbdecddd8a3d60135a2684b223"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_entry.html">Entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#a8dc740fbdecddd8a3d60135a2684b223">orion_get_target</a> (<a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
+<tr class="separator:a8dc740fbdecddd8a3d60135a2684b223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab92d5b0182f2d4fd7d4aae449495e10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="orion_8h.html#aab92d5b0182f2d4fd7d4aae449495e10">orion_print_status</a> (<a class="el" href="struct_orion.html">Orion</a> *orion, FILE *file)</td></tr>
+<tr class="separator:aab92d5b0182f2d4fd7d4aae449495e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a9836e0ca174e955f850fbd3fb3923510"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9836e0ca174e955f850fbd3fb3923510">&#9670;&nbsp;</a></span>ORION_MODE_KILL_SIM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ORION_MODE_KILL_SIM&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a806c592730d1c9a33a5f41a8bef654c3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a806c592730d1c9a33a5f41a8bef654c3">&#9670;&nbsp;</a></span>ORION_MODE_OFF</h2>
 
@@ -158,20 +184,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afbaa3494dd65d5b21168b7e6d009d582"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbaa3494dd65d5b21168b7e6d009d582">&#9670;&nbsp;</a></span>ORION_MODE_ON</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ORION_MODE_ON&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a53ba95798f706f2e4708dde94249bf1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a53ba95798f706f2e4708dde94249bf1d">&#9670;&nbsp;</a></span>ORION_MODE_REAL_TIME</h2>
 
@@ -180,6 +192,20 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define ORION_MODE_REAL_TIME&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac7fea0be2382ff8496633bed5fdb386c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7fea0be2382ff8496633bed5fdb386c">&#9670;&nbsp;</a></span>ORION_MODE_STATIC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ORION_MODE_STATIC&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -263,8 +289,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a33f2460264fc3f9e9939fb3f291c4de5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33f2460264fc3f9e9939fb3f291c4de5">&#9670;&nbsp;</a></span>orion_create()</h2>
+<a id="ad0a13013200b805ce5ef03efe726e913"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0a13013200b805ce5ef03efe726e913">&#9670;&nbsp;</a></span>orion_create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,14 +299,25 @@ Functions</h2></td></tr>
           <td class="memname"><a class="el" href="struct_orion.html">Orion</a>* orion_create </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em></td><td>)</td>
+          <td class="paramname"><em>orion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">unsigned short int&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Instantiates the given <a class="el" href="struct_orion.html">Orion</a> structure, allocating space if the argument is NULL. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">orion</td><td>pointer to structure to instantiate, or NULL if a structure should be allocated </td></tr>
+    <tr><td class="paramname">id</td><td>A sensor ID for the <a class="el" href="struct_orion.html">Orion</a> server to use when comunicating with Tats devices </td></tr>
   </table>
   </dd>
 </dl>
@@ -304,6 +341,64 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Disconnects the socket and disposes of resources. </p>
+
+</div>
+</div>
+<a id="a8dc740fbdecddd8a3d60135a2684b223"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dc740fbdecddd8a3d60135a2684b223">&#9670;&nbsp;</a></span>orion_get_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_entry.html">Entry</a> orion_get_target </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
+          <td class="paramname"><em>orion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a thread safe copy of the current target of the <a class="el" href="struct_orion.html">Orion</a> server. </dd></dl>
+
+</div>
+</div>
+<a id="aca36f475034b77c4e3ed059171e15e8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca36f475034b77c4e3ed059171e15e8b">&#9670;&nbsp;</a></span>orion_get_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> orion_get_time </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
+          <td class="paramname"><em>orion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the current julian date in UTC in days </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="jday_8h.html">jday.h</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3286a4560f83ca168f0fe5e030bcb4b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3286a4560f83ca168f0fe5e030bcb4b3">&#9670;&nbsp;</a></span>orion_get_tracker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_tracker.html">Tracker</a> orion_get_tracker </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
+          <td class="paramname"><em>orion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a thread-safe copy of the orion server's current tracker </dd></dl>
 
 </div>
 </div>
@@ -345,18 +440,56 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af99f733c05ea1a26aac41b9b5b4fe307"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af99f733c05ea1a26aac41b9b5b4fe307">&#9670;&nbsp;</a></span>orion_mark_time()</h2>
+<a id="aab92d5b0182f2d4fd7d4aae449495e10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab92d5b0182f2d4fd7d4aae449495e10">&#9670;&nbsp;</a></span>orion_print_status()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double orion_mark_time </td>
+          <td class="memname">void orion_print_status </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em></td><td>)</td>
+          <td class="paramname"><em>orion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4f7da370829e33a9ab11ec260e547fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4f7da370829e33a9ab11ec260e547fc">&#9670;&nbsp;</a></span>orion_set_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> orion_set_time </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
+          <td class="paramname"><em>orion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -408,26 +541,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9e27c603fd7cb2bcba9df7dfd604c3e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e27c603fd7cb2bcba9df7dfd604c3e1">&#9670;&nbsp;</a></span>orion_time()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double orion_time </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9b9aa05485996bc3a2ebfcf027e50471"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b9aa05485996bc3a2ebfcf027e50471">&#9670;&nbsp;</a></span>orion_track()</h2>
+<a id="a71a40fe4e67ca8c1155b18381b797ac8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71a40fe4e67ca8c1155b18381b797ac8">&#9670;&nbsp;</a></span>orion_track()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,7 +556,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">cat_entry&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_entry.html">Entry</a>&#160;</td>
           <td class="paramname"><em>target</em>&#160;</td>
         </tr>
         <tr>
@@ -453,6 +568,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Specify a target which the control thread will instruct the sensor to track. Thread safe. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">orion</td><td>The server which will track the target </td></tr>
     <tr><td class="paramname">target</td><td>A novas structure holding the celestial location of the target. </td></tr>
   </table>
   </dd>
@@ -465,7 +581,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_91e09e7569ccd19553b6fd3d442a4b1c.html">h</a></li><li class="navelem"><a class="el" href="orion_8h.html">orion.h</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_41ef5d8a90b9cc03a02949a5c062e6f0.html">controller</a></li><li class="navelem"><a class="el" href="orion_8h.html">orion.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

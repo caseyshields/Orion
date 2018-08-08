@@ -104,7 +104,7 @@ Building Orion</h1>
 <p>The orion project is built using MinGW tools and libraries. MinGW is a very lightweight and thin API, however it is not meant to be a full posix implementation. This leads to some difficulty linking socket and threading code, as well as limiting <a class="el" href="struct_orion.html">Orion</a> to a 32 bit executable. Since efficiency doesn't appear to be a bottleneck, The cygwin toolchain will be investigated to improve portability to linux.</p>
 <h1><a class="anchor" id="running"></a>
 Running Orion</h1>
-<p><a class="el" href="struct_orion.html">Orion</a>'s main entry point is in main.c. Configuration of sensor location, atmospheric conditions and so forth, is provided by command line arguments;</p>
+<p><a class="el" href="struct_orion.html">Orion</a>'s main entry point is in <a class="el" href="main_8c.html">main.c</a>. Configuration of sensor location, atmospheric conditions and so forth, is provided by command line arguments;</p>
 <ul>
 <li>latitude [degrees] : geodetic location of sensor</li>
 <li>longitude [degrees]</li>
@@ -117,7 +117,7 @@ Running Orion</h1>
 <li>TAI_UTC [integer seconds] : Difference between TAI and UTC</li>
 <li>catalog [path] : A path to the <a class="el" href="struct_f_k6.html">FK6</a> dataset to be loaded.</li>
 </ul>
-<p>If not specified they will revert to default values defined in main.c.</p>
+<p>If not specified they will revert to default values defined in <a class="el" href="main_8c.html">main.c</a>.</p>
 <h1><a class="anchor" id="using"></a>
 Using Orion</h1>
 <p>Once started <a class="el" href="struct_orion.html">Orion</a> enters an interactive command line mode which accepts the following commands;</p>
@@ -133,6 +133,13 @@ Track &lt;FK ID&gt;</h2>
 <h2><a class="anchor" id="exit"></a>
 Exit</h2>
 <p>Closes the sensor connection, shuts down the <a class="el" href="struct_orion.html">Orion</a> server, releases the catalogs, and exits the program.</p>
+<p>status Prints the current status of the orion server to the screen, including the control thread state, tracker location, time, current target, and example tracking message</p>
+<p>search mag Az0 Zd0 Az1 Zd1 searches the current night sky in topocentric coordinates</p>
+<p>name substr searches the catalog by starname</p>
+<p>track id sets the current target to the catalog entry with the given starnumber</p>
+<p>start ip port opens a connection with the given sensor</p>
+<p>stop closes the sensor connection and ends the control thread</p>
+<p>report time step count prints a report</p>
 <h1><a class="anchor" id="tests"></a>
 Test Suite</h1>
 <p>TODO compile all the one-off tests into a test suite </p>

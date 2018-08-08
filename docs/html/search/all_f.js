@@ -1,18 +1,6 @@
 var searchData=
 [
-  ['scale',['scale',['../vmath_8h.html#aa1979e6beac9e72fffa7d6e21f9534fc',1,'vmath.h']]],
-  ['search',['search',['../main_8h.html#ab58e603ed5f6f24085346ed8bc0ff8c0',1,'main.h']]],
-  ['seconds_5fin_5fday',['SECONDS_IN_DAY',['../jday_8h.html#ab8e2596e9eb4c7f02aa52caa4c07ff90',1,'jday.h']]],
-  ['separator',['SEPARATOR',['../fk6_8h.html#af68c3a5ad6ffce6c97fff154856a823d',1,'fk6.h']]],
-  ['site',['site',['../struct_tracker.html#afb38e182752f31d6a08f82d960955438',1,'Tracker']]],
-  ['size',['size',['../struct_catalog.html#a854352f53b148adc24983a58a1866d66',1,'Catalog']]],
-  ['sleep_5fresolution',['SLEEP_RESOLUTION',['../sockets_8h.html#a6e2572f3cd6bcbb2bfe23ed799d7ea69',1,'sockets.h']]],
-  ['socket',['socket',['../struct_orion.html#a13301f1712f628ef6520dfe1f4e4b70d',1,'Orion']]],
-  ['socket_5ferror',['SOCKET_ERROR',['../sockets_8h.html#a633b0396ff93d336a088412a190a5072',1,'sockets.h']]],
-  ['sockets_2eh',['sockets.h',['../sockets_8h.html',1,'']]],
-  ['spherical2cartesian',['spherical2cartesian',['../vmath_8h.html#a07531f2a5965f52a317af15e4d7e4355',1,'vmath.h']]],
-  ['stamp2jday',['stamp2jday',['../jday_8h.html#ae07abd18aca140c7fd09ef4ce5c41c6a',1,'jday.h']]],
-  ['stars',['stars',['../struct_catalog.html#ae9a5d6bc40976d00eef67a78d939d3d3',1,'Catalog']]],
-  ['start',['start',['../struct_f_k6___field.html#a37722a150250e2a5a98e5e0d11e53449',1,'FK6_Field']]],
-  ['symbol_5ftype',['symbol_type',['../struct_m_i_d_c01.html#a10ae4966d28a3e8356b329080e73e037',1,'MIDC01']]]
+  ['rate',['rate',['../struct_orion.html#adf42a979321286885fe5a447d48d14d6',1,'Orion']]],
+  ['reduced_5faccuracy',['REDUCED_ACCURACY',['../tracker_8h.html#a75ea28c2387f205969da88b9917c621a',1,'tracker.h']]],
+  ['report',['report',['../main_8c.html#a767db657545b3f3388b7a9aa87172eea',1,'report(Tracker *tracker, Entry *target, jday start, double step, int count, FILE *stream):&#160;main.c'],['../main_8h.html#a767db657545b3f3388b7a9aa87172eea',1,'report(Tracker *tracker, Entry *target, jday start, double step, int count, FILE *stream):&#160;main.c']]]
 ];

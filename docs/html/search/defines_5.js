@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['orion_5fmode_5foff',['ORION_MODE_OFF',['../orion_8h.html#a806c592730d1c9a33a5f41a8bef654c3',1,'orion.h']]],
-  ['orion_5fmode_5fon',['ORION_MODE_ON',['../orion_8h.html#afbaa3494dd65d5b21168b7e6d009d582',1,'orion.h']]],
-  ['orion_5fmode_5freal_5ftime',['ORION_MODE_REAL_TIME',['../orion_8h.html#a53ba95798f706f2e4708dde94249bf1d',1,'orion.h']]],
-  ['orion_5frate',['ORION_RATE',['../orion_8h.html#a24d28d68b4eba9d5883b94637883f1b9',1,'orion.h']]]
+  ['max_5fbuffer_5fsize',['MAX_BUFFER_SIZE',['../sensor_8c.html#ad4d796b98c583d49e83adabd74a63bf6',1,'sensor.c']]],
+  ['max_5fconnections',['MAX_CONNECTIONS',['../sensor_8c.html#a053b7859476cc9867ec62c49e68d3fa1',1,'sensor.c']]]
 ];

@@ -1,7 +1,8 @@
 var tats_8h =
 [
-    [ "tats_msg1", "structtats__msg1.html", null ],
+    [ "TCN_Message", "struct_t_c_n___message.html", "struct_t_c_n___message" ],
     [ "MIDC01", "struct_m_i_d_c01.html", "struct_m_i_d_c01" ],
+    [ "tcn_gen_msg", "structtcn__gen__msg.html", "structtcn__gen__msg" ],
     [ "TATS_IFF_ETYPE", "tats_8h.html#ad8a3455757614cd65108fc9affbc1930", [
       [ "TATS_FOE", "tats_8h.html#ad8a3455757614cd65108fc9affbc1930aea7fe19680a5830e1589e419923f2fab", null ],
       [ "TATS_NONPLAYER", "tats_8h.html#ad8a3455757614cd65108fc9affbc1930ad06ec9a684feb3aeb7b192655a3add34", null ],
@@ -54,5 +55,5 @@ var tats_8h =
       [ "TATS_TIDC_GPS", "tats_8h.html#a2b0c76428aa14f71efd50774b0683585a4c330796e037fa21784c029e02ab9c2c", null ],
       [ "TATS_TIDC_LAST", "tats_8h.html#a2b0c76428aa14f71efd50774b0683585a83a1c55c6b21d469ce2b3e85e93fe885", null ]
     ] ],
-    [ "midc01_create", "tats_8h.html#a5ca477d8378c302289243dcdb9acd5a6", null ]
+    [ "tats_print_midc01", "tats_8h.html#aca67dabb0bf226a7e58ea2dd056ffabf", null ]
 ];

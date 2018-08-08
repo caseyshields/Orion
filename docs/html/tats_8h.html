@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Orion: src/h/tats.h File Reference</title>
+<title>Orion: src/data/tats.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,14 +95,17 @@ $(document).ready(function(){initNavTree('tats_8h.html','');});
 <div class="title">tats.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+</div>
 <p><a href="tats_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtats__msg1.html">tats_msg1</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_c_n___message.html">TCN_Message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_m_i_d_c01.html">MIDC01</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtcn__gen__msg.html">tcn_gen_msg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -175,8 +178,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5ca477d8378c302289243dcdb9acd5a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_m_i_d_c01.html">MIDC01</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tats_8h.html#a5ca477d8378c302289243dcdb9acd5a6">midc01_create</a> ()</td></tr>
-<tr class="separator:a5ca477d8378c302289243dcdb9acd5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca67dabb0bf226a7e58ea2dd056ffabf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tats_8h.html#aca67dabb0bf226a7e58ea2dd056ffabf">tats_print_midc01</a> (<a class="el" href="struct_m_i_d_c01.html">MIDC01</a> *midc01, FILE *file)</td></tr>
+<tr class="separator:aca67dabb0bf226a7e58ea2dd056ffabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="ad8a3455757614cd65108fc9affbc1930"></a>
@@ -307,20 +310,32 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5ca477d8378c302289243dcdb9acd5a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ca477d8378c302289243dcdb9acd5a6">&#9670;&nbsp;</a></span>midc01_create()</h2>
+<a id="aca67dabb0bf226a7e58ea2dd056ffabf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca67dabb0bf226a7e58ea2dd056ffabf">&#9670;&nbsp;</a></span>tats_print_midc01()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_m_i_d_c01.html">MIDC01</a>* midc01_create </td>
+          <td class="memname">void tats_print_midc01 </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_m_i_d_c01.html">MIDC01</a> *&#160;</td>
+          <td class="paramname"><em>midc01</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Prints a diagnostic message string of the given message to the file. </p>
 
 </div>
 </div>
@@ -329,7 +344,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_91e09e7569ccd19553b6fd3d442a4b1c.html">h</a></li><li class="navelem"><a class="el" href="tats_8h.html">tats.h</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c1be8d27e7f84178e95f152701110b19.html">data</a></li><li class="navelem"><a class="el" href="tats_8h.html">tats.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

@@ -6,6 +6,7 @@ var annotated_dup =
     [ "FK6_Field", "struct_f_k6___field.html", "struct_f_k6___field" ],
     [ "MIDC01", "struct_m_i_d_c01.html", "struct_m_i_d_c01" ],
     [ "Orion", "struct_orion.html", "struct_orion" ],
-    [ "tats_msg1", "structtats__msg1.html", null ],
+    [ "tcn_gen_msg", "structtcn__gen__msg.html", "structtcn__gen__msg" ],
+    [ "TCN_Message", "struct_t_c_n___message.html", "struct_t_c_n___message" ],
     [ "Tracker", "struct_tracker.html", "struct_tracker" ]
 ];

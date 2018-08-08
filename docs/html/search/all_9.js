@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['label',['Label',['../struct_f_k6___field.html#a0be762a3d71ca116f4f508322fe2070e',1,'FK6_Field']]],
-  ['latitude',['LATITUDE',['../main_8h.html#a63205f1ad14afc714149004a931abbce',1,'main.h']]],
-  ['leap_5fsecs',['leap_secs',['../struct_tracker.html#ad762d92dc4fcba312c9d2d11ff3a7e67',1,'Tracker']]],
-  ['lock',['lock',['../struct_orion.html#a0abaf4b5d42c4e5d19190035fade3599',1,'Orion']]],
-  ['longitude',['LONGITUDE',['../main_8h.html#ab04a12985543a4277feae611d62718bf',1,'main.h']]]
+  ['jday',['jday',['../jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84',1,'jday.h']]],
+  ['jday_2ec',['jday.c',['../jday_8c.html',1,'']]],
+  ['jday_2eh',['jday.h',['../jday_8h.html',1,'']]],
+  ['jday2date',['jday2date',['../jday_8c.html#a66a2b39002a6a678d857e21ff72f4d36',1,'jday2date(jday jd_utc, short int *year, short int *month, short int *day, short int *hour, short int *minute, double *seconds):&#160;jday.c'],['../jday_8h.html#afead64f2185e4894dfa9ebaa8d4271b3',1,'jday2date(jday time, short int *year, short int *month, short int *day, short int *hour, short int *minute, double *seconds):&#160;jday.c']]],
+  ['jday2stamp',['jday2stamp',['../jday_8c.html#a7ab3456e03f95a0a8d6c49b5a6a22309',1,'jday2stamp(const jday jd_utc):&#160;jday.c'],['../jday_8h.html#a2419fbb9d3045da187d95249d22e1b38',1,'jday2stamp(jday time):&#160;jday.c']]],
+  ['jday_5fcurrent',['jday_current',['../jday_8c.html#a56812a70e63fc6124800ff7c62bc0e53',1,'jday_current():&#160;jday.c'],['../jday_8h.html#a56812a70e63fc6124800ff7c62bc0e53',1,'jday_current():&#160;jday.c']]],
+  ['jday_5fis_5fvalid',['jday_is_valid',['../jday_8c.html#a146ba8af2d33494fbfdf0e89ebc4ef40',1,'jday_is_valid(jday time):&#160;jday.c'],['../jday_8h.html#a146ba8af2d33494fbfdf0e89ebc4ef40',1,'jday_is_valid(jday time):&#160;jday.c']]]
 ];

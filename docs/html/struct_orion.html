@@ -98,10 +98,12 @@ $(document).ready(function(){initNavTree('struct_orion.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
+<tr class="memitem:a2e74aff868562e644e5d582929433363"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a2e74aff868562e644e5d582929433363">id</a></td></tr>
+<tr class="separator:a2e74aff868562e644e5d582929433363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a495e6bf1af7804551f312afd3bd7032a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_tracker.html">Tracker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a495e6bf1af7804551f312afd3bd7032a">tracker</a></td></tr>
 <tr class="separator:a495e6bf1af7804551f312afd3bd7032a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aa5babb303788c009f95322895c2e6c"><td class="memItemLeft" align="right" valign="top">cat_entry&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a4aa5babb303788c009f95322895c2e6c">target</a></td></tr>
-<tr class="separator:a4aa5babb303788c009f95322895c2e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae17b578831cb865705be2a235102dcb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_entry.html">Entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#ae17b578831cb865705be2a235102dcb0">target</a></td></tr>
+<tr class="separator:ae17b578831cb865705be2a235102dcb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a367491879e8ce396250c54956bc6ed5e"><td class="memItemLeft" align="right" valign="top">struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a367491879e8ce396250c54956bc6ed5e">address</a></td></tr>
 <tr class="separator:a367491879e8ce396250c54956bc6ed5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13301f1712f628ef6520dfe1f4e4b70d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a13301f1712f628ef6520dfe1f4e4b70d">socket</a></td></tr>
@@ -165,6 +167,21 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="a2e74aff868562e644e5d582929433363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e74aff868562e644e5d582929433363">&#9670;&nbsp;</a></span>id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A RIU id number for the simulator to emit </p>
+
+</div>
+</div>
 <a id="a0abaf4b5d42c4e5d19190035fade3599"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0abaf4b5d42c4e5d19190035fade3599">&#9670;&nbsp;</a></span>lock</h2>
 
@@ -176,7 +193,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Used to prevent race conditions between main loop and ui thread </p>
+<p>Used to prevent race conditions between control loop and ui thread </p>
 
 </div>
 </div>
@@ -225,14 +242,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a4aa5babb303788c009f95322895c2e6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4aa5babb303788c009f95322895c2e6c">&#9670;&nbsp;</a></span>target</h2>
+<a id="ae17b578831cb865705be2a235102dcb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae17b578831cb865705be2a235102dcb0">&#9670;&nbsp;</a></span>target</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">cat_entry target</td>
+          <td class="memname"><a class="el" href="struct_entry.html">Entry</a> target</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -256,7 +273,7 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/h/<a class="el" href="orion_8h_source.html">orion.h</a></li>
+<li>src/controller/<a class="el" href="orion_8h_source.html">orion.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
