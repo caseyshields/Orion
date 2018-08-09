@@ -33,7 +33,7 @@ void test_angles( CuTest * test ) {
         char * str = dms2str(d, m, s);
 //        printf("%lds\t=\t%f°\t=\t%s\n", seconds, degrees, str);
         free(str);
-        CuAssertTrue( test, fabs(degrees-d2) < 0.0000001 );
+        CuAssertDblEquals( test, degrees, d2, 0.0000001 );
     }
 }
 
