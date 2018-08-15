@@ -43,11 +43,6 @@ void catalog_add( Catalog *catalog, Entry *entry ) {
     catalog->stars[ catalog->size++ ] = entry;
 } // TODO use realloc
 
-Entry * catalog_get( Catalog * catalog, int index ) {
-    assert( catalog && index>0 && index<catalog->size);
-    return catalog->stars[index];
-}
-
 Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r, Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
@@ -91,16 +86,14 @@ Catalog* catalog_search_dome( Catalog *catalog, double ra, double dec, double r,
     return results;
 }
 
-Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results ) {
+Catalog * catalog_search_name( const Catalog * catalog, const char * substring, Catalog * results ) {
     // create a catalog to hold the results if the user did not supply one
     if( !results )
         results = catalog_create( NULL, 0 );
 
-    // for every catalog entry
+    // Add each catalog entry whose name contains the search phrase
     for( int n=0; n<catalog->size; n++ ) {
         Entry * entry = catalog->stars[n];
-
-        // if the name of the catalog entry contains the search phrase, add it to the results
         if( strstr( entry->novas.starname, substring )!=NULL )
             catalog_add( results, entry );
     }
@@ -108,8 +101,21 @@ Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * re
     return results;
 }
 
-Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec,
-                              Catalog *results ) {
+Catalog * catalog_brighter(const Catalog *catalog, double min_mag, Catalog *results) {
+    // create an output catalog if no catalog was given
+    if( !results )
+        results = catalog_create( NULL, 64 );
+
+    // Add each catalog entry to the results which exceeds the minimum brightness
+    for( int n=0; n<catalog->size; n++ ) {
+        Entry * entry = catalog->stars[n];
+        if( entry->magnitude > min_mag )
+            catalog_add( results, entry );
+    }
+    return results;
+}
+
+Catalog* catalog_search_patch( const Catalog *catalog, double min_ra, double max_ra, double min_dec, double max_dec, Catalog *results ) {
     // create an output catalog if no reference was given
     if( !results )
         results = catalog_create( NULL, 0 );
@@ -119,7 +125,6 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
         Entry* entry = catalog->stars[n];
         // check right ascension bounds remembering 0 to 23 wraps around
 
-
         if( min_ra <= entry->novas.ra && entry->novas.ra <= max_ra
             && min_dec <= entry->novas.dec && entry->novas.dec <= max_dec )
             catalog_add( results, entry );
@@ -128,19 +133,7 @@ Catalog* catalog_search_patch( Catalog *catalog, double min_ra, double max_ra, d
     return results;
 }
 
-Catalog* catalog_filter( Catalog *catalog, int (*predicate)(Entry *), Catalog *results ) {
-    // create an output catalog if no reference was given
-    if( !results )
-        results = catalog_create( NULL, 0 );
-
-    for( int n=0; n<catalog->size; n++ )
-        if( (*predicate)(catalog->stars[n]) )
-            catalog_add( results, catalog->stars[n] );
-
-    return results;
-}
-
-Entry * catalog_select( Catalog * catalog, unsigned long fkid ) {
+Entry * catalog_get(const Catalog *catalog, unsigned long fkid) {
     for(int n=0; n<catalog->size; n++)
         if( catalog->stars[n]->novas.starnumber == fkid )
             return catalog->stars[n];
@@ -149,7 +142,6 @@ Entry * catalog_select( Catalog * catalog, unsigned long fkid ) {
 
 void catalog_clear( Catalog *catalog ) {
     assert(catalog && catalog->stars);
-
     memset(catalog->stars, 0, catalog->size * sizeof(Entry*) );
     catalog->size = 0;
 }
@@ -163,8 +155,7 @@ void catalog_free( Catalog * catalog ) {
         Entry * entry = catalog->stars[n];
         free( entry );
         catalog->stars[n] = 0;
-    }
-    // catalog_each(catalog, (EntryFunction) free); // I'm suspicious how memory safe this is
+    } // catalog_each(catalog, (EntryFunction) free); // this ought to work too
 
     // then free the catalog's array of pointers
     free( catalog->stars );
@@ -182,8 +173,6 @@ void catalog_print( Catalog *catalog ) {
 void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
     int n = 0;
     while ( n < catalog->size) {
-//        if( n==1192 )
-//            printf("wtf");
         function(catalog->stars[n]);
         n++;
     }
@@ -373,3 +362,38 @@ Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
 //    results = catalog_filter( c, p, results );
 //    return results;
 //}
+
+// another option is GNU C nested functions
+//Catalog * human_visible( Catalog * catalog ) {
+//    double min = 6.0;
+//    int is_bright(Entry *entry) {
+//        return entry->magnitude <= 6.0;
+//    }
+//    Catalog *result = catalog_filter(catalog, is_bright, NULL);
+//    return result;
+//}
+
+// Unfortunately Nested functions are not portable.
+// You can simulate them by externally defining the function, and passing an object holding relevant state.
+
+//int is_bright( Entry * entry, void * context ) {
+//    int mag_min = *((int*)context); // context is simply a pointer to an int
+//    return entry->magnitude <= mag_min;
+//}
+// int mag_min = 6.0;
+// Catalog * bright_stars = catalog_filter( catalog, is_bright, &mag_min );
+
+// This gets messy quickly. I'm opting to just using a more old fashioned approach..
+// So I'm removing all the methods which rely on nested functions
+
+Catalog* catalog_filter( const Catalog *catalog, const EntryPredicate predicate, Catalog *results ) {
+    // create an output catalog if no reference was given
+    if( !results )
+        results = catalog_create( NULL, 0 );
+
+    for( int n=0; n<catalog->size; n++ )
+        if( (*predicate)(catalog->stars[n]) )
+            catalog_add( results, catalog->stars[n] );
+
+    return results;
+}

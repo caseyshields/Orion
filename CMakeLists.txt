@@ -27,9 +27,9 @@ set( CUTEST_SOURCE
 add_library( cutest STATIC ${CUTEST_SOURCE} )
 
 # this is the test program for the test library
-#add_executable( cutest CUTEST_SOURCE )
+#add_executable( cutest CUTEST_SOURCE lib/cutest-1.5/CuTestTest.c )
 
-# These sources comprise the data, engine and util layers of the Orion project
+# These sources comprise the data, engine and utility layers of the Orion project
 set( ORION_SOURCE
         src/util/vmath.c
         src/util/io.c

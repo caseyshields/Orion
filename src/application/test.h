@@ -29,7 +29,8 @@ void test_time( CuTest * test );
  * @param test the CuTest structure which holds test results. */
 void test_tats( CuTest * test );
 
-/** Tests CRC checks on a few example inputs
+/** Tests CRC checks on a few example inputs. Modified from code written by Bob Felice.
+ * http://www.drdobbs.com/implementing-the-ccitt-cyclical-redundan/199904926
  * @param test the CuTest structure which holds test results. */
 void test_crc( CuTest * test );
 
@@ -37,7 +38,8 @@ void test_crc( CuTest * test );
  * @param test the CuTest structure which holds test results. */
 void test_FK6( CuTest * test );
 
-/** Performs some calculations on a small set of stars and tests them against precomputed coordinates
+/** Performs some calculations on a small set of stars and tests them against precomputed coordinates.
+ * Directly taken from 'checkout-stars.c' from novas 3.1.
  * @param test the CuTest structure which holds test results. */
 void test_novas( CuTest * test );
 

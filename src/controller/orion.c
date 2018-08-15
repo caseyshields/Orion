@@ -224,6 +224,21 @@ jday orion_set_time( Orion * orion, jday time ) {
     return last;
 }
 
+void orion_set_location( Orion * orion, double lat, double lon, double h ) {
+    pthread_mutex_lock( &(orion->lock) );
+    orion->tracker.site.latitude = lat;
+    orion->tracker.site.longitude = lon;
+    orion->tracker.site.height = h;
+    pthread_mutex_unlock( &(orion->lock) );
+}
+
+void orion_set_weather( Orion * orion, double celsius, double millibars ) {
+    pthread_mutex_lock( &(orion->lock) );
+    orion->tracker.site.temperature = celsius;
+    orion->tracker.site.pressure = millibars;
+    pthread_mutex_unlock( &(orion->lock) );
+}
+
 jday orion_get_time(Orion *orion) {
     pthread_mutex_lock( &(orion->lock) );
     double time = orion->tracker.utc;

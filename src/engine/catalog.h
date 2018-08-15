@@ -75,7 +75,11 @@ typedef int (*EntryPredicate)(Entry*);
  * @param predicate a pointer to a boolean function of an Entry
  * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!
  * @return a pointer to the resulting catalog, regardless if the result parameter was set to NULL. */
-Catalog* catalog_filter(Catalog * catalog, EntryPredicate predicate, Catalog * results );
+Catalog* catalog_filter(
+        const Catalog * catalog,
+        EntryPredicate predicate,
+        Catalog * results );
+// a nice behavior might be if catalog == results, filter the catalog in place...
 
 /** Searches a catalog for entries within the geometry and returns a catalog holding the results.
  * No effort is taken to remove duplicates from the results.
@@ -87,6 +91,9 @@ Catalog* catalog_filter(Catalog * catalog, EntryPredicate predicate, Catalog * r
  * @return a pointer to the resulting catalog, regardless if the result parameter was set to NULL. */
 Catalog* catalog_search_dome( Catalog* catalog, double right_ascension, double declination, double radius, Catalog* results );
 
+/** Searches  */
+Catalog * catalog_brighter(const Catalog *c, double min_mag, Catalog *results);
+
 /** Searches a catalog for entries within the geometry and returns a catalog holding the results.
  * No effort is taken to remove duplicates from the results.
  * @param catalog The catalog to be searched.
@@ -95,20 +102,26 @@ Catalog* catalog_search_dome( Catalog* catalog, double right_ascension, double d
  * @param dec_min Declination lower bound, inclusive.
  * @param dec_max Declination upper bound, inclusive.
  * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
-Catalog* catalog_search_patch( Catalog* catalog, double ra_min, double ra_max, double dec_min, double dec_max, Catalog* results );
+Catalog* catalog_search_patch(
+        const Catalog* catalog,
+        double ra_min, double ra_max, double dec_min, double dec_max,
+        Catalog* results );
 
 /** Searched a catalog for entries with names that contain the given substring.
  * No effort is taken to remove duplicates from the results
  * @param catalog The catalog to be searched
  * @param substring A case sensitive sub-string to search entry names for
  * @param results A catalog to add the matches to. If NULL, a new Catalog is allocated. Don't forget to de-allocate it!*/
-Catalog * catalog_search_name( Catalog * catalog, char * substring, Catalog * results );
+Catalog * catalog_search_name (
+        const Catalog * catalog,
+        const char * substring,
+        Catalog * results );
 
 /** Selects the first entry with the given Fundamental Catalog ID.
  * @param catalog the catalog to search
  * @param fkid The Hipparcos/Tycho catalog ID
  * @return a pointer to the star's entry, or NULL if it is not in the catalog */
-Entry * catalog_select( Catalog * catalog, unsigned long fkid );
+Entry * catalog_get(const Catalog *catalog, unsigned long fkid);
 
 /** Prints the given catalog to stdout in a default format. */
 void catalog_print( Catalog *c );

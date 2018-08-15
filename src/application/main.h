@@ -22,8 +22,8 @@
   - sensor : An server meant to mimic a TATS sensor. Will interact with orion if ip/port is configured.
   - orion : The Orion server with a concurrent command-line interface.
 
- The orion project is built using MinGW tools and libraries. MinGW is a very lightweight and thin
- API, however it is not meant to be a full posix implementation. This leads to some difficulty
+ The orion project is built using MinGW tools and libraries. MinGW is a very lightweight
+ API, and is not meant to be a full posix implementation. This leads to some difficulty
  linking socket and threading code, as well as limiting Orion to a 32 bit executable. Since
  efficiency doesn't appear to be a bottleneck, The cygwin toolchain will be investigated to improve
  portability to linux.
@@ -50,43 +50,31 @@
  Once started Orion enters an interactive command line mode which accepts
  the following commands;
 
-\subsection search Search <min magnitude> <min az> <max az> <min zd> <max zd>
- Searches through the catalog for all bright stars currently within the given
- patch of sky in local horizon coordinates.
+\subsection start start [<ip> <port>]
+Connects to the TATS sensor, using the default address if not supplied
 
-\subsection start Start
-Connects to the TATS sensor, and starts the server.
+\subsection name name <substr>
+Searches the catalog by starname, printing out all entries which have the given substring
+in their Bayer-Flamesteed name.
 
-\subsection track Track <FK ID>
-Sets a new target which the Orion server will direct the TATS sensor at
+\subsection search search <min magnitude> <min az> <max az> <min zd> <max zd>
+Searches through the catalog for all bright stars currently within the given
+patch of sky in local horizon coordinates.
 
-\subsection exit Exit
+\subsection track track <FK6 ID>
+Sets a new target which the Orion server will direct the TATS sensor at.
+ The FK6 ID can be obtained through the catalog search commands.
+
+\subsection status status
+Prints the current status of the orion server to the screen, including the control thread state, tracker location, time, current target, and example tracking message
+
+\subsection exit exit
 Closes the sensor connection, shuts down the Orion server, releases the
- catalogs, and exits the program.
+catalogs, and exits the program.
 
- status
- Prints the current status of the orion server to the screen, including the control thread state, tracker location, time, current target, and example tracking message
+\section test test
+Runs development unit tests, can be used to trouble shoot institutions
 
- search mag Az0 Zd0 Az1 Zd1
-searches the current night sky in topocentric coordinates
-
- name substr
- searches the catalog by starname
-
- track id
- sets the current target to the catalog entry with the given starnumber
-
- start ip port
- opens a connection with the given sensor
-
- stop
- closes the sensor connection and ends the control thread
-
- report time step count
- prints a report
-
-\section tests Test Suite
- TODO compile all the one-off tests into a test suite
 */
 
 /** default latitude of sensor in degrees */
@@ -110,6 +98,12 @@ searches the current night sky in topocentric coordinates
 /** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
 
+/** The Orion server which steers a TATS sensor at a designated star */
+Orion orion;
+
+/** The Star catalog which the user can search for star targets */
+Catalog catalog;
+
 /** Provides an interactive command line interface to the Orion server. */
 int main( int argc, char * argv[] );
 
@@ -118,6 +112,13 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker );
 
 /** Builds a catalog using the given commandline arguments */
 void configure_catalog( int argc, char* argv[], Catalog* catalog );
+
+int cmd_time( char * time, Orion * orion);
+int cmd_location( char* line, Orion * orion);
+int cmd_weather( char * line, Orion * orion);
+int cmd_name( char * line, Catalog * catalog);
+int cmd_search( char * line, Orion * orion, Catalog * catalog);
+int cmd_connect( char * line, Orion * orion);
 
 /** Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria.
  * The results are then printed to stdout.
@@ -128,7 +129,7 @@ int search( Catalog * catalog, Tracker * tracker,
 /** produces a tsv report of a targets coordinates over the specified time interval
  * @param tracker
  * @param target a catalog entry of a desired celestial target
- * @param start the beginnning time of the report in UTC
+ * @param start the beginning time of the report in UTC
  * @param step the number of fractional seconds to increment the report time by
  * @param count the total number of steps to take
  * @param stream the file to write the report to*/

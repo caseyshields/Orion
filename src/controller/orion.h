@@ -112,10 +112,25 @@ jday orion_get_time( Orion *orion );
 /** @return a thread-safe copy of the orion server's current tracker */
 Tracker orion_get_tracker( Orion * orion );
 
+/** sets the location of the tracker on earth
+ * @param orion
+ * @param lat Latitude in degrees
+ * @param lon Longitude in degrees
+ * @param h Height in meters*/
+void orion_set_location( Orion * orion, double lat, double lon, double h );
+
+/** Sets the local weather conditions of the tracker for Novas' reraction calculation.
+ * @param orion
+ * @param celsius Temperature in degrees Celsius
+ * @param millibars Air pressure in millibars. 1 Atmosphere of pressure is approximately 1010 millibars. */
+void orion_set_weather( Orion * orion, double celsius, double millibars );
+
 /** @return a thread safe copy of the current target of the Orion server. */
 Entry orion_get_target( Orion * orion );
 
 void orion_print_status(Orion * orion, FILE * file);
+
+
 
 #endif //STARTRACK_ORION_H
 
