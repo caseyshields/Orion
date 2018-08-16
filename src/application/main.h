@@ -13,27 +13,25 @@
 /*!
 \mainpage Orion
 
-@author Casey Shields
+ Orion is a command line application for finding and tracking stars with TATS sensors.
+ @author Casey Shields
+
+---
 
 \section building Building Orion
 
- Orion is built using a CMake script(./CMakeLists.txt) which produces a number of executables;
+Orion is built using a CMake script(./CMakeLists.txt) which should run on either windows or Unix platforms.
+The script produce two executables;
 
-  - checkout : The test program packaged with Novas for testing the low accuracy mode. Output should match './data/novas/checkout-stars-usno.txt'.
-  - tester : An interactive command line program for running benchmarks and testing features. Only for development use.
-  - sensor : An server meant to mimic a TATS sensor. Will interact with orion if ip/port is configured.
-  - orion : The Orion server with a concurrent command-line interface.
+ - sensor : An server meant to mimic a TATS sensor.
+ - orion : A command line application which controls an Orion server.
 
- The orion project is built using MinGW tools and libraries. MinGW is a very lightweight
- API, and is not meant to be a full posix implementation. This leads to some difficulty
- linking socket and threading code, as well as limiting Orion to a 32 bit executable. Since
- efficiency doesn't appear to be a bottleneck, The cygwin toolchain will be investigated to improve
- portability to linux.
+---
 
 \section running Running Orion
 
- Orion's main entry point is in main.c. Configuration of sensor location, atmospheric conditions and so forth, is
- provided by command line arguments;
+Orion's main entry point is in main.c.
+The configuration is provided by command line arguments;
 
  - latitude [degrees] : geodetic location of sensor
  - longitude [degrees]
@@ -48,34 +46,77 @@
 
  If not specified they will revert to default values defined in main.c.
 
-\section using Using Orion
- Once started Orion enters an interactive command line mode which accepts
+ if orion is run with the 'test' flag, the test suit is run.
+
+ > ./orion -test
+
+ This can be used to diagnose some types of problems in production.
+
+ Otherwise, once started Orion enters an interactive command line mode which accepts
  the following commands;
 
-\subsection start start [<ip> <port>]
-Connects to the TATS sensor, using the default address if not supplied
+ ---
+\section configuration Configuration Commands
 
-\subsection name name <substr>
-Searches the catalog by starname, printing out all entries which have the given substring
-in their Bayer-Flamesteed name.
+\subsection time time <year>/<month>/<day> <hour>:<min>:<second>
+Sets the current time of the Orion server.
+  - year : the 4 digit year
+  - month : 1 to 12
+  - day : 1 to 31
+  - hour : 1 to 24
+  - min : 0 to 59
+  - second : 0.000000 to 61.999999
+### Example
+> time 2000/1/1 12:0:0
 
-\subsection search search <min magnitude> <min az> <max az> <min zd> <max zd>
+\subsection location location <latitude> <longitude> <height>
+ Sets the tracker's location on earth
+  - latitude : decimal degrees latitude, -90.0 to 90.0
+  - longitude : decimal degrees longitude, 0.0 to 360.0
+  - height : ellipsoidal height in meters
+
+\subsection weather weather <temperature> <pressure>
+ sets the local weather conditions for use in refraction calculations
+  - temperature : in degrees celsius
+  - pressure : in integer millibars
+
+---
+\section catalog Catalog Commands
+
+\subsection name name <substring>
+ Search the loaded catalog for all stars whoose Bayer-Flamesteed designation contains the given substring.
+
+\subsection search search <min magnitude> [<min az> <max az> <min zd> <max zd>]
 Searches through the catalog for all bright stars currently within the given
 patch of sky in local horizon coordinates.
 
-\subsection track track <FK6 ID>
-Sets a new target which the Orion server will direct the TATS sensor at.
- The FK6 ID can be obtained through the catalog search commands.
+ ---
+\section sensor Sensor Commands
 
-\subsection status status
-Prints the current status of the orion server to the screen, including the control thread state, tracker location, time, current target, and example tracking message
+\subsection connect connect [<ip>:<port>]
+Connects to the TATS sensor, using the default address if not supplied
+ - ip : IPv4 address of TATS sensor in dotted quad notation
+ - port : port number the sensor is listening on
+
+\subsection target target <FK6 ID>
+Sets a new target which the Orion server will direct the TATS sensor at.
+The FK6 ID can be obtained through the catalog search commands.
 
 \subsection exit exit
 Closes the sensor connection, shuts down the Orion server, releases the
 catalogs, and exits the program.
 
-\section test test
-Runs development unit tests, can be used to trouble shoot institutions
+ ---
+\section diagnostic Diagnostic Commands
+
+\subsection status status
+Prints the current status of the orion server to the screen, including the control thread state, tracker location, time, current target, and example tracking message
+
+\subsection report report <step> <count>
+ Using the current time, location, weather, and target, a report is generated describing the targets
+ apparent location over time in local coordinates
+ - step : amount to increase time each step
+ - count : number of steps to take
 
 */
 
@@ -119,39 +160,44 @@ typedef struct {
 
 } Application;
 
-Application app = {0,0,NULL, NULL, NULL};
+Application app = {0, 0, NULL, NULL, NULL};
 
 /** Provides an interactive command line interface to the Orion server. */
-int main( int argc, char * argv[] );
+int main(int argc, char *argv[]);
 
 /** Builds a tracker object using the given commandline arguments. */
-void configure_tracker( int argc, char* argv[], Tracker* tracker );
+void configure_tracker(int argc, char *argv[], Tracker *tracker);
 
 /** Builds a catalog using the given commandline arguments */
-void configure_catalog( int argc, char* argv[], Catalog* catalog );
+void configure_catalog(int argc, char *argv[], Catalog *catalog);
 
-void configure_address( int argc, char* argv[] );
+void configure_address(int argc, char *argv[]);
 
-int cmd_time( char * time, Orion * orion );
-int cmd_location( char* line, Orion * orion );
-int cmd_weather( char * line, Orion * orion );
+int cmd_time(char *time, Orion *orion);
+
+int cmd_location(char *line, Orion *orion);
+
+int cmd_weather(char *line, Orion *orion);
 
 /** Currently just hardcoded to load the first and third parts of the FK6 catalog from the default data directory. */
-int cmd_load( Catalog * catalog );
-int cmd_name( char * line, Catalog * catalog );
+int cmd_load(Catalog *catalog);
+
+int cmd_name(char *line, Catalog *catalog);
 //int cmd_search( char * line, Orion * orion, Catalog * catalog );
 
-int cmd_connect( char * line, Orion * orion );
-int cmd_target( char * line, Orion * orion, Catalog * catalog );
+int cmd_connect(char *line, Orion *orion);
 
-int cmd_report( char * line, Orion * orion, FILE * stream );
-int cmd_help( char * line );
+int cmd_target(char *line, Orion *orion, Catalog *catalog);
+
+int cmd_report(char *line, Orion *orion, FILE *stream);
+
+int cmd_help(char *line);
 
 /** Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria.
  * The results are then printed to stdout.
  * @return The number of stars fitting the criteria*/
-int search( Catalog * catalog, Tracker * tracker,
-            double az_min, double az_max, double zd_min, double zd_max, float mag_min);
+int search(Catalog *catalog, Tracker *tracker,
+           double az_min, double az_max, double zd_min, double zd_max, float mag_min);
 
 /** produces a tsv report of a targets coordinates over the specified time interval
  * @param tracker
@@ -160,7 +206,7 @@ int search( Catalog * catalog, Tracker * tracker,
  * @param step the number of fractional seconds to increment the report time by
  * @param count the total number of steps to take
  * @param stream the file to write the report to*/
-void report( Tracker * tracker, Entry * target, jday start, double step, int count, FILE * stream );
+void report(Tracker *tracker, Entry *target, jday start, double step, int count, FILE *stream);
 
 #endif //STARTRACK_MAIN_H
 
