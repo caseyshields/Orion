@@ -93,7 +93,7 @@ void orion_disconnect( Orion * orion );
 
 /** Best guess of whether the server is running. Thread safe.
  * @return True if the orion server was running recently. False otherwise.*/
-int orion_is_running( Orion * orion );
+int orion_get_mode( Orion * orion );
 
 /** @return True if the sensor is connected to the orion server. */
 int orion_is_connected( Orion * orion );

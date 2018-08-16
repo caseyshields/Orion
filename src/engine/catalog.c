@@ -2,14 +2,13 @@
 
 Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     // allocate a catalog if none is provided
-    if( catalog ) {
+    if( !catalog )
+        catalog = malloc(sizeof(Catalog));
+    if( catalog )
         memset( catalog, 0, sizeof(Catalog) );
-    } else {
-        catalog = calloc(1, sizeof(Catalog));
-        if (!catalog) {
-            perror("Catalog allocation failed");
-            return 0;
-        }
+    else {
+        perror("Catalog allocation failed");
+        return 0;
     }
 
     // If they don't provide a size hint just guess a default.

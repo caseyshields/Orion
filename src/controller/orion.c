@@ -4,7 +4,7 @@ MIDC01 * create_tracking_message(Orion * orion, MIDC01 * midc01 );
 
 Orion* orion_create( Orion * orion, unsigned short int id ) {
     if (!orion)
-        orion = malloc(sizeof(orion));
+        orion = malloc(sizeof(Orion));
     if (orion) {
         memset( orion, 0, sizeof(Orion) );
         orion->id = id;
