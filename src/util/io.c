@@ -5,11 +5,12 @@ char* get_arg( int argc, char *argv[], char *name, char* default_value ) {
         if( !strcmp(name, argv[n]) )
             return argv[n+1];
     if( default_value ) {
-        printf("Parameter '%s' defaulting to '%s'\n", name, default_value);
+        printf("%s %s\n", name, default_value);
         fflush(stdout);
         return default_value;
     }
-    sprintf( "Error: missing parameter '%s'\n", name );
+    fprintf( stderr, "Error: missing parameter '%s'\n", name );
+    fflush(stderr);
     exit( 1 );
 }
 
@@ -82,4 +83,9 @@ int get_value(const char *line, int start, int end, char *dest) {
 
     // return the number of characters copied
     return len;
+}
+
+void alert( char* msg ) {
+    fprintf( stderr, "%s\n", msg );
+    fflush( stderr );
 }

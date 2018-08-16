@@ -41,4 +41,8 @@ int get_value(const char *line, int start, int end, char *dest);
  * @return returns the number of line read, or a negative number if the line is not found.*/
 int scan_line(FILE *file, const char *header);
 
+/** Prints and flushes the given message to stderr
+ * @param msg */
+void alert( char * msg );
+
 #endif //STARTRACK_UTIL_H
