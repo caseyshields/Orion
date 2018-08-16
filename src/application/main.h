@@ -1,6 +1,8 @@
 #ifndef STARTRACK_MAIN_H
 #define STARTRACK_MAIN_H
 
+#include <signal.h>
+
 #include "util/io.h"
 #include "util/sockets.h"
 #include "engine/tracker.h"
@@ -98,11 +100,26 @@ Runs development unit tests, can be used to trouble shoot institutions
 /** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
 
+typedef struct {
+
+/**  */
+    volatile int mode;
+
+/**  */
+    unsigned short port;
+
+/**  */
+    char *ip;
+
 /** The Orion server which steers a TATS sensor at a designated star */
-Orion orion;
+    Orion *orion;
 
 /** The Star catalog which the user can search for star targets */
-Catalog catalog;
+    Catalog *catalog;
+
+} Application;
+
+Application app = {0,0,NULL, NULL, NULL};
 
 /** Provides an interactive command line interface to the Orion server. */
 int main( int argc, char * argv[] );
@@ -113,12 +130,22 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker );
 /** Builds a catalog using the given commandline arguments */
 void configure_catalog( int argc, char* argv[], Catalog* catalog );
 
-int cmd_time( char * time, Orion * orion);
-int cmd_location( char* line, Orion * orion);
-int cmd_weather( char * line, Orion * orion);
-int cmd_name( char * line, Catalog * catalog);
-int cmd_search( char * line, Orion * orion, Catalog * catalog);
-int cmd_connect( char * line, Orion * orion);
+void configure_address( int argc, char* argv[] );
+
+int cmd_time( char * time, Orion * orion );
+int cmd_location( char* line, Orion * orion );
+int cmd_weather( char * line, Orion * orion );
+
+/** Currently just hardcoded to load the first and third parts of the FK6 catalog from the default data directory. */
+int cmd_load( Catalog * catalog );
+int cmd_name( char * line, Catalog * catalog );
+//int cmd_search( char * line, Orion * orion, Catalog * catalog );
+
+int cmd_connect( char * line, Orion * orion );
+int cmd_target( char * line, Orion * orion, Catalog * catalog );
+
+int cmd_report( char * line, Orion * orion, FILE * stream );
+int cmd_help( char * line );
 
 /** Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria.
  * The results are then printed to stdout.
