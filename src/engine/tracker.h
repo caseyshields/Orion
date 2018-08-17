@@ -1,5 +1,5 @@
 /** @file tracker.h
- * @brief Uses Novas 3.1 library to compute coordinates from a sensor to a celestial target.
+ * @brief Represents a tracker on the surface of the earth, and can compute the apparent coordinates of stars.
  * @author Casey Shields
  * */
 

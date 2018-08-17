@@ -1,7 +1,6 @@
-/** @ file test.h
- * @brief Contains a suit of test used for development and troubleshooting.
- * @author Casey Shields
- * */
+/** @file test.h
+ * @brief A test suite used for development and troubleshooting.
+ * @author Casey Shields */
 
 #ifndef STARTRACK_TEST_H
 #define STARTRACK_TEST_H

@@ -1,5 +1,5 @@
 /** @file orion.h
- * @brief asynchronously broadcasts apparent coordinates of celetial targets to TCN sensors.
+ * @brief Server which asynchronously broadcasts apparent coordinates of celetial targets to a TATS sensor.
  * @author Casey Shields */
 
 #ifndef STARTRACK_ORION_H

@@ -1,5 +1,5 @@
 /** @file main.h
- * @brief Command line application for directing Orion components.
+ * @brief Command line application for interacting with Orion components.
  *
  * The main application first sets parameters using arguments and defaults, loads catalogs and trackers,
  * then enters an interactive command line mode.

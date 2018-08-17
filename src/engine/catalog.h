@@ -1,5 +1,5 @@
 /** @file catalog.h
- * @brief Provides methods for collecting, filtering and searching a star catalog
+ * @brief A catalog object for collecting, filtering and searching celestial targets
  * @author Casey Shields */
 
 #ifndef STARTRACK_CATALOG_H
