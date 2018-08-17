@@ -143,7 +143,7 @@ Prints the current status of the orion server to the screen, including the contr
 
 typedef struct {
 
-/**  */
+/** Current mode of the user interface,  */
     volatile int mode;
 
 /**  */
@@ -160,10 +160,12 @@ typedef struct {
 
 } Application;
 
-Application app = {0, 0, NULL, NULL, NULL};
-
 /** Provides an interactive command line interface to the Orion server. */
 int main(int argc, char *argv[]);
+
+void interrupt_handler(int signal);
+
+void cleanup();
 
 /** Builds a tracker object using the given commandline arguments. */
 void configure_tracker(int argc, char *argv[], Tracker *tracker);
@@ -171,7 +173,8 @@ void configure_tracker(int argc, char *argv[], Tracker *tracker);
 /** Builds a catalog using the given commandline arguments */
 void configure_catalog(int argc, char *argv[], Catalog *catalog);
 
-void configure_address(int argc, char *argv[]);
+/** Creates an ip address for the sensor from the arguments. */
+void configure_address(int argc, char *argv[], Application * app);
 
 int cmd_time(char *time, Orion *orion);
 
