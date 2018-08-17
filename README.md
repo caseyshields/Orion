@@ -4,7 +4,17 @@ Star hunting software. An interactive command line tool to search the FK6 star c
 position. A TCN sensor can then be concurrently directed at the selected star.
 
 ```commandline
-2000/01/01 12:00:00.000 : help
+-ip 127.0.0.1
+-port 43210
+-ut1_utc 0.06809
+-leap_secs 37.000000
+-latitude 38.88972222222222
+-longitude -77.0075
+-height 125.0
+-celsius 10.0
+-millibars 1010.0
+
+2018/08/17 22:55:49.298 : help
 Configuration
 	time <YYYY/MM/DD HH:MM:SS.ssssss>
 	location <lat(deg)> <lon(deg)> <height(m)>
@@ -12,7 +22,7 @@ Configuration
 
 Catalog
 	name <substr>
-	search <mag> [<az0> <az1> <zd0> <zd1>(deg)]
+	search <mag> [<> <> <> <>(deg)]
 
 TCN Sensor
 	connect [X.X.X.X:Y]
@@ -25,6 +35,51 @@ Diagnostic
 	exit
 
 <> : required	[] : optional	() : units
+
+2018/08/17 22:55:49.298 : time 2000/1/1 12:0:0
+
+2000/01/01 12:00:00.000 : name Lyr
+FK6.684: Grb 2533 Lyr (ra:18.260772, dec:42.159344, p:6.040000, v=5.560000)
+FK6.1477: kappa Lyr (ra:18.331030, dec:36.064547, p:13.710000, v=4.330000)
+FK6.1483: Grb 2603 Lyr (ra:18.563240, dec:46.219152, p:3.720000, v=6.730000)
+FK6.699: alpha Lyr (ra:18.615649, dec:38.783690, p:128.930000, v=0.030000)
+FK6.1488: +26^o 3349 Lyr (ra:18.767911, dec:26.662130, p:12.960000, v=4.830000)
+FK6.711: R Lyr (ra:18.922250, dec:43.946090, p:9.330000, v=4.080000)
+FK6.1498: Pi 18 h 318 Lyr (ra:19.110482, dec:28.628595, p:24.500000, v=5.530000)
+FK6.724: theta Lyr (ra:19.272804, dec:38.133734, p:4.240000, v=4.350000)
+FK6.3463: mu Lyr (ra:18.403829, dec:39.507239, p:7.300000, v=5.110000)
+FK6.3532: 19 Lyr (ra:19.196114, dec:31.283456, p:3.300000, v=5.930000)
+
+2000/01/01 12:00:00.000 : target 699
+
+2000/01/01 12:00:00.000 : status
+
+2000/01/01 12:00:00.000 UTC (+0.068 UT1)
+ 38.889722 N, -77.007500 W,  125.0 m
+ 10.0°C 1.010 bar
+FK6  699  56.9283°zd  64.1932°az 0.0v alpha Lyr
+01 1 0001 00000 056.9280 064.1930 000.0000 0699 30 FBB1
+
+
+2000/01/01 12:00:00.000 : report 60.0 5
+latitude:	38.889722 hours
+longitude:	-77.007500 degrees
+elevation:	125.000000 meters
+temperature:	10.000000 Celsius
+pressure:	1010.000000 millibars
+
+UTC	AZ	ZD
+2000/01/01 12:00:00.000	056.928337	064.193241
+2000/01/01 12:00:60.000	056.752768	064.295283
+2000/01/01 12:01:60.000	056.577047	064.397158
+2000/01/01 12:02:60.000	056.401174	064.498868
+2000/01/01 12:03:60.000	056.225152	064.600413
+
+2000/01/01 12:00:00.000 : connect 127.0.0.1:43210
+
+2000/01/01 12:00:00.000 : target 684
+
+2000/01/01 12:00:00.000 : exit
 ```
 
 For more information on available commands, see the [doxygen pages](https://caseyshields.github.io/Orion/index.html).

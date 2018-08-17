@@ -18,7 +18,7 @@ Catalog* catalog_create(Catalog *catalog, size_t allocate) {
     catalog->size = 0;
 
     // allocate the Entry index if a hint is given
-    catalog->stars = calloc( (size_t)allocate, sizeof(Entry) );
+    catalog->stars = calloc( (size_t)catalog->allocated, sizeof(Entry) );
     if( !catalog->stars ) {
         catalog->allocated = 0;
         // we should probably allocate this first so we can fail fast...
