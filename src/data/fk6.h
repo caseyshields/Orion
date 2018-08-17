@@ -1,3 +1,8 @@
+/** @file fk6.h
+ * @brief Tools to read metadata from a FK6 README file, and data from the '.dat' files into a Novas Catalog.
+ * @author Casey Shields
+ * @bug The parsing method could be generalized, so we can read from any Vizier catalog, not just FK6. Its a little tricky because the formats I've seen are not entirely consistent. */
+
 #ifndef STARTRACK_FK6_H
 #define STARTRACK_FK6_H
 

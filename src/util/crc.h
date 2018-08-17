@@ -1,16 +1,10 @@
+/** @file crc.h
+ * @brief generate a ccitt 16 bit cyclic redundancy check (crc)
+ * Obtained from http://www.drdobbs.com/implementing-the-ccitt-cyclical-redundan/199904926
+ * @author Bob Felice
+ */
 #ifndef DRDOBBS_CRC_H
 #define DRDOBBS_CRC_H
-
-// Obtained from http://www.drdobbs.com/implementing-the-ccitt-cyclical-redundan/199904926
-// Written by Bob Felice
-
-/**************************************************************************
-//
-// crc16.c - generate a ccitt 16 bit cyclic redundancy check (crc)
-//
-//      The code in this module generates the crc for a block of data.
-//
-**************************************************************************/
 
 /**
 //                                16  12  5

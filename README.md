@@ -1,14 +1,40 @@
 # Orion
 
-Star hunting software. Provides tools to search the FK6 star catalog by brightness and current sky 
-position. TATS sensors can then be concurrently directed to target selected stars. Orion relies heavily 
-on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/)
+Star hunting software. An interactive command line tool to search the FK6 star catalog by brightness and current sky 
+position. A TCN sensor can then be concurrently directed at the selected star.
 
-Orion is developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and [MinGW](http://mingw.org/) toolchains.
+```commandline
+2000/01/01 12:00:00.000 : help
+Configuration
+	time <YYYY/MM/DD HH:MM:SS.ssssss>
+	location <lat(deg)> <lon(deg)> <height(m)>
+	weather <temp(C)> <pressure(mBar)>
+
+Catalog
+	name <substr>
+	search <mag> [<az0> <az1> <zd0> <zd1>(deg)]
+
+TCN Sensor
+	connect [X.X.X.X:Y]
+	track <fk6 id>
+
+Diagnostic
+	status
+	report <step(sec)> <count>
+
+	exit
+
+<> : required	[] : optional	() : units
+```
+
+For more information on available commands, see the [doxygen pages](https://caseyshields.github.io/Orion/index.html).
+
+## Design
+
+Orion relies heavily on prior work by the [US Naval Observatory](http://www.usno.navy.mil/USNO/).
+It was developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and [MinGW](http://mingw.org/) toolchains.
 Lightweight unit testing is done with [CuTest](http://cutest.sourceforge.net/).
 Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
-
-## Components
 
 ![Component organization](https://caseyshields.github.io/Orion/diagrams/novas.svg)
 
@@ -21,10 +47,6 @@ Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://me
  - novasc3.1 : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
  - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data. Project [page](http://wwwadd.zah.uni-heidelberg.de/datenbanken/fk6/index.php.de).
  - tats : provides structures and enumeration for dealing with TATS messages
-
-## Code documentation
-
-See generated [doxygen pages](https://caseyshields.github.io/Orion/index.html) here.
 
 ## Future Plans
  

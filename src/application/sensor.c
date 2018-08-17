@@ -1,3 +1,6 @@
+/** @file sensor.c
+ * @brief simulates a TCN sensor. Simply prints recieved messages to stdout. */
+
 #include <stdlib.h>
 #include <signal.h>
 

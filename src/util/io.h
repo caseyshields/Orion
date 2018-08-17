@@ -1,3 +1,7 @@
+/** @file io.h
+ * @brief Provides utility methods for dealing with arguments, user input and alerts.
+ * @author Casey Shields */
+
 #ifndef STARTRACK_UTIL_H
 #define STARTRACK_UTIL_H
 

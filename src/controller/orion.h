@@ -1,3 +1,7 @@
+/** @file orion.h
+ * @brief asynchronously broadcasts apparent coordinates of celetial targets to TCN sensors.
+ * @author Casey Shields */
+
 #ifndef STARTRACK_ORION_H
 #define STARTRACK_ORION_H
 

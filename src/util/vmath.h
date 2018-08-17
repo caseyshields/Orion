@@ -1,3 +1,6 @@
+/** @file vmath.h
+ * @brief A colletion of vector and spherical math routines*/
+
 #ifndef STARTRACK_VMATH_H
 #define STARTRACK_VMATH_H
 

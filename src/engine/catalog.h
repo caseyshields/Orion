@@ -1,3 +1,7 @@
+/** @file catalog.h
+ * @brief Provides methods for collecting, filtering and searching a star catalog
+ * @author Casey Shields */
+
 #ifndef STARTRACK_CATALOG_H
 #define STARTRACK_CATALOG_H
 

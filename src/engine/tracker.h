@@ -1,3 +1,8 @@
+/** @file tracker.h
+ * @brief Uses Novas 3.1 library to compute coordinates from a sensor to a celestial target.
+ * @author Casey Shields
+ * */
+
 #ifndef STARTRACK_TRACKER_H
 #define STARTRACK_TRACKER_H
 

@@ -1,12 +1,17 @@
+/** @file tats.h
+ * @brief TATS structure and constant definitions
+ *
+ * This header contains a bunch of declarations and methods canabalized from the TPOD project.
+ * Removing it from the company network is non-trivial so these limited excerpts will have to
+ * suffice until I can finish all the paperwork and process to move the code as a whole.
+ *
+ * @author Casey Shields
+ * @bug This file currently only contains a pertinent subset of the full TATS interface.*/
+
 #ifndef STARTRACK_TATS_H
 #define STARTRACK_TATS_H
 
 #include <stdio.h>
-
-/** This header contains a bunch of declarations and methods canabalized from the TPOD project.
- * Removing it from the company network is non-trivial so these limited excerpts will have to
- * suffice until I can finish all the paperwork and process to move the code as a whole.
- * */
 
 /** Midc index of TATS message types. */
 typedef enum {

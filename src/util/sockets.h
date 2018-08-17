@@ -1,9 +1,12 @@
+/** @file socket.h
+ * @brief A crude adapter so we can link to either winsock or unix sockets.
+ * This header is just an adapter to the sockets implementation of the build environment. It is
+ * not a completly insulating layer; there is enough overlap between winsock and posix sockets
+ * that we use the same method names and just swap out the header for all but a few methods.
+ * @author Casey Shields */
+
 #ifndef STARTRACK_SOCKETS_H
 #define STARTRACK_SOCKETS_H
-
-/** This header is just an adapter to the sockets implementation of the build environment. It is
- * not a completly insulating layer; there is enough overlap between winsock and posix sockets
- * that we use the same method names and just swap out the header for all but a few methods.*/
 
 #ifdef WIN32
 

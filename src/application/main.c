@@ -364,7 +364,7 @@ int cmd_connect( char * line, Orion * orion ) {
 
     // abort if command isn't the default structure either
     } else if( result !=0 ) {
-        alert( "usage: connect [X.X.X.X:port]");
+        alert( "usage: connect [X.X.X.X:Y]");
         return 1;
     }
 
@@ -440,5 +440,10 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
 }
 
 int cmd_help( char * line ) {
-    printf("Commands:\nname <substr>\nsearch <> <> <> <> <>\ntrack <id>\nexit\n");
+    printf("Configuration\n\ttime <YYYY/MM/DD HH:MM:SS.ssssss>\n\tlocation <lat(deg)> <lon(deg)> <height(m)>\n\tweather <temp(C)> <pressure(mBar)>\n\n");
+    printf("Catalog\n\tname <substr>\n\tsearch <mag> [<> <> <> <>(deg)]\n\n");
+    printf("TCN Sensor\n\tconnect [X.X.X.X:Y]\n\ttrack <fk6 id>\n\n");
+    printf("Diagnostic\n\tstatus\n\treport <step(sec)> <count>\n\n");
+    printf("\texit\n\n");
+    printf("<> : required\t[] : optional\t() : units\n");
 }

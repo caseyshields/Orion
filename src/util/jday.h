@@ -1,3 +1,7 @@
+/** @file jday.h
+ * @brief provides methods for calculating and converting time into the Novas convention.
+ * @author Casey Shields */
+
 #ifndef STARTRACK_JDAY_H
 #define STARTRACK_JDAY_H
 
