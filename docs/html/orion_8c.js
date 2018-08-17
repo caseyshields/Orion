@@ -12,7 +12,9 @@ var orion_8c =
     [ "orion_get_tracker", "orion_8c.html#a3286a4560f83ca168f0fe5e030bcb4b3", null ],
     [ "orion_is_connected", "orion_8c.html#a30d0255064c075920c03162a3c37b154", null ],
     [ "orion_print_status", "orion_8c.html#aab92d5b0182f2d4fd7d4aae449495e10", null ],
+    [ "orion_set_location", "orion_8c.html#a8df56ff3d048fc2f963fd7de2fb07726", null ],
     [ "orion_set_time", "orion_8c.html#ad4f7da370829e33a9ab11ec260e547fc", null ],
+    [ "orion_set_weather", "orion_8c.html#aaff321411eb27ac680cd7205ebec90bb", null ],
     [ "orion_start", "orion_8c.html#a50ad846a48b4f9a9e6a0bf3daf1edef6", null ],
     [ "orion_stop", "orion_8c.html#ab48a953fa4789878bbd631ef1080dd33", null ],
     [ "orion_track", "orion_8c.html#a71a40fe4e67ca8c1155b18381b797ac8", null ]

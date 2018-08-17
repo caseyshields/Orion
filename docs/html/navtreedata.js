@@ -24,15 +24,29 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Orion", "index.html", [
-    [ "Building Orion", "index.html#building", null ],
-    [ "Running Orion", "index.html#running", null ],
-    [ "Using Orion", "index.html#using", [
-      [ "Search <min magnitude> <min az> <max az> <min zd> <max zd>", "index.html#search", null ],
-      [ "Start", "index.html#start", null ],
-      [ "Track <FK ID>", "index.html#track", null ],
-      [ "Exit", "index.html#exit", null ]
+    [ "Getting Started", "index.html#start", [
+      [ "Building Orion", "index.html#building", null ],
+      [ "Running Orion", "index.html#running", null ]
     ] ],
-    [ "Test Suite", "index.html#tests", null ],
+    [ "Configuration Commands", "index.html#configuration", [
+      [ "time <year>/<month>/<day> <hour>:<min>:<second>", "index.html#time", null ],
+      [ "location <latitude> <longitude> <height>", "index.html#location", null ],
+      [ "weather <temperature> <pressure>", "index.html#weather", null ]
+    ] ],
+    [ "Catalog Commands", "index.html#catalog", [
+      [ "name <substring>", "index.html#name", null ],
+      [ "search <min magnitude> [min_az max_az min_zd max_zd]", "index.html#search", null ]
+    ] ],
+    [ "Sensor Commands", "index.html#sensor", [
+      [ "connect [<ip>:<port>]", "index.html#connect", null ],
+      [ "target <FK6 ID>", "index.html#target", null ],
+      [ "exit", "index.html#exit", null ]
+    ] ],
+    [ "Diagnostic Commands", "index.html#diagnostic", [
+      [ "status", "index.html#status", null ],
+      [ "report <step> <count>", "index.html#report", null ]
+    ] ],
+    [ "Bug List", "bug.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -45,7 +59,7 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
-        [ "Functions", "globals_func.html", null ],
+        [ "Functions", "globals_func.html", "globals_func" ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
@@ -59,7 +73,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"struct_f_k6___field.html#abce9f5dc9c83f2639b72024fdee5d388"
+"orion_8h.html#ad0a13013200b805ce5ef03efe726e913"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
