@@ -307,7 +307,7 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
         // calculate the current location of the target
         tracker_to_horizon(
                 &(orion->tracker), &(orion->target.novas),
-                &zd, &az
+                &zd, &az, (orion->target.efg)
         );
         midc01->E = (int) (zd * 1000); // converting to arcseconds as a stopgap...
         midc01->F = (int) (az * 1000);
@@ -370,9 +370,10 @@ void orion_print_status(Orion * orion, FILE * file) {
     if( target->novas.starnumber ) {
         cat_entry *entry = &(target->novas);
         double zd = 0.0, az = 0.0;
-        tracker_to_horizon(tracker, entry, &zd, &az);
-        fprintf(file, "%s % 4ld % 8.4lf°zd % 8.4lf°az %3.1lfv %s\n",
-                entry->catalog, entry->starnumber, zd, az, target->magnitude, entry->starname);
+        double efg[3] = {0,0,0};
+        tracker_to_horizon(tracker, entry, &zd, &az, efg);
+        fprintf(file, "%s % 4ld % 8.4lf°zd % 8.4lf°az (%lf,%lf,%lf) %3.1lfv %s\n",
+                entry->catalog, entry->starnumber, zd, az, efg[0], efg[1], efg[2], target->magnitude, entry->starname);
 
         // print out an example midc01 message
         MIDC01 midc01;

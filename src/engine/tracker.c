@@ -57,104 +57,131 @@ on_surface tracker_get_location(Tracker *tracker) {
     return tracker->site;
 }
 
-int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth) {
-    short int error;
-    double right_ascension=0, declination=0;
-
+int tracker_to_horizon(
+        Tracker *tracker,
+        cat_entry *target,
+        double *zenith_distance, double *topocentric_azimuth,
+        double *efg )
+{
     // Derive the Terestrial time from the current UTC time
     double jd_tt = tracker_get_TT( tracker );
     double deltaT = tracker_get_DeltaT( tracker );
 
-    // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
+    // TODO we should configure these or scrub them from the IERS bullitin A...
+    double xp = 0.0, yp = 0.0;
 
-    // The FK6 catalog entries I believe are specified in the J2000 epoch;
-    // thus they should be consistent to within 0.02 arcseconds of the BCRS
-
-    // get the coordinates in the true equator and equinox of date
+    // Apply proper motion, parallax, gravitational deflection, relativistic
+    // aberration and get the coordinates of the star in the true equator and equinox of date
+    double right_ascension=0, declination=0;
+    short int error;
     error = topo_star(
                 jd_tt,
                 deltaT,
-                target,
-                &tracker->site,
+                target, // The FK6 catalog entries I believe are specified in the J2000 epoch
+                        // thus they should be consistent to within 0.02 arcseconds of the BCRS
+                &tracker->site, // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
                 REDUCED_ACCURACY,
-                &right_ascension,
-                &declination
-        ); // these output coordinate are specified in term of the current orientations of the equator and ecliptic
+                &right_ascension, // these are specified in term of the current orientations of the equator and ecliptic
+                &declination // that is, they don't make sense unless you have a date, because both of those things are moving...
+        );
+    if( error )
+        return error;
 
-    // This coordinate system is easier to convert to the horizon coordinates of the observer;
+    // Apply refraction and convert Equatorial coordinates to horizon coordinates
     double ra, dec;
     equ2hor(
             jd_tt,
             deltaT,
             REDUCED_ACCURACY,
-            0.0, 0.0, // TODO ITRS poles... scrub from bulletin!
+            xp, yp,
             &tracker->site,
             right_ascension, declination,
-            2, // simple refraction model based on site atmospheric conditions
-
+            REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
             zenith_distance, topocentric_azimuth,
             &ra, &dec // TODO do I need to expose these?
     );
 
-    return error;
-}
-
-int tracker_to_efg(Tracker *tracker, cat_entry *target, double efg[3]) {
-    short int error;
-    double right_ascension=0, declination=0;
-
-    // Derive the Terestrial time from the current UTC time
-    double jd_tt = tracker_get_TT( tracker );
-    double deltaT = tracker_get_DeltaT( tracker );
-
-    // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
-
-    // The FK6 catalog entries I believe are specified in the J2000 epoch;
-    // thus they should be consistent to within 0.02 arcseconds of the BCRS
-
-    // get the spherical coordinates of the star in the GCRS system
-    // applies proper motion, parallax, gravitational deflection of other solar system bodies, and relativistic aberration
-    error = local_star(
-            jd_tt,
-            deltaT,
-            target,
-            &tracker->site,
-            REDUCED_ACCURACY,
-            &right_ascension,
-            &declination
-    );
-    // these output coordinate are int GCRS;
-    // The GCRS is fixed by a bunch of ancient quasars and the ICRS axis' are derived from them.
-    // The ICRS were chosen to closely align with the J2000 epoch.
-
-    if( error )
-        return error;
-
     // convert the spherical coordinates to rectilinear
-    double gcrs[3];
-    double tats_distance = 16777216 / AU ; // ( TATS celestial sphere radius ) / (AU in meters)
+    double equ[3];
+    double tats_distance = AU;//16777216 / AU ; // ( TATS celestial sphere radius ) / (AU in meters)
     // novas uses AU...
-    radec2vector( right_ascension, declination, tats_distance, efg );
+    radec2vector( right_ascension, declination, tats_distance, equ );
 
-    // now transform the gcrs coordinates into ITRS coordinates
+    // now transform the equatorial coordinates into ITRS coordinates
     error = cel2ter(
-            high, low,
+            jd_tt, 0, // previous novas routines don't support the level of precision available
             deltaT,
-            method,
+            METHOD_EQUINOX,
             REDUCED_ACCURACY,
-            option,
-            target,
+            OPTION_EQUATOR_AND_EQUINOX_OF_DATE, // only compatible with the equinox method
             xp, yp,
-            &gcrs,
-            &itrs
-            );
-
+            equ,
+            efg
+    );
+    // the answer will have to be scaled to fit TATS eventually...
 
     return error;
 }
-// the returned coordinates are in the geocentric equator of date system
-// this is incompatible with the GCRS system
-// which is what we need to be in if we are going to convert to rectilinear coordinates
+
+//int tracker_to_efg(Tracker *tracker, cat_entry *target, double efg[3]) {
+//    short int error;
+//    double right_ascension=0, declination=0;
+//
+//    // Derive the Terestrial time from the current UTC time
+//    double jd_tt = tracker_get_TT( tracker );
+//    double deltaT = tracker_get_DeltaT( tracker );
+//
+//    // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
+//
+//    // The FK6 catalog entries I believe are specified in the J2000 epoch;
+//    // thus they should be consistent to within 0.02 arcseconds of the BCRS
+//
+//    // get the spherical coordinates of the star in the GCRS system
+//    // applies proper motion, parallax, gravitational deflection of other solar system bodies, and relativistic aberration
+//    error = local_star(
+//            jd_tt,
+//            deltaT,
+//            target,
+//            &tracker->site,
+//            REDUCED_ACCURACY,
+//            &right_ascension,
+//            &declination
+//    );
+//    // these output coordinate are int GCRS;
+//    // The GCRS is fixed by a bunch of ancient quasars and the ICRS axis' are derived from them.
+//    // The ICRS were chosen to closely align with the J2000 epoch.
+//
+//    if( error )
+//        return error;
+//
+//    // convert the spherical coordinates to rectilinear
+//    double gcrs[3];
+//    double tats_distance = 16777216 / AU ; // ( TATS celestial sphere radius ) / (AU in meters)
+//    // novas uses AU...
+//    radec2vector( right_ascension, declination, tats_distance, efg );
+//
+//    double xp = 0.0, yp = 0.0;
+//
+//    // now transform the gcrs coordinates into ITRS coordinates
+//    error = cel2ter(
+//            high, low,
+//            deltaT,
+//            METHOD_EQUINOX,
+//            REDUCED_ACCURACY,
+//            OPTION_EQUATOR_AND_EQUINOX_OF_DATE,
+//            target,
+//            xp, yp,
+//            &gcrs,
+//            &itrs
+//            );
+//
+//
+//    return error;
+//}
+//// the returned coordinates are in the geocentric equator of date system
+//// this is incompatible with the GCRS system
+//// which is what we need to be in if we are going to convert to rectilinear coordinates
+//// Ah damnit; cel2ter has an option for equatorial...
 
 int tracker_zenith(Tracker *tracker, double *right_ascension, double *declination) {
     on_surface site = tracker->site;

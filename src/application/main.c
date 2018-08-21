@@ -402,6 +402,7 @@ int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
 // Diagnostic Commands ////////////////////////////////////////////////////////
 int cmd_report( char * line, Orion * orion, FILE * stream ) {
     double step=0, az=0, zd=0;
+    double efg[3] = {0,0,0};
     int count=0;
 
     int result = sscanf(line, "report %lf %u\n", &step, &count );
@@ -420,7 +421,7 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
     // TODO print target information
 
     // print the header
-    fprintf( stream, "UTC\tAZ\tZD\n" );
+    fprintf( stream, "UTC\tAZ\tZD\tE\tF\tG\n" );
 
     // step over the given time interval
     step /= SECONDS_IN_DAY;
@@ -429,11 +430,11 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
 
         // calculate coordinates at the given time
         tracker_set_time( &tracker, start );
-        tracker_to_horizon( &tracker, &(target.novas), &az, &zd );
+        tracker_to_horizon( &tracker, &(target.novas), &az, &zd, efg );
 
         // print report entry
         char * ts = jday2stamp( start );
-        fprintf( stream, "%s\t%010.6lf\t%010.6lf\n", ts, az, zd );
+        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%lf\t%lf\t%lf\n", ts, az, zd, efg[0], efg[1], efg[2] );
         free( ts );
         start += step;
     }

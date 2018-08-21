@@ -27,7 +27,7 @@ typedef struct {
     double zenith_distance, topocentric_azimuth;
 
     /** A pointing vector in geocentric coordinates, only makes sense in the context of a Tracker */
-    double E, F, G;
+    double efg[3];
     // todo To follow better encapsulation principles we may want to extract transformed coordinates into a structure which references the catalog entry
 
 } Entry;

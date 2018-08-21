@@ -14,6 +14,16 @@
 /** Novas in reduced accuracy mode can be expected to have 1 arcsecond accuracy when properly configured. */
 #define REDUCED_ACCURACY 1
 
+/**  Celestial intermediate origin method used to transform between GCRS and ITRS. Argument to the Novas function cel2ter. */
+#define METHOD_CIO 0
+/**  Equinox based method used to transform between GCRS and ITRS. Argument to the Novas function cel2ter. */
+#define METHOD_EQUINOX 1
+
+#define OPTION_GCRS 0
+#define OPTION_EQUATOR_AND_EQUINOX_OF_DATE 1
+
+#define REFRACTION_NONE 0
+#define REFRACTION_SITE 2
 /** The Tracker module represents a sensor on the surface of the earth at a specific time, observing
  * a celestial object. It can transform star coordinates between celestial and horizon, using Novas
  * 3.1 to handle orbit, spin, precession, parallax, atmospheric refraction and relativistic
@@ -75,7 +85,7 @@ void tracker_set_weather(Tracker *tracker, double temperature, double pressure);
  * @param zenith_distance Output argument returning the angular offset from the local zenith in degrees
  * @param topocentric_azimuth Output argument returning the clockwise angular offset from north in degrees
  * @return Zero on success, otherwise a Novas error code. */
-int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth);
+int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth, double *efg);
 
 /** returns the current location of the given tracker's zenith in celestial coordinates.
  * @param tracker Location used to compute the zenith vector
