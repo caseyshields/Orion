@@ -309,11 +309,11 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
                 &(orion->tracker), &(orion->target.novas),
                 &zd, &az, (orion->target.efg)
         );
-        midc01->E = (int) (zd * 1000); // converting to arcseconds as a stopgap...
-        midc01->F = (int) (az * 1000);
-        midc01->G = 0;
-        // TODO I need a proxy range...
-        // TODO I need a local to EFG conversion...
+        double * efg = (orion->target.efg);
+        midc01->E = (int)efg[0];
+        midc01->F = (int)efg[1];
+        midc01->G = (int)efg[2];
+        // TODO where should we set the celestial sphere?
 
         // set the tracker status
         midc01->track_status = (TATS_STATUS_SIM | TATS_STATUS_POS_DATA);

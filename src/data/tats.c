@@ -2,14 +2,14 @@
 
 void tats_print_midc01(MIDC01 * midc01, FILE * file ) {
     fprintf( file,
-             "%02d %01d %04d %05d %08.4lf %08.4lf %08.4lf %04d %02X %04X\n",
+             "%02d %01d %04d %05d %d %d %d %04d %02X %04X\n",
              midc01->midc,
              midc01->sensor_type,
              midc01->sensor_id,
              midc01->tcn_time,
-             (midc01->E/1000.0),
-             (midc01->F/1000.0),
-             0.0,//(int)(midc01->G),
+             midc01->E,
+             midc01->F,
+             midc01->G,
              midc01->track_id,
              midc01->track_status,
              midc01->crc

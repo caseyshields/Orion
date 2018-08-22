@@ -103,8 +103,11 @@ int tracker_to_horizon(
 
     // convert the spherical coordinates to rectilinear
     double equ[3];
-    double tats_distance = AU;//16777216 / AU ; // ( TATS celestial sphere radius ) / (AU in meters)
-    // novas uses AU...
+    // what should the default distance be?
+    double tats_distance = 2<<16; // square root of maximum TATS resolution?
+    // = AU; // astronomical unit used by novas
+    // = AU*2*10^14; // where novas places the celestial sphere
+    // = (2^32)/256 = 16777216 meters // max distance representable by TATS
     radec2vector( right_ascension, declination, tats_distance, equ );
 
     // now transform the equatorial coordinates into ITRS coordinates
@@ -123,66 +126,6 @@ int tracker_to_horizon(
     return error;
 }
 
-//int tracker_to_efg(Tracker *tracker, cat_entry *target, double efg[3]) {
-//    short int error;
-//    double right_ascension=0, declination=0;
-//
-//    // Derive the Terestrial time from the current UTC time
-//    double jd_tt = tracker_get_TT( tracker );
-//    double deltaT = tracker_get_DeltaT( tracker );
-//
-//    // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
-//
-//    // The FK6 catalog entries I believe are specified in the J2000 epoch;
-//    // thus they should be consistent to within 0.02 arcseconds of the BCRS
-//
-//    // get the spherical coordinates of the star in the GCRS system
-//    // applies proper motion, parallax, gravitational deflection of other solar system bodies, and relativistic aberration
-//    error = local_star(
-//            jd_tt,
-//            deltaT,
-//            target,
-//            &tracker->site,
-//            REDUCED_ACCURACY,
-//            &right_ascension,
-//            &declination
-//    );
-//    // these output coordinate are int GCRS;
-//    // The GCRS is fixed by a bunch of ancient quasars and the ICRS axis' are derived from them.
-//    // The ICRS were chosen to closely align with the J2000 epoch.
-//
-//    if( error )
-//        return error;
-//
-//    // convert the spherical coordinates to rectilinear
-//    double gcrs[3];
-//    double tats_distance = 16777216 / AU ; // ( TATS celestial sphere radius ) / (AU in meters)
-//    // novas uses AU...
-//    radec2vector( right_ascension, declination, tats_distance, efg );
-//
-//    double xp = 0.0, yp = 0.0;
-//
-//    // now transform the gcrs coordinates into ITRS coordinates
-//    error = cel2ter(
-//            high, low,
-//            deltaT,
-//            METHOD_EQUINOX,
-//            REDUCED_ACCURACY,
-//            OPTION_EQUATOR_AND_EQUINOX_OF_DATE,
-//            target,
-//            xp, yp,
-//            &gcrs,
-//            &itrs
-//            );
-//
-//
-//    return error;
-//}
-//// the returned coordinates are in the geocentric equator of date system
-//// this is incompatible with the GCRS system
-//// which is what we need to be in if we are going to convert to rectilinear coordinates
-//// Ah damnit; cel2ter has an option for equatorial...
-
 int tracker_zenith(Tracker *tracker, double *right_ascension, double *declination) {
     on_surface site = tracker->site;
 
@@ -199,14 +142,17 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
     terestrial[2] = sin_lat;
     //  this is a spherical approximation so it can have up to about 1% error...
 
+    // TODO scrub or configure pole movement
+    double px=0.0, py=0.0;
+
     // convert to a celestial vector
     double celestial[3] = {0.0,0.0,0.0};
     int error = ter2cel(
             tracker->utc, 0.0, tracker_get_DeltaT(tracker),
-            1, // equinox method (0= CIO method)
+            METHOD_EQUINOX, // equinox method (0= CIO method)
             REDUCED_ACCURACY,
-            0, // output in GCRS axes (1=equator & equinox of date)
-            0.0, 0.0, // TODO add in pole offsets!
+            OPTION_EQUATOR_AND_EQUINOX_OF_DATE,
+            px, py,
             terestrial,
             celestial
     );
