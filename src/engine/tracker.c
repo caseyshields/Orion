@@ -164,24 +164,34 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
 }
 
 void tracker_print_time( const Tracker *tracker, FILE * file ) {
-    double utc = tracker_get_UTC(tracker);
-    double ut1 = tracker_get_UT1(tracker);
-    double tt = tracker_get_TT(tracker);
-    fprintf( file, "UTC : %s\nUT1 : %s\nTT  : %s\n",
-             jday2stamp(utc),
-             jday2stamp(ut1),
-             jday2stamp(tt)
-    );
+    // format the time
+    char * stamp = jday2stamp( tracker->utc );
+    fprintf( file, "time:\t%s UTC\t(%+05.3lf UT1)\n", stamp, tracker->ut1_utc );
+
+    // do we want to expose any other time conventions?
+//    double utc = tracker_get_UTC(tracker);
+//    double ut1 = tracker_get_UT1(tracker);
+//    double tt = tracker_get_TT(tracker);
+//    fprintf( file, "UTC : %s\nUT1 : %s\nTT  : %s\n",
+//             jday2stamp(utc),
+//             jday2stamp(ut1),
+//             jday2stamp(tt)
+//    );
+
     fflush( file );
 }
 
 void tracker_print_site(const Tracker *tracker, FILE * file) {
-    fprintf(file, "latitude:\t%f hours\n", tracker->site.latitude);
-    fprintf(file, "longitude:\t%f degrees\n", tracker->site.longitude);
-    fprintf(file, "elevation:\t%f meters\n", tracker->site.height);
-    fprintf(file, "temperature:\t%f Celsius\n", tracker->site.temperature);
-    fprintf(file, "pressure:\t%f millibars\n\n", tracker->site.pressure);
-    //Aperture* aperture = tracker->aperture;
-    //printf("aperture: (asc:%f, dec:%f rad:%f)\n", aperture.right_ascension, aperture.declination, aperture.radius);
+
+    // print out location details
+    on_surface * site = &(tracker->site);
+    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
+    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
+    fprintf( file, "location:\t%10.6lf %c, %10.6lf %c, %6.1lf m\n",
+             site->latitude, ns, site->longitude, ew, site->height );
+
+    // print atmospheric details
+    fprintf( file, "weather:\t%5.1lf°C, %4.3f bar\n", site->temperature, site->pressure/1000.0 );
+
     fflush(file);
 }

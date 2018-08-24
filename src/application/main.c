@@ -1,8 +1,13 @@
 #include "application/main.h"
 
 // Application Structure //////////////////////////////////////////////////////
-
-Application app = { .mode=0, .port=0, .ip=NULL, .orion=NULL, .catalog=NULL };
+Application app = {
+        .mode=0,
+        .port=0,
+        .ip=NULL,
+        .orion=NULL,
+        .catalog=NULL
+};
 
 int main( int argc, char *argv[] ) {
 
@@ -25,8 +30,8 @@ int main( int argc, char *argv[] ) {
     configure_tracker( argc, argv, &(app.orion->tracker) );
     configure_catalog( argc, argv, app.catalog );
     if( !app.catalog->size ) {
-        alert( "Failed to load catalog" );
-        return 1;
+        alert( "Failed to load catalog, exiting" );
+        return 1; // maybe we don't exit? they could still target, they just couldn't catalog
     }
 
     // Main loop
@@ -51,8 +56,8 @@ int main( int argc, char *argv[] ) {
         // catalog commands
         else if( strncmp( "name", line, 4 ) == 0 )
             cmd_name( line, app.catalog);
-//        else if( strncmp( "search", line, 6 ) == 0 )
-//            cmd_search( line, orion, catalog );
+        else if( strncmp( "search", line, 6 ) == 0 )
+            cmd_search( line, app.orion, app.catalog );
 
         // sensor commands
         else if( strncmp( "connect", line, 7 ) == 0 )
@@ -62,7 +67,7 @@ int main( int argc, char *argv[] ) {
 
         // Diagnostic commands
         else if( strncmp( "status", line, 6) == 0 )
-            orion_print_status( app.orion, stdout );
+            cmd_status( line, app.orion, stdout );
         else if( strncmp( "report", line, 6) == 0 )
             cmd_report( line, app.orion, stdout );
         else if( strncmp( "help", line, 4 ) == 0 )
@@ -104,7 +109,6 @@ void cleanup() {
 }
 
 // Initialization /////////////////////////////////////////////////////////////
-
 void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
 
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
@@ -155,17 +159,13 @@ void configure_address( int argc, char* argv[], Application * app ) { //struct s
     char *arg = get_arg(argc, argv, "-port", "43210");
     app->port = (unsigned short) atoi(arg);
     free(arg);
-
-//    // construct server address structure
-//    address->sin_family = AF_INET; // internet address family
-//    address->sin_addr.s_addr = inet_addr( ip ); // server ip
-//    address->sin_port = htons( port ); // server port
 }
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
 //    char * data_root = "../data/fk6/";
 //    char * metadata = "ReadMe";
 //    char * data[2] = {"fk6_1.dat", "fk6_3.dat"};
+// TODO add some arguments to control the catalog loaded
 
     // load the FK6 metadata
     FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
@@ -188,28 +188,9 @@ void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
     fk6_free( fk6_3 );
     free( fk6_3 );
     fclose( data3 );
-
-    // TODO add some arguments to control the catalog loaded
-//    // get the location of the catalog data
-//    char *path = get_arg(argc, argv, "-catalog", "../data/FK6.txt");
-//    // create and load a catalog
-//    FILE *file = fopen(path, "r");
-//    catalog_load_fk5(catalog, file);
-
-
-// should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
-//    cat_entry polaris = {"alpha UMi", "HIP",   0,  2.530301028,  89.264109444,
-//                    44.22, -11.75,  7.56, -17.4};
-//    stars[N_STARS] = {
-//            {"Delta ORI", "HIP", 1,  5.533444639,  -0.299091944,
-//                    1.67,   0.56,  3.56,  16.0},
-//            {"Theta CAR", "HIP", 2, 10.715944806, -64.394450000,
-//                    -18.87, 12.06,  7.43,  24.0}};
-//    catalog_add( catalog, polaris );
-}
+}// TODO should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
 
 // configuration commands /////////////////////////////////////////////////////
-
 int cmd_time(char * line, Orion * orion) {
     int year, month, day, hour, min, count;
     double secs, step;
@@ -223,7 +204,7 @@ int cmd_time(char * line, Orion * orion) {
         orion_set_time(orion, time);
         return 0;
     }
-} // todo add leap seconds and ut1 offset as optional parameters
+} // todo add leap seconds and ut1 offset as optional parameters?
 
 int cmd_location( char * line, Orion * orion ) {
     double lat=0, lon=0, height=0;
@@ -265,80 +246,92 @@ int cmd_name( char * line, Catalog * catalog ) {
     }
 }
 
-//int cmd_search(char * line, Orion * orion, Catalog * catalog) {
-//    float mag_min;
-//    double az_min, az_max, zd_min, zd_max;
-//
-//    int result = sscanf(line, "search %f %lf %lf %lf %lf\n", &mag_min, &az_min, &az_max, &zd_min, &zd_max );
-//    if( result != 1 && result != 5 ) {
-//        printf( "usage: search <min magnitude> [<min az> <max az> <min zd> <max zd>]\n");
-//        return 1;
-//    } else {
-//        // obtain a copy of the current tracker state
-//        Tracker tracker = orion_get_tracker( orion );
-//
-//        // first find the stars which are bright enough
-//        Catalog * bright_stars = catalog_brighter(catalog, mag_min, NULL);
-//
-//        // further filter the stars if the command included patch dimensions
-//        if ( result == 5 ) {
-//            // transform the entire catalog of bright stars using the tracker
-//            void to_horizon( Entry * entry ) {
-//                tracker_to_horizon( &tracker,
-//                                    &(entry->novas),
-//                                    &(entry->zenith_distance),
-//                                    &(entry->topocentric_azimuth) );
-//            } // Gnu C specific: nested functions
-//            catalog_each( bright_stars, &to_horizon );
-//
-//            // filter the stars by their horizon coordinates
-////      int in_patch(Entry *entry) {
-////          return entry->zenith_distance > zd_min
-////                 && entry->zenith_distance < zd_max
-////                 && entry->topocentric_azimuth > az_min
-////                 && entry->topocentric_azimuth < az_max;
-////      }
-////      Catalog * results = catalog_filter( bright_stars, in_patch, NULL );
-//            Catalog * results = catalog_create( NULL, 64 );
-//            for (int n = 0; n<catalog->size; n++) {
-//                Entry * entry = catalog->stars[n];
-//                if( entry->zenith_distance > zd_min
-//                    && entry->zenith_distance < zd_max
-//                    && entry->topocentric_azimuth > az_min
-//                    && entry->topocentric_azimuth < az_max )
-//                    catalog_add( results, entry );
-//            }
-//
-//            catalog_clear( results );
-//            catalog_free( results );
-//            free( results );
-//
-//            return count;
-//        }
-//        // todo sort the remaining stars by brightness
-//        //
-//
-//        // print the search results for the user
-//        void print_star( Entry * entry ) {
-//            cat_entry * novas = &(entry->novas);
-//            printf( "%s%ld\t%s\t%f\t%lf\t%lf\n",
-//                    novas->catalog, novas->starnumber,
-//                    novas->starname, entry->magnitude,
-//                    entry->topocentric_azimuth, entry->zenith_distance);
-//        }
-//        catalog_each( results, print_star );
-//        printf("\n");
-//
-//        int count = results->size;
-//
-//        // release catalogs
-//        catalog_clear( bright_stars );
-//        catalog_free( bright_stars );
-//        free( bright_stars );
-//
-//    }
-//
-//}
+int cmd_search(char * line, Orion * orion, Catalog * catalog) {
+    float mag_min;
+    double az_min, az_max, zd_min, zd_max;
+    Catalog * stars = NULL;
+
+    // try to parse both formats
+    int result = sscanf(line, "search %f %lf %lf %lf %lf\n", &mag_min, &az_min, &az_max, &zd_min, &zd_max );
+    if( result != 5 )
+        result = sscanf(line, "search %f\n", &mag_min );
+
+    // only filter stars by brightness
+    if( result == 1 ) {
+        stars = catalog_brighter(catalog, mag_min, NULL);
+
+    // filter by both brightness and location
+    } else if ( result==5 ) {
+
+        if(az_min>az_max) {
+            alert("Azimuth minimum must be less than maximum");
+            return 1;
+        } else if(zd_min>zd_max) {
+            alert("Zenith distance minimum must be less than maximum");
+            return 1;
+        }
+
+        // first find the stars which are bright enough
+        Catalog * bright = catalog_brighter(catalog, mag_min, NULL);
+
+        // obtain a copy of the current tracker state
+        Tracker tracker = orion_get_tracker( orion );
+
+        // for all bright stars
+        stars = catalog_create( NULL, 64 );
+        for (int n = 0; n<bright->size; n++) {
+            Entry * entry = bright->stars[n];
+
+            // transform the catalog coordinates to topocentric coordinates in spherical and rectilinear.
+            tracker_to_horizon(
+                    &tracker,
+                    &(entry->novas),
+                    &(entry->zenith_distance),
+                    &(entry->topocentric_azimuth),
+                    entry->efg
+            );
+
+            // if the coordinates are within the patch, add them to the results
+            if( entry->zenith_distance > zd_min
+                && entry->zenith_distance < zd_max
+                && entry->topocentric_azimuth > az_min
+                && entry->topocentric_azimuth < az_max )
+                catalog_add( stars, entry );
+        }
+        catalog_clear( bright );
+        catalog_free( bright );
+        free( bright );
+
+    // alert the user if the command could not be read
+    } else {
+        alert( "usage: search <min magnitude> [<min az> <max az> <min zd> <max zd>]");
+        return 1;
+    }
+
+    // print the answer if there is one
+    if( stars!=NULL ) {
+        // todo sort the remaining stars by brightness
+
+        // print the search results for the user
+        for (int n = 0; n<stars->size; n++) {
+            Entry * entry = stars->stars[n];
+
+            cat_entry *novas = &(entry->novas);
+            printf("%s%ld\t%s\t%f\t%lf\t%lf\n",
+                   novas->catalog, novas->starnumber,
+                   novas->starname, entry->magnitude,
+                   entry->topocentric_azimuth, entry->zenith_distance);
+        }
+
+        printf( "%d stars found.\n", stars->size );
+
+        // release catalogs
+        catalog_clear(stars);
+        catalog_free(stars);
+        free(stars);
+    }
+    return 0;
+}
 
 // Sensor Commands ////////////////////////////////////////////////////////////
 int cmd_connect( char * line, Orion * orion ) {
@@ -347,7 +340,7 @@ int cmd_connect( char * line, Orion * orion ) {
 
     // abort if we are already connected
     if( orion_is_connected( orion ) ) {
-        alert( "Sensor already connected" );
+        alert( "Sensor is already connected" );
         return 1;
     }
 
@@ -391,7 +384,7 @@ int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
 
     Entry * entry = catalog_get(catalog, id);
     if( entry ) {
-        orion_track( orion, *entry);
+        orion_set_target( orion, entry);
     } else {
         fprintf( stderr, "Could not find star %ld in catalog\n", id );
         fflush( stderr );
@@ -400,6 +393,26 @@ int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
 }
 
 // Diagnostic Commands ////////////////////////////////////////////////////////
+int cmd_status(char * line, Orion * orion, FILE * stream ) {
+    Tracker tracker = orion_get_tracker( orion );
+    tracker_print_time( &tracker, stream );
+    tracker_print_site( &tracker, stream );
+
+    Entry target = orion_get_target( orion );
+    if( target.novas.starnumber ) {
+        tracker_to_horizon( &tracker, &(target.novas),
+                &(target.zenith_distance), &(target.topocentric_azimuth), (target.efg) );
+        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf°zd % 8.4lf°az\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
+                target.novas.catalog, target.novas.starnumber, target.novas.starname,
+                target.zenith_distance, target.topocentric_azimuth,
+                target.efg[0], target.efg[1], target.efg[2], target.magnitude);
+//        // print out an example midc01 message
+//        MIDC01 midc01;
+//        create_tracking_message(orion, &midc01);
+//        tats_print_midc01(&midc01, file);
+    }
+}
+
 int cmd_report( char * line, Orion * orion, FILE * stream ) {
     double step=0, az=0, zd=0;
     double efg[3] = {0,0,0};
@@ -418,7 +431,7 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
 
     // print tracker information
     tracker_print_site( &tracker, stream );
-    // TODO print target information
+    entry_print( &target ); // TODO print to the supplied stream
 
     // print the header
     fprintf( stream, "UTC\tAZ\tZD\tE\tF\tG\n" );

@@ -108,7 +108,7 @@ Catalog * catalog_brighter(const Catalog *catalog, double min_mag, Catalog *resu
     // Add each catalog entry to the results which exceeds the minimum brightness
     for( int n=0; n<catalog->size; n++ ) {
         Entry * entry = catalog->stars[n];
-        if( entry->magnitude > min_mag )
+        if( entry->magnitude < min_mag )
             catalog_add( results, entry );
     }
     return results;
@@ -154,7 +154,7 @@ void catalog_free( Catalog * catalog ) {
         Entry * entry = catalog->stars[n];
         free( entry );
         catalog->stars[n] = 0;
-    } // catalog_each(catalog, (EntryFunction) free); // this ought to work too
+    }
 
     // then free the catalog's array of pointers
     free( catalog->stars );
@@ -163,6 +163,8 @@ void catalog_free( Catalog * catalog ) {
     catalog->stars = 0;
     catalog->size = 0;
     catalog->allocated = 0;
+
+    // I don't free the catalog pointer because it might be in the stack not the heap...
 }
 
 void catalog_print( Catalog *catalog ) {
@@ -187,73 +189,6 @@ void entry_print( Entry *star ) {
             star->novas.parallax,
             star->magnitude );
     fflush( stdout );
-}
-
-Catalog* catalog_load_fk5( Catalog *catalog, FILE *f ) {
-    char buf[1024], *s;
-    double hour, min, sec;
-    double deg, arcmin, arcsec;
-    int n=0;
-
-    // create a catalog if no reference was given
-    if( !catalog )
-        catalog = catalog_create( NULL, 0 );
-
-    // parse FK6 entries from file
-    while(n<10) { // skip first ten lines
-        s = fgets(buf, 1024, f);
-        n++;
-    }
-    n=0;
-    do {
-        // get a line from the catalog
-        s = fgets(buf, 1024, f);
-        if(!s) break;
-
-        // allocate a new entry
-        Entry* entry = malloc( sizeof(Entry) );
-        assert( entry );
-        memset( entry, '\0', sizeof(Entry) );
-
-        // uhh, I might want to make a smarter parser...
-        sscanf(buf+1, " %li ", &(entry->novas.starnumber)); // col 1
-        sscanf(buf+17, " %19c ", entry->novas.starname); // col 3
-        strcpy(entry->novas.catalog, "FK6"); // FK6
-        sscanf(buf+38, " %lf %lf %lf ", &hour, &min, &sec); // col 4
-        sscanf(buf+59, " %lf %lf %lf ", &deg, &arcmin, &arcsec); // col 5
-        sscanf(buf+77, " %lf ", &(entry->novas.promora)); // col 6?
-        sscanf(buf+89, " %lf ", &(entry->novas.promodec)); // col 7?
-        sscanf(buf+153, " %lf ", &(entry->novas.parallax)); // col 14
-        sscanf(buf+179, " %lf ", &(entry->novas.radialvelocity)); // col
-        sscanf(buf+186, " %lf ", &(entry->magnitude)); // col 18
-        /*TODO use make_cat_entry(
-                          char star_name[SIZE_OF_OBJ_NAME],
-                          char catalog[SIZE_OF_CAT_NAME],
-                          long int star_num, double ra, double dec,
-                          double pm_ra, double pm_dec, double parallax,
-                          double rad_vel,
-                          cat_entry *star)*/
-
-        // combine hours minutes and seconds
-        entry->novas.ra = hour+(min/60.0)+(sec/3600.0);
-        if(buf[58]=='+')
-            entry->novas.dec = deg+(arcmin/60.0)+(arcsec/3600.0);
-        else
-            entry->novas.dec = -deg-(arcmin/60.0)-(arcsec/3600.0);
-
-        if(buf[76]=='-')
-            entry->novas.promora*=-1.0;
-        if(buf[88]=='-')
-            entry->novas.promodec*=-1.0;
-        if(buf[178]=='-')
-            entry->novas.radialvelocity*=-1.0;
-
-        // actually add the Entry to the catalog
-        catalog_add( catalog, entry );
-
-        n++;
-    } while(1);
-    return catalog;
 }
 
 Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {

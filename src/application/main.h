@@ -88,16 +88,18 @@ int cmd_weather(char *line, Orion *orion);
 
 int cmd_name(char *line, Catalog *catalog);
 
-/* Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria.
+/** Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria.
  * The results are then printed to stdout.
  * @return The number of stars fitting the criteria*/
-//int cmd_search( char * line, Orion * orion, Catalog * catalog );
+int cmd_search( char * line, Orion * orion, Catalog * catalog );
 
 int cmd_connect(char *line, Orion *orion);
 
 int cmd_target(char *line, Orion *orion, Catalog *catalog);
 
 /** produces a tsv report of a targets coordinates over the specified time interval */
+int cmd_status(char *line, Orion * orion, FILE * stream);
+
 int cmd_report(char *line, Orion *orion, FILE *stream);
 
 int cmd_help(char *line);
