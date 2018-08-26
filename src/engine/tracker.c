@@ -57,37 +57,71 @@ on_surface tracker_get_location(Tracker *tracker) {
     return tracker->site;
 }
 
-int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth) {
-    short int error;
+int tracker_to_horizon(
+        Tracker *tracker,
+        cat_entry *target,
+        double *zenith_distance, double *topocentric_azimuth,
+        double *efg )
+{
+    // Derive the Terestrial time from the current UTC time
     double jd_tt = tracker_get_TT( tracker );
     double deltaT = tracker_get_DeltaT( tracker );
-    double right_ascension=0, declination=0;
 
-    // get the GCRS coordinates
+    // TODO we should configure these or scrub them from the IERS bullitin A...
+    double xp = 0.0, yp = 0.0;
+
+    // Apply proper motion, parallax, gravitational deflection, relativistic
+    // aberration and get the coordinates of the star in the true equator and equinox of date
+    double right_ascension=0, declination=0;
+    short int error;
     error = topo_star(
                 jd_tt,
                 deltaT,
-                target,
-                &tracker->site,
+                target, // The FK6 catalog entries I believe are specified in the J2000 epoch
+                        // thus they should be consistent to within 0.02 arcseconds of the BCRS
+                &tracker->site, // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
                 REDUCED_ACCURACY,
-                &right_ascension,
-                &declination
+                &right_ascension, // these are specified in term of the current orientations of the equator and ecliptic
+                &declination // that is, they don't make sense unless you have a date, because both of those things are moving...
         );
+    if( error )
+        return error;
 
-    // then convert them to horizon coordinates
+    // Apply refraction and convert Equatorial coordinates to horizon coordinates
     double ra, dec;
     equ2hor(
             jd_tt,
             deltaT,
             REDUCED_ACCURACY,
-            0.0, 0.0, // TODO ITRS poles... scrub from bulletin!
+            xp, yp,
             &tracker->site,
             right_ascension, declination,
-            2, // simple refraction model based on site atmospheric conditions
-
+            REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
             zenith_distance, topocentric_azimuth,
             &ra, &dec // TODO do I need to expose these?
     );
+
+    // convert the spherical coordinates to rectilinear
+    double equ[3];
+    // what should the default distance be?
+    double tats_distance = 2<<16; // square root of maximum TATS resolution?
+    // = AU; // astronomical unit used by novas
+    // = AU*2*10^14; // where novas places the celestial sphere
+    // = (2^32)/256 = 16777216 meters // max distance representable by TATS
+    radec2vector( right_ascension, declination, tats_distance, equ );
+
+    // now transform the equatorial coordinates into ITRS coordinates
+    error = cel2ter(
+            jd_tt, 0, // previous novas routines don't support the level of precision available
+            deltaT,
+            METHOD_EQUINOX,
+            REDUCED_ACCURACY,
+            OPTION_EQUATOR_AND_EQUINOX_OF_DATE, // only compatible with the equinox method
+            xp, yp,
+            equ,
+            efg
+    );
+    // the answer will have to be scaled to fit TATS eventually...
 
     return error;
 }
@@ -108,14 +142,17 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
     terestrial[2] = sin_lat;
     //  this is a spherical approximation so it can have up to about 1% error...
 
+    // TODO scrub or configure pole movement
+    double px=0.0, py=0.0;
+
     // convert to a celestial vector
     double celestial[3] = {0.0,0.0,0.0};
     int error = ter2cel(
             tracker->utc, 0.0, tracker_get_DeltaT(tracker),
-            1, // equinox method (0= CIO method)
+            METHOD_EQUINOX, // equinox method (0= CIO method)
             REDUCED_ACCURACY,
-            0, // output in GCRS axes (1=equator & equinox of date)
-            0.0, 0.0, // TODO add in pole offsets!
+            OPTION_EQUATOR_AND_EQUINOX_OF_DATE,
+            px, py,
             terestrial,
             celestial
     );
@@ -127,24 +164,34 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
 }
 
 void tracker_print_time( const Tracker *tracker, FILE * file ) {
-    double utc = tracker_get_UTC(tracker);
-    double ut1 = tracker_get_UT1(tracker);
-    double tt = tracker_get_TT(tracker);
-    fprintf( file, "UTC : %s\nUT1 : %s\nTT  : %s\n",
-             jday2stamp(utc),
-             jday2stamp(ut1),
-             jday2stamp(tt)
-    );
+    // format the time
+    char * stamp = jday2stamp( tracker->utc );
+    fprintf( file, "time:\t%s UTC\t(%+05.3lf UT1)\n", stamp, tracker->ut1_utc );
+
+    // do we want to expose any other time conventions?
+//    double utc = tracker_get_UTC(tracker);
+//    double ut1 = tracker_get_UT1(tracker);
+//    double tt = tracker_get_TT(tracker);
+//    fprintf( file, "UTC : %s\nUT1 : %s\nTT  : %s\n",
+//             jday2stamp(utc),
+//             jday2stamp(ut1),
+//             jday2stamp(tt)
+//    );
+
     fflush( file );
 }
 
 void tracker_print_site(const Tracker *tracker, FILE * file) {
-    fprintf(file, "latitude:\t%f hours\n", tracker->site.latitude);
-    fprintf(file, "longitude:\t%f degrees\n", tracker->site.longitude);
-    fprintf(file, "elevation:\t%f meters\n", tracker->site.height);
-    fprintf(file, "temperature:\t%f Celsius\n", tracker->site.temperature);
-    fprintf(file, "pressure:\t%f millibars\n\n", tracker->site.pressure);
-    //Aperture* aperture = tracker->aperture;
-    //printf("aperture: (asc:%f, dec:%f rad:%f)\n", aperture.right_ascension, aperture.declination, aperture.radius);
+
+    // print out location details
+    on_surface * site = &(tracker->site);
+    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
+    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
+    fprintf( file, "location:\t%10.6lf %c, %10.6lf %c, %6.1lf m\n",
+             site->latitude, ns, site->longitude, ew, site->height );
+
+    // print atmospheric details
+    fprintf( file, "weather:\t%5.1lf°C, %4.3f bar\n", site->temperature, site->pressure/1000.0 );
+
     fflush(file);
 }

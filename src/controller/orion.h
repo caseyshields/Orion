@@ -84,11 +84,6 @@ int orion_connect( Orion * orion, char * ip, unsigned short port );
  * @return 0 on success, 1 on failure. Check error buffer after a failure for cause. */
 int orion_start( Orion * orion );
 
-/** Specify a target which the control thread will instruct the sensor to track. Thread safe.
- * @param orion The server which will track the target
- * @param target A novas structure holding the celestial location of the target. */
-void orion_track( Orion * orion, Entry target );
-
 /** Safely stops the control loop and blocks until it returns. Thread safe. */
 int orion_stop( Orion * orion );
 
@@ -132,9 +127,10 @@ void orion_set_weather( Orion * orion, double celsius, double millibars );
 /** @return a thread safe copy of the current target of the Orion server. */
 Entry orion_get_target( Orion * orion );
 
-void orion_print_status(Orion * orion, FILE * file);
-
-
+/** Specify a target which the control thread will instruct the sensor to track. Thread safe.
+ * @param orion The server which will track the target
+ * @param target A novas structure holding the celestial location of the target. */
+void orion_set_target( Orion * orion, const Entry * entry );
 
 #endif //STARTRACK_ORION_H
 

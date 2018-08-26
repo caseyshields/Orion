@@ -27,7 +27,7 @@ typedef struct {
     double zenith_distance, topocentric_azimuth;
 
     /** A pointing vector in geocentric coordinates, only makes sense in the context of a Tracker */
-    double E, F, G;
+    double efg[3];
     // todo To follow better encapsulation principles we may want to extract transformed coordinates into a structure which references the catalog entry
 
 } Entry;
@@ -143,9 +143,8 @@ void catalog_clear( Catalog *c );
 /** Releases the Catalog and it's directory, but not the actual Entries.*/
 void catalog_free( Catalog *c );
 
-// todo we might want to flesh out the model to include the current pointing direction of the tracker, which we can obtain through TATS sources...
 //typedef struct {
 //    double ra, dec, r;
-//} Aperture; // might be useful for some queries...
+//} Aperture; // tracking the current orientation of the tracker might be useful...
 
 #endif //STARTRACK_CATALOG_H

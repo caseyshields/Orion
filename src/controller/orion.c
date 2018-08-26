@@ -153,13 +153,6 @@ int orion_start( Orion * orion ) {
     return 0;
 } // helpful tutorial: https://www.cs.nmsu.edu/~jcook/Tools/pthreads/library.html
 
-void orion_track( Orion * orion, Entry target ) {
-    // safely change the target
-    pthread_mutex_lock( &(orion->lock) );
-    orion->target = target;
-    pthread_mutex_unlock( &(orion->lock) );
-}
-
 int orion_stop( Orion * orion ) {
     // obtain lock since we need to change the mode
     pthread_mutex_lock( &(orion->lock) );
@@ -189,7 +182,7 @@ void orion_disconnect( Orion * orion ) {
     // sanity check, the control thread should be off and the socket valid
     assert( orion->mode == ORION_MODE_OFF );
     assert( orion->socket != INVALID_SOCKET );
-
+// TODO add some better error handling than asserts!
 //    // abort if the server is running
 //    if (orion_is_running( orion )) {
 //        sprintf( orion->error, "[%d] %s\n\0", 1, "Cannot disconnect server while it is running");
@@ -255,11 +248,17 @@ Tracker orion_get_tracker( Orion * orion ) {
 }
 
 Entry orion_get_target( Orion * orion ) {
-    Entry target;
+    Entry entry;
     pthread_mutex_lock( &(orion->lock) );
-    memcpy( &target, &(orion->target), sizeof(Entry) );
+    memcpy( &entry, &(orion->target), sizeof(Entry) );
     pthread_mutex_unlock( &(orion->lock) );
-    return target;
+    return entry;
+}
+
+void orion_set_target( Orion * orion, const Entry * entry ) {
+    pthread_mutex_lock( &(orion->lock) );
+    memcpy( &(orion->target), entry, sizeof(Entry) );
+    pthread_mutex_unlock( &(orion->lock) );
 }
 
 int orion_is_connected (Orion * orion) {
@@ -294,7 +293,7 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     // we assume this simlator is posing as a RIU
     midc01->sensor_type = TATS_TIDC_RIU;
     midc01->sensor_id = orion->id;
-    //midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
+//    midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
 
     // compute timer value from sensor time...
     unsigned short int milliseconds = (unsigned short int)
@@ -307,13 +306,12 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
         // calculate the current location of the target
         tracker_to_horizon(
                 &(orion->tracker), &(orion->target.novas),
-                &zd, &az
+                &zd, &az, (orion->target.efg)
         );
-        midc01->E = (int) (zd * 1000); // converting to arcseconds as a stopgap...
-        midc01->F = (int) (az * 1000);
-        midc01->G = 0;
-        // TODO I need a proxy range...
-        // TODO I need a local to EFG conversion...
+        double * efg = (orion->target.efg);
+        midc01->E = (int)efg[0];
+        midc01->F = (int)efg[1];
+        midc01->G = (int)efg[2];
 
         // set the tracker status
         midc01->track_status = (TATS_STATUS_SIM | TATS_STATUS_POS_DATA);
@@ -341,47 +339,4 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     midc01->crc = crc16( (char*)midc01, sizeof(MIDC01)-2 );
 
     return midc01;
-    //TODO check byte orders!
-}
-
-void orion_print_status(Orion * orion, FILE * file) {
-
-    pthread_mutex_lock( &(orion->lock) );
-
-    fprintf( file, "\n" );
-
-    // print out the time
-    Tracker * tracker = &(orion->tracker);
-    char * stamp = jday2stamp( orion->tracker.utc );
-    fprintf( file, "%s UTC (%+05.3lf UT1)\n", stamp, tracker->ut1_utc );
-
-    // print out location details
-    on_surface * site = &(tracker->site);
-    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
-    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
-    fprintf( file, "%10.6lf %c, %10.6lf %c, %6.1lf m\n",
-             site->latitude, ns, site->longitude, ew, site->height );
-
-    // print atmospheric details
-    fprintf( file, "%5.1lf°C %4.3f bar\n", site->temperature, site->pressure/1000.0 );
-
-    // print out the target
-    Entry * target = &(orion->target);
-    if( target->novas.starnumber ) {
-        cat_entry *entry = &(target->novas);
-        double zd = 0.0, az = 0.0;
-        tracker_to_horizon(tracker, entry, &zd, &az);
-        fprintf(file, "%s % 4ld % 8.4lf°zd % 8.4lf°az %3.1lfv %s\n",
-                entry->catalog, entry->starnumber, zd, az, target->magnitude, entry->starname);
-
-        // print out an example midc01 message
-        MIDC01 midc01;
-        create_tracking_message(orion, &midc01);
-        tats_print_midc01(&midc01, file);
-    }
-
-    fprintf( file, "\n" );
-
-    pthread_mutex_unlock( &(orion->lock) );
-
 }
