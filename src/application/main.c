@@ -94,12 +94,13 @@ void cleanup() {
             orion_stop(app.orion);
         if( orion_is_connected(app.orion) )
             orion_disconnect(app.orion);
+        free( app.orion );
     }
 
     if( app.catalog )
         catalog_free( app.catalog );
 
-    if( app.ip )
+    if( app.ip && app.ip==LOCALHOST)
         free( app.ip );
 }
 
@@ -149,12 +150,14 @@ void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
 void configure_address( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
 
     // get server address, should be in dotted quad notation
-    app->ip = get_arg(argc, argv, "-ip", "127.0.0.1");
+    app->ip = get_arg(argc, argv, "-ip", LOCALHOST);
 
     // get server socket port number
-    char *arg = get_arg(argc, argv, "-port", "43210");
+    char * default_port = "43210";
+    char *arg = get_arg(argc, argv, "-port", default_port);
     app->port = (unsigned short) atoi(arg);
-    free(arg);
+    if( arg!=default_port )
+        free(arg);
 
 //    // construct server address structure
 //    address->sin_family = AF_INET; // internet address family

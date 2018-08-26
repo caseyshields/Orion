@@ -39,6 +39,8 @@
 /** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
 
+#define LOCALHOST "127.0.0.1"
+
 /** The Application structure holds all components of a interactive command line application which
  * interfaces with the Orion server and associated star catalogs. */
 typedef struct {
