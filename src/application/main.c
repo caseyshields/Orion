@@ -295,8 +295,8 @@ int cmd_search(char * line, Orion * orion, Catalog * catalog) {
             tracker_to_horizon(
                     &tracker,
                     &(entry->novas),
-                    &(entry->zenith_distance),
                     &(entry->topocentric_azimuth),
+                    &(entry->zenith_distance),
                     entry->efg
             );
 
@@ -410,10 +410,11 @@ int cmd_status(char * line, Orion * orion, FILE * stream ) {
     Entry target = orion_get_target( orion );
     if( target.novas.starnumber ) {
         tracker_to_horizon( &tracker, &(target.novas),
-                &(target.zenith_distance), &(target.topocentric_azimuth), (target.efg) );
-        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf°zd % 8.4lf°az\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
+                    &(target.topocentric_azimuth), &(target.zenith_distance), (target.efg) );
+        double el = 90.0 - target.zenith_distance;
+        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
                 target.novas.catalog, target.novas.starnumber, target.novas.starname,
-                target.zenith_distance, target.topocentric_azimuth,
+                target.topocentric_azimuth, el, //target.zenith_distance,
                 target.efg[0], target.efg[1], target.efg[2], target.magnitude);
 //        // print out an example midc01 message
 //        MIDC01 midc01;
@@ -443,7 +444,7 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
     entry_print( &target ); // TODO print to the supplied stream
 
     // print the header
-    fprintf( stream, "UTC\tAZ\tZD\tE\tF\tG\n" );
+    fprintf( stream, "UTC\tAZ\tEL\tE\tF\tG\n" );
 
     // step over the given time interval
     step /= SECONDS_IN_DAY;

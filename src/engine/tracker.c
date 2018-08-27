@@ -60,7 +60,7 @@ on_surface tracker_get_location(Tracker *tracker) {
 int tracker_to_horizon(
         Tracker *tracker,
         cat_entry *target,
-        double *zenith_distance, double *topocentric_azimuth,
+        double *topocentric_azimuth, double *zenith_distance,
         double *efg )
 {
     // Derive the Terestrial time from the current UTC time

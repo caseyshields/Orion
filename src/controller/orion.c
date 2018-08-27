@@ -306,7 +306,7 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
         // calculate the current location of the target
         tracker_to_horizon(
                 &(orion->tracker), &(orion->target.novas),
-                &zd, &az, (orion->target.efg)
+                &az, &zd, (orion->target.efg)
         );
         double * efg = (orion->target.efg);
         midc01->E = (int)efg[0];
