@@ -217,6 +217,19 @@ jday orion_set_time( Orion * orion, jday time ) {
     return last;
 }
 
+double orion_get_latency( Orion * orion ) {
+    pthread_mutex_lock( &(orion->lock) );
+    double latency = orion->latency;
+    pthread_mutex_unlock( &(orion->lock) );
+    return latency;
+}
+
+void orion_set_latency( Orion * orion, double latency ) {
+    pthread_mutex_lock( &(orion->lock) );
+    orion->latency = latency;
+    pthread_mutex_unlock( &(orion->lock) );
+}
+
 void orion_set_location( Orion * orion, double lat, double lon, double h ) {
     pthread_mutex_lock( &(orion->lock) );
     orion->tracker.site.latitude = lat;
@@ -290,7 +303,7 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     // Tracking Message id
     midc01->midc = TATS_TRK_DATA;
 
-    // we assume this simlator is posing as a RIU
+    // we assume this simulator is posing as a RIU
     midc01->sensor_type = TATS_TIDC_RIU;
     midc01->sensor_id = orion->id;
 //    midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
@@ -303,9 +316,12 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
     // if there is an assigned coordinate
     if( orion->target.novas.starnumber ) {
 
+        // get the time with a latency bias to it...
+        double jd_tt = tracker_get_terrestrial_time( &(orion->tracker), orion->latency );
+
         // calculate the current location of the target
-        tracker_to_horizon(
-                &(orion->tracker), &(orion->target.novas),
+        tracker_find(
+                &(orion->tracker), &(orion->target.novas), jd_tt,
                 &az, &zd, (orion->target.efg)
         );
         double * efg = (orion->target.efg);

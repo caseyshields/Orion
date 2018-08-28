@@ -55,8 +55,14 @@ typedef struct {
  * @return a pointer to the initialized or allocated structure */
 int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs);
 
-/** return The tracker's current UTC time in Julian day format */
+/** @return The tracker's current UTC time in Julian day format */
 jday tracker_get_time(Tracker *tracker);
+
+/** @param bias An arbitrary bias users can add to the output, for example simulating latency of a network sensor.
+ * @return the current terrestrial time of the tracker in julian days. Terrestrial time is meant to be a smooth
+ * timescale and is derived from UTC by removing leap seconds and adding an experimentally measured offset available
+ * from the IERS service. */
+jday tracker_get_terrestrial_time( const Tracker * tracker, double bias );
 
 /** Sets the current time for the star tracker
  * @param tracker
@@ -86,6 +92,16 @@ void tracker_set_weather(Tracker *tracker, double temperature, double pressure);
  * @param topocentric_azimuth Output argument returning the clockwise angular offset from north in degrees
  * @return Zero on success, otherwise a Novas error code. */
 int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth, double *efg);
+
+/** Compute the coordinates of the target in local horizon coordinates and EFG at the sepecified time
+ * // TODO should time be moved out of target? and into a general terrestrial time clock module?
+ * @param tracker The tracker to compute the direction from
+ * @param target A novas catalog entry to point at
+ * @param time The UT1 time in the Novas Julian day convention
+ * @param zenith_distance Output argument returning the angular offset from the local zenith in degrees
+ * @param topocentric_azimuth Output argument returning the clockwise angular offset from north in degrees
+ * @return Zero on success, otherwise a Novas error code. */
+int tracker_find(Tracker *tracker, cat_entry *target, jday time, double *zenith_distance, double *topocentric_azimuth, double *efg);
 
 /** returns the current location of the given tracker's zenith in celestial coordinates.
  * @param tracker Location used to compute the zenith vector

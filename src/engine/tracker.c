@@ -22,9 +22,10 @@ void tracker_set_time( Tracker * tracker, jday utc ) {
     tracker->utc = utc;
 }
 
-/** @returns terrestrial time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
-jday tracker_get_TT(const Tracker *tracker) {
-    return tracker->utc + (tracker->leap_secs + DELTA_TT) / SECONDS_IN_DAY;
+/**@param bias A bias to be added to the raw time in seconds
+ * @returns terrestrial time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
+jday tracker_get_terrestrial_time( const Tracker *tracker, double bias ) {
+    return tracker->utc + (tracker->leap_secs + DELTA_TT + bias) / SECONDS_IN_DAY;
 }
 
 /** @return The time in UT1, a time scale which depends on the non-uniform rotation of the earth.
@@ -63,8 +64,19 @@ int tracker_to_horizon(
         double *topocentric_azimuth, double *zenith_distance,
         double *efg )
 {
+    return tracker_find( tracker, target, tracker_get_TT(tracker),
+            topocentric_azimuth, zenith_distance, efg );
+}
+
+int tracker_find(
+        Tracker *tracker,
+        cat_entry *target,
+        jday time,
+        double *topocentric_azimuth, double *zenith_distance,
+        double *efg )
+{
     // Derive the Terestrial time from the current UTC time
-    double jd_tt = tracker_get_TT( tracker );
+    double jd_tt = time;//tracker_get_TT( tracker );
     double deltaT = tracker_get_DeltaT( tracker );
 
     // TODO we should configure these or scrub them from the IERS bullitin A...

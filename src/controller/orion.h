@@ -60,6 +60,9 @@ typedef struct {
     /** Update rate of the control thread */
     unsigned int rate;
 
+    /** Estimate of TATS control network latency. This positive bias is only applied to TATS messages */
+    double latency;
+
     /** An error buffer for messages from a failed method */
     char error[128]; // error message set if a server method fails
 
@@ -107,6 +110,14 @@ jday orion_set_time( Orion *orion, jday time );
 
 /** @return the current julian date in UTC in days @see jday.h */
 jday orion_get_time( Orion *orion );
+
+/** @return the configured TATS control network latency in seconds.
+ * note: Something to keep in mind is it should be possible to estimate latency by polling the sensor.
+ * For right now though we just manually configure it... */
+double orion_get_latency( Orion * orion );
+
+/** Sets the TATS control network latency. */
+void orion_set_latency( Orion * orion, double latency );
 
 /** @return a thread-safe copy of the orion server's current tracker */
 Tracker orion_get_tracker( Orion * orion );
