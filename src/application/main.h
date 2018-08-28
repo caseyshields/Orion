@@ -34,10 +34,15 @@
 #define PRESSURE "1010.0"
 
 /** (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation */
-#define UT1_UTC "0.06809"
+#define UT1_UTC "0.06496"
+// updated from IERS predictions for 8/27
+//"0.06809"
 
 /** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
+
+/** A positive time bias to account for the network latency between Orion and it's slaved TATS sensor. */
+#define LATENCY "0.0"
 
 #define LOCALHOST "127.0.0.1"
 
@@ -74,7 +79,7 @@ void interrupt_handler(int signal);
 void cleanup();
 
 /** Builds a tracker object using the given commandline arguments. */
-void configure_tracker(int argc, char *argv[], Tracker *tracker);
+void configure_orion(int argc, char *argv[], Orion * orion);
 
 /** Builds a catalog using the given commandline arguments */
 void configure_catalog(int argc, char *argv[], Catalog *catalog);

@@ -27,7 +27,7 @@ int main( int argc, char *argv[] ) {
     app.catalog = catalog_create( NULL, 1024 );
 
     configure_address( argc, argv, &app );
-    configure_tracker( argc, argv, &(app.orion->tracker) );
+    configure_orion( argc, argv, app.orion );
     configure_catalog( argc, argv, app.catalog );
     if( !app.catalog->size ) {
         alert( "Failed to load catalog, exiting" );
@@ -110,10 +110,18 @@ void cleanup() {
 }
 
 // Initialization /////////////////////////////////////////////////////////////
-void configure_tracker( int argc, char* argv[], Tracker* tracker ) {
+void configure_orion( int argc, char* argv[], Orion * orion ) {
+
+    // Tats Control network latency
+    char * arg = get_arg( argc, argv, "-latency", LATENCY );
+    double latency = atof( arg );
+
+    orion_set_latency( orion, latency );
+
+    Tracker * tracker = &(orion->tracker);
 
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
-    char* arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
+    arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
     double ut1_utc = atof( arg );
 
     // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
@@ -203,6 +211,7 @@ void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
 int cmd_time(char * line, Orion * orion) {
     int year, month, day, hour, min, count;
     double secs, step;
+
     int result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
                         &year, &month, &day, &hour, &min, &secs);
     if (result < 6) {
