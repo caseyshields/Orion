@@ -1,0 +1,103 @@
+## Content
+
+Quick-look weekly estimates of the EOP determined by combining the most recently available observed and modeled data (including VLBI 24-hour and intensive, GPS, and AAM). The combination process involves applying systematic corrections and slightly smoothing, in order to remove the high frequency noise.
+finals2000A.data contains the values from IERS Bulletin A for x/y pole, UT1-UTC, LOD, dX, dY, their errors and predictions for next 365 days for x/y pole, UT1-UTC, dX and dY as well as the values from IERS Bulletin B for x/y pole, UT1-UTC, dX, dY at daily intervals since 01. January 1992.
+Celestial pole offsets (dX, dY) are related to the IAU2000A precession/nutation theory.
+
+## Format
+
+ASCII
+
+## Format Description
+
+http://maia.usno.navy.mil/ser7/readme.finals2000A
+
+## Documentation
+
+http://hpiers.obspm.fr/eoppc/bul/bulb/explanatory.html
+http://maia.usno.navy.mil
+
+## Title
+
+Standard Rapid EOP Data since 01. January 1992 (IAU2000)
+
+## Data
+
+Year, Month, Day, Modified Julian Date
+
+PM-x [arcsec], error_PM-x [arcsec],
+PM-y [arcsec], error_PM-y [arcsec],
+UT1-UTC [seconds], error_UT1-UTC [seconds],
+LOD [milliseconds], error_LOD [milliseconds],
+dX [milliarcsec], error_dX [milliarcsec],
+dY [milliarcsec], error_dY [milliarcsec]
+(from Bulletin A)
+
+PM-x [arcsec], PM-y [arcsec], UT1-UTC [seconds],
+dX [milliarcsec], dY [milliarcsec]
+(from Bulletin B)
+
+## Data Points
+
+10155
+
+## Time Start
+
+1992-01-01
+
+## Time End
+
+2019-10-20
+
+## Time Interval
+
+1 day
+
+## Accuracy
+
+ -          Count        Min        Max    Average    Average (last 365 days)
+     PMx:    9732   0.000007   0.000761   0.000075   0.000024
+     PMy:    9732   0.000007   0.000584   0.000078   0.000024
+ UT1-UTC:    9732   0.000001   0.000047   0.000007   0.000006
+     LOD:    9731   0.000900   0.032000   0.005184   0.004393
+      dX:    9716   0.012000   0.626000   0.136996   0.155463
+      dY:    9716   0.007000   0.490000   0.206483   0.146474
+
+For accuracy of predictions see latest annual report on
+http://www.iers.org/IERS/EN/Organization/ProductCentres/
+RapidServicePredictionCentre/rapid.html
+
+## Keywords
+EOP, Rapid data, Predictions, Pole coordinates, x pole, y pole, LOD, UT1-UTC, DUT1, dX, dY, weekly, IAU2000
+
+## Frequency
+
+weekly
+
+## Source
+
+http://maia.usno.navy.mil/ser7/finals2000A.data
+
+## Alternative server:
+
+http://toshi.nofs.navy.mil/ser7/
+
+## Created by
+
+IERS Rapid Service Prediction Centre
+
+## Published by
+
+IERS Rapid Service Prediction Centre
+
+## Date
+
+2018-08-23
+
+## Contact
+
+navobsy_eop.fct@navy.mil
+
+## Distribution
+
+onLine

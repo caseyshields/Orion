@@ -62,7 +62,7 @@ FK6  699  56.9283°zd  64.1932°az 0.0v alpha Lyr
 
 
 2000/01/01 12:00:00.000 : report 60.0 5
-latitude:	38.889722 hours
+latitude:	38.889722 degrees
 longitude:	-77.007500 degrees
 elevation:	125.000000 meters
 temperature:	10.000000 Celsius
@@ -102,7 +102,7 @@ Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://me
  - novasc3.1 : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
  - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data. Project [page](http://wwwadd.zah.uni-heidelberg.de/datenbanken/fk6/index.php.de).
  - tats : provides structures and enumeration for dealing with TATS messages
-
+ - iers : In development; Would read in a report from [IERS](https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html) then provide UT1-UTC, and pole offsets for recent dates.
 ## Future Plans
  
   - Add planet tracking by integrating JPL ephemeris
