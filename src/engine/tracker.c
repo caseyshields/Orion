@@ -64,7 +64,7 @@ int tracker_to_horizon(
         double *topocentric_azimuth, double *zenith_distance,
         double *efg )
 {
-    return tracker_find( tracker, target, tracker_get_TT(tracker),
+    return tracker_find( tracker, target, tracker_get_terrestrial_time(tracker, 0),
             topocentric_azimuth, zenith_distance, efg );
 }
 
