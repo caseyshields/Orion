@@ -133,6 +133,7 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
 
     // TODO should we interpolate between the two adjacent values?
 
+    // right now we just return the first subsequent parameters
     return &(iers->eops[low]);
 }
 // TODO ugh, since the bulletin records are evenly spaced we could just do a single interpolation then linear search!

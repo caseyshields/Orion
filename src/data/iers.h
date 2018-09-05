@@ -69,13 +69,14 @@ int iers_add(IERS * iers, IERS_EOP * eop);
  * @param bulletinA a file containing IERS Bulletin A data, such as that obtained at http://maia.usno.navy.mil/ser7/ser7.dat */
 int iers_load( IERS * iers, FILE * bulletinA );
 
-/** @return The orientation parameters at the specified Novas Julian date.
+/** @return The orientation parameters at or immediately after the specified Novas Julian date.
  * @param iers The structure containing a time sequence of earth orientation parameters
  * @param time date of the earth orientation of interest. */
 IERS_EOP * iers_search( IERS * iers, jday time );
-
 // should we linearly interpolate between data points?
-//Orientation * iers_interpolate_orientation( IERS * iers, jday time );
+
+/* finds an orientation subsequent to a given recent orientation using linear search */
+//IERS_EOP * iers_update(IERS * iers, IERS_EOP recent, jday time);
 
 void iers_print_eop( IERS_EOP * eop, FILE * file );
 

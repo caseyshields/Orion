@@ -93,21 +93,20 @@ Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://me
 
 ![Component organization](https://caseyshields.github.io/Orion/diagrams/novas.svg)
 
- - main : A command line interface which allows the user to search the catalog and send targets to the orion server
- - orion : A server which drives a TATS sensor, directing it at given targets
- - catalog : module for filtering and sorting desired stars
- - tracker : performs coordinate transforms according to the current time and location on earth 
- - simulator : a dummy server which simulates a slaved sensor
- - vmath : utility library of vector and spherical math routines
- - novasc3.1 : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
- - fk6 : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data. Project [page](http://wwwadd.zah.uni-heidelberg.de/datenbanken/fk6/index.php.de).
- - tats : provides structures and enumeration for dealing with TATS messages
- - iers : In development; Would read in a report from [IERS](https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html) then provide UT1-UTC, and pole offsets for recent dates.
+ - **main** : A command line interface which allows the user to search the catalog and send targets to the orion server
+ - **orion** : A server which drives a TATS sensor, directing it at given targets
+ - **catalog** : module for filtering and sorting desired stars
+ - **tracker** : performs coordinate transforms according to the current time and location on earth 
+ - **sensor** : a dummy server which simulates a slaved sensor
+ - **vmath** : utility library of vector and spherical math routines
+ - **novasc3.1** : [USNO's astrometric software package](http://aa.usno.navy.mil/software/novas/novas_info.php)
+ - **fk6** : loads raw [FK6](http://cdsarc.u-strasbg.fr/viz-bin/Cat?I/264) data into a catalog. Also has some compatibility with [FK5](http://www-kpno.kpno.noao.edu/Info/Caches/Catalogs/FK5/fk5.html) data. Project [page](http://wwwadd.zah.uni-heidelberg.de/datenbanken/fk6/index.php.de).
+ - **tats** : provides structures and enumeration for dealing with TATS messages
+ - **iers** : Load and search an IERS Bulletin A data file for date and polar offsets. Data files are obtained from [IERS](https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html). The human readable file can be obtained from [USNO](http://maia.usno.navy.mil/ser7/ser7.dat) as well.
+   
 ## Future Plans
- 
-  - Add planet tracking by integrating JPL ephemeris
-  - Add [IERS-A bulletin](http://maia.usno.navy.mil/ser7/ser7.dat) projections to improve Novas accuraccy
-  - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
-  - Add web interface which utilizes [starmap](https://caseyshields.github.io/starlog/index.html) project to allow user interaction with the catalog
-  - Add more Vizier catalogs like the Yale Bright Star [Catalog](http://tdc-www.harvard.edu/catalogs/bsc5.html)
+ - Add planet tracking by integrating JPL ephemeris
+ - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
+ - Add web interface which utilizes [starmap](https://caseyshields.github.io/starlog/index.html) project to allow user interaction with the catalog
+ - Add more Vizier catalogs like the Yale Bright Star [Catalog](http://tdc-www.harvard.edu/catalogs/bsc5.html)
   
