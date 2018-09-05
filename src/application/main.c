@@ -28,6 +28,7 @@ int main( int argc, char *argv[] ) {
 
     configure_address( argc, argv, &app );
     configure_orion( argc, argv, app.orion );
+    configure_iers( argc, argv, app.iers );
     configure_catalog( argc, argv, app.catalog );
     if( !app.catalog->size ) {
         alert( "Failed to load catalog, exiting" );
@@ -176,6 +177,15 @@ void configure_address( int argc, char* argv[], Application * app ) { //struct s
 //    address->sin_family = AF_INET; // internet address family
 //    address->sin_addr.s_addr = inet_addr( ip ); // server ip
 //    address->sin_port = htons( port ); // server port
+}
+
+void configure_iers(int argc, char* argv[], IERS * iers ) {
+    FILE * file = "../data/iers/finals2000A.data";
+    // TODO derive path from root directory!!! Do this for all the file based components!
+
+    iers_create( iers );
+
+    iers_load( iers, file );
 }
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog ) {

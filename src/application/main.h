@@ -60,11 +60,13 @@ typedef struct {
     unsigned short port;
 
     /** The Orion server which steers a TATS sensor at a designated star */
-    Orion *orion;
+    Orion * orion;
 
     /** The Star catalog which the user can search for star targets */
-    Catalog *catalog;
+    Catalog * catalog;
 
+    /** A database of earth orientation parameters, searchable by time*/
+    IERS * iers;
 } Application;
 
 /** Application entry point. After initialization, the program enters an interactive loop which
@@ -80,6 +82,9 @@ void cleanup();
 
 /** Builds a tracker object using the given commandline arguments. */
 void configure_orion(int argc, char *argv[], Orion * orion);
+
+/** Loads IERS Bulletin A data file */
+void configure_iers(int argc, char * argv[], IERS * iers );
 
 /** Builds a catalog using the given commandline arguments */
 void configure_catalog(int argc, char *argv[], Catalog *catalog);
