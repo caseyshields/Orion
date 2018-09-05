@@ -1,5 +1,11 @@
 #include "iers.h"
 
+const IERS_EOP MISSING_EOP = {0.0,' ',0.0,0.0,0.0,0.0,' ',0.0,0.0};
+
+size_t inline iers_get_index(IERS * iers, IERS_EOP * eop) {
+    return (iers->eops - eop) / sizeof(IERS_EOP);
+}
+
 IERS * iers_create( IERS * iers ) {
     if( !iers )
         iers = malloc(sizeof(IERS));
@@ -98,8 +104,9 @@ int iers_load( IERS *iers, FILE * finals2000A ) {
         strncpy( buf, line + 68, 10 );
         eop->ut1_utc_err = atof( buf );
 
+        // this structure is described in 'readme.finals2000A.txt'
         // There are more values if we need them;
-        // Length of Day, nutation(polar velocities), Bulletin B values...
+        //  Length of Day, nutation(polar velocities), Bulletin B values...
 
         count++;
     }
@@ -127,19 +134,8 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
     // TODO should we interpolate between the two adjacent values?
 
     return &(iers->eops[low]);
-
-//    size_t low = 0, mid;
-//    size_t high = (size_t)iers->size-1;
-
-//    // binary search
-//    while (low < high) {
-//        mid = (low + high) >> 1;
-//        if (iers->eops[mid].time <= time)
-//            low = mid;
-//        else
-//            high = mid-1;
-//    }
 }
+// TODO ugh, since the bulletin records are evenly spaced we could just do a single interpolation then linear search!
 
 void iers_free( IERS * iers ) {
     iers->size = 0;
@@ -154,3 +150,45 @@ void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
              eop->pm_x_err, eop->pm_y_err, eop->ut1_utc_err);
     free( stamp );
 }
+
+//size_t iers_bsearch( IERS * iers, jday time, size_t low, size_t size ) {
+//    // search for upper bound with binary stride search
+//    while (size > 0) {
+//        size_t half = size / 2;
+//        size_t probe = low + half;
+//        size_t other = low + size - half;
+//        size = half;
+//        low = (time < iers->eops[probe].time) ? low : other;
+//    } // an optimized search with fewer comparisons, the latter of which can be compiled to a cmovaeq instruction
+//    // adapted from https://academy.realm.io/posts/how-we-beat-cpp-stl-binary-search/
+//    return low;
+//}
+//
+//size_t iers_lsearch( IERS * iers, jday time, size_t low ) {
+//    while (low < iers->size)
+//        if (time <= iers->eops[low].time)
+//            break;
+//        else low++;
+//    return low;
+//}
+//
+//IERS_EOP * iers_search( IERS * iers, jday time ) {
+//    size_t n = iers->cache;
+//    // check cache and dt to see if we should should linear search
+//    if ( n==0 )
+//        n = iers_bsearch(iers, time, 0, iers->size);
+//    else if ( time < iers->eops[n].time )
+//        n = iers_bsearch(iers, time, 0, n);
+//    else if ( time < iers->eops[n].time + IERS_LINEAR_THRESHOLD)
+//        n = iers_lsearch(iers, time, cache);
+//    else
+//        n = iers_bsearch(iers, time, cache, iers->size);
+//
+//    // check bounds, we only want to return values in a measured interval
+//    if (n == 0 || n == iers->size)
+//        return NULL;
+//
+//    // TODO should we interpolate between the two adjacent values?
+//
+//    return &(iers->eops[low]);
+//}

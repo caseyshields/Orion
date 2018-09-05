@@ -7,7 +7,11 @@
 
 #include <util/jday.h>
 
-/** IERS Earth Orientation Parameters, either measured or predicted. */
+/** Time difference in julian days in which to switch to a linear search. I need to set this experimentally...
+ * right now I just guessed the log2 of the number of items in the default dataset. */
+#define IERS_LINEAR_THRESHOLD 14.0
+
+/** A summary of the IERS Earth Orientation Parameters. */
 typedef struct {
     /** julian date of parameters */
     jday time;
@@ -33,13 +37,16 @@ typedef struct {
 
 } IERS_EOP;
 
-// note: observed entries provide actual error, the predictions provide estimated error bounds
+/** A EOP object to hold default values for these offsets. */
+extern const IERS_EOP MISSING_EOP;
 
-/** <p>Holds a summary of the contents of the IERS BUlletin A. There are also the Bulletin B values in these files, but
- * I don't think I need it. While I think they are more accurate, they span less time.</p>
- *
+/** <p>Holds the contents of the IERS BUlletin A, obtained from
+ * 'https://datacenter.iers.org/eop/-/somos/5Rgv/getTX/10/finals2000A.data'. Each record of the data is uniformly
+ * spaced a day apart. I don't think this ever changes. More versions are available at
+ * 'https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html'</p>
  * <p>I had considered making a loader similar to the vizier catalog loader, but it seemed like overkill; this stuff
- * really doesn't change fast.</p> */
+ * really doesn't change fast. There are also the Bulletin B values in these files I don't load. I think they are more
+ * accurate, they span less time and predictions are not available.</p> */
 typedef struct {
     size_t size;
     IERS_EOP * eops;

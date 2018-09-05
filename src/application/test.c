@@ -252,7 +252,7 @@ void test_iers_load( CuTest * test ) {
 
 // a helper method which serches for the upper bound with a linear search. used to test correctness of binary search
 IERS_EOP * linear_search( IERS * iers, jday time ) {
-    // lineear search for upper bound
+    // linear search for upper bound
     int n = 0;
     while (n < iers->size)
         if (time <= iers->eops[n].time)
@@ -299,6 +299,7 @@ void test_iers_search( CuTest * test ) {
         CuAssertPtrEquals_Msg(test,
                 "binary search for upper bound of matching time does not return same result as a linear search",
                 leop, beop);
+        CuAssertDblEquals_Msg(test, "Returned search Time does not match", time, beop->time, 0.0);
 
         // search for midpoints of intervals
         if(n==count-1)
@@ -308,13 +309,15 @@ void test_iers_search( CuTest * test ) {
         CuAssertPtrEquals_Msg(test,
                   "binary search for upper bound of interspersed time does not return same result as a linear search",
                   leop, beop);
+        CuAssert(test, "Returned search time is not an upper bound", time<=beop->time);
+        // should probably test the lower element as well...
 
         // NOTE : might want to extend this to test interpolation or rounding...
     }
-
-    // TODO search for upper bounds to interspersed times
 }
 
+
+// Work in Progress!
 void catalog_add_axis(Catalog * catalog, int type, int count);
 void test_search_equator() {
     Catalog * catalog = catalog_create( NULL, 8 );
