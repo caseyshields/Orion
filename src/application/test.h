@@ -10,6 +10,7 @@
 #include "util/vmath.h"
 #include "util/io.h"
 #include "data/tats.h"
+#include "data/iers.h"
 #include "engine/tracker.h"
 #include "engine/catalog.h"
 #include "../lib/cutest-1.5/CuTest.h"
@@ -46,5 +47,8 @@ void test_FK6( CuTest * test );
  * Directly taken from 'checkout-stars.c' from novas 3.1.
  * @param test the CuTest structure which holds test results. */
 void test_novas( CuTest * test );
+
+/** Loads the default IERS Bulletin A and performs some basic sanity tests */
+void test_iers( CuTest * test );
 
 #endif //STARTRACK_TEST_H

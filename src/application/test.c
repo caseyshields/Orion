@@ -20,6 +20,7 @@ CuSuite * test_suite() {
     SUITE_ADD_TEST(suite, test_tats);
     SUITE_ADD_TEST(suite, test_crc);
     SUITE_ADD_TEST(suite, test_novas);
+    SUITE_ADD_TEST(suite, test_iers);
     return suite;
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
@@ -197,6 +198,24 @@ void test_novas( CuTest * test ) {
         }
         printf ("\n");
     }
+}
+
+void test_iers( CuTest * test ) {
+    FILE * bulletinA = fopen( "../data/iers/finals2000A.data", "r" );
+    CuAssertPtrNotNullMsg(test, "could not open default iers file", bulletinA );
+
+    IERS iers;
+
+    iers_create( &iers );
+    CuAssertPtrNotNullMsg(test, "failed to allocate eops", iers.eops);
+
+    int result = iers_load( &iers, bulletinA );
+    CuAssertIntEquals( test, 10155, result );
+
+    //TODO do stuff...
+    iers_free( &iers );
+
+    fclose( bulletinA );
 }
 
 void catalog_add_axis(Catalog * catalog, int type, int count);

@@ -37,6 +37,7 @@ set( ORION_SOURCE
         src/util/crc.c
         src/util/sockets.c
         src/data/fk6.c
+        src/data/iers.c
         src/data/tats.c
         src/engine/tracker.c
         src/engine/catalog.c
