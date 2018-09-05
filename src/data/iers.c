@@ -54,10 +54,10 @@ int iers_load( IERS *iers, FILE * finals2000A ) {
     const int IERS_RECORD_LENGTH = 188;
 
     // for every line of the file
-    while ( -1 != getline( &line, &size, finals2000A) ) {
+    while (-1 != getline( &line, &size, finals2000A )) {
 
-        // skip lines that are too short to be an IERS Bulletin A record
-        if( strlen( line ) < IERS_RECORD_LENGTH )
+        // skip lines that are too short to be an IERS Bulletin A record, or are missing needed parameters
+        if (strlen( line ) < IERS_RECORD_LENGTH || line[16]==' ' || line[57]==' ')
             continue;
 
         // allocate a new earth orientation parameter object
@@ -107,8 +107,38 @@ int iers_load( IERS *iers, FILE * finals2000A ) {
     return count;
 }
 
-IERS_EOP * iers_get_orientation( IERS * iers, jday time ) {
+IERS_EOP * iers_search( IERS * iers, jday time ) {
 
+    // search for upper bound with binary search
+    size_t low = 0, size = iers->size;
+    while (size>0) {
+        size_t half = size / 2;
+        size_t probe = low + half;
+        size_t other = low + size - half;
+        size = half;
+        low = (time < iers->eops[probe].time) ? low : other;
+    } // an optimized search with fewer comparisons, the latter of which can be compiled to a cmovaeq instruction
+    // adapted from https://academy.realm.io/posts/how-we-beat-cpp-stl-binary-search/
+
+    // check bounds, we only want to return values in a measured interval
+    if (low == 0 || low==iers->size)
+        return NULL;
+
+    // TODO should we interpolate between the two adjacent values?
+
+    return &(iers->eops[low]);
+
+//    size_t low = 0, mid;
+//    size_t high = (size_t)iers->size-1;
+
+//    // binary search
+//    while (low < high) {
+//        mid = (low + high) >> 1;
+//        if (iers->eops[mid].time <= time)
+//            low = mid;
+//        else
+//            high = mid-1;
+//    }
 }
 
 void iers_free( IERS * iers ) {
@@ -119,7 +149,8 @@ void iers_free( IERS * iers ) {
 
 void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
     char * stamp = jday2stamp( eop->time );
-    fprintf( stream, "t:%s\tpmX:%lf\tpmY:%lf\tdt:%lf",
-             time, eop->pm_x, eop->pm_y, eop->ut1_utc );
+    fprintf( stream, "t:%s\tpmX:%lf\tpmY:%lf\tdt:%lf\te={%lf,%lf,%lf}",
+             stamp, eop->pm_x, eop->pm_y, eop->ut1_utc,
+             eop->pm_x_err, eop->pm_y_err, eop->ut1_utc_err);
     free( stamp );
 }

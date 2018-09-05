@@ -49,6 +49,9 @@ void test_FK6( CuTest * test );
 void test_novas( CuTest * test );
 
 /** Loads the default IERS Bulletin A and performs some basic sanity tests */
-void test_iers( CuTest * test );
+void test_iers_load( CuTest * test );
+
+/** Creates a dummy IERS bulletin and searches for bounds, every value, and midpoint of every interval. */
+void test_iers_search( CuTest * test );
 
 #endif //STARTRACK_TEST_H

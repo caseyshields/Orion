@@ -41,7 +41,7 @@ typedef struct {
  * <p>I had considered making a loader similar to the vizier catalog loader, but it seemed like overkill; this stuff
  * really doesn't change fast.</p> */
 typedef struct {
-    int size;
+    size_t size;
     IERS_EOP * eops;
 } IERS;
 
@@ -65,10 +65,12 @@ int iers_load( IERS * iers, FILE * bulletinA );
 /** @return The orientation parameters at the specified Novas Julian date.
  * @param iers The structure containing a time sequence of earth orientation parameters
  * @param time date of the earth orientation of interest. */
-IERS_EOP * iers_get_orientation( IERS * iers, jday time );
+IERS_EOP * iers_search( IERS * iers, jday time );
 
 // should we linearly interpolate between data points?
 //Orientation * iers_interpolate_orientation( IERS * iers, jday time );
+
+void iers_print_eop( IERS_EOP * eop, FILE * file );
 
 /** releases all contained earth orientation parameter records. */
 void iers_free( IERS * iers );

@@ -20,7 +20,8 @@ CuSuite * test_suite() {
     SUITE_ADD_TEST(suite, test_tats);
     SUITE_ADD_TEST(suite, test_crc);
     SUITE_ADD_TEST(suite, test_novas);
-    SUITE_ADD_TEST(suite, test_iers);
+    SUITE_ADD_TEST(suite, test_iers_load);
+    SUITE_ADD_TEST(suite, test_iers_search);
     return suite;
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
@@ -200,22 +201,118 @@ void test_novas( CuTest * test ) {
     }
 }
 
-void test_iers( CuTest * test ) {
+void test_iers_load( CuTest * test ) {
     FILE * bulletinA = fopen( "../data/iers/finals2000A.data", "r" );
     CuAssertPtrNotNullMsg(test, "could not open default iers file", bulletinA );
 
     IERS iers;
 
     iers_create( &iers );
-    CuAssertPtrNotNullMsg(test, "failed to allocate eops", iers.eops);
+    CuAssertPtrNotNullMsg(test, "failed to allocate EOPs", iers.eops);
 
     int result = iers_load( &iers, bulletinA );
-    CuAssertIntEquals( test, 10155, result );
+    CuAssertIntEquals( test, 10105, result );
 
-    //TODO do stuff...
+    // compute and print the average assuming samples are evenly spaced...
+    IERS_EOP avg = {0.0,'M',0.0,0.0,0.0,0.0,'M',0.0,0.0};
+    for(int n=0; n<iers.size; n++) {
+        IERS_EOP * eop = &(iers.eops[n]);
+
+        // ensure flags are valid
+        CuAssert(test, "Invalid flag for polar offset",
+                eop->pm_flag=='I' || eop->pm_flag=='P' || eop->pm_flag==' ' );
+
+        CuAssert(test, "Invalid flag for utc-ut1",
+                 eop->dt_flag=='I' || eop->dt_flag=='P' || eop->dt_flag==' ' );
+
+        avg.time+=eop->time;
+        avg.pm_x+=eop->pm_x;
+        avg.pm_x_err+=eop->pm_x_err;
+        avg.pm_y+=eop->pm_y;
+        avg.pm_y_err+=eop->pm_y_err;
+        avg.ut1_utc+=eop->ut1_utc;
+        avg.ut1_utc_err+=eop->ut1_utc_err;
+    }
+    avg.time/=iers.size;
+    avg.pm_x/=iers.size;
+    avg.pm_x_err/=iers.size;
+    avg.pm_y/=iers.size;
+    avg.pm_y_err/=iers.size;
+    avg.ut1_utc/=iers.size;
+    avg.ut1_utc_err/=iers.size;
+    fprintf( stdout, "Average Earth Orientation:\n");
+    iers_print_eop( &avg, stdout );
+    fprintf( stdout, "\n");
+    fflush( stdout );
+
     iers_free( &iers );
 
     fclose( bulletinA );
+}
+
+// a helper method which serches for the upper bound with a linear search. used to test correctness of binary search
+IERS_EOP * linear_search( IERS * iers, jday time ) {
+    // lineear search for upper bound
+    int n = 0;
+    while (n < iers->size)
+        if (time <= iers->eops[n].time)
+            break;
+        else n++;
+    // check bounds
+    if (n==0 || n==iers->size)
+        return NULL;
+    else
+        return &(iers->eops[n]);
+}
+
+void test_iers_search( CuTest * test ) {
+    // create the IERS structure
+    IERS iers;
+    if (!iers_create( &iers ))
+        CuFail(test, "failed to initialize iers structure");
+
+    // generate a contiguous sequence of days like the IERS datasets
+    int count = 50;
+    jday offset = 2400000.5;
+    double step = 0.5;
+    IERS_EOP temp;
+    memset(&temp, 0, sizeof(IERS_EOP));
+    for(int n=0; n<count; n++) {
+        temp.time = offset + n*step;
+        iers_add( &iers, &temp );
+    }
+
+    // test bounds
+    IERS_EOP * eop;
+    eop = iers_search( &iers, offset - step );
+    CuAssertPtrEquals_Msg(test,"searches before first item should return null", NULL, eop);
+    eop = iers_search( &iers, offset + (count+1) * step );
+    CuAssertPtrEquals_Msg(test,"searches after last item should return null", NULL, eop);
+
+    // search for exact matches to every time
+    for (int n; n<count; n++) {
+        jday time = offset + step * n;
+
+        // search for exact match
+        IERS_EOP * leop = linear_search( &iers, time );
+        IERS_EOP * beop = iers_search( &iers, time );
+        CuAssertPtrEquals_Msg(test,
+                "binary search for upper bound of matching time does not return same result as a linear search",
+                leop, beop);
+
+        // search for midpoints of intervals
+        if(n==count-1)
+            continue;
+        leop = linear_search( &iers, time+(step/2) );
+        beop = iers_search( &iers, time+(step/2) );
+        CuAssertPtrEquals_Msg(test,
+                  "binary search for upper bound of interspersed time does not return same result as a linear search",
+                  leop, beop);
+
+        // NOTE : might want to extend this to test interpolation or rounding...
+    }
+
+    // TODO search for upper bounds to interspersed times
 }
 
 void catalog_add_axis(Catalog * catalog, int type, int count);
