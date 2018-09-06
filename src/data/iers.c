@@ -131,12 +131,11 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
     if (low == 0 || low==iers->size)
         return NULL;
 
-    // TODO should we interpolate between the two adjacent values?
+    // TODO should we interpolate orientation between the two adjacent dates?
 
     // right now we just return the first subsequent parameters
     return &(iers->eops[low]);
-}
-// TODO ugh, since the bulletin records are evenly spaced we could just do a single interpolation then linear search!
+} // TODO ugh, duh, since the bulletin records are perfectly spaces we should use an interpolation search in basically O(1)!
 
 void iers_free( IERS * iers ) {
     iers->size = 0;
@@ -189,7 +188,7 @@ void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
 //    if (n == 0 || n == iers->size)
 //        return NULL;
 //
-//    // TODO should we interpolate between the two adjacent values?
+//    // should we interpolate between the two adjacent values?
 //
 //    return &(iers->eops[low]);
 //}

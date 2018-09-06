@@ -1,5 +1,5 @@
 /** @file iers.h
- * @brief WIP. Module for loading earth orientation parameters from IERS Bulletin A.
+ * @brief Module for loading earth orientation parameters from IERS Bulletin A.
  * */
 
 #ifndef STARTRACK_IERS_H
