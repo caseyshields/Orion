@@ -106,6 +106,9 @@ void cleanup() {
     if( app.catalog )
         catalog_free( app.catalog );
 
+    if (app.iers)
+        iers_free( app.iers );
+
     if( app.ip && app.ip==LOCALHOST)
         free( app.ip );
 }
@@ -180,12 +183,14 @@ void configure_address( int argc, char* argv[], Application * app ) { //struct s
 }
 
 void configure_iers(int argc, char* argv[], IERS * iers ) {
-    FILE * file = "../data/iers/finals2000A.data";
+    FILE * file = fopen("../data/iers/finals2000A.data", "r");
     // TODO derive path from root directory!!! Do this for all the file based components!
 
     iers_create( iers );
 
     iers_load( iers, file );
+
+    //TODO set eop to current time or load the null eop?
 }
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
@@ -224,12 +229,20 @@ int cmd_time(char * line, Orion * orion) {
 
     int result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
                         &year, &month, &day, &hour, &min, &secs);
+
+    //TODO if there is no argument set the current time and set the mode to NRT?
+
     if (result < 6) {
         alert("usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>\nnote time should be int UTC");
         return 1;
     } else {
         jday time = date2jday(year, month, day, hour, min, secs);
         orion_set_time(orion, time);
+        //app.orientation = iers_search( app.iers, time );
+        // TODO set orientation params and notify the user...
+
+        // TODO set the time to mode to static?
+
         return 0;
     }
 } // todo add leap seconds and ut1 offset as optional parameters?
@@ -457,6 +470,8 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
     Tracker tracker = orion_get_tracker( orion );
     Entry target = orion_get_target( orion );
     jday start = orion_get_time( orion );
+
+    IERS_EOP * earth = iers_search( app.iers, start );
 
     // print tracker information
     tracker_print_site( &tracker, stream );

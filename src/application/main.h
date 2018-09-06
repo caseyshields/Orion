@@ -67,6 +67,7 @@ typedef struct {
 
     /** A database of earth orientation parameters, searchable by time*/
     IERS * iers;
+
 } Application;
 
 /** Application entry point. After initialization, the program enters an interactive loop which
