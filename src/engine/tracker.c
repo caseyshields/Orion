@@ -1,6 +1,6 @@
 #include "engine/tracker.h"
 
-int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
+void tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
 
     tracker->ut1_utc = ut1_utc;
     tracker->leap_secs = leap_secs;
@@ -11,7 +11,7 @@ int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs) {
     make_on_surface( 0.0, 0.0, 0.0, 10.0, 1010.0, &(tracker->site) );
 
     // create an earth to put the tracker on
-    return make_object (0, 2, "Earth", (cat_entry*)NULL, &(tracker->earth) );
+    //return make_object (0, 2, "Earth", (cat_entry*)NULL, &(tracker->earth) );
 }
 
 jday tracker_get_time(Tracker *tracker) {

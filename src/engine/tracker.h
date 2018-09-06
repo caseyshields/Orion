@@ -7,6 +7,7 @@
 #define STARTRACK_TRACKER_H
 
 #include <assert.h>
+#include <data/iers.h>
 
 #include "../lib/novasc3.1/novas.h"
 #include "util/jday.h"
@@ -24,6 +25,7 @@
 
 #define REFRACTION_NONE 0
 #define REFRACTION_SITE 2
+
 /** The Tracker module represents a sensor on the surface of the earth at a specific time, observing
  * a celestial object. It can transform star coordinates between celestial and horizon, using Novas
  * 3.1 to handle orbit, spin, precession, parallax, atmospheric refraction and relativistic
@@ -33,6 +35,7 @@ typedef struct {
 
     /** The current UTC time in Julian Days. */
     jday utc;
+    //jday tt;
 
     /** Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time */
     double ut1_utc;
@@ -43,8 +46,8 @@ typedef struct {
     /** Novas structure holding the geodetic location of the tracker */
     on_surface site;
 
-    /** Novas structure for planet earth */
-    object earth;
+    /** A structure holding IERS parameters for the current orientation of the earth. Needed for high accuracy Novas calculations */
+    IERS_EOP * earth;
 
 } Tracker;
 
@@ -53,7 +56,7 @@ typedef struct {
  * @param ut1_utc Current difference between UT1 and UTC time, usually obtained from IERS bulletin A
  * @param leap_secs Current number of leap seconds in TAI, usually obtained from IERS bulletin A
  * @return a pointer to the initialized or allocated structure */
-int tracker_create(Tracker *tracker, double ut1_utc, double leap_secs);
+void tracker_create(Tracker *tracker, double ut1_utc, double leap_secs);
 
 /** @return The tracker's current UTC time in Julian day format */
 jday tracker_get_time(Tracker *tracker);
