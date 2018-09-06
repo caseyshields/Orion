@@ -8,6 +8,7 @@
 #include <assert.h>
 #include "util/crc.h"
 #include "util/vmath.h"
+#include "util/jday.h"
 #include "util/io.h"
 #include "data/tats.h"
 #include "data/iers.h"
