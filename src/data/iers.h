@@ -30,6 +30,7 @@ typedef struct {
 
     /** Bulletin A UTC offset. */
     double ut1_utc, ut1_utc_err;
+    // Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time?
 
 //    double lod, lod_err;
 //    double dX, dX_err;
@@ -38,7 +39,7 @@ typedef struct {
 } IERS_EOP;
 
 /** A EOP object to hold default values for these offsets. */
-extern const IERS_EOP MISSING_EOP;
+extern IERS_EOP MISSING_EOP;
 
 /** <p>Holds the contents of the IERS BUlletin A, obtained from
  * 'https://datacenter.iers.org/eop/-/somos/5Rgv/getTX/10/finals2000A.data'. Each record of the data is uniformly
@@ -77,6 +78,13 @@ IERS_EOP * iers_search( IERS * iers, jday time );
 
 /* finds an orientation subsequent to a given recent orientation using linear search */
 //IERS_EOP * iers_update(IERS * iers, IERS_EOP recent, jday time);
+
+/** @return The time in UT1, a time scale which depends on the non-uniform rotation of the earth.
+ * It is derived by adding an empirically determined offset to UTC */
+jday iers_get_UT1( IERS_EOP * eop, jday utc );
+
+/** @returns The time offset in seconds of the given earth orientation. */
+double iers_get_DeltaT( IERS_EOP * eop );
 
 void iers_print_eop( IERS_EOP * eop, FILE * file );
 

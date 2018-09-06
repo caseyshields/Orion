@@ -1,6 +1,6 @@
 #include "iers.h"
 
-const IERS_EOP MISSING_EOP = {0.0,' ',0.0,0.0,0.0,0.0,' ',0.0,0.0};
+IERS_EOP MISSING_EOP = {0.0,' ',0.0,0.0,0.0,0.0,' ',0.0,0.0};
 
 size_t inline iers_get_index(IERS * iers, IERS_EOP * eop) {
     return (iers->eops - eop) / sizeof(IERS_EOP);
@@ -136,6 +136,15 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
     // right now we just return the first subsequent parameters
     return &(iers->eops[low]);
 } // TODO ugh, duh, since the bulletin records are perfectly spaces we should use an interpolation search in basically O(1)!
+
+jday iers_get_UT1( IERS_EOP * eop, jday utc ) {
+    return utc + eop->ut1_utc / SECONDS_IN_DAY;
+    //TODO ensure utc is within a day of the eop entry?
+}
+
+double iers_get_DeltaT( IERS_EOP * eop ) {
+    return DELTA_TT + LEAP_SECONDS - eop->ut1_utc;
+}
 
 void iers_free( IERS * iers ) {
     iers->size = 0;
