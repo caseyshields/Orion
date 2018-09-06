@@ -94,8 +94,9 @@ void * orion_control_loop( void * arg ) {
 
         // update the current time if we are in real time mode
         else if (orion->mode == ORION_MODE_REAL_TIME) {
-            last_time = orion->tracker.utc;
-            orion->tracker.utc = jday_current();
+            last_time = orion->tracker.jd_tt;
+            jday current = jday2tt( jday_utc() );
+            tracker_set_time( &(orion->tracker), current );
         }
 
         // create a tracking message
@@ -200,22 +201,23 @@ void orion_disconnect( Orion * orion ) {
     socket_unload();
 }
 
-jday orion_set_time( Orion * orion, jday time ) {
-    pthread_mutex_lock( &(orion->lock) );
-
-    // if the server is in real time mode, set it to static
-    if ( orion->mode == ORION_MODE_REAL_TIME )
-        orion->mode = ORION_MODE_STATIC;
-
-    // cache the last time
-    jday last = orion->tracker.utc;
-
-    // set the new time
-    orion->tracker.utc = time;
-
-    pthread_mutex_unlock( &(orion->lock) );
-    return last;
-}
+//jday orion_set_time( Orion * orion, jday utc ) {
+//    pthread_mutex_lock( &(orion->lock) );
+//
+////    // if the server is in real time mode, set it to static
+////    if ( orion->mode == ORION_MODE_REAL_TIME )
+////        orion->mode = ORION_MODE_STATIC;
+//
+//    // cache the last time
+//    jday last = tracker_get_time( &(orion->tracker) );
+//    // TODO do we care that we return TT?
+//
+//    // set the new time
+//    tracker_set_time( &(orion->tracker), jday2tt(utc) );
+//
+//    pthread_mutex_unlock( &(orion->lock) );
+//    return last;
+//}
 
 double orion_get_latency( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );
@@ -245,12 +247,13 @@ void orion_set_weather( Orion * orion, double celsius, double millibars ) {
     pthread_mutex_unlock( &(orion->lock) );
 }
 
-jday orion_get_time(Orion *orion) {
-    pthread_mutex_lock( &(orion->lock) );
-    double time = orion->tracker.utc;
-    pthread_mutex_unlock( &(orion->lock) );
-    return time;
-}
+//jday orion_get_time(Orion *orion) {
+//    pthread_mutex_lock( &(orion->lock) );
+//    double time = tt2utc( tracker_get_time( &(orion->tracker) ) );
+//            // = orion->tracker.utc;
+//    pthread_mutex_unlock( &(orion->lock) );
+//    return time;
+//}
 
 Tracker orion_get_tracker( Orion * orion ) {
     Tracker tracker;
@@ -310,14 +313,15 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
 
     // compute timer value from sensor time...
     unsigned short int milliseconds = (unsigned short int)
-            (1000 * fmod( orion->tracker.utc * SECONDS_IN_DAY, 1.0 ) );
+            (1000 * fmod( orion->tracker.jd_tt * SECONDS_IN_DAY, 1.0 ) );
     midc01->tcn_time = milliseconds;
 
     // if there is an assigned coordinate
     if( orion->target.novas.starnumber ) {
 
         // get the time with a latency bias to it...
-        double jd_tt = tracker_get_terrestrial_time( &(orion->tracker), orion->latency );
+        double jd_tt = orion->tracker.jd_tt + (orion->latency/SECONDS_IN_DAY);
+        // = tracker_get_terrestrial_time( &(orion->tracker), orion->latency );
 
         // calculate the current location of the target
         tracker_find(

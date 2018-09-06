@@ -33,15 +33,8 @@
  * @author Casey Shields*/
 typedef struct {
 
-    /** The current UTC time in Julian Days. */
-    jday utc;
-    //jday tt;
-
-    /** Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time */
-    double ut1_utc;
-
-    /** Number of leap seconds added in International Atomic Time */
-    double leap_secs;
+    /** The current Terrestrial time in Julian Days. This is the format use by Novas. */
+    jday jd_tt;
 
     /** Novas structure holding the geodetic location of the tracker */
     on_surface site;
@@ -49,28 +42,24 @@ typedef struct {
     /** A structure holding IERS parameters for the current orientation of the earth. Needed for high accuracy Novas calculations */
     IERS_EOP * earth;
 
+    // TODO perhaps tracker should maintain a list of queued target for later, more advanced calculations?
 } Tracker;
 
 /** Initializes or allocates the given tracker structure
  * @param tracker A pointer to an existing structure or NULL. If NULL a structure is allocated.
- * @param ut1_utc Current difference between UT1 and UTC time, usually obtained from IERS bulletin A
- * @param leap_secs Current number of leap seconds in TAI, usually obtained from IERS bulletin A
  * @return a pointer to the initialized or allocated structure */
-void tracker_create(Tracker *tracker, double ut1_utc, double leap_secs);
+void tracker_create(Tracker *tracker);
 
-/** @return The tracker's current UTC time in Julian day format */
+/** Terrestrial time is meant to be a smooth timescale and is derived from UTC by removing leap seconds and adding an
+ * experimentally measured offset available from the IERS service, which combines data from the Lunar Laser Ranger,
+ * Very long baseline radio inferometry of quasars, the GPS constellation, etc.
+ * @return The tracker's current Terrestrial Time in Julian day format. */
 jday tracker_get_time(Tracker *tracker);
 
-/** @param bias An arbitrary bias users can add to the output, for example simulating latency of a network sensor.
- * @return the current terrestrial time of the tracker in julian days. Terrestrial time is meant to be a smooth
- * timescale and is derived from UTC by removing leap seconds and adding an experimentally measured offset available
- * from the IERS service. */
-jday tracker_get_terrestrial_time( const Tracker * tracker, double bias );
-
-/** Sets the current time for the star tracker
+/** Sets the current time for the star tracker.
  * @param tracker
- * @param utc The desired tracker's UTC time in julian day format */
-void tracker_set_time(Tracker *tracker, jday utc);
+ * @param utc The desired tracker's Terrestrial Time in julian day format */
+void tracker_set_time(Tracker *tracker, jday jd_tt);
 
 /** Sets the location of the tracker on earth geoid.
  * @param tracker object whose coordinates are set
@@ -96,7 +85,7 @@ void tracker_set_weather(Tracker *tracker, double temperature, double pressure);
  * @return Zero on success, otherwise a Novas error code. */
 int tracker_to_horizon(Tracker *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth, double *efg);
 
-/** Compute the coordinates of the target in local horizon coordinates and EFG at the sepecified time
+/** Compute the coordinates of the target in local horizon coordinates and a unit ITRS vector at the specified time
  * // TODO should time be moved out of target? and into a general terrestrial time clock module?
  * @param tracker The tracker to compute the direction from
  * @param target A novas catalog entry to point at
@@ -115,6 +104,6 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
 
 void tracker_print_time(const Tracker *tracker, FILE * file);
 
-void tracker_print_site(const Tracker *tracker, FILE * file);
+void tracker_print_site(Tracker *tracker, FILE * file);
 
 #endif //STARTRACK_TRACKER_H

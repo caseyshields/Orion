@@ -11,6 +11,7 @@
 
 #include "util/sockets.h"
 #include "util/crc.h"
+#include "util/jday.h"
 #include "data/tats.h"
 #include "engine/catalog.h"
 #include "engine/tracker.h"

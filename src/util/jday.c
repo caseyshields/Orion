@@ -1,16 +1,24 @@
 #include "util/jday.h"
 
-jday LEAP_SECONDS = 37.0 / SECONDS_IN_DAY;
+double LEAP_SECONDS = 37.0;
 
 int jday_is_valid(jday time) {
     return time != NAN;
 }
 
-jday jday_current() {
+jday jday_current_utc() {
     // get the seconds since the unix epoch(January 1, 1970) in Universal Coordinated Time
     struct timeval time;
     gettimeofday( &time, NULL );
     return unix2jday( &time );
+}
+
+jday jday2tt( jday utc ) {
+    return utc + (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
+}
+
+jday tt2utc( jday tt ) {
+    return tt - (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
 }
 
 jday unix2jday( struct timeval * time) {

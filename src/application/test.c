@@ -386,7 +386,7 @@ void test_BSC5() {
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */
 void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // start the timer
-    double start = jday_current();
+    jday start = jday_utc();
     int size = catalog->size;
 
     // track every star in the FK6 catalog
@@ -401,7 +401,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     }
 
     // get the time
-    double end = jday_current();
+    jday end = jday_utc();
     double duration = (end - start)*SECONDS_IN_DAY;
 
     // print the catalog with corresponding tracks

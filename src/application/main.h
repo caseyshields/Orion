@@ -12,6 +12,7 @@
 #include <signal.h>
 
 #include "util/io.h"
+#include "util/jday.h"
 #include "util/sockets.h"
 #include "engine/tracker.h"
 #include "engine/catalog.h"

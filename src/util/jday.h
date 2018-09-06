@@ -17,6 +17,9 @@
 
 #define TIMESTAMP_INPUT "%u/%u/%u %u:%u:%lf"
 
+/** Julian day of the J2000 epoch */
+#define J2000_EPOCH 2400000.5
+
 /** Julian days; the number of days since noon, January 1, 4713 BC- Which Joseph Justice Scaliger
  * estimated to be the beginning of history. This is a common time format used by Novas, so we
  * provide an explicit typing, and a set of convenience conversion methods built atop novas' own
@@ -24,14 +27,20 @@
  * @author Casey Shields*/
 typedef double jday;
 
-/** The number of leap seconds to be subtracted from UTC when converting to continuous time scales. */
-extern jday LEAP_SECONDS;
+/** Number of leap seconds added in International Atomic Time. Using this parameter we can convert to 'continuous' time scales. */
+extern double LEAP_SECONDS;
 
 /** @return False when the given julian day is not valid, true otherwise. */
 int jday_is_valid(jday time);
 
-/** @return A julian day holding the current time. */
-jday jday_current();
+/** @return A julian day holding the current time in UTC. */
+jday jday_utc();
+
+/** @param utc The Universal Coordinated Time in Julian Days
+ * @returns The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
+jday jday2tt( jday utc );
+
+jday tt2utc( jday tt );
 
 /** @param time A posix structure holding the unix seconds with a fractional part
  * @return A Julian day equivalent to the given timeval. */

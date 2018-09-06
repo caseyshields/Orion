@@ -127,16 +127,18 @@ void configure_orion( int argc, char* argv[], Orion * orion ) {
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
     arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
     double ut1_utc = atof( arg );
+    //TODO we could use this to update the default orientation....
 
     // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
     arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
     double leap_secs = atof( arg );
+    // TODO we need to configure leap secs and load iers....
 
     // create the tracker
-    tracker_create(tracker, ut1_utc, leap_secs);
+    tracker_create(tracker);
 
     // set the tracker's time in UTC
-    tracker_set_time(tracker, jday_current());
+    tracker_set_time(tracker, jday_utc());
 
     // geodetic coordinates
     arg = get_arg(argc, argv, "-latitude", LATITUDE);
