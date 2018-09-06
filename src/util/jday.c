@@ -1,5 +1,7 @@
 #include "util/jday.h"
 
+jday LEAP_SECONDS = 37.0 / SECONDS_IN_DAY;
+
 int jday_is_valid(jday time) {
     return time != NAN;
 }

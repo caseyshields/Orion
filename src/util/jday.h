@@ -24,6 +24,9 @@
  * @author Casey Shields*/
 typedef double jday;
 
+/** The number of leap seconds to be subtracted from UTC when converting to continuous time scales. */
+extern jday LEAP_SECONDS;
+
 /** @return False when the given julian day is not valid, true otherwise. */
 int jday_is_valid(jday time);
 
