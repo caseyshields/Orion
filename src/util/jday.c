@@ -6,7 +6,7 @@ int jday_is_valid(jday time) {
     return time != NAN;
 }
 
-jday jday_current_utc() {
+jday jday_utc() {
     // get the seconds since the unix epoch(January 1, 1970) in Universal Coordinated Time
     struct timeval time;
     gettimeofday( &time, NULL );
