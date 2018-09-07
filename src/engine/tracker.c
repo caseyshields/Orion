@@ -2,23 +2,16 @@
 
 void tracker_create(Tracker *tracker) {
 
-    tracker->jd_tt = J2000_EPOCH;
-    // Novas typically deals with the sum of the offsets, might want to cache it...
-    //map->delta_t = 32.184 + map->leap_secs - map->ut1_utc;
+    // clear out direction coordinates
+    tracker->azimuth = 0;
+    tracker->elevation = 0;
+    memset( &(tracker->efg), 0, 3*sizeof(double) );
 
     // create null novas surface location
     make_on_surface( 0.0, 0.0, 0.0, 10.0, 1010.0, &(tracker->site) );
 
     // default to empty Earth orientation parameters ?
     tracker->earth = &MISSING_EOP;
-}
-
-jday tracker_get_time(Tracker *tracker) {
-    return tracker->jd_tt;
-}
-
-void tracker_set_time( Tracker * tracker, jday jd_tt ) {
-    tracker->jd_tt = jd_tt;
 }
 
 void tracker_set_location(Tracker *tracker, double latitude, double longitude, double height) {
@@ -35,44 +28,42 @@ on_surface tracker_get_location(Tracker *tracker) {
     return tracker->site;
 }
 
-int tracker_to_horizon(
-        Tracker *tracker,
-        cat_entry *target,
-        double *topocentric_azimuth, double *zenith_distance,
-        double *efg )
-{
-    return tracker_find( tracker, target, tracker_get_time(tracker),
-            topocentric_azimuth, zenith_distance, efg );
+void tracker_get_direction_topocentric(Tracker * tracker, double * azimuth, double * elevation) {
+    *azimuth = tracker->azimuth;
+    *elevation = tracker->elevation;
 }
 
-int tracker_find(
+/** @returns a pointing vector in earth centered earth fixed coordinate system. */
+void tracker_get_itrs(Tracker * tracker, double vec[3]) {
+    memcpy(vec, tracker->efg, 3*sizeof(double));
+}
+
+int tracker_point(
         Tracker *tracker,
-        cat_entry *target,
-        jday time,
-        double *topocentric_azimuth, double *zenith_distance,
-        double *efg )
+        jday jd_tt,
+        cat_entry *target )
 {
     // Apply proper motion, parallax, gravitational deflection, relativistic
     // aberration and get the coordinates of the star in the true equator and equinox of date
     double right_ascension=0, declination=0;
     short int error;
     error = topo_star(
-                tracker->jd_tt,
-                iers_get_DeltaT( tracker->earth ),
-                target, // The FK6 catalog entries I believe are specified in the J2000 epoch
-                        // thus they should be consistent to within 0.02 arcseconds of the BCRS
-                &tracker->site, // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
-                REDUCED_ACCURACY,
-                &right_ascension, // these are specified in term of the current orientations of the equator and ecliptic
-                &declination // that is, they don't make sense unless you have a date, because both of those things are moving...
-        );
+            jd_tt,
+            iers_get_DeltaT( tracker->earth ),
+            target, // The FK6 catalog entries I believe are specified in the J2000 epoch
+            // thus they should be consistent to within 0.02 arcseconds of the BCRS
+            &tracker->site, // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
+            REDUCED_ACCURACY,
+            &right_ascension, // these are specified in term of the current orientations of the equator and ecliptic
+            &declination // that is, they don't make sense unless you have a date, because both of those things are moving...
+    );
     if( error )
         return error;
 
     // Apply refraction and convert Equatorial coordinates to horizon coordinates
     double ra, dec;
     equ2hor(
-            tracker->jd_tt,
+            jd_tt,
             iers_get_DeltaT( tracker->earth ),
             REDUCED_ACCURACY,
             tracker->earth->pm_x,
@@ -80,9 +71,12 @@ int tracker_find(
             &tracker->site,
             right_ascension, declination,
             REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
-            zenith_distance, topocentric_azimuth,
+            &(tracker->elevation), &(tracker->azimuth),
             &ra, &dec // uh, do I need to expose these? They are celestrial coordinates with refraction applied I believe
     );
+
+    // the elevation is actually zenith distance so convert that real quick
+    tracker->elevation = 90.0 - tracker->elevation;
 
     // convert the spherical coordinates to rectilinear
     double equ[3];
@@ -91,7 +85,7 @@ int tracker_find(
 
     // now transform the equatorial coordinates into ITRS coordinates
     error = cel2ter(
-            tracker->jd_tt, 0, // previous novas routines don't support the level of precision available
+            jd_tt, 0, // previous novas routines don't support the level of precision available
             iers_get_DeltaT( tracker->earth ),
             METHOD_EQUINOX,
             REDUCED_ACCURACY,
@@ -99,13 +93,13 @@ int tracker_find(
             tracker->earth->pm_x,
             tracker->earth->pm_y,
             equ,
-            efg
+            tracker->efg
     );
 
     return error;
 }
 
-int tracker_zenith(Tracker *tracker, double *right_ascension, double *declination) {
+int tracker_zenith(Tracker *tracker, jday jd_tt, double *right_ascension, double *declination) {
     on_surface site = tracker->site;
 
     // calculate a geocentric earth fixed vector as in Novas C-39
@@ -124,7 +118,7 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
     // convert to a celestial vector
     double celestial[3] = {0.0,0.0,0.0};
     int error = ter2cel(
-            tracker->jd_tt, 0.0,
+            jd_tt, 0.0,
             iers_get_DeltaT( tracker->earth ),
             METHOD_EQUINOX, // equinox method (0= CIO method)
             REDUCED_ACCURACY,
@@ -139,24 +133,6 @@ int tracker_zenith(Tracker *tracker, double *right_ascension, double *declinatio
     // convert to spherical celestial components
     error = vector2radec( celestial, right_ascension, declination );
     assert(error==0);
-}
-
-void tracker_print_time( const Tracker *tracker, FILE * file ) {
-    // format the time
-    char * stamp = jday2stamp( tracker->jd_tt );
-    fprintf( file, "time:\t%s UTC\t(%+05.3lf UT1)\n", stamp, tracker->jd_tt );
-
-    // do we want to expose any other time conventions?
-//    double utc = tracker_get_UTC(tracker);
-//    double ut1 = tracker_get_UT1(tracker);
-//    double tt = tracker_get_TT(tracker);
-//    fprintf( file, "UTC : %s\nUT1 : %s\nTT  : %s\n",
-//             jday2stamp(utc),
-//             jday2stamp(ut1),
-//             jday2stamp(tt)
-//    );
-
-    fflush( file );
 }
 
 void tracker_print_site(Tracker *tracker, FILE * file) {

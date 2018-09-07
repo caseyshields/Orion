@@ -1,6 +1,6 @@
 #include "controller/orion.h"
 
-MIDC01 * create_tracking_message(Orion * orion, MIDC01 * midc01 );
+MIDC01 * create_tracking_message(Orion * orion, jday time, MIDC01 * midc01 );
 
 Orion* orion_create( Orion * orion, unsigned short int id ) {
     if (!orion)
@@ -65,7 +65,7 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
 
     EXIT:
     if (error)
-        sprintf(orion->error, "[%d] %s\n\0", status, error);
+        sprintf(orion->error, "[%d] %s\n", status, error);
     return status;
 }
 
@@ -92,16 +92,18 @@ void * orion_control_loop( void * arg ) {
         if (orion->mode == ORION_MODE_OFF)
             break;
 
-        // update the current time if we are in real time mode
-        else if (orion->mode == ORION_MODE_REAL_TIME) {
-            last_time = orion->tracker.jd_tt;
-            jday current = jday2tt( jday_utc() );
-            tracker_set_time( &(orion->tracker), current );
-        }
+        // calculate the current time
+        jday jd_tt = jday2tt( jday_utc() ) + orion->latency;
+//        // update the current time if we are in real time mode
+//        else if (orion->mode == ORION_MODE_REAL_TIME) {
+//            last_time = orion->tracker.jd_tt;
+//            jday current = jday2tt( jday_utc() );
+//            tracker_set_time( &(orion->tracker), current );
+//        }
 
         // create a tracking message
         MIDC01 * message = (void*) buffer;
-        create_tracking_message(orion, message);
+        create_tracking_message(orion, jd_tt, message);
         length = sizeof( MIDC01 );
 
         // we no longer need tracker internals or mode, so we can release the lock
@@ -113,7 +115,7 @@ void * orion_control_loop( void * arg ) {
 
         // set error and exit if there was a transmission error
         if (sent < length) {
-            sprintf(orion->error, "[%d] Failed to send entire message, sent %d bytes\n\0", socket_error(), sent);
+            sprintf(orion->error, "[%d] Failed to send entire message, sent %d bytes\n", socket_error(), sent);
             break;
         }
 
@@ -247,14 +249,6 @@ void orion_set_weather( Orion * orion, double celsius, double millibars ) {
     pthread_mutex_unlock( &(orion->lock) );
 }
 
-//jday orion_get_time(Orion *orion) {
-//    pthread_mutex_lock( &(orion->lock) );
-//    double time = tt2utc( tracker_get_time( &(orion->tracker) ) );
-//            // = orion->tracker.utc;
-//    pthread_mutex_unlock( &(orion->lock) );
-//    return time;
-//}
-
 Tracker orion_get_tracker( Orion * orion ) {
     Tracker tracker;
     pthread_mutex_lock( &(orion->lock) );
@@ -294,7 +288,7 @@ void orion_clear_error( Orion * orion ) {
     pthread_mutex_unlock( &(orion->lock) );
 }
 
-MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
+MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
     double zd, az;
 
     // either allocate of initialize the provided pointer
@@ -313,14 +307,14 @@ MIDC01 * create_tracking_message( Orion * orion, MIDC01 * midc01 ) {
 
     // compute timer value from sensor time...
     unsigned short int milliseconds = (unsigned short int)
-            (1000 * fmod( orion->tracker.jd_tt * SECONDS_IN_DAY, 1.0 ) );
+            (1000 * fmod( jd_tt * SECONDS_IN_DAY, 1.0 ) );
     midc01->tcn_time = milliseconds;
 
     // if there is an assigned coordinate
     if( orion->target.novas.starnumber ) {
 
         // get the time with a latency bias to it...
-        double jd_tt = orion->tracker.jd_tt + (orion->latency/SECONDS_IN_DAY);
+        double jd_tt = jd_tt + (orion->latency/SECONDS_IN_DAY);
         // = tracker_get_terrestrial_time( &(orion->tracker), orion->latency );
 
         // calculate the current location of the target

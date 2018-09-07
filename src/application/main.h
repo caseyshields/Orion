@@ -5,7 +5,6 @@
  * then enters an interactive command line mode.
  * */
 
-
 #ifndef STARTRACK_MAIN_H
 #define STARTRACK_MAIN_H
 
@@ -62,6 +61,10 @@ typedef struct {
 
     /** The Orion server which steers a TATS sensor at a designated star */
     Orion * orion;
+
+    /** This time is used for catalog commands such as search and report. It does not affect the time broadcasted to
+     * TATS sensors. Only the current time is used for that. */
+    jday time;
 
     /** The Star catalog which the user can search for star targets */
     Catalog * catalog;
@@ -121,3 +124,38 @@ int cmd_help(char *line);
 #endif //STARTRACK_MAIN_H
 
 //Henderson Location:  W114°58'48.0", N36°03'00.0",     0m
+
+//tracker->jd_tt = J2000_EPOCH;
+//// Novas typically deals with the sum of the offsets, might want to cache it...
+////map->delta_t = 32.184 + map->leap_secs - map->ut1_utc;
+////jday orion_get_time(Orion *orion) {
+////    pthread_mutex_lock( &(orion->lock) );
+////    double time = tt2utc( tracker_get_time( &(orion->tracker) ) );
+////            // = orion->tracker.utc;
+////    pthread_mutex_unlock( &(orion->lock) );
+////    return time;
+////}
+//jday tracker_get_time(Tracker *tracker) {
+//    return tracker->jd_tt;
+//}
+//
+//void tracker_set_time( Tracker * tracker, jday jd_tt ) {
+//    tracker->jd_tt = jd_tt;
+//}
+//void tracker_print_time( const Tracker *tracker, FILE * file ) {
+//    // format the time
+//    char * stamp = jday2stamp( tracker->jd_tt );
+//    fprintf( file, "time:\t%s UTC\t(%+05.3lf UT1)\n", stamp, tracker->jd_tt );
+//
+//    // do we want to expose any other time conventions?
+////    double utc = tracker_get_UTC(tracker);
+////    double ut1 = tracker_get_UT1(tracker);
+////    double tt = tracker_get_TT(tracker);
+////    fprintf( file, "UTC : %s\nUT1 : %s\nTT  : %s\n",
+////             jday2stamp(utc),
+////             jday2stamp(ut1),
+////             jday2stamp(tt)
+////    );
+//
+//    fflush( file );
+//}

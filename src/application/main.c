@@ -225,9 +225,11 @@ void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
 }// TODO should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
 
 // configuration commands /////////////////////////////////////////////////////
-int cmd_time(char * line, Orion * orion) {
+int cmd_time(char * line, Application * cli) {//}, Orion * orion) {
     int year, month, day, hour, min, count;
     double secs, step;
+
+    Orion * orion = cli->orion;
 
     int result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
                         &year, &month, &day, &hour, &min, &secs);
@@ -238,9 +240,9 @@ int cmd_time(char * line, Orion * orion) {
         alert("usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>\nnote time should be int UTC");
         return 1;
     } else {
-        jday time = date2jday(year, month, day, hour, min, secs);
-        orion_set_time(orion, time);
-        //app.orientation = iers_search( app.iers, time );
+        cli->time = date2jday(year, month, day, hour, min, secs);
+
+        cli->orientation = iers_search( app.iers, cli->time );
         // TODO set orientation params and notify the user...
 
         // TODO set the time to mode to static?
@@ -389,6 +391,7 @@ int cmd_connect( char * line, Orion * orion ) {
 
     // read the arguments
     int result = sscanf(line, "connect %u.%u.%u.%u:%hu\n", &ip1, &ip2, &ip3, &ip4, &port );
+    // TODO add an optional time bias parameter?
 
     // overwrite default address if one is supplied
     if( result == 5 ) {
