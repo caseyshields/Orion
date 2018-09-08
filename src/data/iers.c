@@ -153,7 +153,7 @@ void iers_free( IERS * iers ) {
 }
 
 void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
-    char * stamp = jday2stamp( eop->time );
+    char * stamp = jday2str(eop->time);
     fprintf( stream, "t:%s\tpmX:%lf\tpmY:%lf\tdt:%lf\te={%lf,%lf,%lf}",
              stamp, eop->pm_x, eop->pm_y, eop->ut1_utc,
              eop->pm_x_err, eop->pm_y_err, eop->ut1_utc_err);

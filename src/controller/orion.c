@@ -93,11 +93,11 @@ void * orion_control_loop( void * arg ) {
             break;
 
         // calculate the current time
-        jday jd_tt = jday2tt( jday_utc() ) + orion->latency;
+        jday jd_tt = utc2tt(jday_now()) + orion->latency;
 //        // update the current time if we are in real time mode
 //        else if (orion->mode == ORION_MODE_REAL_TIME) {
 //            last_time = orion->tracker.jd_tt;
-//            jday current = jday2tt( jday_utc() );
+//            jday current = utc2tt( jday_now() );
 //            tracker_set_time( &(orion->tracker), current );
 //        }
 
@@ -215,7 +215,7 @@ void orion_disconnect( Orion * orion ) {
 //    // TODO do we care that we return TT?
 //
 //    // set the new time
-//    tracker_set_time( &(orion->tracker), jday2tt(utc) );
+//    tracker_set_time( &(orion->tracker), utc2tt(utc) );
 //
 //    pthread_mutex_unlock( &(orion->lock) );
 //    return last;

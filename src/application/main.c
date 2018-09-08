@@ -29,7 +29,7 @@ int main( int argc, char *argv[] ) {
     app.orion = orion_create( NULL, 1 );
     app.catalog = catalog_create( NULL, 1024 );
     app.iers = iers_create( NULL );
-    app.time = jday2tt( jday_utc() );
+    app.time = utc2tt(jday_now());
 
     // where do we shoehorn this?
 ////    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
@@ -61,7 +61,7 @@ int main( int argc, char *argv[] ) {
 
         // print prompt and get next user command
         printf( "\n" );
-        char * stamp = jday2stamp( tt2utc( app.time ) );
+        char * stamp = jday2str(tt2utc(app.time));
         char *line = NULL;
         size_t size = 0 ;
         ssize_t read = get_input( stamp, &line, &size );
@@ -251,10 +251,16 @@ int cmd_time(char * line, Application * cli) {
         jday utc = date2jday(year, month, day, hour, min, secs);
 
         // convert that time to terrestrial time
-        cli->time = jday2tt( utc );
+        cli->time = utc2tt(utc);
 
         // look up the earth orientation parameters for the given day
         cli->eop = iers_search( app.iers, cli->time );
+        if (!cli->eop) {
+            cli->eop = &MISSING_EOP;
+            // TODO warn user about out of bound times?
+        }
+        // TODO warn user about predicted mode?
+
         return 0;
     }
 }
@@ -448,7 +454,7 @@ int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
-    char * stamp = jday2stamp( cli->time );
+    char * stamp = jday2str(cli->time);
     fprintf( stream, "time:\t%s UTC\t(%+05.3lf TT)\n", stamp, cli->time );
 
     Tracker tracker = orion_get_tracker( orion );
@@ -511,7 +517,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         tracker_point( &tracker, start, &(target.novas) );
 
         // print report entry
-        char * ts = jday2stamp( tt2utc( start ) );
+        char * ts = jday2str(tt2utc(start));
         fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%lf\t%lf\t%lf\n", ts,
                 tracker.azimuth, tracker.elevation,
                 tracker.efg[0], tracker.efg[1], tracker.efg[2] );

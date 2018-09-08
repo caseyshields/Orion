@@ -34,11 +34,11 @@ extern double LEAP_SECONDS;
 int jday_is_valid(jday time);
 
 /** @return A julian day holding the current time in UTC. */
-jday jday_utc();
+jday jday_now();
 
 /** @param utc The Universal Coordinated Time in Julian Days
  * @returns The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
-jday jday2tt( jday utc );
+jday utc2tt( jday utc );
 
 jday tt2utc( jday tt );
 
@@ -46,7 +46,7 @@ jday tt2utc( jday tt );
  * @return A Julian day equivalent to the given timeval. */
 jday unix2jday(struct timeval * time);
 
-/** @param time The input julian day
+/** @param time The input julian day in UTC
  * @param year output The AD year
  * @param month output [1-12]
  * @param day output [1-31]
@@ -63,17 +63,17 @@ void jday2date(jday time,
  * @param hour input [0-23]
  * @param minute input [0-59]
  * @param seconds input [0.0-61.0]
- * @return the jday equivalent to the given date. */
+ * @return the jday equivalent to the given date in UTC. */
 jday date2jday(int year, int month, int day, int hour, int minute, double seconds);
 
 /** Converts Julian days to a human readable string
- * @param time A time in julian days
+ * @param utc A UTC time in julian days
  * @return a string in the format TIMESTAMP_OUTPUT */
-char * jday2stamp(jday time);
+char * jday2str(jday utc);
 
 /** Converts a human readable string into Julian days.
  * @param stamp A string in the format TIMESTAMP_INPUT
- * @return the equivalent Julian day or NAN if the string was invalid*/
-jday stamp2jday(char * stamp);
+ * @return the equivalent UTC Julian day or NAN if the string was invalid*/
+jday str2jday(char *stamp);
 
 #endif //STARTRACK_JDAY_H

@@ -49,9 +49,9 @@ void test_time( CuTest * test ) {
 
     // check that the retrieved timestamp is correct for each input
     for( int n = 0; n<2; n++ ) {
-        jday time = stamp2jday(inputs[n]);
+        jday time = str2jday(inputs[n]);
         CuAssertTrue( test, jday_is_valid(time) );
-        char *copy = jday2stamp(time);
+        char *copy = jday2str(time);
         CuAssertStrEquals( test, output, copy );
         free(copy);
     }
@@ -386,7 +386,7 @@ void test_BSC5() {
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */
 void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // start the timer
-    jday start = jday_utc();
+    jday start = jday_now();
     int size = catalog->size;
 
     // track every star in the FK6 catalog
@@ -401,7 +401,7 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     }
 
     // get the time
-    jday end = jday_utc();
+    jday end = jday_now();
     double duration = (end - start)*SECONDS_IN_DAY;
 
     // print the catalog with corresponding tracks

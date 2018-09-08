@@ -6,14 +6,14 @@ int jday_is_valid(jday time) {
     return time != NAN;
 }
 
-jday jday_utc() {
+jday jday_now() {
     // get the seconds since the unix epoch(January 1, 1970) in Universal Coordinated Time
     struct timeval time;
     gettimeofday( &time, NULL );
     return unix2jday( &time );
 }
 
-jday jday2tt( jday utc ) {
+jday utc2tt(jday utc) {
     return utc + (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
 }
 
@@ -60,7 +60,7 @@ jday date2jday(int year, int month, int day, int hour, int min, double seconds) 
             hours );
 }
 
-char * jday2stamp(const jday jd_utc) {
+char * jday2str(jday jd_utc) {
     short int year, month, day, hour, minute;
     double seconds;
     jday2date(jd_utc, &year, &month, &day, &hour, &minute, &seconds);
@@ -69,7 +69,7 @@ char * jday2stamp(const jday jd_utc) {
     return stamp;
 }
 
-jday stamp2jday(char *stamp) {
+jday str2jday(char *stamp) {
     int result, year, month, day, hour, min;
     double seconds;
 
