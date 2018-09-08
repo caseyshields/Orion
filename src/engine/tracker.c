@@ -28,13 +28,20 @@ on_surface tracker_get_location(Tracker *tracker) {
     return tracker->site;
 }
 
-void tracker_get_direction_topocentric(Tracker * tracker, double * azimuth, double * elevation) {
+IERS_EOP * tracker_get_earth(Tracker * tracker) {
+    return tracker->earth;
+}
+
+void tracker_set_earth(Tracker * tracker, IERS_EOP * eop) {
+    tracker->earth = eop;
+}
+
+void tracker_get_angles(Tracker * tracker, double * azimuth, double * elevation) {
     *azimuth = tracker->azimuth;
     *elevation = tracker->elevation;
 }
 
-/** @returns a pointing vector in earth centered earth fixed coordinate system. */
-void tracker_get_itrs(Tracker * tracker, double vec[3]) {
+void tracker_get_direction(Tracker * tracker, double vec[3]) {
     memcpy(vec, tracker->efg, 3*sizeof(double));
 }
 

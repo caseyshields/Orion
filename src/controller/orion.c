@@ -289,7 +289,7 @@ void orion_clear_error( Orion * orion ) {
 }
 
 MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
-    double zd, az;
+//    double zd, az;
 
     // either allocate of initialize the provided pointer
     if(midc01)
@@ -318,11 +318,9 @@ MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
         // = tracker_get_terrestrial_time( &(orion->tracker), orion->latency );
 
         // calculate the current location of the target
-        tracker_find(
-                &(orion->tracker), &(orion->target.novas), jd_tt,
-                &az, &zd, (orion->target.efg)
-        );
-        double * efg = (orion->target.efg);
+        tracker_point( &(orion->tracker), jd_tt, &(orion->target.novas) );
+        double efg[3];
+        tracker_get_direction( &(orion->tracker), efg);
         midc01->E = (int)efg[0];
         midc01->F = (int)efg[1];
         midc01->G = (int)efg[2];

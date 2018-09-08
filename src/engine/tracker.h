@@ -69,14 +69,33 @@ on_surface tracker_get_location(Tracker *tracker);
  * @param pressure the air pressure at the sensor in millibars.*/
 void tracker_set_weather(Tracker *tracker, double temperature, double pressure);
 
-/** Compute the coordinates of the target in local horizon coordinates and a unit ITRS vector at the specified time
+/** @return The current earth orientation parameters
+ * @param tracker */
+IERS_EOP * tracker_get_earth(Tracker * tracker);
+
+/** Sets the earth orientation parameters used for some high accuracy calculations
+ * @param tracker
+ * @param eop */
+void tracker_set_earth(Tracker * tracker, IERS_EOP * eop);
+// not really intrinsic to the tracker, I could see passing them along with the time
+
+/** sets the given angles to the tracker's current look direction in topocentric coordinates.
+ * @param tracker
+ * @param azimuth
+ * @param elevation */
+void tracker_get_angles(Tracker * tracker, double * azimuth, double * elevation);
+
+/** Returns the tracker's current orientation as a unit vector in the ITRS frame.
+ * @param tracker
+ * @param vec */
+void tracker_get_direction(Tracker * tracker, double vec[3]);
+
+/** Compute the coordinates of the target, and set the tracker to point at them
  * @param tracker The tracker to compute the direction from
  * @param target A novas catalog entry to point at
- * @param time The UT1 time in the Novas Julian day convention
- * @param zenith_distance Output argument returning the angular offset from the local zenith in degrees
- * @param topocentric_azimuth Output argument returning the clockwise angular offset from north in degrees
+ * @param jd_tt the terrestrial time expressed in julian days
  * @return Zero on success, otherwise a Novas error code. */
-int tracker_find(Tracker *tracker, cat_entry *target, jday time, double *zenith_distance, double *topocentric_azimuth, double *efg);
+int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target);
 
 /** returns the current location of the given tracker's zenith in celestial coordinates.
  * @param tracker Location used to compute the zenith vector

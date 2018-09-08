@@ -25,6 +25,16 @@ int main( int argc, char *argv[] ) {
     app.mode = 1;
     app.orion = orion_create( NULL, 1 );
     app.catalog = catalog_create( NULL, 1024 );
+    app.time = jday2tt( jday_utc() );
+
+    // where do we shoehorn this?
+////    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
+////    arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
+////    double ut1_utc = atof( arg );
+////    //TODO we could use this to update the default orientation....
+    // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
+    char * arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
+    LEAP_SECONDS = (jday) atof( arg );
 
     configure_address( argc, argv, &app );
     configure_orion( argc, argv, app.orion );
@@ -35,12 +45,19 @@ int main( int argc, char *argv[] ) {
         return 1; // maybe we don't exit? they could still target, they just couldn't catalog
     }
 
+    // find the earth orientation
+    app.eop = iers_search( app.iers, app.time );
+    if(!app.eop) {
+        app.eop = &MISSING_EOP;
+    }
+    // TODO notify user of predicted mode?
+
     // Main loop
     while( app.mode ) {
 
         // print prompt and get next user command
         printf( "\n" );
-        char * stamp = jday2stamp( orion_get_time( app.orion ) );
+        char * stamp = jday2stamp( app.time );
         char *line = NULL;
         size_t size = 0 ;
         ssize_t read = get_input( stamp, &line, &size );
@@ -48,7 +65,7 @@ int main( int argc, char *argv[] ) {
 
         // configuration commands
         if( strncmp( "time", line, 4 ) == 0 )
-            cmd_time( line, app.orion );
+            cmd_time( line, &app );
         else if( strncmp( "location", line, 8 ) == 0 )
             cmd_location( line, app.orion );
         else if( strncmp( "weather", line, 7 ) == 0 )
@@ -58,7 +75,7 @@ int main( int argc, char *argv[] ) {
         else if( strncmp( "name", line, 4 ) == 0 )
             cmd_name( line, app.catalog);
         else if( strncmp( "search", line, 6 ) == 0 )
-            cmd_search( line, app.orion, app.catalog );
+            cmd_search( line, &app );
 
         // sensor commands
         else if( strncmp( "connect", line, 7 ) == 0 )
@@ -68,9 +85,9 @@ int main( int argc, char *argv[] ) {
 
         // Diagnostic commands
         else if( strncmp( "status", line, 6) == 0 )
-            cmd_status( line, app.orion, stdout );
+            cmd_status( line, &app, stdout );
         else if( strncmp( "report", line, 6) == 0 )
-            cmd_report( line, app.orion, stdout );
+            cmd_report( line, &app, stdout );
         else if( strncmp( "help", line, 4 ) == 0 )
             cmd_help( line );
 
@@ -124,21 +141,8 @@ void configure_orion( int argc, char* argv[], Orion * orion ) {
 
     Tracker * tracker = &(orion->tracker);
 
-    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
-    arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
-    double ut1_utc = atof( arg );
-    //TODO we could use this to update the default orientation....
-
-    // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
-    arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
-    double leap_secs = atof( arg );
-    // TODO we need to configure leap secs and load iers....
-
     // create the tracker
     tracker_create(tracker);
-
-    // set the tracker's time in UTC
-    tracker_set_time(tracker, jday_utc());
 
     // geodetic coordinates
     arg = get_arg(argc, argv, "-latitude", LATITUDE);
@@ -225,7 +229,7 @@ void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
 }// TODO should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
 
 // configuration commands /////////////////////////////////////////////////////
-int cmd_time(char * line, Application * cli) {//}, Orion * orion) {
+int cmd_time(char * line, Application * cli) {
     int year, month, day, hour, min, count;
     double secs, step;
 
@@ -239,17 +243,19 @@ int cmd_time(char * line, Application * cli) {//}, Orion * orion) {
     if (result < 6) {
         alert("usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>\nnote time should be int UTC");
         return 1;
+
     } else {
-        cli->time = date2jday(year, month, day, hour, min, secs);
+        // convert the user supplied string stamp to a jday, which we assume is utc
+        jday utc = date2jday(year, month, day, hour, min, secs);
 
-        cli->orientation = iers_search( app.iers, cli->time );
-        // TODO set orientation params and notify the user...
+        // convert that time to terrestrial time
+        cli->time = jday2tt( utc );
 
-        // TODO set the time to mode to static?
-
+        // look up the earth orientation parameters for the given day
+        cli->eop = iers_search( app.iers, cli->time );
         return 0;
     }
-} // todo add leap seconds and ut1 offset as optional parameters?
+}
 
 int cmd_location( char * line, Orion * orion ) {
     double lat=0, lon=0, height=0;
@@ -291,13 +297,15 @@ int cmd_name( char * line, Catalog * catalog ) {
     }
 }
 
-int cmd_search(char * line, Orion * orion, Catalog * catalog) {
+int cmd_search(char * line, Application * cli) {
     float mag_min;
-    double az_min, az_max, zd_min, zd_max;
+    double az_min, az_max, el_min, el_max;
+    Orion * orion = cli->orion;
+    Catalog * catalog = cli->catalog;
     Catalog * stars = NULL;
 
     // try to parse both formats
-    int result = sscanf(line, "search %f %lf %lf %lf %lf\n", &mag_min, &az_min, &az_max, &zd_min, &zd_max );
+    int result = sscanf(line, "search %f %lf %lf %lf %lf\n", &mag_min, &az_min, &az_max, &el_min, &el_max );
     if( result != 5 )
         result = sscanf(line, "search %f\n", &mag_min );
 
@@ -311,8 +319,8 @@ int cmd_search(char * line, Orion * orion, Catalog * catalog) {
         if(az_min>az_max) {
             alert("Azimuth minimum must be less than maximum");
             return 1;
-        } else if(zd_min>zd_max) {
-            alert("Zenith distance minimum must be less than maximum");
+        } else if(el_min>el_max) {
+            alert("Elevation must be less than maximum");
             return 1;
         }
 
@@ -328,19 +336,13 @@ int cmd_search(char * line, Orion * orion, Catalog * catalog) {
             Entry * entry = bright->stars[n];
 
             // transform the catalog coordinates to topocentric coordinates in spherical and rectilinear.
-            tracker_to_horizon(
-                    &tracker,
-                    &(entry->novas),
-                    &(entry->topocentric_azimuth),
-                    &(entry->zenith_distance),
-                    entry->efg
-            );
+            tracker_point( &tracker, app.time, &(entry->novas) );
 
             // if the coordinates are within the patch, add them to the results
-            if( entry->zenith_distance > zd_min
-                && entry->zenith_distance < zd_max
-                && entry->topocentric_azimuth > az_min
-                && entry->topocentric_azimuth < az_max )
+            if( tracker.elevation > el_min
+                && tracker.elevation < el_max
+                && tracker.azimuth > az_min
+                && tracker.azimuth < az_max )
                 catalog_add( stars, entry );
         }
         catalog_clear( bright );
@@ -368,7 +370,7 @@ int cmd_search(char * line, Orion * orion, Catalog * catalog) {
                    entry->topocentric_azimuth, entry->zenith_distance);
         }
 
-        printf( "%d stars found.\n", stars->size );
+        printf( "%u stars found.\n", (unsigned int)stars->size );
 
         // release catalogs
         catalog_clear(stars);
@@ -382,6 +384,8 @@ int cmd_search(char * line, Orion * orion, Catalog * catalog) {
 int cmd_connect( char * line, Orion * orion ) {
     unsigned int ip1=0, ip2=0, ip3=0, ip4=0;
     unsigned short port = 0;
+
+    // TODO set time bias! Set earth orientation parameters!
 
     // abort if we are already connected
     if( orion_is_connected( orion ) ) {
@@ -439,20 +443,25 @@ int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
 }
 
 // Diagnostic Commands ////////////////////////////////////////////////////////
-int cmd_status(char * line, Orion * orion, FILE * stream ) {
+int cmd_status(char * line, Application * cli, FILE * stream ) {
+    Orion * orion = cli->orion;
+
+    char * stamp = jday2stamp( cli->time );
+    fprintf( stream, "time:\t%s UTC\t(%+05.3lf TT)\n", stamp, cli->time );
+
     Tracker tracker = orion_get_tracker( orion );
-    tracker_print_time( &tracker, stream );
     tracker_print_site( &tracker, stream );
 
     Entry target = orion_get_target( orion );
     if( target.novas.starnumber ) {
-        tracker_to_horizon( &tracker, &(target.novas),
-                    &(target.topocentric_azimuth), &(target.zenith_distance), (target.efg) );
-        double el = 90.0 - target.zenith_distance;
+
+        // TODO get and print tracker time since it is now decoupled from the cli time!
+
+        tracker_point( &tracker, cli->time, &(target.novas) );
         fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
                 target.novas.catalog, target.novas.starnumber, target.novas.starname,
-                target.topocentric_azimuth, el, //target.zenith_distance,
-                target.efg[0], target.efg[1], target.efg[2], target.magnitude);
+                tracker.azimuth, tracker.elevation,
+                tracker.efg[0], tracker.efg[1], tracker.efg[2], target.magnitude);
 //        // print out an example midc01 message
 //        MIDC01 midc01;
 //        create_tracking_message(orion, &midc01);
@@ -460,10 +469,10 @@ int cmd_status(char * line, Orion * orion, FILE * stream ) {
     }
 }
 
-int cmd_report( char * line, Orion * orion, FILE * stream ) {
-    double step=0, az=0, zd=0;
-    double efg[3] = {0,0,0};
+int cmd_report( char * line, Application * cli, FILE * stream ) {
+    double step=0;
     int count=0;
+    Orion * orion = cli->orion;
 
     int result = sscanf(line, "report %lf %u\n", &step, &count );
     if( result != 2 ) {
@@ -474,9 +483,7 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
     // get thread safe copies of the tracker and target from the orion server
     Tracker tracker = orion_get_tracker( orion );
     Entry target = orion_get_target( orion );
-    jday start = orion_get_time( orion );
-
-    IERS_EOP * earth = iers_search( app.iers, start );
+    jday start = cli->time;
 
     // print tracker information
     tracker_print_site( &tracker, stream );
@@ -490,13 +497,22 @@ int cmd_report( char * line, Orion * orion, FILE * stream ) {
     jday end = start + (step*count);
     while( start < end ) {
 
+        // look up the earth orientation parameters
+        IERS_EOP * earth = iers_search( app.iers, start ); // TODO this can really be sped up to a linear search after the first iteration...
+        if (!earth) {
+            // TODO should we print a warning if missing or predicted?
+            earth = &MISSING_EOP;
+        }
+        tracker_set_earth( &tracker, earth );
+
         // calculate coordinates at the given time
-        tracker_set_time( &tracker, start );
-        tracker_to_horizon( &tracker, &(target.novas), &az, &zd, efg );
+        tracker_point( &tracker, start, &(target.novas) );
 
         // print report entry
         char * ts = jday2stamp( start );
-        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%lf\t%lf\t%lf\n", ts, az, zd, efg[0], efg[1], efg[2] );
+        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%lf\t%lf\t%lf\n", ts,
+                tracker.azimuth, tracker.elevation,
+                tracker.efg[0], tracker.efg[1], tracker.efg[2] );
         free( ts );
         start += step;
     }

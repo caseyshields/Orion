@@ -390,12 +390,12 @@ void benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     int size = catalog->size;
 
     // track every star in the FK6 catalog
-    double tracks [catalog->size][2]; //double latitude, longitude;
-    double efgs [catalog->size][3];
+//    double tracks [catalog->size][2]; //double latitude, longitude;
+//    double efgs [catalog->size][3];
     for( int t=0; t<trials; t++ ) {
         for (int n = 0; n < catalog->size; n++) {
             Entry *entry = catalog->stars[n];
-            int error = tracker_to_horizon(tracker, &(entry->novas), &tracks[n][0], &tracks[n][1], efgs[n]);
+            int error = tracker_point( tracker, J2000_EPOCH, &(entry->novas) );
 
         }
     }
