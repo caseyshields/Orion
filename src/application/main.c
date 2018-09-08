@@ -6,7 +6,10 @@ Application app = {
         .port=0,
         .ip=NULL,
         .orion=NULL,
-        .catalog=NULL
+        .catalog=NULL,
+        .iers=NULL,
+        .time=0.0,
+        .eop=NULL
 };
 
 int main( int argc, char *argv[] ) {
@@ -25,6 +28,7 @@ int main( int argc, char *argv[] ) {
     app.mode = 1;
     app.orion = orion_create( NULL, 1 );
     app.catalog = catalog_create( NULL, 1024 );
+    app.iers = iers_create( NULL );
     app.time = jday2tt( jday_utc() );
 
     // where do we shoehorn this?
@@ -57,7 +61,7 @@ int main( int argc, char *argv[] ) {
 
         // print prompt and get next user command
         printf( "\n" );
-        char * stamp = jday2stamp( app.time );
+        char * stamp = jday2stamp( tt2utc( app.time ) );
         char *line = NULL;
         size_t size = 0 ;
         ssize_t read = get_input( stamp, &line, &size );
@@ -191,8 +195,6 @@ void configure_address( int argc, char* argv[], Application * app ) { //struct s
 void configure_iers(int argc, char* argv[], IERS * iers ) {
     FILE * file = fopen("../data/iers/finals2000A.data", "r");
     // TODO derive path from root directory!!! Do this for all the file based components!
-
-    iers_create( iers );
 
     iers_load( iers, file );
 
@@ -509,7 +511,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         tracker_point( &tracker, start, &(target.novas) );
 
         // print report entry
-        char * ts = jday2stamp( start );
+        char * ts = jday2stamp( tt2utc( start ) );
         fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%lf\t%lf\t%lf\n", ts,
                 tracker.azimuth, tracker.elevation,
                 tracker.efg[0], tracker.efg[1], tracker.efg[2] );
