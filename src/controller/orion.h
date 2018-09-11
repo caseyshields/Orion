@@ -105,8 +105,16 @@ void orion_clear_error( Orion * orion);
  * For right now though we just manually configure it... */
 double orion_get_latency( Orion * orion );
 
-/** Sets the TATS control network latency. */
+/** Sets the TATS control network latency in a thread safe way. */
 void orion_set_latency( Orion * orion, double seconds );
+
+/** @return A copy of the earth orientation parameters in a thread safe way. */
+IERS_EOP orion_get_earth_orientation( Orion * orion );
+
+/** Sets the earth orientation parameters in a thread safe way.
+ * @param orion
+ * @param earth */
+void orion_set_earth_orientation( Orion * orion, IERS_EOP * earth );
 
 /** @return a thread-safe copy of the orion server's current tracker */
 Tracker orion_get_tracker( Orion * orion );

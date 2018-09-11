@@ -208,6 +208,20 @@ void orion_set_latency( Orion * orion, double latency ) {
     pthread_mutex_unlock( &(orion->lock) );
 }
 
+
+IERS_EOP orion_get_earth_orientation( Orion * orion ) {
+    pthread_mutex_lock( &(orion->lock) );
+    IERS_EOP eop = *orion->tracker.earth;
+    pthread_mutex_unlock( &(orion->lock) );
+    return eop;
+}
+
+void orion_set_earth_orientation( Orion * orion, IERS_EOP * earth ) {
+    pthread_mutex_lock( &(orion->lock) );
+    orion->tracker.earth = earth;
+    pthread_mutex_unlock( &(orion->lock) );
+}
+
 void orion_set_location( Orion * orion, double lat, double lon, double h ) {
     pthread_mutex_lock( &(orion->lock) );
     orion->tracker.site.latitude = lat;
