@@ -18,11 +18,7 @@
 
 #define ORION_MODE_OFF 0
 
-#define ORION_MODE_STATIC 1
-
-#define ORION_MODE_REAL_TIME 2
-
-#define ORION_MODE_KILL_SIM 3
+#define ORION_MODE_ON 1
 
 #define ORION_RATE 1
 //todo eventually put it to 50 hertz...
@@ -58,8 +54,6 @@ typedef struct {
     /** Current state of the control thread. May equal ORION_MODE_ON or ORION_MODE_OFF. */
     volatile int mode;
 
-//    jday jd_tt;
-
     /** Update rate of the control thread */
     unsigned int rate;
 
@@ -68,22 +62,9 @@ typedef struct {
 
     /** An error buffer for messages from a failed method */
     char error[128]; // error message set if a server method fails
+    // this buffer has been kinda superfluous, probably want to just replace it with an errno scheme with a code for sockets, novas and orion
 
 } Orion;
-// todo I should probably just make every method thread-safe to ease use
-
-/** Terrestrial time is meant to be a smooth timescale and is derived from UTC by removing leap seconds and adding an
- * experimentally measured offset available from the IERS service, which combines data from the Lunar Laser Ranger,
- * Very long baseline radio inferometry of quasars, the GPS constellation, etc.
- * @return The tracker's current Terrestrial Time in Julian day format. */
-jday tracker_get_time(Tracker *tracker);
-
-/** Sets the current time for the star tracker.
- * @param tracker
- * @param utc The desired tracker's Terrestrial Time in julian day format */
-void tracker_set_time(Tracker *tracker, jday jd_tt);
-
-void tracker_print_time(const Tracker *tracker, FILE * file);
 
 /** Instantiates the given Orion structure, allocating space if the argument is NULL.
  * @param orion pointer to structure to instantiate, or NULL if a structure should be allocated
@@ -119,21 +100,13 @@ int orion_is_connected( Orion * orion );
 /** Clears the internal error buffer. Thread safe. */
 void orion_clear_error( Orion * orion);
 
-///** gets a millisecond accurate timestamp from the system, converts it to Julian hours(see Novas
-// * 3.1 documentation), then sets the current tracker time.
-// * @returns the last marked timestamp.*/
-//jday orion_set_time( Orion *orion, jday time );
-//
-///** @return the current julian date in UTC in days @see jday.h */
-//jday orion_get_time( Orion *orion );
-
 /** @return the configured TATS control network latency in seconds.
  * note: Something to keep in mind is it should be possible to estimate latency by polling the sensor.
  * For right now though we just manually configure it... */
 double orion_get_latency( Orion * orion );
 
 /** Sets the TATS control network latency. */
-void orion_set_latency( Orion * orion, double latency );
+void orion_set_latency( Orion * orion, double seconds );
 
 /** @return a thread-safe copy of the orion server's current tracker */
 Tracker orion_get_tracker( Orion * orion );

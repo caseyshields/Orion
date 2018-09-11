@@ -3,8 +3,11 @@
 MIDC01 * create_tracking_message(Orion * orion, jday time, MIDC01 * midc01 );
 
 Orion* orion_create( Orion * orion, unsigned short int id ) {
+    // allocate if space isn't provided
     if (!orion)
         orion = malloc(sizeof(Orion));
+
+    // initialize structure
     if (orion) {
         memset( orion, 0, sizeof(Orion) );
         orion->id = id;
@@ -37,7 +40,7 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
     if( status != 0 ) {
         error = "Failed to initialize winsock";
         goto EXIT;
-    } // yes, nested error handling is a valid use of goto's in C. Gotta make do without throws...
+    }
 
     // create a TCP socket for the client
     orion->socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -71,7 +74,6 @@ int orion_connect ( Orion * orion, char * ip, unsigned short port ) {
 
 void * orion_control_loop( void * arg ) {
     Orion * orion = (Orion*)arg;
-    double zd, az, last_time;
     int length = 0;
     char buffer[1024];
     memset(&buffer, 0, 1024);
@@ -79,9 +81,6 @@ void * orion_control_loop( void * arg ) {
     // sanity check
     assert( orion->mode != ORION_MODE_OFF );
     assert( orion->socket != INVALID_SOCKET );
-
-    // set the current time
-    //double last_time = orion->tracker.utc;
 
     // loop indefinitely
     do {
@@ -92,14 +91,8 @@ void * orion_control_loop( void * arg ) {
         if (orion->mode == ORION_MODE_OFF)
             break;
 
-        // calculate the current time
-        jday jd_tt = utc2tt(jday_now()) + orion->latency;
-//        // update the current time if we are in real time mode
-//        else if (orion->mode == ORION_MODE_REAL_TIME) {
-//            last_time = orion->tracker.jd_tt;
-//            jday current = utc2tt( jday_now() );
-//            tracker_set_time( &(orion->tracker), current );
-//        }
+        // calculate the expected time of arrival
+        jday jd_tt = utc2tt( jday_now() ) + (orion->latency/SECONDS_IN_DAY);
 
         // create a tracking message
         MIDC01 * message = (void*) buffer;
@@ -110,7 +103,6 @@ void * orion_control_loop( void * arg ) {
         pthread_mutex_unlock( &(orion->lock) );
 
         // send the tracking message
-        //int length = strlen( buffer );
         int sent = send( orion->socket, buffer, length, 0 );
 
         // set error and exit if there was a transmission error
@@ -144,13 +136,13 @@ int orion_start( Orion * orion ) {
     // check if server is already running
     pthread_mutex_lock( &(orion->lock) );
     if ( orion->mode != ORION_MODE_OFF ) {
-        sprintf(orion->error, "[%d] %s\n\0", 1, "Server is already running.");
+        sprintf(orion->error, "[%d] %s\n", 1, "Server is already running.");
         pthread_mutex_unlock( &(orion->lock) );
         return 1;
     }
 
     // start the server control thread
-    orion->mode = ORION_MODE_STATIC;
+    orion->mode = ORION_MODE_ON;
     pthread_create( &(orion->control), NULL, orion_control_loop, orion);
     pthread_mutex_unlock( &(orion->lock) );
     return 0;
@@ -162,7 +154,7 @@ int orion_stop( Orion * orion ) {
 
     // abort if the server isn't running
     if (orion->mode == ORION_MODE_OFF) {
-        sprintf(orion->error, "[%d] %s\n\0", 1, "server is not running");
+        sprintf(orion->error, "[%d] %s\n", 1, "server is not running");
         pthread_mutex_unlock( &(orion->lock) );
         return 1;
     }
@@ -202,24 +194,6 @@ void orion_disconnect( Orion * orion ) {
     socket_close( orion->socket );
     socket_unload();
 }
-
-//jday orion_set_time( Orion * orion, jday utc ) {
-//    pthread_mutex_lock( &(orion->lock) );
-//
-////    // if the server is in real time mode, set it to static
-////    if ( orion->mode == ORION_MODE_REAL_TIME )
-////        orion->mode = ORION_MODE_STATIC;
-//
-//    // cache the last time
-//    jday last = tracker_get_time( &(orion->tracker) );
-//    // TODO do we care that we return TT?
-//
-//    // set the new time
-//    tracker_set_time( &(orion->tracker), utc2tt(utc) );
-//
-//    pthread_mutex_unlock( &(orion->lock) );
-//    return last;
-//}
 
 double orion_get_latency( Orion * orion ) {
     pthread_mutex_lock( &(orion->lock) );
@@ -289,9 +263,7 @@ void orion_clear_error( Orion * orion ) {
 }
 
 MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
-//    double zd, az;
-
-    // either allocate of initialize the provided pointer
+    // either allocate or initialize the provided pointer
     if(midc01)
         memset(midc01, 0, sizeof(MIDC01));
     else
@@ -303,19 +275,14 @@ MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
     // we assume this simulator is posing as a RIU
     midc01->sensor_type = TATS_TIDC_RIU;
     midc01->sensor_id = orion->id;
-//    midc01->riu_sensor_id = (TATS_TIDC_RIU & orion->id);
 
     // compute timer value from sensor time...
     unsigned short int milliseconds = (unsigned short int)
             (1000 * fmod( jd_tt * SECONDS_IN_DAY, 1.0 ) );
     midc01->tcn_time = milliseconds;
 
-    // if there is an assigned coordinate
+    // if there is an assigned target
     if( orion->target.novas.starnumber ) {
-
-        // get the time with a latency bias to it...
-        double jd_tt = jd_tt + (orion->latency/SECONDS_IN_DAY);
-        // = tracker_get_terrestrial_time( &(orion->tracker), orion->latency );
 
         // calculate the current location of the target
         tracker_point( &(orion->tracker), jd_tt, &(orion->target.novas) );
@@ -339,7 +306,7 @@ MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
     }
 
     // IFF code of the target
-    midc01->symbol_type = 0;//TATS_NONPLAYER;
+    midc01->symbol_type = 0; // TATS_NONPLAYER;
         // not an IFF system right now we're just calibrating stars...
 
     // For single target sensors, track ID is always zero
