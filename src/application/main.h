@@ -34,9 +34,8 @@
 #define PRESSURE "1010.0"
 
 /** (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation */
-#define UT1_UTC "0.06496"
-// updated from IERS predictions for 8/27
-//"0.06809"
+#define UT1_UTC "0.05939"
+// IERS 9/11;
 
 /** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
 #define TAI_UTC "37.000000"
@@ -113,9 +112,10 @@ int cmd_name(char *line, Catalog *catalog);
  * @return The number of stars fitting the criteria*/
 int cmd_search( char * line, Application * app );
 
-int cmd_connect(char *line, Orion *orion);
+/** expects a command of the for 'connect [A.A.A.A:P]', reverts to defaults if an argument is not supplied. */
+int cmd_connect( char * line, Application * cli );
 
-int cmd_target(char *line, Orion *orion, Catalog *catalog);
+int cmd_target(char *line, Application * cli); //Orion *orion, Catalog *catalog);
 
 /** produces a tsv report of a targets coordinates over the specified time interval */
 int cmd_status(char *line, Application * cli, FILE * stream);

@@ -31,13 +31,15 @@ int main( int argc, char *argv[] ) {
     app.iers = iers_create( NULL );
     app.time = utc2tt(jday_now());
 
-    // where do we shoehorn this?
-////    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
-////    arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
-////    double ut1_utc = atof( arg );
-////    //TODO we could use this to update the default orientation....
+    // TODO create a configure_app() method with these odds and ends?
+
+    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
+    char * arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
+    double ut1_utc = atof( arg );
+    MISSING_EOP.ut1_utc = ut1_utc;
+
     // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
-    char * arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
+    arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
     LEAP_SECONDS = (jday) atof( arg );
 
     configure_address( argc, argv, &app );
@@ -85,7 +87,7 @@ int main( int argc, char *argv[] ) {
         else if( strncmp( "connect", line, 7 ) == 0 )
             cmd_connect( line, app.orion );
         else if( strncmp( "target", line, 6 ) == 0 )
-            cmd_target( line, app.orion, app.catalog );
+            cmd_target( line, &app );
 
         // Diagnostic commands
         else if( strncmp( "status", line, 6) == 0 )
@@ -137,19 +139,13 @@ void cleanup() {
 // Initialization /////////////////////////////////////////////////////////////
 void configure_orion( int argc, char* argv[], Orion * orion ) {
 
-    // Tats Control network latency
-    char * arg = get_arg( argc, argv, "-latency", LATENCY );
-    double latency = atof( arg );
-
-    orion_set_latency( orion, latency );
-
     Tracker * tracker = &(orion->tracker);
 
     // create the tracker
     tracker_create(tracker);
 
     // geodetic coordinates
-    arg = get_arg(argc, argv, "-latitude", LATITUDE);
+    char * arg = get_arg(argc, argv, "-latitude", LATITUDE);
     double latitude = atof(arg);
 
     arg = get_arg(argc, argv, "-longitude", LONGITUDE);
@@ -171,6 +167,17 @@ void configure_orion( int argc, char* argv[], Orion * orion ) {
 
     // set the weather
     tracker_set_weather(tracker, celsius, millibars);
+
+    // notify user of the loaded time
+    tracker_print_site( tracker, stdout );
+
+    // TODO move this to app configuration so it can be displayed with other network settings?
+    // Tats Control network latency
+    arg = get_arg( argc, argv, "-latency", LATENCY );
+    double latency = atof( arg );
+    // TODO do rate as well...
+
+    orion_set_latency( orion, latency );
 }
 
 void configure_address( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
@@ -258,8 +265,7 @@ int cmd_time(char * line, Application * cli) {
         if (!cli->eop) {
             cli->eop = &MISSING_EOP;
             // TODO warn user about out of bound times?
-        }
-        // TODO warn user about predicted mode?
+        }// TODO warn user about predicted mode?
 
         return 0;
     }
@@ -389,14 +395,12 @@ int cmd_search(char * line, Application * cli) {
 }
 
 // Sensor Commands ////////////////////////////////////////////////////////////
-int cmd_connect( char * line, Orion * orion ) {
+int cmd_connect( char * line, Application * cli ) {
     unsigned int ip1=0, ip2=0, ip3=0, ip4=0;
     unsigned short port = 0;
 
-    // TODO set time bias! Set earth orientation parameters!
-
     // abort if we are already connected
-    if( orion_is_connected( orion ) ) {
+    if( orion_is_connected( cli->orion ) ) {
         alert( "Sensor is already connected" );
         return 1;
     }
@@ -420,10 +424,10 @@ int cmd_connect( char * line, Orion * orion ) {
     }
 
     // connect to the sensor and start the control thread
-    if( orion_connect( orion, app.ip, app.port) ) {
+    if( orion_connect( cli->orion, app.ip, app.port) ) {
         alert( "Could not connect to TATS sensor");
         return 1;
-    } if( orion_start( orion ) ) {
+    } if( orion_start( cli->orion ) ) {
         alert( "Failed to start TATS control thread" );
         return 1;
     }
@@ -431,7 +435,7 @@ int cmd_connect( char * line, Orion * orion ) {
     return 0;
 }
 
-int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
+int cmd_target(char * line, Application * cli ) {//Orion * orion, Catalog * catalog ) {
     unsigned long id = 0;
     int result = sscanf( line, "target %lu\n", &id );
 
@@ -440,9 +444,16 @@ int cmd_target(char * line, Orion * orion, Catalog * catalog ) {
         return 1;
     }
 
-    Entry * entry = catalog_get(catalog, id);
+    Entry * entry = catalog_get(cli->catalog, id);
     if( entry ) {
-        orion_set_target( orion, entry);
+
+        // set earth orientation parameters for the current time
+        jday utc = jday_now();
+        IERS_EOP * eop = iers_search( cli->iers, utc );
+        orion_set_earth_orientation( cli->orion, eop );
+        // this will be good as long as the user doesn't track a target for a day. Then it will be slightly less good...
+
+        orion_set_target( cli->orion, entry);
     } else {
         fprintf( stderr, "Could not find star %ld in catalog\n", id );
         fflush( stderr );
