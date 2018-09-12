@@ -1,6 +1,6 @@
 #include "controller/orion.h"
 
-MIDC01 * create_tracking_message(Orion * orion, jday time, MIDC01 * midc01 );
+MIDC01 * create_tracking_message(Orion * orion, jday jd_tt, MIDC01 * midc01 );
 
 Orion* orion_create( Orion * orion, unsigned short int id ) {
     // allocate if space isn't provided
@@ -14,7 +14,8 @@ Orion* orion_create( Orion * orion, unsigned short int id ) {
         orion->mode = ORION_MODE_OFF;
         orion->socket = INVALID_SOCKET;
         pthread_mutex_init( &(orion->lock), NULL);
-        orion->rate = ORION_RATE; //(int)(SLEEP_RESOLUTION / ORION_RATE);
+        orion->rate = ORION_RATE;
+        orion->latency = 0.0;
     }
     return orion;
 }

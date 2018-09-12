@@ -316,7 +316,6 @@ void test_iers_search( CuTest * test ) {
     }
 }
 
-
 // Work in Progress!
 void catalog_add_axis(Catalog * catalog, int type, int count);
 void test_search_equator() {

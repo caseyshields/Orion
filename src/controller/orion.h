@@ -33,6 +33,15 @@ typedef struct {
     /** A RIU id number for the simulator to emit */
     unsigned short id;
 
+    /** Current state of the control thread. May equal ORION_MODE_ON or ORION_MODE_OFF. */
+    volatile int mode;
+
+    /** Update rate of the control thread */
+    unsigned int rate;
+
+    /** Estimate of TATS control network latency. This positive bias is only applied to TATS messages */
+    double latency;
+
     /** A representation of the sensor being controlled */
     Tracker tracker;
 
@@ -50,15 +59,6 @@ typedef struct {
 
     /** Thread which runs the sensor control loop */
     pthread_t control;
-
-    /** Current state of the control thread. May equal ORION_MODE_ON or ORION_MODE_OFF. */
-    volatile int mode;
-
-    /** Update rate of the control thread */
-    unsigned int rate;
-
-    /** Estimate of TATS control network latency. This positive bias is only applied to TATS messages */
-    double latency;
 
     /** An error buffer for messages from a failed method */
     char error[128]; // error message set if a server method fails

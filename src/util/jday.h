@@ -1,5 +1,5 @@
 /** @file jday.h
- * @brief provides methods for calculating and converting time into the Novas convention.
+ * @brief provides methods for calculating and converting time in the Novas conventions.
  * @author Casey Shields */
 
 #ifndef STARTRACK_JDAY_H
@@ -24,7 +24,7 @@
  * estimated to be the beginning of history. This is a common time format used by Novas, so we
  * provide an explicit typing, and a set of convenience conversion methods built atop novas' own
  * routines.
- * @author Casey Shields*/
+ */
 typedef double jday;
 
 /** Number of leap seconds added in International Atomic Time. Using this parameter we can convert to 'continuous' time scales. */
@@ -36,7 +36,9 @@ int jday_is_valid(jday time);
 /** @return A julian day holding the current time in UTC. */
 jday jday_now();
 
-/** @param utc The Universal Coordinated Time in Julian Days
+/** Terrestrial time is meant to be a smooth timescale and is derived from UTC by removing leap
+ * seconds and adding an experimentally measured offset available from the IERS service
+ * @param utc The Universal Coordinated Time in Julian Days
  * @returns The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
 jday utc2tt( jday utc );
 

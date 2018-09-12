@@ -11,7 +11,10 @@
  * right now I just guessed the log2 of the number of items in the default dataset. */
 #define IERS_LINEAR_THRESHOLD 14.0
 
-/** A summary of the IERS Earth Orientation Parameters. */
+/** A summary of the IERS Earth Orientation Parameters. These parameters are produced by combining
+ * measurements from Very Long Baseline Interferometry (VLBI), Satellite Laser Ranging (SLR), the
+ * Global Positioning System (GPS) satellites, Lunar Laser Ranging (LLR), and meteorological
+ * predictions of variations in Atmospheric Angular Momentum (AAM). */
 typedef struct {
     /** julian date of parameters */
     jday time;
@@ -72,7 +75,7 @@ int iers_load( IERS * iers, FILE * bulletinA );
 
 /** @return The orientation parameters at or immediately after the specified Novas Julian date.
  * @param iers The structure containing a time sequence of earth orientation parameters
- * @param time date of the earth orientation of interest. */
+ * @param time The UTC JDAY of the earth orientation of interest. */
 IERS_EOP * iers_search( IERS * iers, jday time );
 // should we linearly interpolate between data points?
 
