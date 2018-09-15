@@ -303,9 +303,9 @@ MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
         tracker_point( &(orion->tracker), jd_tt, &(orion->target.novas) );
         double efg[3];
         tracker_get_direction( &(orion->tracker), efg);
-        midc01->E = (int)efg[0];
-        midc01->F = (int)efg[1];
-        midc01->G = (int)efg[2];
+        midc01->E = (int)(efg[0] * TATS_CELESTIAL_SPHERE_RADIUS);
+        midc01->F = (int)(efg[1] * TATS_CELESTIAL_SPHERE_RADIUS);
+        midc01->G = (int)(efg[2] * TATS_CELESTIAL_SPHERE_RADIUS);
 
         // set the tracker status
         midc01->track_status = (TATS_STATUS_SIM | TATS_STATUS_POS_DATA);
