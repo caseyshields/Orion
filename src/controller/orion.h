@@ -137,7 +137,7 @@ Entry orion_get_target( Orion * orion );
 
 /** Specify a target which the control thread will instruct the sensor to track. Thread safe.
  * @param orion The server which will track the target
- * @param target A novas structure holding the celestial location of the target. */
+ * @param entry A novas structure holding the celestial location of the target. */
 void orion_set_target( Orion * orion, const Entry * entry );
 
 #endif //STARTRACK_ORION_H

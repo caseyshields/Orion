@@ -99,6 +99,7 @@ int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target);
 
 /** returns the current location of the given tracker's zenith in celestial coordinates.
  * @param tracker Location used to compute the zenith vector
+ * @param jd_tt Terrestrial time in Julian days.
  * @param right_ascension Celestial spherical coordinates of zenith in hours
  * @param declination Celestial spherical coordinates of zenith in degrees
  * @returns Zero on success, otherwise a Novas error code. */

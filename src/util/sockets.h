@@ -1,4 +1,4 @@
-/** @file socket.h
+/** @file sockets.h
  * @brief A crude adapter so we can link to either winsock or unix sockets.
  *
  * This header is just an adapter to the sockets implementation of the build environment. It is
