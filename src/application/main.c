@@ -183,7 +183,7 @@ void configure_orion( int argc, char* argv[], Orion * orion ) {
     tracker_set_weather(tracker, celsius, millibars);
 
     // notify user of the loaded time
-    tracker_print_site( tracker, stdout );
+//    tracker_print_site( tracker, stdout );
 
     // TODO move this to app configuration so it can be displayed with other network settings?
     // Tats Control network latency
@@ -552,10 +552,11 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         tracker_point( &tracker, start, &(target.novas) );
 
         // print report entry
+        int r = TATS_CELESTIAL_SPHERE_RADIUS;
         char * ts = jday2str(tt2utc(start));
-        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%lf\t%lf\t%lf\n", ts,
+        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%u\t%u\t%u\n", ts,
                 tracker.azimuth, tracker.elevation,
-                tracker.efg[0], tracker.efg[1], tracker.efg[2] );
+                 (int)(tracker.efg[0]*r), (int)(tracker.efg[1]*r), (int)(tracker.efg[2]*r) );
         free( ts );
         start += step;
     }
