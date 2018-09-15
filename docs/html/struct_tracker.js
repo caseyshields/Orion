@@ -1,8 +1,8 @@
 var struct_tracker =
 [
-    [ "earth", "struct_tracker.html#ae1beefa1f286be116b00f0e8ad83d002", null ],
-    [ "leap_secs", "struct_tracker.html#ad762d92dc4fcba312c9d2d11ff3a7e67", null ],
-    [ "site", "struct_tracker.html#afb38e182752f31d6a08f82d960955438", null ],
-    [ "ut1_utc", "struct_tracker.html#a9eef053f0153643589ed50d5f193afe7", null ],
-    [ "utc", "struct_tracker.html#a39f0c446c468380a7a748a2f061bc724", null ]
+    [ "azimuth", "struct_tracker.html#a5f8e6898e525f8171ad0331ecbf45b00", null ],
+    [ "earth", "struct_tracker.html#a6e28b20efdecc912038c0fb2ceb69d1d", null ],
+    [ "efg", "struct_tracker.html#a43aebaccbc765134c4e66bc037da4dec", null ],
+    [ "elevation", "struct_tracker.html#ac00824aa8421a07a7062be06bcb3c152", null ],
+    [ "site", "struct_tracker.html#afb38e182752f31d6a08f82d960955438", null ]
 ];

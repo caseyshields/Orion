@@ -76,6 +76,7 @@ $(document).ready(function(){initNavTree('tracker_8h.html','');});
 <p>Represents a tracker on the surface of the earth, and can compute the apparent coordinates of stars.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;assert.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="iers_8h_source.html">data/iers.h</a>&gt;</code><br />
 <code>#include &quot;../lib/novasc3.1/novas.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="jday_8h_source.html">util/jday.h</a>&quot;</code><br />
 </div>
@@ -90,34 +91,106 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a75ea28c2387f205969da88b9917c621a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a75ea28c2387f205969da88b9917c621a">REDUCED_ACCURACY</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a75ea28c2387f205969da88b9917c621a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a908a255b0b8e7671705485edd56043ad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a908a255b0b8e7671705485edd56043ad">METHOD_CIO</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a908a255b0b8e7671705485edd56043ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6625c1cfd84c3f697cb2be8020a2f7f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#ad6625c1cfd84c3f697cb2be8020a2f7f">METHOD_EQUINOX</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ad6625c1cfd84c3f697cb2be8020a2f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeccef6e9b0479ab70efdceb379911991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#aeccef6e9b0479ab70efdceb379911991">OPTION_GCRS</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:aeccef6e9b0479ab70efdceb379911991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9832eab6cf9d42aca2a3ee6ec49dae44"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a9832eab6cf9d42aca2a3ee6ec49dae44">OPTION_EQUATOR_AND_EQUINOX_OF_DATE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a9832eab6cf9d42aca2a3ee6ec49dae44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ff48707e86b51d81aea4e5690d36a0c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a5ff48707e86b51d81aea4e5690d36a0c">REFRACTION_NONE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a5ff48707e86b51d81aea4e5690d36a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac679ebbb5aaff8cf8a386d400e02c71b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#ac679ebbb5aaff8cf8a386d400e02c71b">REFRACTION_SITE</a>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:ac679ebbb5aaff8cf8a386d400e02c71b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0749c417607ca01431ccc6d0da8e612e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a0749c417607ca01431ccc6d0da8e612e">tracker_create</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, double ut1_utc, double leap_secs)</td></tr>
-<tr class="separator:a0749c417607ca01431ccc6d0da8e612e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae868a7bbc82ab21387d699ad37982913"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#ae868a7bbc82ab21387d699ad37982913">tracker_get_time</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker)</td></tr>
-<tr class="separator:ae868a7bbc82ab21387d699ad37982913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ab57242539db63e315b74fc18e7b570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a2ab57242539db63e315b74fc18e7b570">tracker_set_time</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, <a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> utc)</td></tr>
-<tr class="separator:a2ab57242539db63e315b74fc18e7b570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e277aa66f1247c56e29cdc559c99d87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a1e277aa66f1247c56e29cdc559c99d87">tracker_create</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker)</td></tr>
+<tr class="separator:a1e277aa66f1247c56e29cdc559c99d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2bc9f466c13a35f24458aa439626d3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#af2bc9f466c13a35f24458aa439626d3f">tracker_set_location</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, double latitude, double longitude, double height)</td></tr>
 <tr class="separator:af2bc9f466c13a35f24458aa439626d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0b50a9cfe90172a1dcf79c24cb2da4d"><td class="memItemLeft" align="right" valign="top">on_surface&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#ae0b50a9cfe90172a1dcf79c24cb2da4d">tracker_get_location</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker)</td></tr>
 <tr class="separator:ae0b50a9cfe90172a1dcf79c24cb2da4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35e90f151cdb63788edb87d7cc2891a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a35e90f151cdb63788edb87d7cc2891a9">tracker_set_weather</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, double temperature, double pressure)</td></tr>
 <tr class="separator:a35e90f151cdb63788edb87d7cc2891a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd0a297b81cc208f7f3f96e6fc246743"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#abd0a297b81cc208f7f3f96e6fc246743">tracker_to_horizon</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, cat_entry *target, double *zenith_distance, double *topocentric_azimuth)</td></tr>
-<tr class="separator:abd0a297b81cc208f7f3f96e6fc246743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5981ac34f745d9a9459eb53f9d4233bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a5981ac34f745d9a9459eb53f9d4233bd">tracker_zenith</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, double *right_ascension, double *declination)</td></tr>
-<tr class="separator:a5981ac34f745d9a9459eb53f9d4233bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b13a0ded9eab4f9372f89122a6deeee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a7b13a0ded9eab4f9372f89122a6deeee">tracker_print_time</a> (const <a class="el" href="struct_tracker.html">Tracker</a> *tracker, FILE *file)</td></tr>
-<tr class="separator:a7b13a0ded9eab4f9372f89122a6deeee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ee1ae8516ea4b6a30e0f240f2c181b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a1ee1ae8516ea4b6a30e0f240f2c181b7">tracker_print_site</a> (const <a class="el" href="struct_tracker.html">Tracker</a> *tracker, FILE *file)</td></tr>
-<tr class="separator:a1ee1ae8516ea4b6a30e0f240f2c181b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89f3770bcde660ec913e5da5115a7cf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a89f3770bcde660ec913e5da5115a7cf8">tracker_get_earth</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker)</td></tr>
+<tr class="separator:a89f3770bcde660ec913e5da5115a7cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaffff6026d1eb174b8e92095f50dd7af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#aaffff6026d1eb174b8e92095f50dd7af">tracker_set_earth</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, <a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *eop)</td></tr>
+<tr class="separator:aaffff6026d1eb174b8e92095f50dd7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf629b8692179a2315a9937bb48920f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#abf629b8692179a2315a9937bb48920f0">tracker_get_angles</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, double *azimuth, double *elevation)</td></tr>
+<tr class="separator:abf629b8692179a2315a9937bb48920f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bbbf363ed2d364eb8d4aceec96ff458"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a2bbbf363ed2d364eb8d4aceec96ff458">tracker_get_direction</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, double vec[3])</td></tr>
+<tr class="separator:a2bbbf363ed2d364eb8d4aceec96ff458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e093ec516718ae12550fb353a33543"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a74e093ec516718ae12550fb353a33543">tracker_point</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, <a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> jd_tt, cat_entry *target)</td></tr>
+<tr class="separator:a74e093ec516718ae12550fb353a33543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5356f946a039ced2ee9b394d90419a2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#ae5356f946a039ced2ee9b394d90419a2">tracker_zenith</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, <a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> jd_tt, double *right_ascension, double *declination)</td></tr>
+<tr class="separator:ae5356f946a039ced2ee9b394d90419a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ee4fd4e55d14db67a80cb412f43571d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tracker_8h.html#a3ee4fd4e55d14db67a80cb412f43571d">tracker_print_site</a> (<a class="el" href="struct_tracker.html">Tracker</a> *tracker, FILE *file)</td></tr>
+<tr class="separator:a3ee4fd4e55d14db67a80cb412f43571d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a tracker on the surface of the earth, and can compute the apparent coordinates of stars. </p>
 <dl class="section author"><dt>Author</dt><dd>Casey Shields </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a908a255b0b8e7671705485edd56043ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a908a255b0b8e7671705485edd56043ad">&#9670;&nbsp;</a></span>METHOD_CIO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define METHOD_CIO&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Celestial intermediate origin method used to transform between GCRS and ITRS. Argument to the Novas function cel2ter. </p>
+
+</div>
+</div>
+<a id="ad6625c1cfd84c3f697cb2be8020a2f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6625c1cfd84c3f697cb2be8020a2f7f">&#9670;&nbsp;</a></span>METHOD_EQUINOX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define METHOD_EQUINOX&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Equinox based method used to transform between GCRS and ITRS. Argument to the Novas function cel2ter. </p>
+
+</div>
+</div>
+<a id="a9832eab6cf9d42aca2a3ee6ec49dae44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9832eab6cf9d42aca2a3ee6ec49dae44">&#9670;&nbsp;</a></span>OPTION_EQUATOR_AND_EQUINOX_OF_DATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define OPTION_EQUATOR_AND_EQUINOX_OF_DATE&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeccef6e9b0479ab70efdceb379911991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeccef6e9b0479ab70efdceb379911991">&#9670;&nbsp;</a></span>OPTION_GCRS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define OPTION_GCRS&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a75ea28c2387f205969da88b9917c621a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75ea28c2387f205969da88b9917c621a">&#9670;&nbsp;</a></span>REDUCED_ACCURACY</h2>
 
@@ -133,15 +206,68 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a0749c417607ca01431ccc6d0da8e612e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0749c417607ca01431ccc6d0da8e612e">&#9670;&nbsp;</a></span>tracker_create()</h2>
+<a id="a5ff48707e86b51d81aea4e5690d36a0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ff48707e86b51d81aea4e5690d36a0c">&#9670;&nbsp;</a></span>REFRACTION_NONE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int tracker_create </td>
+          <td class="memname">#define REFRACTION_NONE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac679ebbb5aaff8cf8a386d400e02c71b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac679ebbb5aaff8cf8a386d400e02c71b">&#9670;&nbsp;</a></span>REFRACTION_SITE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define REFRACTION_SITE&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a1e277aa66f1247c56e29cdc559c99d87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e277aa66f1247c56e29cdc559c99d87">&#9670;&nbsp;</a></span>tracker_create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tracker_create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
+          <td class="paramname"><em>tracker</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initializes or allocates the given tracker structure </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tracker</td><td>A pointer to an existing structure or NULL. If NULL a structure is allocated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the initialized or allocated structure </dd></dl>
+
+</div>
+</div>
+<a id="abf629b8692179a2315a9937bb48920f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf629b8692179a2315a9937bb48920f0">&#9670;&nbsp;</a></span>tracker_get_angles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tracker_get_angles </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
           <td class="paramname"><em>tracker</em>, </td>
@@ -149,14 +275,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>ut1_utc</em>, </td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>azimuth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>leap_secs</em>&#160;</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>elevation</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -165,15 +291,74 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initializes or allocates the given tracker structure </p><dl class="params"><dt>Parameters</dt><dd>
+<p>sets the given angles to the tracker's current look direction in topocentric coordinates. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tracker</td><td>A pointer to an existing structure or NULL. If NULL a structure is allocated. </td></tr>
-    <tr><td class="paramname">ut1_utc</td><td>Current difference between UT1 and UTC time, usually obtained from IERS bulletin A </td></tr>
-    <tr><td class="paramname">leap_secs</td><td>Current number of leap seconds in TAI, usually obtained from IERS bulletin A </td></tr>
+    <tr><td class="paramname">tracker</td><td></td></tr>
+    <tr><td class="paramname">azimuth</td><td></td></tr>
+    <tr><td class="paramname">elevation</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the initialized or allocated structure </dd></dl>
+
+</div>
+</div>
+<a id="a2bbbf363ed2d364eb8d4aceec96ff458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bbbf363ed2d364eb8d4aceec96ff458">&#9670;&nbsp;</a></span>tracker_get_direction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tracker_get_direction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
+          <td class="paramname"><em>tracker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>vec</em>[3]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the tracker's current orientation as a unit vector in the ITRS frame. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tracker</td><td></td></tr>
+    <tr><td class="paramname">vec</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a89f3770bcde660ec913e5da5115a7cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f3770bcde660ec913e5da5115a7cf8">&#9670;&nbsp;</a></span>tracker_get_earth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a>* tracker_get_earth </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
+          <td class="paramname"><em>tracker</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The current earth orientation parameters </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tracker</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -196,27 +381,51 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae868a7bbc82ab21387d699ad37982913"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae868a7bbc82ab21387d699ad37982913">&#9670;&nbsp;</a></span>tracker_get_time()</h2>
+<a id="a74e093ec516718ae12550fb353a33543"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74e093ec516718ae12550fb353a33543">&#9670;&nbsp;</a></span>tracker_point()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> tracker_get_time </td>
+          <td class="memname">int tracker_point </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
-          <td class="paramname"><em>tracker</em></td><td>)</td>
+          <td class="paramname"><em>tracker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cat_entry *&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>return The tracker's current UTC time in Julian day format </p>
+<p>Compute the coordinates of the target, and set the tracker to point at them </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tracker</td><td>The tracker to compute the direction from </td></tr>
+    <tr><td class="paramname">target</td><td>A novas catalog entry to point at </td></tr>
+    <tr><td class="paramname">jd_tt</td><td>the terrestrial time expressed in julian days </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Zero on success, otherwise a Novas error code. </dd></dl>
 
 </div>
 </div>
-<a id="a1ee1ae8516ea4b6a30e0f240f2c181b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ee1ae8516ea4b6a30e0f240f2c181b7">&#9670;&nbsp;</a></span>tracker_print_site()</h2>
+<a id="a3ee4fd4e55d14db67a80cb412f43571d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ee4fd4e55d14db67a80cb412f43571d">&#9670;&nbsp;</a></span>tracker_print_site()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,7 +433,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void tracker_print_site </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
           <td class="paramname"><em>tracker</em>, </td>
         </tr>
         <tr>
@@ -243,23 +452,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7b13a0ded9eab4f9372f89122a6deeee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b13a0ded9eab4f9372f89122a6deeee">&#9670;&nbsp;</a></span>tracker_print_time()</h2>
+<a id="aaffff6026d1eb174b8e92095f50dd7af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaffff6026d1eb174b8e92095f50dd7af">&#9670;&nbsp;</a></span>tracker_set_earth()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void tracker_print_time </td>
+          <td class="memname">void tracker_set_earth </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
           <td class="paramname"><em>tracker</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>file</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *&#160;</td>
+          <td class="paramname"><em>eop</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -268,6 +477,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Sets the earth orientation parameters used for some high accuracy calculations </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tracker</td><td></td></tr>
+    <tr><td class="paramname">eop</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -320,41 +536,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2ab57242539db63e315b74fc18e7b570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ab57242539db63e315b74fc18e7b570">&#9670;&nbsp;</a></span>tracker_set_time()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void tracker_set_time </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
-          <td class="paramname"><em>tracker</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
-          <td class="paramname"><em>utc</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Sets the current time for the star tracker </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tracker</td><td></td></tr>
-    <tr><td class="paramname">utc</td><td>The desired tracker's UTC time in julian day format </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a35e90f151cdb63788edb87d7cc2891a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35e90f151cdb63788edb87d7cc2891a9">&#9670;&nbsp;</a></span>tracker_set_weather()</h2>
 
@@ -397,58 +578,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abd0a297b81cc208f7f3f96e6fc246743"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd0a297b81cc208f7f3f96e6fc246743">&#9670;&nbsp;</a></span>tracker_to_horizon()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int tracker_to_horizon </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
-          <td class="paramname"><em>tracker</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">cat_entry *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>zenith_distance</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>topocentric_azimuth</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>the local horizon coordinates of the target relative to the tracker </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tracker</td><td>The tracker to compute the direction from </td></tr>
-    <tr><td class="paramname">target</td><td>A novas catalog entry to point at </td></tr>
-    <tr><td class="paramname">zenith_distance</td><td>Output argument returning the angular offset from the local zenith in degrees </td></tr>
-    <tr><td class="paramname">topocentric_azimuth</td><td>Output argument returning the clockwise angular offset from north in degrees </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Zero on success, otherwise a Novas error code. </dd></dl>
-
-</div>
-</div>
-<a id="a5981ac34f745d9a9459eb53f9d4233bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5981ac34f745d9a9459eb53f9d4233bd">&#9670;&nbsp;</a></span>tracker_zenith()</h2>
+<a id="ae5356f946a039ced2ee9b394d90419a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5356f946a039ced2ee9b394d90419a2">&#9670;&nbsp;</a></span>tracker_zenith()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,6 +589,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
           <td class="paramname"><em>tracker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -481,6 +618,7 @@ Functions</h2></td></tr>
 <p>returns the current location of the given tracker's zenith in celestial coordinates. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tracker</td><td>Location used to compute the zenith vector </td></tr>
+    <tr><td class="paramname">jd_tt</td><td>Terrestrial time in Julian days. </td></tr>
     <tr><td class="paramname">right_ascension</td><td>Celestial spherical coordinates of zenith in hours </td></tr>
     <tr><td class="paramname">declination</td><td>Celestial spherical coordinates of zenith in degrees </td></tr>
   </table>

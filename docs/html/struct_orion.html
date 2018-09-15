@@ -77,6 +77,12 @@ $(document).ready(function(){initNavTree('struct_orion.html','');});
 Data Fields</h2></td></tr>
 <tr class="memitem:a2e74aff868562e644e5d582929433363"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a2e74aff868562e644e5d582929433363">id</a></td></tr>
 <tr class="separator:a2e74aff868562e644e5d582929433363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa9d6911164917fd0b12dbdf0df0ff3a"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#afa9d6911164917fd0b12dbdf0df0ff3a">mode</a></td></tr>
+<tr class="separator:afa9d6911164917fd0b12dbdf0df0ff3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf42a979321286885fe5a447d48d14d6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#adf42a979321286885fe5a447d48d14d6">rate</a></td></tr>
+<tr class="separator:adf42a979321286885fe5a447d48d14d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5ff4848228b6dbcc43c116acc402dad"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#af5ff4848228b6dbcc43c116acc402dad">latency</a></td></tr>
+<tr class="separator:af5ff4848228b6dbcc43c116acc402dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a495e6bf1af7804551f312afd3bd7032a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_tracker.html">Tracker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a495e6bf1af7804551f312afd3bd7032a">tracker</a></td></tr>
 <tr class="separator:a495e6bf1af7804551f312afd3bd7032a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae17b578831cb865705be2a235102dcb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_entry.html">Entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#ae17b578831cb865705be2a235102dcb0">target</a></td></tr>
@@ -89,10 +95,6 @@ Data Fields</h2></td></tr>
 <tr class="separator:a0abaf4b5d42c4e5d19190035fade3599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60e242a7925447f8aa006a5126e7d100"><td class="memItemLeft" align="right" valign="top">pthread_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a60e242a7925447f8aa006a5126e7d100">control</a></td></tr>
 <tr class="separator:a60e242a7925447f8aa006a5126e7d100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa9d6911164917fd0b12dbdf0df0ff3a"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#afa9d6911164917fd0b12dbdf0df0ff3a">mode</a></td></tr>
-<tr class="separator:afa9d6911164917fd0b12dbdf0df0ff3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf42a979321286885fe5a447d48d14d6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#adf42a979321286885fe5a447d48d14d6">rate</a></td></tr>
-<tr class="separator:adf42a979321286885fe5a447d48d14d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2934b458b7d1f80c5034b207fcd05c31"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_orion.html#a2934b458b7d1f80c5034b207fcd05c31">error</a> [128]</td></tr>
 <tr class="separator:a2934b458b7d1f80c5034b207fcd05c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -156,6 +158,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>A RIU id number for the simulator to emit </p>
+
+</div>
+</div>
+<a id="af5ff4848228b6dbcc43c116acc402dad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5ff4848228b6dbcc43c116acc402dad">&#9670;&nbsp;</a></span>latency</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double latency</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Estimate of TATS control network latency. This positive bias is only applied to TATS messages </p>
 
 </div>
 </div>

@@ -67,13 +67,14 @@ $(document).ready(function(){initNavTree('jday_8h.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">jday.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>provides methods for calculating and converting time into the Novas convention.  
+<p>provides methods for calculating and converting time in the Novas conventions.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;sys/time.h&gt;</code><br />
 <code>#include &quot;../lib/novasc3.1/novas.h&quot;</code><br />
@@ -90,6 +91,8 @@ Macros</h2></td></tr>
 <tr class="separator:ac0f35325810a21a75d8eb0dc29bef066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad77cf7f793ed90f87a57f2a6597bc29a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#ad77cf7f793ed90f87a57f2a6597bc29a">TIMESTAMP_INPUT</a>&#160;&#160;&#160;&quot;%u/%u/%u %u:%u:%lf&quot;</td></tr>
 <tr class="separator:ad77cf7f793ed90f87a57f2a6597bc29a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd7226dc60194ad396c4157b0007a04"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a3bd7226dc60194ad396c4157b0007a04">J2000_EPOCH</a>&#160;&#160;&#160;2400000.5</td></tr>
+<tr class="separator:a3bd7226dc60194ad396c4157b0007a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -100,21 +103,30 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a146ba8af2d33494fbfdf0e89ebc4ef40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a146ba8af2d33494fbfdf0e89ebc4ef40">jday_is_valid</a> (<a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> time)</td></tr>
 <tr class="separator:a146ba8af2d33494fbfdf0e89ebc4ef40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56812a70e63fc6124800ff7c62bc0e53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a56812a70e63fc6124800ff7c62bc0e53">jday_current</a> ()</td></tr>
-<tr class="separator:a56812a70e63fc6124800ff7c62bc0e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa49b7e61e2a2f0595afdd161ae06ba2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#aa49b7e61e2a2f0595afdd161ae06ba2e">jday_now</a> ()</td></tr>
+<tr class="separator:aa49b7e61e2a2f0595afdd161ae06ba2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a608a8d10f9626c0027c0fdaa53c291dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a608a8d10f9626c0027c0fdaa53c291dd">utc2tt</a> (<a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> utc)</td></tr>
+<tr class="separator:a608a8d10f9626c0027c0fdaa53c291dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f57f09f76f1f79b973084b95ea46271"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a2f57f09f76f1f79b973084b95ea46271">tt2utc</a> (<a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> tt)</td></tr>
+<tr class="separator:a2f57f09f76f1f79b973084b95ea46271"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad22fb106244f270505444fcd5464cea4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#ad22fb106244f270505444fcd5464cea4">unix2jday</a> (struct timeval *time)</td></tr>
 <tr class="separator:ad22fb106244f270505444fcd5464cea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afead64f2185e4894dfa9ebaa8d4271b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#afead64f2185e4894dfa9ebaa8d4271b3">jday2date</a> (<a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> time, short int *year, short int *month, short int *day, short int *hour, short int *minute, double *seconds)</td></tr>
 <tr class="separator:afead64f2185e4894dfa9ebaa8d4271b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe108d38ac4c4b5fec305228eb542acc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#afe108d38ac4c4b5fec305228eb542acc">date2jday</a> (int year, int month, int day, int hour, int minute, double seconds)</td></tr>
 <tr class="separator:afe108d38ac4c4b5fec305228eb542acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2419fbb9d3045da187d95249d22e1b38"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a2419fbb9d3045da187d95249d22e1b38">jday2stamp</a> (<a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> time)</td></tr>
-<tr class="separator:a2419fbb9d3045da187d95249d22e1b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae07abd18aca140c7fd09ef4ce5c41c6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#ae07abd18aca140c7fd09ef4ce5c41c6a">stamp2jday</a> (char *stamp)</td></tr>
-<tr class="separator:ae07abd18aca140c7fd09ef4ce5c41c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133f0f1be56c34afc9d91a0aa4cb2dfd"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a133f0f1be56c34afc9d91a0aa4cb2dfd">jday2str</a> (<a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> utc)</td></tr>
+<tr class="separator:a133f0f1be56c34afc9d91a0aa4cb2dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c2011bf82c7f77d6f1bb98c0d2e5044"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a4c2011bf82c7f77d6f1bb98c0d2e5044">str2jday</a> (char *stamp)</td></tr>
+<tr class="separator:a4c2011bf82c7f77d6f1bb98c0d2e5044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a44bf0bded29e40ec4691ed4f320e2968"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jday_8h.html#a44bf0bded29e40ec4691ed4f320e2968">LEAP_SECONDS</a></td></tr>
+<tr class="separator:a44bf0bded29e40ec4691ed4f320e2968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>provides methods for calculating and converting time into the Novas convention. </p>
+<div class="textblock"><p>provides methods for calculating and converting time in the Novas conventions. </p>
 <dl class="section author"><dt>Author</dt><dd>Casey Shields </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="abb40d1fbd1cc06ff9ff2e89303c96b47"></a>
@@ -128,6 +140,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3bd7226dc60194ad396c4157b0007a04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd7226dc60194ad396c4157b0007a04">&#9670;&nbsp;</a></span>J2000_EPOCH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define J2000_EPOCH&#160;&#160;&#160;2400000.5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Julian day of the J2000 epoch </p>
 
 </div>
 </div>
@@ -185,7 +212,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Julian days; the number of days since noon, January 1, 4713 BC- Which Joseph Justice Scaliger estimated to be the beginning of history. This is a common time format used by Novas, so we provide an explicit typing, and a set of convenience conversion methods built atop novas' own routines. </p><dl class="section author"><dt>Author</dt><dd>Casey Shields </dd></dl>
+<p>Julian days; the number of days since noon, January 1, 4713 BC- Which Joseph Justice Scaliger estimated to be the beginning of history. This is a common time format used by Novas, so we provide an explicit typing, and a set of convenience conversion methods built atop novas' own routines. </p>
 
 </div>
 </div>
@@ -250,7 +277,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the jday equivalent to the given date. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the jday equivalent to the given date in UTC. </dd></dl>
 
 </div>
 </div>
@@ -311,7 +338,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time</td><td>The input julian day </td></tr>
+    <tr><td class="paramname">time</td><td>The input julian day in UTC </td></tr>
     <tr><td class="paramname">year</td><td>output The AD year </td></tr>
     <tr><td class="paramname">month</td><td>output [1-12] </td></tr>
     <tr><td class="paramname">day</td><td>output [1-31] </td></tr>
@@ -324,46 +351,28 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2419fbb9d3045da187d95249d22e1b38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2419fbb9d3045da187d95249d22e1b38">&#9670;&nbsp;</a></span>jday2stamp()</h2>
+<a id="a133f0f1be56c34afc9d91a0aa4cb2dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a133f0f1be56c34afc9d91a0aa4cb2dfd">&#9670;&nbsp;</a></span>jday2str()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* jday2stamp </td>
+          <td class="memname">char* jday2str </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
-          <td class="paramname"><em>time</em></td><td>)</td>
+          <td class="paramname"><em>utc</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Converts Julian days to a human readable string </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time</td><td>A time in julian days </td></tr>
+    <tr><td class="paramname">utc</td><td>A UTC time in julian days </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a string in the format TIMESTAMP_OUTPUT </dd></dl>
-
-</div>
-</div>
-<a id="a56812a70e63fc6124800ff7c62bc0e53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56812a70e63fc6124800ff7c62bc0e53">&#9670;&nbsp;</a></span>jday_current()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> jday_current </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>A julian day holding the current time. </dd></dl>
 
 </div>
 </div>
@@ -386,14 +395,32 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae07abd18aca140c7fd09ef4ce5c41c6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae07abd18aca140c7fd09ef4ce5c41c6a">&#9670;&nbsp;</a></span>stamp2jday()</h2>
+<a id="aa49b7e61e2a2f0595afdd161ae06ba2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa49b7e61e2a2f0595afdd161ae06ba2e">&#9670;&nbsp;</a></span>jday_now()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> stamp2jday </td>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> jday_now </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>A julian day holding the current time in UTC. </dd></dl>
+
+</div>
+</div>
+<a id="a4c2011bf82c7f77d6f1bb98c0d2e5044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c2011bf82c7f77d6f1bb98c0d2e5044">&#9670;&nbsp;</a></span>str2jday()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> str2jday </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>stamp</em></td><td>)</td>
@@ -407,7 +434,25 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the equivalent Julian day or NAN if the string was invalid </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the equivalent UTC Julian day or NAN if the string was invalid </dd></dl>
+
+</div>
+</div>
+<a id="a2f57f09f76f1f79b973084b95ea46271"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f57f09f76f1f79b973084b95ea46271">&#9670;&nbsp;</a></span>tt2utc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> tt2utc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
+          <td class="paramname"><em>tt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -433,6 +478,47 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A Julian day equivalent to the given timeval. </dd></dl>
+
+</div>
+</div>
+<a id="a608a8d10f9626c0027c0fdaa53c291dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a608a8d10f9626c0027c0fdaa53c291dd">&#9670;&nbsp;</a></span>utc2tt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> utc2tt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
+          <td class="paramname"><em>utc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Terrestrial time is meant to be a smooth timescale and is derived from UTC by removing leap seconds and adding an experimentally measured offset available from the <a class="el" href="struct_i_e_r_s.html">IERS</a> service </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">utc</td><td>The Universal Coordinated Time in Julian Days </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a44bf0bded29e40ec4691ed4f320e2968"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44bf0bded29e40ec4691ed4f320e2968">&#9670;&nbsp;</a></span>LEAP_SECONDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double LEAP_SECONDS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Number of leap seconds added in International Atomic Time. Using this parameter we can convert to 'continuous' time scales. </p>
 
 </div>
 </div>

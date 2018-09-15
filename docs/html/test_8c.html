@@ -98,6 +98,16 @@ Functions</h2></td></tr>
 <tr class="separator:a74b41dc8cb314205d28b7434cd3a5bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1562952a38311b3f46d9ce881df65edd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#a1562952a38311b3f46d9ce881df65edd">test_novas</a> (CuTest *test)</td></tr>
 <tr class="separator:a1562952a38311b3f46d9ce881df65edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d5a25c7aa2673e00ab8d56cba60d0ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#a8d5a25c7aa2673e00ab8d56cba60d0ff">test_iers_load</a> (CuTest *test)</td></tr>
+<tr class="separator:a8d5a25c7aa2673e00ab8d56cba60d0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acba7b6224aa2ef2f80a805b9e10ffd74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#acba7b6224aa2ef2f80a805b9e10ffd74">linear_search</a> (<a class="el" href="struct_i_e_r_s.html">IERS</a> *iers, <a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> time)</td></tr>
+<tr class="separator:acba7b6224aa2ef2f80a805b9e10ffd74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84f23495dca9fd0a6e71ad6123185e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#a84f23495dca9fd0a6e71ad6123185e09">test_iers_search</a> (CuTest *test)</td></tr>
+<tr class="separator:a84f23495dca9fd0a6e71ad6123185e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3287796ff7b520e2ae311810ac568190"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#a3287796ff7b520e2ae311810ac568190">catalog_add_axis</a> (<a class="el" href="struct_catalog.html">Catalog</a> *catalog, int type, int count)</td></tr>
+<tr class="separator:a3287796ff7b520e2ae311810ac568190"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd8002da1551f9f2c57489588c0be48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#a4dd8002da1551f9f2c57489588c0be48">test_search_equator</a> ()</td></tr>
+<tr class="separator:a4dd8002da1551f9f2c57489588c0be48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f585a9845d92970b4a9c43f4dc8006"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#ae6f585a9845d92970b4a9c43f4dc8006">test_BSC5</a> ()</td></tr>
 <tr class="separator:ae6f585a9845d92970b4a9c43f4dc8006"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34708cc9e1c417549b938d0e6f66a03f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8c.html#a34708cc9e1c417549b938d0e6f66a03f">benchmark</a> (<a class="el" href="struct_catalog.html">Catalog</a> *catalog, <a class="el" href="struct_tracker.html">Tracker</a> *tracker, int trials)</td></tr>
@@ -165,6 +175,75 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. </p>
+
+</div>
+</div>
+<a id="a3287796ff7b520e2ae311810ac568190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3287796ff7b520e2ae311810ac568190">&#9670;&nbsp;</a></span>catalog_add_axis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void catalog_add_axis </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td>
+          <td class="paramname"><em>catalog</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>add either an equator or meridian to a catalog </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">count</td><td>number of equidistant points on the great circle. </td></tr>
+    <tr><td class="paramname">type</td><td>1 = Equator, 2 = Prime Meridian </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acba7b6224aa2ef2f80a805b9e10ffd74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acba7b6224aa2ef2f80a805b9e10ffd74">&#9670;&nbsp;</a></span>linear_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a>* linear_search </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_i_e_r_s.html">IERS</a> *&#160;</td>
+          <td class="paramname"><em>iers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -257,6 +336,44 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8d5a25c7aa2673e00ab8d56cba60d0ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d5a25c7aa2673e00ab8d56cba60d0ff">&#9670;&nbsp;</a></span>test_iers_load()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_iers_load </td>
+          <td>(</td>
+          <td class="paramtype">CuTest *&#160;</td>
+          <td class="paramname"><em>test</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads the default <a class="el" href="struct_i_e_r_s.html">IERS</a> Bulletin A and performs some basic sanity tests </p>
+
+</div>
+</div>
+<a id="a84f23495dca9fd0a6e71ad6123185e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84f23495dca9fd0a6e71ad6123185e09">&#9670;&nbsp;</a></span>test_iers_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_iers_search </td>
+          <td>(</td>
+          <td class="paramtype">CuTest *&#160;</td>
+          <td class="paramname"><em>test</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Creates a dummy <a class="el" href="struct_i_e_r_s.html">IERS</a> bulletin and searches for bounds, every value, and midpoint of every interval. </p>
+
+</div>
+</div>
 <a id="a1562952a38311b3f46d9ce881df65edd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1562952a38311b3f46d9ce881df65edd">&#9670;&nbsp;</a></span>test_novas()</h2>
 
@@ -291,6 +408,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Runs the entire test suite and prints the results to standard out. Program then exits, returning the number of failed tests. </p>
+
+</div>
+</div>
+<a id="a4dd8002da1551f9f2c57489588c0be48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dd8002da1551f9f2c57489588c0be48">&#9670;&nbsp;</a></span>test_search_equator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_search_equator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

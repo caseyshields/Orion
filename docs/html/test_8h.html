@@ -76,8 +76,10 @@ $(document).ready(function(){initNavTree('test_8h.html','');});
 <div class="textblock"><code>#include &lt;assert.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="crc_8h_source.html">util/crc.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vmath_8h_source.html">util/vmath.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jday_8h_source.html">util/jday.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="io_8h_source.html">util/io.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tats_8h_source.html">data/tats.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="iers_8h_source.html">data/iers.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tracker_8h_source.html">engine/tracker.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="catalog_8h_source.html">engine/catalog.h</a>&quot;</code><br />
 <code>#include &quot;../lib/cutest-1.5/CuTest.h&quot;</code><br />
@@ -102,6 +104,10 @@ Functions</h2></td></tr>
 <tr class="separator:a74b41dc8cb314205d28b7434cd3a5bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1562952a38311b3f46d9ce881df65edd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8h.html#a1562952a38311b3f46d9ce881df65edd">test_novas</a> (CuTest *test)</td></tr>
 <tr class="separator:a1562952a38311b3f46d9ce881df65edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d5a25c7aa2673e00ab8d56cba60d0ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8h.html#a8d5a25c7aa2673e00ab8d56cba60d0ff">test_iers_load</a> (CuTest *test)</td></tr>
+<tr class="separator:a8d5a25c7aa2673e00ab8d56cba60d0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84f23495dca9fd0a6e71ad6123185e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test_8h.html#a84f23495dca9fd0a6e71ad6123185e09">test_iers_search</a> (CuTest *test)</td></tr>
+<tr class="separator:a84f23495dca9fd0a6e71ad6123185e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A test suite used for development and troubleshooting. </p>
@@ -176,6 +182,44 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8d5a25c7aa2673e00ab8d56cba60d0ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d5a25c7aa2673e00ab8d56cba60d0ff">&#9670;&nbsp;</a></span>test_iers_load()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_iers_load </td>
+          <td>(</td>
+          <td class="paramtype">CuTest *&#160;</td>
+          <td class="paramname"><em>test</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads the default <a class="el" href="struct_i_e_r_s.html">IERS</a> Bulletin A and performs some basic sanity tests </p>
+
+</div>
+</div>
+<a id="a84f23495dca9fd0a6e71ad6123185e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84f23495dca9fd0a6e71ad6123185e09">&#9670;&nbsp;</a></span>test_iers_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_iers_search </td>
+          <td>(</td>
+          <td class="paramtype">CuTest *&#160;</td>
+          <td class="paramname"><em>test</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Creates a dummy <a class="el" href="struct_i_e_r_s.html">IERS</a> bulletin and searches for bounds, every value, and midpoint of every interval. </p>
 
 </div>
 </div>

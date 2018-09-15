@@ -3,6 +3,7 @@ var tats_8h =
     [ "TCN_Message", "struct_t_c_n___message.html", "struct_t_c_n___message" ],
     [ "MIDC01", "struct_m_i_d_c01.html", "struct_m_i_d_c01" ],
     [ "tcn_gen_msg", "structtcn__gen__msg.html", "structtcn__gen__msg" ],
+    [ "TATS_CELESTIAL_SPHERE_RADIUS", "tats_8h.html#a5cd21e938958ed2e862b01e514720a3d", null ],
     [ "TATS_IFF_ETYPE", "tats_8h.html#ad8a3455757614cd65108fc9affbc1930", [
       [ "TATS_FOE", "tats_8h.html#ad8a3455757614cd65108fc9affbc1930aea7fe19680a5830e1589e419923f2fab", null ],
       [ "TATS_NONPLAYER", "tats_8h.html#ad8a3455757614cd65108fc9affbc1930ad06ec9a684feb3aeb7b192655a3add34", null ],

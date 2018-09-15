@@ -83,8 +83,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:ab85ff85aa1f60f4a1c1ca1225a9dad06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcb2821020f6578a4175b17e2600e15b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_application.html#adcb2821020f6578a4175b17e2600e15b">orion</a></td></tr>
 <tr class="separator:adcb2821020f6578a4175b17e2600e15b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58de3cf733030eb3f7888cc97c461fde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_application.html#a58de3cf733030eb3f7888cc97c461fde">time</a></td></tr>
+<tr class="separator:a58de3cf733030eb3f7888cc97c461fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8262512fd370bf500c12d379afbd46bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_application.html#a8262512fd370bf500c12d379afbd46bc">eop</a></td></tr>
+<tr class="separator:a8262512fd370bf500c12d379afbd46bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2f6a92400101c75515f574616ed4b5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_application.html#ae2f6a92400101c75515f574616ed4b5c">catalog</a></td></tr>
 <tr class="separator:ae2f6a92400101c75515f574616ed4b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e6b45cd888a1d7382746e48044aa565"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_i_e_r_s.html">IERS</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_application.html#a4e6b45cd888a1d7382746e48044aa565">iers</a></td></tr>
+<tr class="separator:a4e6b45cd888a1d7382746e48044aa565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="struct_application.html">Application</a> structure holds all components of a interactive command line application which interfaces with the <a class="el" href="struct_orion.html">Orion</a> server and associated star catalogs. </p>
@@ -101,6 +107,36 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>The Star catalog which the user can search for star targets </p>
+
+</div>
+</div>
+<a id="a8262512fd370bf500c12d379afbd46bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8262512fd370bf500c12d379afbd46bc">&#9670;&nbsp;</a></span>eop</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a>* eop</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Earth orientation parameters for the user selected time </p>
+
+</div>
+</div>
+<a id="a4e6b45cd888a1d7382746e48044aa565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e6b45cd888a1d7382746e48044aa565">&#9670;&nbsp;</a></span>iers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_i_e_r_s.html">IERS</a>* iers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A database of earth orientation parameters, searchable by time </p>
 
 </div>
 </div>
@@ -161,6 +197,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Slaved TCN sensor port. </p>
+
+</div>
+</div>
+<a id="a58de3cf733030eb3f7888cc97c461fde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58de3cf733030eb3f7888cc97c461fde">&#9670;&nbsp;</a></span>time</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> time</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This time is used for catalog commands such as search and report. It does not affect the time broadcasted to TATS sensors. Only the current time is used for that. </p>
 
 </div>
 </div>

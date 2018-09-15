@@ -75,47 +75,76 @@ $(document).ready(function(){initNavTree('struct_tracker.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a39f0c446c468380a7a748a2f061bc724"><td class="memItemLeft" align="right" valign="top"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a39f0c446c468380a7a748a2f061bc724">utc</a></td></tr>
-<tr class="separator:a39f0c446c468380a7a748a2f061bc724"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eef053f0153643589ed50d5f193afe7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a9eef053f0153643589ed50d5f193afe7">ut1_utc</a></td></tr>
-<tr class="separator:a9eef053f0153643589ed50d5f193afe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad762d92dc4fcba312c9d2d11ff3a7e67"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#ad762d92dc4fcba312c9d2d11ff3a7e67">leap_secs</a></td></tr>
-<tr class="separator:ad762d92dc4fcba312c9d2d11ff3a7e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb38e182752f31d6a08f82d960955438"><td class="memItemLeft" align="right" valign="top">on_surface&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#afb38e182752f31d6a08f82d960955438">site</a></td></tr>
 <tr class="separator:afb38e182752f31d6a08f82d960955438"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1beefa1f286be116b00f0e8ad83d002"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#ae1beefa1f286be116b00f0e8ad83d002">earth</a></td></tr>
-<tr class="separator:ae1beefa1f286be116b00f0e8ad83d002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e28b20efdecc912038c0fb2ceb69d1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a6e28b20efdecc912038c0fb2ceb69d1d">earth</a></td></tr>
+<tr class="separator:a6e28b20efdecc912038c0fb2ceb69d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8e6898e525f8171ad0331ecbf45b00"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a5f8e6898e525f8171ad0331ecbf45b00">azimuth</a></td></tr>
+<tr class="separator:a5f8e6898e525f8171ad0331ecbf45b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac00824aa8421a07a7062be06bcb3c152"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#ac00824aa8421a07a7062be06bcb3c152">elevation</a></td></tr>
+<tr class="separator:ac00824aa8421a07a7062be06bcb3c152"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43aebaccbc765134c4e66bc037da4dec"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracker.html#a43aebaccbc765134c4e66bc037da4dec">efg</a> [3]</td></tr>
+<tr class="separator:a43aebaccbc765134c4e66bc037da4dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="struct_tracker.html">Tracker</a> module represents a sensor on the surface of the earth at a specific time, observing a celestial object. It can transform star coordinates between celestial and horizon, using Novas 3.1 to handle orbit, spin, precession, parallax, atmospheric refraction and relativistic aberration, whatever that is. </p><dl class="section author"><dt>Author</dt><dd>Casey Shields </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="ae1beefa1f286be116b00f0e8ad83d002"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1beefa1f286be116b00f0e8ad83d002">&#9670;&nbsp;</a></span>earth</h2>
+<a id="a5f8e6898e525f8171ad0331ecbf45b00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f8e6898e525f8171ad0331ecbf45b00">&#9670;&nbsp;</a></span>azimuth</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">object earth</td>
+          <td class="memname">double azimuth</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Novas structure for planet earth </p>
+<p><a class="el" href="struct_tracker.html">Tracker</a> orientation on the local horizon </p>
 
 </div>
 </div>
-<a id="ad762d92dc4fcba312c9d2d11ff3a7e67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad762d92dc4fcba312c9d2d11ff3a7e67">&#9670;&nbsp;</a></span>leap_secs</h2>
+<a id="a6e28b20efdecc912038c0fb2ceb69d1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e28b20efdecc912038c0fb2ceb69d1d">&#9670;&nbsp;</a></span>earth</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double leap_secs</td>
+          <td class="memname"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a>* earth</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Number of leap seconds added in International Atomic Time </p>
+<p>A structure holding <a class="el" href="struct_i_e_r_s.html">IERS</a> parameters for the current orientation of the earth. Needed for high accuracy Novas calculations </p>
+
+</div>
+</div>
+<a id="a43aebaccbc765134c4e66bc037da4dec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43aebaccbc765134c4e66bc037da4dec">&#9670;&nbsp;</a></span>efg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double efg[3]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="struct_tracker.html">Tracker</a> orientation in the ITRS frame </p>
+
+</div>
+</div>
+<a id="ac00824aa8421a07a7062be06bcb3c152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac00824aa8421a07a7062be06bcb3c152">&#9670;&nbsp;</a></span>elevation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double elevation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -131,36 +160,6 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Novas structure holding the geodetic location of the tracker </p>
-
-</div>
-</div>
-<a id="a9eef053f0153643589ed50d5f193afe7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9eef053f0153643589ed50d5f193afe7">&#9670;&nbsp;</a></span>ut1_utc</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ut1_utc</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Current observed discrepancy between earth's non-uniform rotation and Universal Coordinated Time </p>
-
-</div>
-</div>
-<a id="a39f0c446c468380a7a748a2f061bc724"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39f0c446c468380a7a748a2f061bc724">&#9670;&nbsp;</a></span>utc</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="jday_8h.html#ad3b9b9864fbe6cbe4b217ef51abdfa84">jday</a> utc</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The current UTC time in Julian Days. </p>
 
 </div>
 </div>

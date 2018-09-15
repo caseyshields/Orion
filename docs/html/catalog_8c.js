@@ -8,7 +8,6 @@ var catalog_8c =
     [ "catalog_filter", "catalog_8c.html#a97ab741a97b6b32d0b00b68a3d842e82", null ],
     [ "catalog_free", "catalog_8c.html#a77e44241f4cab40e8d63cb77e6021322", null ],
     [ "catalog_get", "catalog_8c.html#a9e0dd1b3787b667aac84d0129cacea11", null ],
-    [ "catalog_load_fk5", "catalog_8c.html#a80d4ec3d0ab16ee9dd54bb2e1427f5da", null ],
     [ "catalog_load_fk6", "catalog_8c.html#a8095824fdcd7b58cf14e60657d7d1af5", null ],
     [ "catalog_print", "catalog_8c.html#a63b044c36300ab4b1125f76c38294ec9", null ],
     [ "catalog_search_dome", "catalog_8c.html#a6c3361e480a536a7fe18411b25dce549", null ],

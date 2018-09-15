@@ -71,6 +71,9 @@ $(document).ready(function(){initNavTree('sockets_8h.html','');});
 <div class="title">sockets.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A crude adapter so we can link to either winsock or unix sockets.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;netdb.h&gt;</code><br />
 <code>#include &lt;memory.h&gt;</code><br />
 <code>#include &lt;netinet/in.h&gt;</code><br />
@@ -100,7 +103,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a102876978cafed2751ca81906fce94ec"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sockets_8h.html#a102876978cafed2751ca81906fce94ec">socket_unload</a> ()</td></tr>
 <tr class="separator:a102876978cafed2751ca81906fce94ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A crude adapter so we can link to either winsock or unix sockets. </p>
+<p>This header is just an adapter to the sockets implementation of the build environment. It is not a completly insulating layer; there is enough overlap between winsock and posix sockets that we use the same method names and just swap out the header for all but a few methods.</p>
+<dl class="section author"><dt>Author</dt><dd>Casey Shields </dd></dl>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a26769957ec1a2beaf223f33b66ee64ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a26769957ec1a2beaf223f33b66ee64ab">&#9670;&nbsp;</a></span>INVALID_SOCKET</h2>
 

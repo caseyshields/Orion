@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Orion: FK6 Struct Reference</title>
+<title>Orion: IERS Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,7 +59,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('struct_f_k6.html','');});
+$(document).ready(function(){initNavTree('struct_i_e_r_s.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -67,44 +67,45 @@ $(document).ready(function(){initNavTree('struct_f_k6.html','');});
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">FK6 Struct Reference</div>  </div>
+<div class="title">IERS Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="fk6_8h_source.html">fk6.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="iers_8h_source.html">iers.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a8bc05371b3a4013263f68932ba1b6452"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_k6.html#a8bc05371b3a4013263f68932ba1b6452">cols</a></td></tr>
-<tr class="separator:a8bc05371b3a4013263f68932ba1b6452"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f1ef8549007d9cca74d78a59cf179c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_f_k6___field.html">FK6_Field</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_k6.html#a38f1ef8549007d9cca74d78a59cf179c">fields</a></td></tr>
-<tr class="separator:a38f1ef8549007d9cca74d78a59cf179c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a854352f53b148adc24983a58a1866d66"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_i_e_r_s.html#a854352f53b148adc24983a58a1866d66">size</a></td></tr>
+<tr class="separator:a854352f53b148adc24983a58a1866d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7000873ab58d17afe6630c08fd41b3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_i_e_r_s.html#aa7000873ab58d17afe6630c08fd41b3a">eops</a></td></tr>
+<tr class="separator:aa7000873ab58d17afe6630c08fd41b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Describes a CDS VizieR record. It is used to parse and convert values from a VizieR catalog record. </p>
+<div class="textblock"><p>Holds the contents of the <a class="el" href="struct_i_e_r_s.html">IERS</a> BUlletin A, obtained from '<a href="https://datacenter.iers.org/eop/-/somos/5Rgv/getTX/10/finals2000A.data'">https://datacenter.iers.org/eop/-/somos/5Rgv/getTX/10/finals2000A.data'</a>. Each record of the data is uniformly spaced a day apart. I don't think this ever changes. More versions are available at '<a href="https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html'">https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop.html'</a></p>
+<p>I had considered making a loader similar to the vizier catalog loader, but it seemed like overkill; this stuff really doesn't change fast. There are also the Bulletin B values in these files I don't load. I think they are more accurate, they span less time and predictions are not available.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a8bc05371b3a4013263f68932ba1b6452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bc05371b3a4013263f68932ba1b6452">&#9670;&nbsp;</a></span>cols</h2>
+<a id="aa7000873ab58d17afe6630c08fd41b3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7000873ab58d17afe6630c08fd41b3a">&#9670;&nbsp;</a></span>eops</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t cols</td>
+          <td class="memname"><a class="el" href="struct_i_e_r_s___e_o_p.html">IERS_EOP</a>* eops</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a38f1ef8549007d9cca74d78a59cf179c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38f1ef8549007d9cca74d78a59cf179c">&#9670;&nbsp;</a></span>fields</h2>
+<a id="a854352f53b148adc24983a58a1866d66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a854352f53b148adc24983a58a1866d66">&#9670;&nbsp;</a></span>size</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_f_k6___field.html">FK6_Field</a>* fields</td>
+          <td class="memname">size_t size</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -112,14 +113,14 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/data/<a class="el" href="fk6_8h_source.html">fk6.h</a></li>
+<li>src/data/<a class="el" href="iers_8h_source.html">iers.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="struct_f_k6.html">FK6</a></li>
+    <li class="navelem"><a class="el" href="struct_i_e_r_s.html">IERS</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

@@ -77,6 +77,7 @@ $(document).ready(function(){initNavTree('main_8h.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;signal.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="io_8h_source.html">util/io.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jday_8h_source.html">util/jday.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sockets_8h_source.html">util/sockets.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tracker_8h_source.html">engine/tracker.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="catalog_8h_source.html">engine/catalog.h</a>&quot;</code><br />
@@ -102,10 +103,14 @@ Macros</h2></td></tr>
 <tr class="separator:af4e8dcb1c210baad2e179d49669eabff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67bafb91da1f123097b90c52747bcf36"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a67bafb91da1f123097b90c52747bcf36">PRESSURE</a>&#160;&#160;&#160;&quot;1010.0&quot;</td></tr>
 <tr class="separator:a67bafb91da1f123097b90c52747bcf36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb8d9992b7153e8e2e10ff45f6c7839b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#acb8d9992b7153e8e2e10ff45f6c7839b">UT1_UTC</a>&#160;&#160;&#160;&quot;0.06809&quot;</td></tr>
+<tr class="memitem:acb8d9992b7153e8e2e10ff45f6c7839b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#acb8d9992b7153e8e2e10ff45f6c7839b">UT1_UTC</a>&#160;&#160;&#160;&quot;0.05939&quot;</td></tr>
 <tr class="separator:acb8d9992b7153e8e2e10ff45f6c7839b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674c73b859e77550a8e3b0a3a541a8d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a674c73b859e77550a8e3b0a3a541a8d2">TAI_UTC</a>&#160;&#160;&#160;&quot;37.000000&quot;</td></tr>
 <tr class="separator:a674c73b859e77550a8e3b0a3a541a8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32ba76cc676dc9b248bce3b722e811e5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a32ba76cc676dc9b248bce3b722e811e5">LATENCY</a>&#160;&#160;&#160;&quot;0.0&quot;</td></tr>
+<tr class="separator:a32ba76cc676dc9b248bce3b722e811e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfc12278a87672861e438f8841a7a713"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#acfc12278a87672861e438f8841a7a713">LOCALHOST</a>&#160;&#160;&#160;&quot;127.0.0.1&quot;</td></tr>
+<tr class="separator:acfc12278a87672861e438f8841a7a713"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -115,26 +120,32 @@ Functions</h2></td></tr>
 <tr class="separator:a740a99f0d8ea17df934a699f0e6f8058"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b66d5e31b5dc18b314c8a68163263bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a4b66d5e31b5dc18b314c8a68163263bd">cleanup</a> ()</td></tr>
 <tr class="separator:a4b66d5e31b5dc18b314c8a68163263bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04aed9c16430760f52c3273dee4f7874"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a04aed9c16430760f52c3273dee4f7874">configure_tracker</a> (int argc, char *argv[], <a class="el" href="struct_tracker.html">Tracker</a> *tracker)</td></tr>
-<tr class="separator:a04aed9c16430760f52c3273dee4f7874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a699e4e14899d48917c0c55e3a3cee29c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a699e4e14899d48917c0c55e3a3cee29c">configure_orion</a> (int argc, char *argv[], <a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
+<tr class="separator:a699e4e14899d48917c0c55e3a3cee29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a265ad5071167d20fe59a107c7cdf7a1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a265ad5071167d20fe59a107c7cdf7a1b">configure_iers</a> (int argc, char *argv[], <a class="el" href="struct_i_e_r_s.html">IERS</a> *iers)</td></tr>
+<tr class="separator:a265ad5071167d20fe59a107c7cdf7a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09ca1e71647a282781bde5ed8eaf2207"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a09ca1e71647a282781bde5ed8eaf2207">configure_catalog</a> (int argc, char *argv[], <a class="el" href="struct_catalog.html">Catalog</a> *catalog)</td></tr>
 <tr class="separator:a09ca1e71647a282781bde5ed8eaf2207"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a838e31edbda23da4385eb75ce6942041"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a838e31edbda23da4385eb75ce6942041">configure_address</a> (int argc, char *argv[], <a class="el" href="struct_application.html">Application</a> *<a class="el" href="main_8c.html#a308f1894230cbc714b1745315d8e644b">app</a>)</td></tr>
-<tr class="separator:a838e31edbda23da4385eb75ce6942041"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52c656a8494935b2d11dc1631ed02f5c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a52c656a8494935b2d11dc1631ed02f5c">cmd_time</a> (char *time, <a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
-<tr class="separator:a52c656a8494935b2d11dc1631ed02f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b40c7c328b342c1c7ef631d1e5766c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a63b40c7c328b342c1c7ef631d1e5766c">configure_app</a> (int argc, char *argv[], <a class="el" href="struct_application.html">Application</a> *<a class="el" href="main_8c.html#a308f1894230cbc714b1745315d8e644b">app</a>)</td></tr>
+<tr class="separator:a63b40c7c328b342c1c7ef631d1e5766c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd7a53357a21f04ac63838b937d69663"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#abd7a53357a21f04ac63838b937d69663">cmd_time</a> (char *time, <a class="el" href="struct_application.html">Application</a> *<a class="el" href="main_8c.html#a308f1894230cbc714b1745315d8e644b">app</a>)</td></tr>
+<tr class="separator:abd7a53357a21f04ac63838b937d69663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5439cb95f48bb550dce678b6d7ac7e5b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a5439cb95f48bb550dce678b6d7ac7e5b">cmd_location</a> (char *line, <a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:a5439cb95f48bb550dce678b6d7ac7e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bcd8ea4c4db227b6abf8793166a0908"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a5bcd8ea4c4db227b6abf8793166a0908">cmd_weather</a> (char *line, <a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
 <tr class="separator:a5bcd8ea4c4db227b6abf8793166a0908"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5659d6bc78e4ab2a6976ad22ff8887e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a5659d6bc78e4ab2a6976ad22ff8887e4">cmd_name</a> (char *line, <a class="el" href="struct_catalog.html">Catalog</a> *catalog)</td></tr>
 <tr class="separator:a5659d6bc78e4ab2a6976ad22ff8887e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74d188e9f5ebfc54aab9d9b2a77c12f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a74d188e9f5ebfc54aab9d9b2a77c12f2">cmd_connect</a> (char *line, <a class="el" href="struct_orion.html">Orion</a> *orion)</td></tr>
-<tr class="separator:a74d188e9f5ebfc54aab9d9b2a77c12f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e2fa79534489d706a214e10719e8a8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a2e2fa79534489d706a214e10719e8a8b">cmd_target</a> (char *line, <a class="el" href="struct_orion.html">Orion</a> *orion, <a class="el" href="struct_catalog.html">Catalog</a> *catalog)</td></tr>
-<tr class="separator:a2e2fa79534489d706a214e10719e8a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b08d89b6b508945070192a58d37e91e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a2b08d89b6b508945070192a58d37e91e">cmd_report</a> (char *line, <a class="el" href="struct_orion.html">Orion</a> *orion, FILE *stream)</td></tr>
-<tr class="separator:a2b08d89b6b508945070192a58d37e91e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6934907ea5595c0bbc119fd9692687d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#ac6934907ea5595c0bbc119fd9692687d">cmd_search</a> (char *line, <a class="el" href="struct_application.html">Application</a> *<a class="el" href="main_8c.html#a308f1894230cbc714b1745315d8e644b">app</a>)</td></tr>
+<tr class="separator:ac6934907ea5595c0bbc119fd9692687d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01ef20f12dffdb5a656b03e7c304c744"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a01ef20f12dffdb5a656b03e7c304c744">cmd_connect</a> (char *line, <a class="el" href="struct_application.html">Application</a> *cli)</td></tr>
+<tr class="separator:a01ef20f12dffdb5a656b03e7c304c744"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa7be539df9dc236ae242df0db555f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a9fa7be539df9dc236ae242df0db555f2">cmd_target</a> (char *line, <a class="el" href="struct_application.html">Application</a> *cli)</td></tr>
+<tr class="separator:a9fa7be539df9dc236ae242df0db555f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33303dc6183dfe6a8c73cc3824fe90a8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a33303dc6183dfe6a8c73cc3824fe90a8">cmd_status</a> (char *line, <a class="el" href="struct_application.html">Application</a> *cli, FILE *stream)</td></tr>
+<tr class="separator:a33303dc6183dfe6a8c73cc3824fe90a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73967bed175302cda826ddc6d4541115"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a73967bed175302cda826ddc6d4541115">cmd_report</a> (char *line, <a class="el" href="struct_application.html">Application</a> *cli, FILE *stream)</td></tr>
+<tr class="separator:a73967bed175302cda826ddc6d4541115"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07de1e99aa7b1c8f819d5f9c91f254c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a07de1e99aa7b1c8f819d5f9c91f254c3">cmd_help</a> (char *line)</td></tr>
 <tr class="separator:a07de1e99aa7b1c8f819d5f9c91f254c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -157,6 +168,21 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a32ba76cc676dc9b248bce3b722e811e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32ba76cc676dc9b248bce3b722e811e5">&#9670;&nbsp;</a></span>LATENCY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LATENCY&#160;&#160;&#160;&quot;0.0&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A positive time bias to account for the network latency between <a class="el" href="struct_orion.html">Orion</a> and it's slaved TATS sensor. </p>
+
+</div>
+</div>
 <a id="a63205f1ad14afc714149004a931abbce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63205f1ad14afc714149004a931abbce">&#9670;&nbsp;</a></span>LATITUDE</h2>
 
@@ -169,6 +195,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>default latitude of sensor in degrees </p>
+
+</div>
+</div>
+<a id="acfc12278a87672861e438f8841a7a713"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfc12278a87672861e438f8841a7a713">&#9670;&nbsp;</a></span>LOCALHOST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LOCALHOST&#160;&#160;&#160;&quot;127.0.0.1&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -213,7 +253,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 </p>
+<p>delta AT, Difference between TAI and UTC. Obtained from <a class="el" href="struct_i_e_r_s.html">IERS</a> June 20 2018 </p>
 
 </div>
 </div>
@@ -239,7 +279,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UT1_UTC&#160;&#160;&#160;&quot;0.06809&quot;</td>
+          <td class="memname">#define UT1_UTC&#160;&#160;&#160;&quot;0.05939&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -266,8 +306,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a74d188e9f5ebfc54aab9d9b2a77c12f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74d188e9f5ebfc54aab9d9b2a77c12f2">&#9670;&nbsp;</a></span>cmd_connect()</h2>
+<a id="a01ef20f12dffdb5a656b03e7c304c744"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01ef20f12dffdb5a656b03e7c304c744">&#9670;&nbsp;</a></span>cmd_connect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,8 +321,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_application.html">Application</a> *&#160;</td>
+          <td class="paramname"><em>cli</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -291,6 +331,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>expects a command of the for 'connect [A.A.A.A:P]', reverts to defaults if an argument is not supplied. </p>
 
 </div>
 </div>
@@ -368,8 +409,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2b08d89b6b508945070192a58d37e91e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b08d89b6b508945070192a58d37e91e">&#9670;&nbsp;</a></span>cmd_report()</h2>
+<a id="a73967bed175302cda826ddc6d4541115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73967bed175302cda826ddc6d4541115">&#9670;&nbsp;</a></span>cmd_report()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -383,8 +424,71 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em>, </td>
+          <td class="paramtype"><a class="el" href="struct_application.html">Application</a> *&#160;</td>
+          <td class="paramname"><em>cli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>stream</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac6934907ea5595c0bbc119fd9692687d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6934907ea5595c0bbc119fd9692687d">&#9670;&nbsp;</a></span>cmd_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cmd_search </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_application.html">Application</a> *&#160;</td>
+          <td class="paramname"><em>app</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Transforms the catalog into local coordinates using the tracker, then filters them by the given criteria. The results are then printed to stdout. </p><dl class="section return"><dt>Returns</dt><dd>The number of stars fitting the criteria </dd></dl>
+
+</div>
+</div>
+<a id="a33303dc6183dfe6a8c73cc3824fe90a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33303dc6183dfe6a8c73cc3824fe90a8">&#9670;&nbsp;</a></span>cmd_status()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cmd_status </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_application.html">Application</a> *&#160;</td>
+          <td class="paramname"><em>cli</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -403,8 +507,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2e2fa79534489d706a214e10719e8a8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e2fa79534489d706a214e10719e8a8b">&#9670;&nbsp;</a></span>cmd_target()</h2>
+<a id="a9fa7be539df9dc236ae242df0db555f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fa7be539df9dc236ae242df0db555f2">&#9670;&nbsp;</a></span>cmd_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -418,14 +522,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_catalog.html">Catalog</a> *&#160;</td>
-          <td class="paramname"><em>catalog</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_application.html">Application</a> *&#160;</td>
+          <td class="paramname"><em>cli</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -437,8 +535,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a52c656a8494935b2d11dc1631ed02f5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52c656a8494935b2d11dc1631ed02f5c">&#9670;&nbsp;</a></span>cmd_time()</h2>
+<a id="abd7a53357a21f04ac63838b937d69663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd7a53357a21f04ac63838b937d69663">&#9670;&nbsp;</a></span>cmd_time()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -452,8 +550,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
-          <td class="paramname"><em>orion</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_application.html">Application</a> *&#160;</td>
+          <td class="paramname"><em>app</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -493,14 +591,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a838e31edbda23da4385eb75ce6942041"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a838e31edbda23da4385eb75ce6942041">&#9670;&nbsp;</a></span>configure_address()</h2>
+<a id="a63b40c7c328b342c1c7ef631d1e5766c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63b40c7c328b342c1c7ef631d1e5766c">&#9670;&nbsp;</a></span>configure_app()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void configure_address </td>
+          <td class="memname">void configure_app </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -563,14 +661,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a04aed9c16430760f52c3273dee4f7874"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04aed9c16430760f52c3273dee4f7874">&#9670;&nbsp;</a></span>configure_tracker()</h2>
+<a id="a265ad5071167d20fe59a107c7cdf7a1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a265ad5071167d20fe59a107c7cdf7a1b">&#9670;&nbsp;</a></span>configure_iers()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void configure_tracker </td>
+          <td class="memname">void configure_iers </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -584,8 +682,43 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_tracker.html">Tracker</a> *&#160;</td>
-          <td class="paramname"><em>tracker</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_i_e_r_s.html">IERS</a> *&#160;</td>
+          <td class="paramname"><em>iers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads <a class="el" href="struct_i_e_r_s.html">IERS</a> Bulletin A data file </p>
+
+</div>
+</div>
+<a id="a699e4e14899d48917c0c55e3a3cee29c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a699e4e14899d48917c0c55e3a3cee29c">&#9670;&nbsp;</a></span>configure_orion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void configure_orion </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_orion.html">Orion</a> *&#160;</td>
+          <td class="paramname"><em>orion</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
