@@ -25,38 +25,21 @@ int main( int argc, char *argv[] ) {
     signal(SIGABRT, interrupt_handler);
 
     // create and configure the application
-    app.mode = 1;
     app.orion = orion_create( NULL, 1 );
     app.catalog = catalog_create( NULL, 1024 );
     app.iers = iers_create( NULL );
-    app.time = utc2tt(jday_now());
 
-    // TODO create a configure_app() method with these odds and ends?
-
-    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
-    char * arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
-    double ut1_utc = atof( arg );
-    MISSING_EOP.ut1_utc = ut1_utc;
-
-    // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
-    arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
-    LEAP_SECONDS = (jday) atof( arg );
-
-    configure_address( argc, argv, &app );
+    configure_app( argc, argv, &app );
     configure_orion( argc, argv, app.orion );
     configure_iers( argc, argv, app.iers );
     configure_catalog( argc, argv, app.catalog );
-    if( !app.catalog->size ) {
-        alert( "Failed to load catalog, exiting" );
-        return 1; // maybe we don't exit? they could still target, they just couldn't catalog
-    }
 
-    // find the earth orientation
+    // find the current earth orientation
     app.eop = iers_search( app.iers, app.time );
     if(!app.eop) {
         app.eop = &MISSING_EOP;
-    }
-    // TODO notify user of predicted mode?
+    } // TODO notify user of predicted mode, or outdated catalogs?
+    //TODO set eop to current time or load the null eop?
 
     // Main loop
     while( app.mode ) {
@@ -85,7 +68,7 @@ int main( int argc, char *argv[] ) {
 
         // sensor commands
         else if( strncmp( "connect", line, 7 ) == 0 )
-            cmd_connect( line, app.orion );
+            cmd_connect( line, &app );
         else if( strncmp( "target", line, 6 ) == 0 )
             cmd_target( line, &app );
 
@@ -137,6 +120,37 @@ void cleanup() {
 }
 
 // Initialization /////////////////////////////////////////////////////////////
+
+void configure_app( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
+    app->mode = 1;
+    app->time = utc2tt(jday_now());
+
+    // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
+    char * arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
+    double ut1_utc = atof( arg );
+    MISSING_EOP.ut1_utc = ut1_utc;
+
+    // delta AT, Difference between TAI and UTC. Obtained from IERS Apr 26 2018
+    arg = get_arg( argc, argv, "-leap_secs", TAI_UTC );
+    LEAP_SECONDS = (jday) atof( arg );
+
+    // get server address, should be in dotted quad notation
+    app->ip = get_arg(argc, argv, "-ip", LOCALHOST);
+
+    // get server socket port number
+    char * default_port = "43210";
+    arg = get_arg(argc, argv, "-port", default_port);
+    app->port = (unsigned short) atoi(arg);
+
+    if( arg!=default_port )
+        free(arg);
+
+//    // construct server address structure
+//    address->sin_family = AF_INET; // internet address family
+//    address->sin_addr.s_addr = inet_addr( ip ); // server ip
+//    address->sin_port = htons( port ); // server port
+}
+
 void configure_orion( int argc, char* argv[], Orion * orion ) {
 
     Tracker * tracker = &(orion->tracker);
@@ -180,61 +194,71 @@ void configure_orion( int argc, char* argv[], Orion * orion ) {
     orion_set_latency( orion, latency );
 }
 
-void configure_address( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
-
-    // get server address, should be in dotted quad notation
-    app->ip = get_arg(argc, argv, "-ip", LOCALHOST);
-
-    // get server socket port number
-    char * default_port = "43210";
-    char *arg = get_arg(argc, argv, "-port", default_port);
-    app->port = (unsigned short) atoi(arg);
-
-    if( arg!=default_port )
-        free(arg);
-
-//    // construct server address structure
-//    address->sin_family = AF_INET; // internet address family
-//    address->sin_addr.s_addr = inet_addr( ip ); // server ip
-//    address->sin_port = htons( port ); // server port
-}
-
 void configure_iers(int argc, char* argv[], IERS * iers ) {
-    FILE * file = fopen("../data/iers/finals2000A.data", "r");
+    char * path = "../data/iers/finals2000A.data";
     // TODO derive path from root directory!!! Do this for all the file based components!
 
-    iers_load( iers, file );
+    printf("Loading IERS Bulletin \"%s\"... ", path);
+    FILE * file = fopen(path, "r");
+    int read = iers_load( iers, file );
 
-    //TODO set eop to current time or load the null eop?
+    if (!read) {
+        alert( "Failed to read IERS Bulletin data" );
+        exit(1);
+    }
+
+    char * start = jday2str( iers->eops[0].time );
+    char * end = jday2str( iers->eops[iers->size-1].time );
+    printf("%s to %s\n", start, end);
+    free(start);
+    free(end);
 }
 
 void configure_catalog( int argc, char* argv[], Catalog* catalog ) {
-//    char * data_root = "../data/fk6/";
-//    char * metadata = "ReadMe";
+//    char * data_root = "../data/";
+//    char * metadata = "/fk6/ReadMe";
 //    char * data[2] = {"fk6_1.dat", "fk6_3.dat"};
 // TODO add some arguments to control the catalog loaded
 
+char * path = "../data/fk6/ReadMe";
+
     // load the FK6 metadata
-    FILE * readme = fopen( "../data/fk6/ReadMe", "r" );
+    printf( "loading FK6 I metadata \"%s\"...", path);
+    FILE * readme = fopen( path, "r" );
     FK6 * fk6_1 = fk6_create();
     fk6_load_fields(fk6_1, readme, FK6_1_HEADER);
+    printf(" %u fields loaded.\n", fk6_1->cols);
+
+    printf( "loading FK6 III metadata \"%s\"...", path);
     FK6 * fk6_3 = fk6_create();
     fk6_load_fields(fk6_3, readme, FK6_3_HEADER);
     fclose( readme );
+    printf(" %u fields loaded.\n", fk6_3->cols);
 
     // load the first part of FK6
-    FILE * data1 = fopen( "../data/fk6/fk6_1.dat", "r" );
+    char * path1 = "../data/fk6/fk6_1.dat";
+    printf( "loading catalog \"%s\"...", path1);
+    FILE * data1 = fopen( path1, "r" );
     catalog_load_fk6(catalog, fk6_1, data1);
     fk6_free( fk6_1 );
     free( fk6_1 );
     fclose( data1 );
+    printf(" %u entries total.\n", catalog->size);
 
     // load the third part
-    FILE * data3 = fopen( "../data/fk6/fk6_3.dat", "r" );
+    char * path3 = "../data/fk6/fk6_3.dat";
+    printf( "loading catalog \"%s\"...", path1);
+    FILE * data3 = fopen( path3, "r" );
     catalog_load_fk6(catalog, fk6_3, data3);
     fk6_free( fk6_3 );
     free( fk6_3 );
     fclose( data3 );
+    printf(" %u entries total.\n", catalog->size);
+
+    if( !catalog->size ) {
+        alert( "Failed to load catalog, exiting" );
+        exit(1); // maybe we don't exit? they could still target, they just couldn't catalog
+    }
 }// TODO should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
 
 // configuration commands /////////////////////////////////////////////////////
@@ -517,7 +541,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     while( start < end ) {
 
         // look up the earth orientation parameters
-        IERS_EOP * earth = iers_search( app.iers, start ); // TODO this can really be sped up to a linear search after the first iteration...
+        IERS_EOP * earth = iers_search( cli->iers, start ); // TODO this can really be sped up to a linear search after the first iteration...
         if (!earth) {
             // TODO should we print a warning if missing or predicted?
             earth = &MISSING_EOP;

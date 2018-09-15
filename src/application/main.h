@@ -97,7 +97,7 @@ void configure_iers(int argc, char * argv[], IERS * iers );
 void configure_catalog(int argc, char *argv[], Catalog *catalog);
 
 /** Creates an ip address for the sensor from the arguments. */
-void configure_address(int argc, char *argv[], Application * app);
+void configure_app(int argc, char *argv[], Application * app);
 
 int cmd_time(char *time, Application *app);
 
