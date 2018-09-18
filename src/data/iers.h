@@ -17,7 +17,7 @@
  * predictions of variations in Atmospheric Angular Momentum (AAM). */
 typedef struct {
     /** julian date of parameters */
-    jday time;
+    jday mjd;
 
     /** Flags whether the pole orientation is predicted of part of the IERS, that is 'I' or 'P' respectively */
     char pm_flag;

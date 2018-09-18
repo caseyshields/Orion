@@ -207,8 +207,8 @@ void configure_iers(int argc, char* argv[], IERS * iers ) {
         exit(1);
     }
 
-    char * start = jday2str( iers->eops[0].time );
-    char * end = jday2str( iers->eops[iers->size-1].time );
+    char * start = jday2str( iers->eops[0].mjd );
+    char * end = jday2str( iers->eops[iers->size-1].mjd );
     printf("%s to %s\n", start, end);
     free(start);
     free(end);
@@ -500,7 +500,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
 
     if(cli->eop) {
         fprintf( stream, "Earth Orientation\n\tMJD:\t%lf\n\txp:\t%lf arcsec (err=%lf)\n\typ:\t%lf arcsec (err=%lf)\n\tut1-utc:\t%lf sec (err=%lf)\n",
-                cli->eop->time,
+                cli->eop->mjd,
                 cli->eop->pm_x, cli->eop->pm_x_err,
                 cli->eop->pm_y, cli->eop->pm_y_err,
                  cli->eop->ut1_utc, cli->eop->ut1_utc_err);

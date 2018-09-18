@@ -40,7 +40,7 @@ IERS_EOP * iers_new_eop( IERS * iers ) {
 int iers_add( IERS * iers, IERS_EOP * eop ) {
 
     // test that parameters are being added in chronological order
-    if( iers->size==0 || eop->time < iers->eops[iers->size-1].time )
+    if( iers->size==0 || eop->mjd < iers->eops[iers->size-1].mjd )
         return -2;
 
     // obtain a new entry
@@ -77,7 +77,7 @@ int iers_load( IERS *iers, FILE * finals2000A ) {
 
         // compute the modified julian date
         strncpy(buf, line+7, 8);
-        eop->time = atof(buf) + 2400000.5;
+        eop->mjd = atof(buf) + 2400000.5;
 
         // get the prediction flag for polar offsets
         strncpy( &(eop->pm_flag), line+16, 1 );
@@ -123,7 +123,7 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
         size_t probe = low + half;
         size_t other = low + size - half;
         size = half;
-        low = (time < iers->eops[probe].time) ? low : other;
+        low = (time < iers->eops[probe].mjd) ? low : other;
     } // an optimized search with fewer comparisons, the latter of which can be compiled to a cmovaeq instruction
     // adapted from https://academy.realm.io/posts/how-we-beat-cpp-stl-binary-search/
 
@@ -153,7 +153,7 @@ void iers_free( IERS * iers ) {
 }
 
 void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
-    char * stamp = jday2str(eop->time);
+    char * stamp = jday2str(eop->mjd);
     fprintf( stream, "t:%s\tpmX:%lf\tpmY:%lf\tdt:%lf\te={%lf,%lf,%lf}",
              stamp, eop->pm_x, eop->pm_y, eop->ut1_utc,
              eop->pm_x_err, eop->pm_y_err, eop->ut1_utc_err);

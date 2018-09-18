@@ -225,7 +225,7 @@ void test_iers_load( CuTest * test ) {
         CuAssert(test, "Invalid flag for utc-ut1",
                  eop->dt_flag=='I' || eop->dt_flag=='P' || eop->dt_flag==' ' );
 
-        avg.time+=eop->time;
+        avg.mjd+=eop->mjd;
         avg.pm_x+=eop->pm_x;
         avg.pm_x_err+=eop->pm_x_err;
         avg.pm_y+=eop->pm_y;
@@ -233,7 +233,7 @@ void test_iers_load( CuTest * test ) {
         avg.ut1_utc+=eop->ut1_utc;
         avg.ut1_utc_err+=eop->ut1_utc_err;
     }
-    avg.time/=iers.size;
+    avg.mjd/=iers.size;
     avg.pm_x/=iers.size;
     avg.pm_x_err/=iers.size;
     avg.pm_y/=iers.size;
@@ -255,7 +255,7 @@ IERS_EOP * linear_search( IERS * iers, jday time ) {
     // linear search for upper bound
     int n = 0;
     while (n < iers->size)
-        if (time <= iers->eops[n].time)
+        if (time <= iers->eops[n].mjd)
             break;
         else n++;
     // check bounds
@@ -278,7 +278,7 @@ void test_iers_search( CuTest * test ) {
     IERS_EOP temp;
     memset(&temp, 0, sizeof(IERS_EOP));
     for(int n=0; n<count; n++) {
-        temp.time = offset + n*step;
+        temp.mjd = offset + n*step;
         iers_add( &iers, &temp );
     }
 
@@ -299,7 +299,7 @@ void test_iers_search( CuTest * test ) {
         CuAssertPtrEquals_Msg(test,
                 "binary search for upper bound of matching time does not return same result as a linear search",
                 leop, beop);
-        CuAssertDblEquals_Msg(test, "Returned search Time does not match", time, beop->time, 0.0);
+        CuAssertDblEquals_Msg(test, "Returned search Time does not match", time, beop->mjd, 0.0);
 
         // search for midpoints of intervals
         if(n==count-1)
@@ -309,7 +309,7 @@ void test_iers_search( CuTest * test ) {
         CuAssertPtrEquals_Msg(test,
                   "binary search for upper bound of interspersed time does not return same result as a linear search",
                   leop, beop);
-        CuAssert(test, "Returned search time is not an upper bound", time<=beop->time);
+        CuAssert(test, "Returned search time is not an upper bound", time<=beop->mjd);
         // should probably test the lower element as well...
 
         // NOTE : might want to extend this to test interpolation or rounding...
