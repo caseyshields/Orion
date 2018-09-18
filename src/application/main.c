@@ -459,7 +459,7 @@ int cmd_connect( char * line, Application * cli ) {
     return 0;
 }
 
-int cmd_target(char * line, Application * cli ) {//Orion * orion, Catalog * catalog ) {
+int cmd_target(char * line, Application * cli ) {
     unsigned long id = 0;
     int result = sscanf( line, "target %lu\n", &id );
 

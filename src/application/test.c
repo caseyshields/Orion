@@ -1,4 +1,5 @@
 #include "test.h"
+#include "main.h"
 
 void test_run() {
     CuSuite * suite = test_suite();
@@ -314,6 +315,77 @@ void test_iers_search( CuTest * test ) {
 
         // NOTE : might want to extend this to test interpolation or rounding...
     }
+}
+
+Catalog * get_test_catalog() {
+
+}
+
+void test_prediction( CuTest * test ) {
+
+    // Here is the reference MJD, ZD and EL which we want to reproduce
+    double reference[] = { 0.0,0.0,0.0};
+    // obtained from http://aa.usno.navy.mil/data/docs/topocentric.php
+
+    // create a dummy application state
+    Entry vega = {
+            .efg = {0,0,0},
+            .zenith_distance = 0,
+            .topocentric_azimuth = 0,
+            .magnitude = 0.03,
+            .novas = {
+                    .starname = "alpha Lyr",
+                    .catalog = "test",
+                    .starnumber = 699,
+                    .ra = 38.783690,
+                    .dec = 26.662130,
+                    .parallax = 128.930000,
+                    .promora = 00201.70,
+                    .promodec = 00286.67,
+                    .radialvelocity = -013.5
+            }
+    };
+
+    // compute time from MJD
+    jday time = 2400000.5 + reference[0];
+    //jday time = str2jday("2018/9/18 0:0:0");
+    // TODO the results are in UT1 so we need some convenience methods to work that to TT, which is the native application timescale...
+
+    // get Earth orientation
+    IERS_EOP eop = {
+            .mjd = time, .pm_flag='P', .dt_flag='M',
+            .pm_x=0.0, .pm_x_err=0.0,
+            .pm_y=0.0, .pm_y_err=0.0,
+            .ut1_utc=, .ut1_utc_err=
+    };
+
+    on_surface site = {
+            .pressure=1010,
+            .temperature=10,
+            .latitude=, // TODO lets make those dms conversion routines to make this more convenient
+            .longitude=,
+            .height=0.0
+    };
+
+    Tracker tracker = {
+            .azimuth = 0.0,
+            .elevation = 0.0,
+            .efg = {0,0,0},
+            .site = &site,
+            .earth = &eop
+    };
+
+//    Catalog catalog = { .size = 1, .allocated=1, .stars=&vega };
+//    Application app = {
+//            .mode=1, .ip="127.0.0.1", .port=43210, .jd_tt=time,
+//            .orion=NULL, .eop=NULL, .catalog=&catalog, .iers=NULL };
+//    cmd_target( "target 699", &app );
+    // TODO it would be nice to be able to test this at the application layer, but I need to do a better job extracting the commands...
+
+    // target a star that we have data for from the reference USNO implementation
+    tracker_point( tracker, jd_tt, vega.novas)
+
+
 }
 
 // Work in Progress!

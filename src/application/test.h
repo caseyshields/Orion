@@ -55,4 +55,7 @@ void test_iers_load( CuTest * test );
 /** Creates a dummy IERS bulletin and searches for bounds, every value, and midpoint of every interval. */
 void test_iers_search( CuTest * test );
 
+/** Compare Orion results against USNO reference implementation results. */
+void test_prediction( CuTest * test );
+
 #endif //STARTRACK_TEST_H

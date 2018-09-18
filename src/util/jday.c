@@ -46,7 +46,7 @@ void jday2date(jday jd_utc,
     *seconds = modf(*seconds, &m) * 60;
     *hour = (short int)h;
     *minute = (short int)m;
-}
+} // TODO debug this!!!
 
 jday date2jday(int year, int month, int day, int hour, int min, double seconds) {
     // compute the fractional hours novas requires
