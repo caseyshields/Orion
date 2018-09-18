@@ -8,7 +8,7 @@ Application app = {
         .orion=NULL,
         .catalog=NULL,
         .iers=NULL,
-        .time=0.0,
+        .jd_tt=0.0,
         .eop=NULL
 };
 
@@ -35,7 +35,7 @@ int main( int argc, char *argv[] ) {
     configure_catalog( argc, argv, app.catalog );
 
     // find the current earth orientation
-    app.eop = iers_search( app.iers, app.time );
+    app.eop = iers_search( app.iers, app.jd_tt );
     if(!app.eop) {
         app.eop = &MISSING_EOP;
     } // TODO notify user of predicted mode, or outdated catalogs?
@@ -46,7 +46,7 @@ int main( int argc, char *argv[] ) {
 
         // print prompt and get next user command
         printf( "\n" );
-        char * stamp = jday2str(tt2utc(app.time));
+        char * stamp = jday2str(tt2utc(app.jd_tt));
         char *line = NULL;
         size_t size = 0 ;
         ssize_t read = get_input( stamp, &line, &size );
@@ -123,7 +123,7 @@ void cleanup() {
 
 void configure_app( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
     app->mode = 1;
-    app->time = utc2tt(jday_now());
+    app->jd_tt = utc2tt(jday_now());
 
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
     char * arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
@@ -282,10 +282,10 @@ int cmd_time(char * line, Application * cli) {
         jday utc = date2jday(year, month, day, hour, min, secs);
 
         // convert that time to terrestrial time
-        cli->time = utc2tt(utc);
+        cli->jd_tt = utc2tt(utc);
 
         // look up the earth orientation parameters for the given day
-        cli->eop = iers_search( app.iers, cli->time );
+        cli->eop = iers_search( app.iers, cli->jd_tt );
         if (!cli->eop) {
             cli->eop = &MISSING_EOP;
             // TODO warn user about out of bound times?
@@ -374,7 +374,7 @@ int cmd_search(char * line, Application * cli) {
             Entry * entry = bright->stars[n];
 
             // transform the catalog coordinates to topocentric coordinates in spherical and rectilinear.
-            tracker_point( &tracker, app.time, &(entry->novas) );
+            tracker_point( &tracker, app.jd_tt, &(entry->novas) );
 
             // if the coordinates are within the patch, add them to the results
             if( tracker.elevation > el_min
@@ -489,11 +489,11 @@ int cmd_target(char * line, Application * cli ) {//Orion * orion, Catalog * cata
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
-    char * tt = jday2str( cli->time );
-    char * utc = jday2str( tt2utc(cli->time) );
-    char * ut1 = jday2str( iers_get_UT1( cli->eop, cli->time ) );
+    char * tt = jday2str( cli->jd_tt );
+    char * utc = jday2str( tt2utc(cli->jd_tt) );
+    char * ut1 = jday2str( iers_get_UT1( cli->eop, cli->jd_tt ) );
     double dt = iers_get_DeltaT(cli->eop);
-    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->time, dt );
+    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->jd_tt, dt );
     free(tt);
     free(utc);
     free(ut1);
@@ -514,7 +514,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
 
         // TODO get and print tracker time since it is now decoupled from the cli time!
 
-        tracker_point( &tracker, cli->time, &(target.novas) );
+        tracker_point( &tracker, cli->jd_tt, &(target.novas) );
         fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf ra % 8.4lf de\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
                 target.novas.catalog, target.novas.starnumber, target.novas.starname,
                 target.novas.ra, target.novas.dec,
@@ -541,7 +541,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     // get thread safe copies of the tracker and target from the orion server
     Tracker tracker = orion_get_tracker( orion );
     Entry target = orion_get_target( orion );
-    jday start = cli->time;
+    jday start = cli->jd_tt;
 
     // print tracker information
     tracker_print_site( &tracker, stream );

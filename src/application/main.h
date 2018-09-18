@@ -66,7 +66,7 @@ typedef struct {
 
     /** This time is used for catalog commands such as search and report. It does not affect the time broadcasted to
      * TATS sensors. Only the current time is used for that. */
-    jday time;
+    jday jd_tt;
 
     /** Earth orientation parameters for the user selected time */
     IERS_EOP * eop;
