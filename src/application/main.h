@@ -18,14 +18,17 @@
 #include "controller/orion.h"
 #include "application/test.h"
 
-/** default latitude of sensor in degrees */
-#define LATITUDE "38.88972222222222"
+/** default north latitude of sensor in degrees */
+#define LATITUDE "36.1989"
+//define LATITUDE "38.8897"
 
-/** default longitude of sensor in degrees */
-#define LONGITUDE "-77.0075"
+/** default east longitude of sensor in degrees */
+#define LONGITUDE "-115.1175"
+//define LONGITUDE "-77.0075"
 
 /** default geodetic height of sensor in meters */
-#define HEIGHT "125.0"
+#define HEIGHT "0.0"
+//#define HEIGHT "125.0"
 
 /** default site temperature in degrees celsius */
 #define TEMPERATURE "10.0"

@@ -489,8 +489,22 @@ int cmd_target(char * line, Application * cli ) {//Orion * orion, Catalog * cata
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
-    char * stamp = jday2str(cli->time);
-    fprintf( stream, "time:\t%s UTC\t(%+05.3lf TT)\n", stamp, cli->time );
+    char * tt = jday2str( cli->time );
+    char * utc = jday2str( tt2utc(cli->time) );
+    char * ut1 = jday2str( iers_get_UT1( cli->eop, cli->time ) );
+    double dt = iers_get_DeltaT(cli->eop);
+    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->time, dt );
+    free(tt);
+    free(utc);
+    free(ut1);
+
+    if(cli->eop) {
+        fprintf( stream, "Earth Orientation\n\tMJD:\t%lf\n\txp:\t%lf arcsec (err=%lf)\n\typ:\t%lf arcsec (err=%lf)\n\tut1-utc:\t%lf sec (err=%lf)\n",
+                cli->eop->time,
+                cli->eop->pm_x, cli->eop->pm_x_err,
+                cli->eop->pm_y, cli->eop->pm_y_err,
+                 cli->eop->ut1_utc, cli->eop->ut1_utc_err);
+    }
 
     Tracker tracker = orion_get_tracker( orion );
     tracker_print_site( &tracker, stream );
@@ -501,8 +515,9 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
         // TODO get and print tracker time since it is now decoupled from the cli time!
 
         tracker_point( &tracker, cli->time, &(target.novas) );
-        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
+        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf ra % 8.4lf de\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
                 target.novas.catalog, target.novas.starnumber, target.novas.starname,
+                target.novas.ra, target.novas.dec,
                 tracker.azimuth, tracker.elevation,
                 tracker.efg[0], tracker.efg[1], tracker.efg[2], target.magnitude);
 //        // print out an example midc01 message

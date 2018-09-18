@@ -90,6 +90,7 @@ Orion relies heavily on prior work by the [US Naval Observatory](http://www.usno
 It was developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and [MinGW](http://mingw.org/) toolchains.
 Lightweight unit testing is done with [CuTest](http://cutest.sourceforge.net/).
 Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
+Results are tested against the [USNO implementation](http://aa.usno.navy.mil/data/docs/topocentric.php).
 
 ![Component organization](https://caseyshields.github.io/Orion/diagrams/novas.svg)
 
@@ -109,4 +110,6 @@ Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://me
  - Add rest interface for catalog and tracker functionality using [libwebsockets](https://libwebsockets.org/)
  - Add web interface which utilizes [starmap](https://caseyshields.github.io/starlog/index.html) project to allow user interaction with the catalog
  - Add more Vizier catalogs like the Yale Bright Star [Catalog](http://tdc-www.harvard.edu/catalogs/bsc5.html)
-  
+
+## Links
+ - [IERS Time Scale Converter](https://www.iers.org/IERS/EN/DataProducts/tools/timescales/timescales.html)
