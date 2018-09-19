@@ -77,7 +77,7 @@ int iers_load( IERS *iers, FILE * finals2000A ) {
 
         // compute the modified julian date
         strncpy(buf, line+7, 8);
-        eop->mjd = atof(buf) + 2400000.5;
+        eop->mjd = atof(buf) + IERS_MJD_OFFSET;
 
         // get the prediction flag for polar offsets
         strncpy( &(eop->pm_flag), line+16, 1 );
@@ -137,11 +137,18 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
 
     // right now we just return the first subsequent parameters
     return &(iers->eops[low]);
-} // TODO ugh, duh, since the bulletin records are perfectly spaces we should use an interpolation search in basically O(1)!
+} // TODO ugh, duh, since the bulletin records are perfectly spaced we should use an interpolation search in basically O(1)
 
 jday iers_get_UT1( IERS_EOP * eop, jday utc ) {
+    if( fabs(eop->mjd - utc + IERS_MJD_OFFSET) > 1)
+        return (jday)NAN;
     return utc + eop->ut1_utc / SECONDS_IN_DAY;
-    //TODO ensure utc is within a day of the eop entry?
+}
+
+jday iers_get_UTC( IERS_EOP * eop, jday ut1 ) {
+    if( fabs(eop->mjd - ut1 + IERS_MJD_OFFSET) > 1)
+        return (jday)NAN;
+    return ut1 - eop->ut1_utc / SECONDS_IN_DAY;
 }
 
 double iers_get_DeltaT( IERS_EOP * eop ) {

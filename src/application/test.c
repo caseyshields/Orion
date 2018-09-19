@@ -22,6 +22,7 @@ CuSuite * test_suite() {
     SUITE_ADD_TEST(suite, test_novas);
     SUITE_ADD_TEST(suite, test_iers_load);
     SUITE_ADD_TEST(suite, test_iers_search);
+    SUITE_ADD_TEST(suite, test_prediction);
     return suite;
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
@@ -356,18 +357,12 @@ void test_iers_search( CuTest * test ) {
     }
 }
 
-/*void test_prediction( CuTest * test ) {
+void test_prediction( CuTest * test ) {
 
-    // we want answers to be within 10 arcseconds
-    double epsilon = 1/60.0/60.0*10.0; // answers are in degrees...
-
-    // Here is the reference MJD, ZD and EL which we want to reproduce
-    double reference[] = { 0.0,0.0,0.0};
-    // obtained from http://aa.usno.navy.mil/data/docs/topocentric.php
-
-    // create a dummy application state
+    // construct a catalog entry for Vega from Part I of the FK6 catalog;
+    //|  699 |  91262 | alpha Lyr          | 18 36 56.336939 |  +38 47  1.28333 | +00201.70 | +00286.67 |1990.93 |   0.46 |   0.21 |1990.98 |   0.45 |   0.20 | 128.93 |   0.55 |  H  | -013.5 |   0.03 |  1  |  23  |  2  |     | -0025.23 | -0005.80 | -0005.98 | -0072.68 | -0037.05 | +0006.73 | +0007.17 | -0161.31 | -0000.23 | -0000.65 | -0000.67 | -0000.82 | +0000.51 | -0000.41 | +0000.75 | +0000.80 | -0001.58 | +0000.50 |1959.60 |1991.00 |1991.00 |1941.72 |  10.79 |   0.46 |   0.46 |  13.50 |   0.30 |   0.56 |   0.57 |   0.41 |   0.27 |1954.47 |1991.03 |1991.03 |1920.23 |  12.47 |   0.45 |   0.45 |  17.33 |   0.26 |   0.59 |   0.60 |   0.39 |   0.24 | 128.89 | 128.93 | 128.93 |   0.54 |   0.55 |   0.55 | -0032.63 | -0003.13 | +0000.94 | +0001.01 |     9.48 |     6.90 |     0.29 |     0.18 |  1  |   3.36 |   1.88 |   3.85 |   5.25 | 430 |
     Entry vega = {
-            .efg = {0,0,0},
+            .efg = {0, 0, 0},
             .zenith_distance = 0,
             .topocentric_azimuth = 0,
             .magnitude = 0.03,
@@ -375,28 +370,32 @@ void test_iers_search( CuTest * test ) {
                     .starname = "alpha Lyr",
                     .catalog = "test",
                     .starnumber = 699,
-                    .ra = 38.783690,
-                    .dec = 26.662130,
-                    .parallax = 128.930000,
+                    .ra = dms2deg(18, 36, 56.336939), // this actually remains in hours despite using dms!
+                    .dec = dms2deg(38, 47, 1.28333),
+                    .parallax = 128.93,
                     .promora = 00201.70,
                     .promodec = 00286.67,
                     .radialvelocity = -013.5
             }
     };
+    CuAssertDblEquals_Msg(test, "Right Ascension Hour conversion failed", 18.615649, vega.novas.ra, 0.000001);
+    CuAssertDblEquals_Msg(test, "Declination degree conversion failed", 38.783690, vega.novas.dec, 0.000001);
 
-    // compute time from MJD
-    jday time = 2400000.5 + reference[0];
-    //jday time = str2jday("2018/9/18 0:0:0");
-    // TODO the results are in UT1 so we need some convenience methods to work that to TT, which is the native application timescale...
-
-    // get Earth orientation
+    // construct earth orientation from the IERS bulletin entry;
+    //18 919 58380.00 P  0.207193 0.003944  0.344530 0.004292  P 0.0513092 0.0029860                 P     0.112    0.128     0.214    0.160
+    jday jd = date2jday(2018, 9, 19, 0, 0, 0);
+    jday mjd = jd - IERS_MJD_OFFSET;
     IERS_EOP eop = {
-            .mjd = time, .pm_flag='P', .dt_flag='M',
-            .pm_x=0.0, .pm_x_err=0.0,
-            .pm_y=0.0, .pm_y_err=0.0,
-            .ut1_utc=, .ut1_utc_err=
+            .mjd=mjd, .pm_flag='P', .dt_flag='P',
+            .pm_x=0.207193, .pm_x_err=0.003944,
+            .pm_y=0.344530, .pm_y_err=0.004292,
+            .ut1_utc=0.0513092, .ut1_utc_err=0.0029860
     };
+    CuAssertDblEquals_Msg(test, "incorrect MJD conversion", 58380.00, eop.mjd, 0.01);
 
+    // A tracker placed at the McCarren Viewing Area, from GoogleMaps
+    //                    36°04'19.3"N 115°08'03.7"W
+    //                    36.072032, -115.134350
     Tracker tracker = {
             .azimuth = 0.0,
             .elevation = 0.0,
@@ -404,23 +403,69 @@ void test_iers_search( CuTest * test ) {
             .site = {
                     .pressure=1010,
                     .temperature=10,
-                    .latitude=, // TODO lets make those dms conversion routines to make this more convenient
-                    .longitude=,
+                    .latitude=36.072032,//dms2deg(36, 4, 19.3),
+                    .longitude=-115.134350,//dms2deg(-115, 8, 3.7),
                     .height=0.0 },
             .earth = &eop
     };
+//    CuAssertDblEquals_Msg(test, "incorrect latitude conversion", 36.072032, tracker.site.latitude, 0.000001);
+//    CuAssertDblEquals_Msg(test, "incorrect longitude conversion", -115.134350, tracker.site.longitude, 0.000001);
+    // turns out the google values don't match, there is less precision in the formatted string...
 
-//    Catalog catalog = { .size = 1, .allocated=1, .stars=&vega };
+    // convert UT1 time to the TT timescale used by novas, and thus orion
+    jday jd_ut1 = date2jday(2018, 9, 19, 12, 0, 0);
+    jday jd_utc = iers_get_UTC(&eop, jd_ut1);
+    jday jd_tt = utc2tt(jd_utc);
+//    char * str = jday2str( jd_ut1 );
+//    printf( "jd_ut1:%s\n", str);
+//    free(str);
+
+    // Here is the reference MJD, ZD and EL which we want to reproduce
+//USNO report obtained from http://aa.usno.navy.mil/data/docs/topocentric.php
+/*
+                              Vega
+
+                  Apparent Topocentric Positions
+                    Local Zenith and True North
+
+                   McCarren
+         Location:  W115°08'03.7", N36°04'19.3",     0m
+            (Longitude referred to Greenwich meridian)
+
+   Date        Time                Zenith               Azimuth
+        (UT1)                     Distance              (E of N)
+             h  m   s              °  '   "             °  '   "
+2018 Sep 19 12:00:00.0            98 00 38.3          332 18 58.5
+2018 Sep 20 12:00:00.0            98 22 35.8          332 59 54.9
+2018 Sep 21 12:00:00.0            98 44 02.7          333 41 10.1
+2018 Sep 22 12:00:00.0            99 04 58.6          334 22 43.8
+2018 Sep 23 12:00:00.0            99 25 23.1          335 04 35.8
+ */
+
+// we want answers to be within 10 arcseconds
+    double epsilon = 10.0 / 60.0 / 60.0;
+
+    // target a star that we have data for from the reference USNO implementation
+    int result = tracker_point( &tracker, jd_ut1, &vega.novas);
+    CuAssertIntEquals_Msg(test, "tracker_point() failed", 0, result);
+    double az = dms2deg(332, 18, 58.5);
+    double zd = dms2deg(98, 00, 38.3);
+    double el = 90.0-zd;
+    CuAssertDblEquals_Msg(test, "Inaccurate Tracker azimuth", az, tracker.azimuth, epsilon);
+    CuAssertDblEquals_Msg(test, "Inaccurate Tracker elevation", el, tracker.elevation, epsilon);
+
+    //332.316250 // usno reference....
+    //332.515724 // decimal coordinate
+    //332.701623 // dms coordinates
+    //332.701623
+
+    //    Catalog catalog = { .size = 1, .allocated=1, .stars=&vega };
 //    Application app = {
 //            .mode=1, .ip="127.0.0.1", .port=43210, .jd_tt=time,
 //            .orion=NULL, .eop=NULL, .catalog=&catalog, .iers=NULL };
 //    cmd_target( "target 699", &app );
     // TODO it would be nice to be able to test this at the application layer, but I need to do a better job extracting the commands...
-
-    // target a star that we have data for from the reference USNO implementation
-    tracker_point( tracker, jd_tt, vega.novas)
-
-}*/
+}
 
 // Work in Progress!
 void catalog_add_axis(Catalog * catalog, int type, int count);

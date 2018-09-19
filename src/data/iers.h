@@ -11,12 +11,15 @@
  * right now I just guessed the log2 of the number of items in the default dataset. */
 #define IERS_LINEAR_THRESHOLD 14.0
 
+/** In the IERS bulletins, Major Julian Date is represented as a constant offset from Julian Day. */
+#define IERS_MJD_OFFSET (2400000.5)
+
 /** A summary of the IERS Earth Orientation Parameters. These parameters are produced by combining
  * measurements from Very Long Baseline Interferometry (VLBI), Satellite Laser Ranging (SLR), the
  * Global Positioning System (GPS) satellites, Lunar Laser Ranging (LLR), and meteorological
  * predictions of variations in Atmospheric Angular Momentum (AAM). */
 typedef struct {
-    /** julian date of parameters */
+    /** Major Julian Date of parameters */
     jday mjd;
 
     /** Flags whether the pole orientation is predicted of part of the IERS, that is 'I' or 'P' respectively */
@@ -83,8 +86,13 @@ IERS_EOP * iers_search( IERS * iers, jday time );
 //IERS_EOP * iers_update(IERS * iers, IERS_EOP recent, jday time);
 
 /** @return The time in UT1, a time scale which depends on the non-uniform rotation of the earth.
- * It is derived by adding an empirically determined offset to UTC */
+ * It is derived by adding an empirically determined offset to UTC. If the Major Julian date of the
+ * earth orientation parameter is more then a day from the requested time, an invalid jday is returned. */
 jday iers_get_UT1( IERS_EOP * eop, jday utc );
+
+/** @return The time in Universal Coordinated Time. If the Major Julian date of the
+ * earth orientation parameter is more then a day from the requested time, an invalid jday is returned. */
+jday iers_get_UTC( IERS_EOP * eop, jday ut1 );
 
 /** @returns The time offset in seconds of the given earth orientation. */
 double iers_get_DeltaT( IERS_EOP * eop );

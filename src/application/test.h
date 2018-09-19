@@ -60,6 +60,6 @@ void test_dms( CuTest * test );
 
 /** Compare Orion results against USNO reference implementation results. An integration test
  * of Tracker, IERS, Entry & jday. */
-//void test_prediction( CuTest * test );
+void test_prediction( CuTest * test );
 
 #endif //STARTRACK_TEST_H
