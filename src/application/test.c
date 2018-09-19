@@ -41,11 +41,16 @@ void test_angles( CuTest * test ) {
 //            printf(DMS_OUTPUT_FORMAT, d, m, s);
         CuAssertDblEquals_Msg(test, "incorrect decimal degree conversion", angle, deg, mas);
 
-//        // test string conversion
-//        char * str = dms2str(d, m, s);
-//        deg = str2deg(str);
-//        CuAssertDblEquals_Msg(test, "incorrect string conversion of DMS", angle, deg, 10*mas);
-//        free(str);
+        // test string conversion
+        char * str1 = dms2str(d, m, s);
+        deg = str2deg(str1);
+        CuAssertDblEquals_Msg(test, "incorrect string conversion of DMS", angle, deg, 10*mas);
+
+        char * str2 = deg2str( angle );
+        CuAssertStrEquals_Msg(test, "String conversions did not match", str1, str2);
+
+        free(str1);
+        free(str2);
     }
 }
 

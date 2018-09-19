@@ -10,10 +10,8 @@
 
 
 #define DMS_OUTPUT_FORMAT "% 3d°% 2d'% 6.3lf\""
-//"% 2dd % 2dm % 6.3lfs"
 
 #define DMS_INPUT_FORMAT "%d°%d'%lf\""
-//"%d%c%u%c%lf%c"
 
 void scale( double U[3], double k );
 
@@ -40,19 +38,16 @@ double degrees2radians( double d );
 void spherical2cartesian(double theta, double phi, double C[3] );
 
 void deg2dms( double degrees, int * d, int * m, double * s );
-//void degrees2dms(double degrees, int * deg, int * min, double * sec);
 
 /** @param degrees
  * @param minutes
  * @param seconds
  * @return the equivalant angle in decimal degrees*/
 double dms2deg( int degrees, int minutes, double seconds );
-//double dms2degrees(int degrees, int minutes, double seconds);
 
-char* deg2str(double degrees);////////
+char* deg2str(double degrees);
 
 char * dms2str(int d, int m, double s);
-//char* dms2str(int degrees, int minutes, double seconds);
 
 void str2dms(char * str, int * d, int *m, double * s);
 
@@ -61,7 +56,9 @@ double str2deg(char * str);
 // TODO add conversion routines for llh? //W114°58'48.0", N36°03'00.0",     0m
 
 void degrees2hms(double degrees, int * hour, int * min, double * sec);
+
 double hms2degrees(int hours, int minutes, double seconds);
+
 char* hms2str(int hours, int minutes, double seconds);
 
 #endif //STARTRACK_VMATH_H
