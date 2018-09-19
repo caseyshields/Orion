@@ -384,14 +384,13 @@ void test_prediction( CuTest * test ) {
     // construct earth orientation from the IERS bulletin entry;
     //18 919 58380.00 P  0.207193 0.003944  0.344530 0.004292  P 0.0513092 0.0029860                 P     0.112    0.128     0.214    0.160
     jday jd = date2jday(2018, 9, 19, 0, 0, 0);
-    jday mjd = jd - IERS_MJD_OFFSET;
     IERS_EOP eop = {
-            .mjd=mjd, .pm_flag='P', .dt_flag='P',
+            .mjd=jd, .pm_flag='P', .dt_flag='P',
             .pm_x=0.207193, .pm_x_err=0.003944,
             .pm_y=0.344530, .pm_y_err=0.004292,
             .ut1_utc=0.0513092, .ut1_utc_err=0.0029860
     };
-    CuAssertDblEquals_Msg(test, "incorrect MJD conversion", 58380.00, eop.mjd, 0.01);
+    CuAssertDblEquals_Msg(test, "incorrect MJD conversion", IERS_MJD_OFFSET+58380.00, eop.mjd, 0.01);
 
     // A tracker placed at the McCarren Viewing Area, from GoogleMaps
     //                    36°04'19.3"N 115°08'03.7"W

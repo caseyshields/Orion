@@ -140,13 +140,13 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
 } // TODO ugh, duh, since the bulletin records are perfectly spaced we should use an interpolation search in basically O(1)
 
 jday iers_get_UT1( IERS_EOP * eop, jday utc ) {
-    if( fabs(eop->mjd - utc + IERS_MJD_OFFSET) > 1)
+    if( fabs(eop->mjd - utc) > 1)
         return (jday)NAN;
     return utc + eop->ut1_utc / SECONDS_IN_DAY;
 }
 
 jday iers_get_UTC( IERS_EOP * eop, jday ut1 ) {
-    if( fabs(eop->mjd - ut1 + IERS_MJD_OFFSET) > 1)
+    if( fabs(eop->mjd - ut1) > 1)
         return (jday)NAN;
     return ut1 - eop->ut1_utc / SECONDS_IN_DAY;
 }
