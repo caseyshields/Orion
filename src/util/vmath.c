@@ -26,79 +26,6 @@ double normalize( double U[3] ) {
     return m;
 }
 
-double hours2radians( double h ) { return (h/24.0)*M_PI; }
-
-double degrees2radians( double d ) { return (d/360.0)*M_PI; }
-
-void spherical2cartesian(double theta, double phi, double C[3] ) {
-    C[0] = sin(theta)*cos(phi);
-    C[1] = sin(theta)*sin(phi);
-    C[2] = cos(theta);
-}
-
-void degrees2dms(double degrees, int *deg, int * min, double * sec) {
-    double t, d, m;
-    t = modf( degrees, &d );
-    t *= 60.0;
-    t = modf( t, &m );
-    t *= 60.0;
-
-    *deg = (int) d;
-    *min = (int) m;
-    *sec = t;
-}
-
-void degrees2hms(double degrees, int * hour, int * min, double * sec) {
-    double t, h, m;
-    t *= (24.0/360.0);
-    t = modf( t, &h );
-    t *= 60.0;
-    t = modf( t, &m );
-    t *= 60.0;
-
-    *hour = (int) h;
-    *min = (int) m;
-    *sec = t;
-}
-
-double dms2degrees(int degrees, int minutes, double seconds) {
-    double angle = degrees;
-    angle += minutes/(60.0);
-    angle += seconds/(3600.0);
-    return angle;
-}
-
-double hms2degrees(int hours, int minutes, double seconds) {
-    double angle = seconds;
-    angle /= 60.0;
-    angle += minutes;
-    angle /= 60.0;
-    angle += hours;
-    angle *= (360.0/24.0);
-    return angle;
-}
-
-char* degrees2str(double degrees) {
-    int d, h, m;
-    double s;
-    degrees2dms(degrees, &d, &m, &s);
-    return dms2str(d, m, s);
-}
-
-char* dms2str(int degrees, int minutes, double seconds) {
-    char * str = calloc(64, sizeof(char));
-//    memset(str, 0, sizeof(str));
-    sprintf(str, "%d°%d'%1.3lf\"\0", degrees, minutes, seconds);
-    return str;
-}
-
-char* hms2str(int hours, int minutes, double seconds) {
-    char * str = calloc(64, sizeof(char));
-//    memset(str, 0, sizeof(str));
-    sprintf(str, "%d:%d:%1.3lf\0", hours, minutes, seconds);
-    return str;
-}
-
 double angular_separation( double theta_1, double phi_1, double theta_2, double phi_2 ) {
     double dX = cos(phi_2) * cos(theta_2) - cos(phi_1) * cos(theta_1);
     double dY = cos(phi_2) * sin(theta_2) - cos(phi_1) * sin(theta_1);
@@ -122,4 +49,105 @@ double orthodromic_distance( double theta_1, double phi_1, double theta_2, doubl
     double cosd = dot( U, V );
 
     double angle = atan( sind / cosd );
+}
+
+double hours2radians( double h ) { return (h/24.0)*M_PI; }
+
+double degrees2radians( double d ) { return (d/360.0)*M_PI; }
+
+void spherical2cartesian(double theta, double phi, double C[3] ) {
+    C[0] = sin(theta)*cos(phi);
+    C[1] = sin(theta)*sin(phi);
+    C[2] = cos(theta);
+}
+
+double deg2dms( double degrees, int *d, int * m, double * s ) {
+    double dd, dm, ds;
+    ds = modf( degrees, &dd) * 60;
+    ds = modf( degrees, &dm) * 60;
+    *d = (int)dd;
+    *m = (int)dm;
+    *s = ds;
+}
+//void degrees2dms(double degrees, int *deg, int * min, double * sec) {
+//    double t, d, m;
+//    t = modf( degrees, &d );
+//    t *= 60.0;
+//    t = modf( t, &m );
+//    t *= 60.0;
+//
+//    *deg = (int) d;
+//    *min = (int) m;
+//    *sec = t;
+//}
+
+double dms2deg( int degrees, int minutes, double seconds ) {
+    return degrees + minutes/60.0 + seconds/3600.0;
+}
+//double dms2degrees(int degrees, int minutes, double seconds) {
+//    double angle = degrees;
+//    angle += minutes/(60.0);
+//    angle += seconds/(3600.0);
+//    return angle;
+//}
+
+char* deg2str(double degrees) {
+    int d, h, m;
+    double s;
+    deg2dms(degrees, &d, &m, &s);
+    return dms2str(d, m, s);
+}
+
+char * dms2str(int d, int m, double s) {
+    char * str = calloc(16, sizeof(char));
+    sprintf(str, DMS_OUTPUT_FORMAT, d, m, s);
+    return str;
+}
+//char* dms2str(int degrees, int minutes, double seconds) {
+//    char * str = calloc(64, sizeof(char));
+////    memset(str, 0, sizeof(str));
+//    sprintf(str, "%d°%d'%1.3lf\"", degrees, minutes, seconds);
+//    return str;
+//}
+
+void str2dms(char * str, int * d, int *m, double * s) {
+    char i,j,k;
+    sscanf( str, DMS_INPUT_FORMAT, d, &i, m, &j, s, &k );
+}
+
+double str2deg(char * str) {
+    int d, m;
+    double s;
+    str2dms(str, &d, &m, &s);
+    return dms2deg(d, m, s);
+}
+
+char* hms2str(int hours, int minutes, double seconds) {
+    char * str = calloc(64, sizeof(char));
+//    memset(str, 0, sizeof(str));
+    sprintf(str, "%d:%d:%1.3lf", hours, minutes, seconds);
+    return str;
+}
+
+void degrees2hms(double degrees, int * hour, int * min, double * sec) {
+    double t, h, m;
+    t *= (24.0/360.0);
+    t = modf( t, &h );
+    t *= 60.0;
+    t = modf( t, &m );
+    t *= 60.0;
+
+    *hour = (int) h;
+    *min = (int) m;
+    *sec = t;
+}
+
+double hms2degrees(int hours, int minutes, double seconds) {
+    double angle = seconds;
+    angle /= 60.0;
+    angle += minutes;
+    angle /= 60.0;
+    angle += hours;
+    angle *= (360.0/24.0);
+    return angle;
 }

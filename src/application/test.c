@@ -1,5 +1,4 @@
 #include "test.h"
-#include "main.h"
 
 void test_run() {
     CuSuite * suite = test_suite();
@@ -27,17 +26,64 @@ CuSuite * test_suite() {
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
 void test_angles( CuTest * test ) {
+    int count = 5000;
+    double angle, turn = (60*60*360.0);
+    double step = turn / (double)count;
     int d = 0, m = 0;
     double s = 0.0;
-    for (long seconds=0; seconds<360*60*60; seconds++) {
-        double degrees = ((double)seconds)/(60.0*60.0);
-        degrees2dms(degrees, &d, &m, &s);
-        double d2 = dms2degrees(d, m, s);
+    double mas = 1.0/(60.0*60.0*1000);
+
+    for (int n=0; n<count; n++) {
+        angle = (n*step)/(3600.0);
+
+        // test degrees, minutes, seconds conversion
+        deg2dms( angle, &d, &m, &s );
+        double deg = dms2deg( d, m, s );
+//        char msg[] = char[256];
+//        sprintf(msg, "angle=%lf\tdeg=%lf\n");
+        if( fabs(angle-deg)>mas )
+            printf(DMS_OUTPUT_FORMAT, d, m, s);
+
+        CuAssertDblEquals_Msg(test, "incorrect decimal degree conversion", angle, deg, mas);
+
+        // test string conversion
         char * str = dms2str(d, m, s);
-//        printf("%lds\t=\t%f°\t=\t%s\n", seconds, degrees, str);
+        deg = str2deg(str);
+        CuAssertDblEquals_Msg(test, "incorrect string conversion of DMS", angle, deg, 10*mas);
         free(str);
-        CuAssertDblEquals( test, degrees, d2, 0.0000001 );
+//      for(long seconds=0; seconds<360*60*60; seconds++) {
+//        double truth = ((double)seconds)/(60.0*60.0);
+//        degrees2dms(truth, &d, &m, &s);
+//        double d2 = dms2degrees(d, m, s);
+//        char * str = dms2str(d, m, s);
+////        printf("%lds\t=\t%f°\t=\t%s\n", seconds, degrees, str);
+//        free(str);
+//        CuAssertDblEquals( test, degrees, d2, 0.0000001 );
     }
+}
+
+void test_dms( CuTest * test ) {
+    int d = 73, m = 17;
+    double s = 16.1;
+    double truth = d + (m/60.0) + (s/3600.0);
+
+    double deg = dms2deg( 73, 17, 16.1 );
+    CuAssertDblEquals_Msg(test, "incorrect decimal degrees conversion", truth, deg, 1.0/360000.0);
+
+    int i,j;
+    double k;
+    deg2dms( deg, &i, &j, &k );
+    CuAssertIntEquals_Msg(test, "incorrect conversion, degrees", d, i);
+    CuAssertIntEquals_Msg(test, "incorrect conversion, minutes", m, j);
+    CuAssertDblEquals_Msg(test, "incorrect conversion, seconds", s, k, 0.01);
+
+    char * str = dms2str(d, m, s);
+    CuAssertStrEquals_Msg(test, "Incorrect printing of DMS", "73d 17m 16.10s", str);
+
+    deg = str2deg(str);
+    CuAssertDblEquals_Msg(test, "incorrect string parse of DMS", truth, deg, 1.0/360000.0);
+
+    free(str);
 }
 
 void test_time( CuTest * test ) {
@@ -317,11 +363,10 @@ void test_iers_search( CuTest * test ) {
     }
 }
 
-Catalog * get_test_catalog() {
+/*void test_prediction( CuTest * test ) {
 
-}
-
-void test_prediction( CuTest * test ) {
+    // we want answers to be within 10 arcseconds
+    double epsilon = 1/60.0/60.0*10.0; // answers are in degrees...
 
     // Here is the reference MJD, ZD and EL which we want to reproduce
     double reference[] = { 0.0,0.0,0.0};
@@ -359,19 +404,16 @@ void test_prediction( CuTest * test ) {
             .ut1_utc=, .ut1_utc_err=
     };
 
-    on_surface site = {
-            .pressure=1010,
-            .temperature=10,
-            .latitude=, // TODO lets make those dms conversion routines to make this more convenient
-            .longitude=,
-            .height=0.0
-    };
-
     Tracker tracker = {
             .azimuth = 0.0,
             .elevation = 0.0,
             .efg = {0,0,0},
-            .site = &site,
+            .site = {
+                    .pressure=1010,
+                    .temperature=10,
+                    .latitude=, // TODO lets make those dms conversion routines to make this more convenient
+                    .longitude=,
+                    .height=0.0 },
             .earth = &eop
     };
 
@@ -385,8 +427,7 @@ void test_prediction( CuTest * test ) {
     // target a star that we have data for from the reference USNO implementation
     tracker_point( tracker, jd_tt, vega.novas)
 
-
-}
+}*/
 
 // Work in Progress!
 void catalog_add_axis(Catalog * catalog, int type, int count);
