@@ -40,7 +40,7 @@ IERS_EOP * iers_new_eop( IERS * iers ) {
 int iers_add( IERS * iers, IERS_EOP * eop ) {
 
     // test that parameters are being added in chronological order
-    if( iers->size==0 || eop->mjd < iers->eops[iers->size-1].mjd )
+    if( iers->size>0 && eop->mjd < iers->eops[iers->size-1].mjd )
         return -2;
 
     // obtain a new entry
@@ -123,12 +123,14 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
         size_t probe = low + half;
         size_t other = low + size - half;
         size = half;
-        low = (time < iers->eops[probe].mjd) ? low : other;
+        low = (time <= iers->eops[probe].mjd) ? low : other;
     } // an optimized search with fewer comparisons, the latter of which can be compiled to a cmovaeq instruction
     // adapted from https://academy.realm.io/posts/how-we-beat-cpp-stl-binary-search/
 
     // check bounds, we only want to return values in a measured interval
-    if (low == 0 || low==iers->size)
+    if (low==iers->size) // low ==-1)
+        return NULL;
+    else if (low==0 && time < iers->eops[low].mjd)
         return NULL;
 
     // TODO should we interpolate orientation between the two adjacent dates?

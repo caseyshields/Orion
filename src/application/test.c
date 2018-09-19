@@ -298,7 +298,7 @@ IERS_EOP * linear_search( IERS * iers, jday time ) {
             break;
         else n++;
     // check bounds
-    if (n==0 || n==iers->size)
+    if (n==iers->size)
         return NULL;
     else
         return &(iers->eops[n]);
@@ -318,7 +318,8 @@ void test_iers_search( CuTest * test ) {
     memset(&temp, 0, sizeof(IERS_EOP));
     for(int n=0; n<count; n++) {
         temp.mjd = offset + n*step;
-        iers_add( &iers, &temp );
+        int result = iers_add( &iers, &temp );
+        CuAssertIntEquals_Msg(test, "iers_add failed", 0, result);
     }
 
     // test bounds
@@ -329,7 +330,7 @@ void test_iers_search( CuTest * test ) {
     CuAssertPtrEquals_Msg(test,"searches after last item should return null", NULL, eop);
 
     // search for exact matches to every time
-    for (int n; n<count; n++) {
+    for (int n=0; n<count; n++) {
         jday time = offset + step * n;
 
         // search for exact match
