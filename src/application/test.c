@@ -26,39 +26,26 @@ CuSuite * test_suite() {
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
 void test_angles( CuTest * test ) {
-    int count = 5000;
-    double angle, turn = (60*60*360.0);
-    double step = turn / (double)count;
+    double count = 5000;
     int d = 0, m = 0;
     double s = 0.0;
     double mas = 1.0/(60.0*60.0*1000);
 
     for (int n=0; n<count; n++) {
-        angle = (n*step)/(3600.0);
+        double angle = ((double)n)*360.0/count;
 
         // test degrees, minutes, seconds conversion
         deg2dms( angle, &d, &m, &s );
         double deg = dms2deg( d, m, s );
-//        char msg[] = char[256];
-//        sprintf(msg, "angle=%lf\tdeg=%lf\n");
-        if( fabs(angle-deg)>mas )
-            printf(DMS_OUTPUT_FORMAT, d, m, s);
-
+//        if( fabs(angle-deg)>mas )
+//            printf(DMS_OUTPUT_FORMAT, d, m, s);
         CuAssertDblEquals_Msg(test, "incorrect decimal degree conversion", angle, deg, mas);
 
-        // test string conversion
-        char * str = dms2str(d, m, s);
-        deg = str2deg(str);
-        CuAssertDblEquals_Msg(test, "incorrect string conversion of DMS", angle, deg, 10*mas);
-        free(str);
-//      for(long seconds=0; seconds<360*60*60; seconds++) {
-//        double truth = ((double)seconds)/(60.0*60.0);
-//        degrees2dms(truth, &d, &m, &s);
-//        double d2 = dms2degrees(d, m, s);
+//        // test string conversion
 //        char * str = dms2str(d, m, s);
-////        printf("%lds\t=\t%f°\t=\t%s\n", seconds, degrees, str);
+//        deg = str2deg(str);
+//        CuAssertDblEquals_Msg(test, "incorrect string conversion of DMS", angle, deg, 10*mas);
 //        free(str);
-//        CuAssertDblEquals( test, degrees, d2, 0.0000001 );
     }
 }
 

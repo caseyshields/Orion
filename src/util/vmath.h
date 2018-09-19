@@ -12,7 +12,8 @@
 #define DMS_OUTPUT_FORMAT "% 3d°% 2d'% 6.3lf\""
 //"% 2dd % 2dm % 6.3lfs"
 
-#define DMS_INPUT_FORMAT "%d%c%u%c%lf%c"
+#define DMS_INPUT_FORMAT "%d°%d'%lf\""
+//"%d%c%u%c%lf%c"
 
 void scale( double U[3], double k );
 
@@ -38,7 +39,7 @@ double degrees2radians( double d );
 
 void spherical2cartesian(double theta, double phi, double C[3] );
 
-double deg2dms( double degrees, int * d, int * m, double * s );
+void deg2dms( double degrees, int * d, int * m, double * s );
 //void degrees2dms(double degrees, int * deg, int * min, double * sec);
 
 /** @param degrees

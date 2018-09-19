@@ -61,25 +61,25 @@ void spherical2cartesian(double theta, double phi, double C[3] ) {
     C[2] = cos(theta);
 }
 
-double deg2dms( double degrees, int *d, int * m, double * s ) {
-    double dd, dm, ds;
-    ds = modf( degrees, &dd) * 60;
-    ds = modf( degrees, &dm) * 60;
-    *d = (int)dd;
-    *m = (int)dm;
-    *s = ds;
-}
-//void degrees2dms(double degrees, int *deg, int * min, double * sec) {
-//    double t, d, m;
-//    t = modf( degrees, &d );
-//    t *= 60.0;
-//    t = modf( t, &m );
-//    t *= 60.0;
-//
-//    *deg = (int) d;
-//    *min = (int) m;
-//    *sec = t;
+//void deg2dms( double degrees, int *d, int * m, double * s ) {
+//    double dd, dm, ds;
+//    ds = modf( degrees, &dd) * 60.0;
+//    ds = modf( ds, &dm) * 60.0;
+//    *d = (int)dd;
+//    *m = (int)dm;
+//    *s = ds;
 //}
+void deg2dms(double degrees, int *deg, int * min, double * sec) {
+    double t, d, m;
+    t = modf( degrees, &d );
+    t *= 60.0;
+    t = modf( t, &m );
+    t *= 60.0;
+
+    *deg = (int) d;
+    *min = (int) m;
+    *sec = t;
+}
 
 double dms2deg( int degrees, int minutes, double seconds ) {
     return degrees + minutes/60.0 + seconds/3600.0;
@@ -99,7 +99,7 @@ char* deg2str(double degrees) {
 }
 
 char * dms2str(int d, int m, double s) {
-    char * str = calloc(16, sizeof(char));
+    char * str = calloc(32, sizeof(char));
     sprintf(str, DMS_OUTPUT_FORMAT, d, m, s);
     return str;
 }
@@ -111,8 +111,7 @@ char * dms2str(int d, int m, double s) {
 //}
 
 void str2dms(char * str, int * d, int *m, double * s) {
-    char i,j,k;
-    sscanf( str, DMS_INPUT_FORMAT, d, &i, m, &j, s, &k );
+    sscanf( str, DMS_INPUT_FORMAT, d, m, s );
 }
 
 double str2deg(char * str) {
