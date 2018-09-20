@@ -6,7 +6,7 @@
 #define STARTRACK_JDAY_H
 
 #include <sys/time.h>
-
+#include "../lib/cutest-1.5/CuTest.h"
 #include "../lib/novasc3.1/novas.h"
 
 #define SECONDS_IN_DAY 86400.0
@@ -69,5 +69,9 @@ char * jday2str(jday utc);
  * @param stamp A string in the format TIMESTAMP_INPUT
  * @return the equivalent UTC Julian day or NAN if the string was invalid*/
 jday str2jday(char *stamp);
+
+/** Unit test of conversions between the novas jday based time representation and a few others
+ * @param test the CuTest structure which holds test results. */
+void test_time( CuTest * test );
 
 #endif //STARTRACK_JDAY_H

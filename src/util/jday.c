@@ -77,3 +77,23 @@ jday str2jday(char *stamp) {
     // set the time
     return date2jday(year, month, day, hour, min, seconds);
 }
+
+// test ///////////////////////////////////////////////////////////////////////
+
+void test_time( CuTest * test ) {
+    // check that lenient input formatting interprets the timestamp consistently
+    char * inputs[] = {"2000/1/2 3:4:5.006",
+                       "2000/1/2 03:04:05.006123"};
+
+    // output formatting is consistent
+    char * output = "2000/01/02 03:04:05.006";
+
+    // check that the retrieved timestamp is correct for each input
+    for( int n = 0; n<2; n++ ) {
+        jday time = str2jday(inputs[n]);
+        CuAssertTrue( test, jday_is_valid(time) );
+        char *copy = jday2str(time);
+        CuAssertStrEquals( test, output, copy );
+        free(copy);
+    }
+}

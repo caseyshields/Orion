@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include "../lib/novasc3.1/novas.h"
+#include "../lib/cutest-1.5/CuTest.h"
 #include "util/vmath.h"
 #include "data/fk6.h"
 
@@ -143,8 +144,8 @@ void catalog_clear( Catalog *c );
 /** Releases the Catalog and it's directory, but not the actual Entries.*/
 void catalog_free( Catalog *c );
 
-//typedef struct {
-//    double ra, dec, r;
-//} Aperture; // tracking the current orientation of the tracker might be useful...
+/** Loads an example fk6 dataset, and only performs some crude sanity checks
+ * @param test the CuTest structure which holds test results. */
+void test_FK6( CuTest * test );
 
 #endif //STARTRACK_CATALOG_H

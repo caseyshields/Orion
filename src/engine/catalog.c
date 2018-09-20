@@ -270,6 +270,36 @@ Catalog * catalog_load_fk6(Catalog * catalog, FK6 *fk6, FILE *file) {
     return catalog;
 }
 
+// test ///////////////////////////////////////////////////////////////////////
+
+void test_FK6( CuTest * test ) {
+    Catalog * catalog = catalog_create( 0, 1024 );
+
+    // load metadata for the first part of FK6
+    FILE * readme = fopen("../data/fk6/ReadMe", "r");
+    CuAssertPtrNotNullMsg( test, "Could not find FK6 readme", readme );
+    FK6 * fk6_1 = fk6_create();
+    fk6_load_fields( fk6_1, readme, FK6_1_HEADER );
+//    for(int n=0; n<fk6_1->cols; n++)
+//        fk6_print_field( &(fk6_1->fields[n]), stdout );
+    CuAssertIntEquals( test, 93, fk6_1->cols );
+
+    // load first part of FK6
+    FILE * data1 = fopen("../data/fk6/fk6_1.dat", "r");
+    CuAssertPtrNotNullMsg( test, "Could not find FK6 Part I", data1);
+    catalog_load_fk6( catalog, fk6_1, data1 );
+    fclose( data1 );
+    CuAssertIntEquals( test, 878, catalog->size );
+
+    // How can I test the validity of this data a bit more thoroughly...
+
+    // release all objects
+    fk6_free( fk6_1 );
+    free( fk6_1 );
+    catalog_free( catalog );
+    free( catalog );
+}
+
 // doesn't work because the stack variables that affect the behavior of the function
 // are out of scope when the function is called. C does not have closures.
 //EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, double dec_max ) {

@@ -12,6 +12,7 @@
 #define STARTRACK_TATS_H
 
 #include <stdio.h>
+#include "../lib/cutest-1.5/CuTest.h"
 
 /** 2^31/256 meters, or half the maximum distance representable by TATS((2^32)/256 = 16777216 meters).
  * Novas uses Astronomical units for distance and they set their celestial sphere(for the purposes of parallax)
@@ -152,13 +153,13 @@ typedef struct {
 /** Prints a diagnostic message string of the given message to the file. */
 void tats_print_midc01( MIDC01 * midc01, FILE * file );
 
-///** General message structure for the TATS Control Network */
-typedef struct {
-    unsigned char midc;
-    char tats_msg[19];
-} tcn_gen_msg;
+/* General message structure for the TATS Control Network */
+//typedef struct {
+//    unsigned char midc;
+//    char tats_msg[19];
+//} tcn_gen_msg;
 
-///** Template for TCN receive messages */
+/* Template for TCN receive messages */
 //typedef struct {
 //    unsigned char midc;
 //    unsigned short tidc;
@@ -166,5 +167,9 @@ typedef struct {
 //    unsigned char spare[16];
 //} tcn_rx_msg;
 
+
+/** Unit test which only checks whether the memory layout of Tats structures are correct
+ * @param test the CuTest structure which holds test results. */
+void test_tats( CuTest * test );
 
 #endif //STARTRACK_TATS_H

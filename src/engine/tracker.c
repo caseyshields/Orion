@@ -156,3 +156,81 @@ void tracker_print_site(Tracker *tracker, FILE * file) {
 
     fflush(file);
 }
+
+// test ///////////////////////////////////////////////////////////////////////
+
+#define N_STARS 3
+#define N_TIMES 4
+/** Adapted from Novas' checkout-stars.c */
+void test_novas( CuTest * test ) {
+    double answers[N_TIMES][N_STARS][2] = {
+            {{2.446989227,89.24635169},{5.530110735,-0.30571717},{10.714525532,-64.38130568}},
+            {{2.446989227,89.24635169},{5.530110735,-0.30571717},{10.714525532,-64.38130568}},
+            {{2.509479607,89.25196807},{5.531195895,-0.30301953},{10.714444762,-64.37366521}},
+            {{2.481178365,89.24254418},{5.530372302,-0.30231627},{10.713575398,-64.37966984}}
+    };
+
+    /*
+   Main function to check out many parts of NOVAS-C by calling
+   function 'topo_star' with version 3 of function 'solarsystem'.
+
+   For use with NOVAS-C Version 3.1.
+*/
+
+    short int error = 0;
+    short int accuracy = 1;
+    short int i, j;
+
+/*
+   'deltat' is the difference in time scales, TT - UT1.
+
+    The array 'tjd' contains four selected Julian dates at which the
+    star positions will be evaluated.
+*/
+
+    double deltat = 60.0;
+    double tjd[N_TIMES] = {2450203.5, 2450203.5, 2450417.5, 2450300.5};
+    double ra, dec;
+
+/*
+   Hipparcos (ICRS) catalog data for three selected stars.
+*/
+
+    cat_entry stars[N_STARS] = {
+            {"POLARIS", "HIP",   0,  2.530301028,  89.264109444,
+                    44.22, -11.75,  7.56, -17.4},
+            {"Delta ORI", "HIP", 1,  5.533444639,  -0.299091944,
+                    1.67,   0.56,  3.56,  16.0},
+            {"Theta CAR", "HIP", 2, 10.715944806, -64.394450000,
+                    -18.87, 12.06,  7.43,  24.0}};
+
+/*
+   The observer's terrestrial coordinates (latitude, longitude, height).
+*/
+
+    on_surface geo_loc = {45.0, -75.0, 0.0, 10.0, 1010.0};
+
+/*
+   Compute the topocentric places of the three stars at the four
+   selected Julian dates.
+*/
+
+    for (i = 0; i < N_TIMES; i++)
+    {
+        for (j = 0; j < N_STARS; j++)
+        {
+            error = topo_star (tjd[i],deltat,&stars[j],&geo_loc, accuracy, &ra,&dec);
+
+//                printf ("Error %d from topo_star. Star %d  Time %d\n",
+//                        error, j, i);
+            CuAssertIntEquals_Msg( test, "topo_star failed", 0, error );
+
+//            printf ("JD = %f  Star = %s\n", tjd[i], stars[j].starname);
+//            printf ("RA = %12.9f  Dec = %12.8f\n", ra, dec);
+//            printf ("\n");
+            CuAssertDblEquals(test, answers[i][j][0], ra, 0.0000001);
+            CuAssertDblEquals(test, answers[i][j][1], dec, 0.0000001);
+        }
+        printf ("\n");
+    }
+}

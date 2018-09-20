@@ -25,3 +25,11 @@ void tats_print_midc01(MIDC01 * midc01, FILE * file ) {
 //
 //    midc01->midc = TATS_TRK_DATA;
 //}
+
+// test ///////////////////////////////////////////////////////////////////////
+
+void test_tats( CuTest * test ) {
+    // make sure 1 byte alignment is working...
+    CuAssertIntEquals( test, 22, sizeof(MIDC01) );
+    CuAssertIntEquals( test, 22, sizeof(TCN_Message) );
+}

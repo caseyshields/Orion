@@ -6,6 +6,7 @@
 #define STARTRACK_IERS_H
 
 #include <util/jday.h>
+#include "../lib/cutest-1.5/CuTest.h"
 
 /** Time difference in julian days in which to switch to a linear search. I need to set this experimentally...
  * right now I just guessed the log2 of the number of items in the default dataset. */
@@ -110,5 +111,11 @@ jday tt2ut1( jday tt );
 
 /** releases all contained earth orientation parameter records. */
 void iers_free( IERS * iers );
+
+/** Loads the default IERS Bulletin A and performs some basic sanity tests */
+void test_iers_load( CuTest * test );
+
+/** Creates a dummy IERS bulletin and searches for bounds, every value, and midpoint of every interval. */
+void test_iers_search( CuTest * test );
 
 #endif //STARTRACK_IERS_H

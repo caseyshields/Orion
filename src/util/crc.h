@@ -6,6 +6,9 @@
 #ifndef DRDOBBS_CRC_H
 #define DRDOBBS_CRC_H
 
+#include <mem.h>
+#include "../lib/cutest-1.5/CuTest.h"
+
 /**
 //                                16  12  5
 // The CCITT CRC 16 polynomial is X + X + X + 1.
@@ -76,5 +79,10 @@ extern  int crc_ok;
 //
 **************************************************************************/
 unsigned short crc16( char * data_p, unsigned short length );
+
+/** Tests CRC checks on a few example inputs. Modified from code written by Bob Felice.
+ * http://www.drdobbs.com/implementing-the-ccitt-cyclical-redundan/199904926
+ * @param test the CuTest structure which holds test results. */
+void test_crc( CuTest * test );
 
 #endif //DRDOBBS_CRC_H

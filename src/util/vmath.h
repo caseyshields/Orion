@@ -7,7 +7,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../lib/cutest-1.5/CuTest.h"
 
 #define DMS_OUTPUT_FORMAT "% 3d°% 2d'% 6.3lf\""
 
@@ -60,5 +60,9 @@ void degrees2hms(double degrees, int * hour, int * min, double * sec);
 double hms2degrees(int hours, int minutes, double seconds);
 
 char* hms2str(int hours, int minutes, double seconds);
+
+/** Unit tests for converting between decimal degrees, degrees minutes seconds, and formatted strings
+ * @param test the CuTest structure which holds test results. */
+void test_angles( CuTest * test );
 
 #endif //STARTRACK_VMATH_H

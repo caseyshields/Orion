@@ -10,6 +10,7 @@
 #include <data/iers.h>
 
 #include "../lib/novasc3.1/novas.h"
+#include "../lib/cutest-1.5/CuTest.h"
 #include "util/jday.h"
 
 /** Novas in reduced accuracy mode can be expected to have 1 arcsecond accuracy when properly configured. */
@@ -106,5 +107,10 @@ int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target);
 int tracker_zenith(Tracker *tracker, jday jd_tt, double *right_ascension, double *declination);
 
 void tracker_print_site(Tracker *tracker, FILE * file);
+
+/** Performs some calculations on a small set of stars and tests them against precomputed coordinates.
+ * Directly taken from 'checkout-stars.c' from novas 3.1.
+ * @param test the CuTest structure which holds test results. */
+void test_novas( CuTest * test );
 
 #endif //STARTRACK_TRACKER_H

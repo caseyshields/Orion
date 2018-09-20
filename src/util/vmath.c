@@ -127,3 +127,37 @@ double hms2degrees(int hours, int minutes, double seconds) {
     angle *= (360.0/24.0);
     return angle;
 }
+
+// tests //////////////////////////////////////////////////////////////////////
+
+void test_angles( CuTest * test ) {
+    double count = 5000;
+    int d = 0, m = 0;
+    double s = 0.0;
+    double mas = 1.0/(60.0*60.0*1000);
+
+    for (int n=0; n<count; n++) {
+        double angle = ((double)n)*360.0/count;
+
+        // test degrees, minutes, seconds conversion
+        deg2dms( angle, &d, &m, &s );
+        double deg = dms2deg( d, m, s );
+//        if( fabs(angle-deg)>mas )
+//            printf(DMS_OUTPUT_FORMAT, d, m, s);
+        CuAssertDblEquals_Msg(test, "incorrect decimal degree conversion", angle, deg, mas);
+
+        // test string conversion
+        char * str1 = dms2str(d, m, s);
+        deg = str2deg(str1);
+        CuAssertDblEquals_Msg(test, "incorrect string conversion of DMS", angle, deg, 10*mas);
+
+        char * str2 = deg2str( angle );
+        CuAssertStrEquals_Msg(test, "String conversions did not match", str1, str2);
+
+        double angle2 = str2deg( str1 );
+        CuAssertDblEquals_Msg( test, "String parse of decimal degrees failed", angle, angle2, mas );
+
+        free(str1);
+        free(str2);
+    }
+}
