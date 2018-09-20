@@ -39,14 +39,21 @@ int main( int argc, char *argv[] ) {
     if(!app.eop) {
         app.eop = &MISSING_EOP;
     } // TODO notify user of predicted mode, or outdated catalogs?
-    //TODO set eop to current time or load the null eop?
+
+    // compute the current terrestrial time
+    jday jd_utc = jday_now();
+    jday jd_ut1 = iers_get_UT1( app.eop, jd_utc );
+    app.jd_tt = ut12tt( jd_ut1 );
+    //TODO perhaps app should track utc for simplicity?
 
     // Main loop
     while( app.mode ) {
 
         // print prompt and get next user command
+        jd_ut1 = tt2ut1( app.jd_tt );
+        jd_utc = iers_get_UTC( app.eop, jd_ut1 );
         printf( "\n" );
-        char * stamp = jday2str(tt2utc(app.jd_tt));
+        char * stamp = jday2str(jd_utc);
         char *line = NULL;
         size_t size = 0 ;
         ssize_t read = get_input( stamp, &line, &size );
@@ -123,7 +130,7 @@ void cleanup() {
 
 void configure_app( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
     app->mode = 1;
-    app->jd_tt = utc2tt(jday_now());
+    //app->jd_tt = utc2tt(jday_now());
 
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
     char * arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
@@ -279,17 +286,18 @@ int cmd_time(char * line, Application * cli) {
 
     } else {
         // convert the user supplied string stamp to a jday, which we assume is utc
-        jday utc = date2jday(year, month, day, hour, min, secs);
-
-        // convert that time to terrestrial time
-        cli->jd_tt = utc2tt(utc);
+        jday jd_utc = date2jday(year, month, day, hour, min, secs);
 
         // look up the earth orientation parameters for the given day
-        cli->eop = iers_search( app.iers, cli->jd_tt );
+        cli->eop = iers_search( app.iers, jd_utc );
         if (!cli->eop) {
             cli->eop = &MISSING_EOP;
             // TODO warn user about out of bound times?
         }// TODO warn user about predicted mode?
+
+        // convert that time to terrestrial time
+        jday jd_ut1 = iers_get_UT1( cli->eop, jd_utc );
+        cli->jd_tt = ut12tt( jd_ut1 );
 
         return 0;
     }
@@ -490,8 +498,8 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
     char * tt = jday2str( cli->jd_tt );
-    char * utc = jday2str( tt2utc(cli->jd_tt) );
-    char * ut1 = jday2str( iers_get_UT1( cli->eop, cli->jd_tt ) );
+    char * ut1 = jday2str( tt2ut1(cli->jd_tt) );
+    char * utc = jday2str( iers_get_UTC( cli->eop, tt2ut1(cli->jd_tt) ) );
     double dt = iers_get_DeltaT(cli->eop);
     fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->jd_tt, dt );
     free(tt);
@@ -552,7 +560,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     entry_print( &target ); // TODO print to the supplied stream
 
     // print the header
-    fprintf( stream, "UTC\tAZ\tEL\tE\tF\tG\n" );
+    fprintf( stream, "UT1\tAZ\tEL\tE\tF\tG\n" );
 
     // step over the given time interval
     step /= SECONDS_IN_DAY;
@@ -572,7 +580,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
 
         // print report entry
         int r = TATS_CELESTIAL_SPHERE_RADIUS;
-        char * ts = jday2str(tt2utc(start));
+        char * ts = jday2str(tt2ut1(start));
         fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%u\t%u\t%u\n", ts,
                 tracker.azimuth, tracker.elevation,
                  (int)(tracker.efg[0]*r), (int)(tracker.efg[1]*r), (int)(tracker.efg[2]*r) );
