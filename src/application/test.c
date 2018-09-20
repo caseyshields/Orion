@@ -31,65 +31,12 @@ CuSuite * test_suite() {
     return suite;
 }   // note you can add suites to suites if you want to add a bit more organization to the tests
 
-Entry test_getVega( CuTest * test ) {
-    Entry vega = {
-            .efg = {0, 0, 0},
-            .zenith_distance = 0,
-            .topocentric_azimuth = 0,
-            .magnitude = 0.03,
-            .novas = {
-                    .starname = "alpha Lyr",
-                    .catalog = "test",
-                    .starnumber = 699,
-                    .ra = dms2deg(18, 36, 56.336939), // this actually remains in hours despite using dms!
-                    .dec = dms2deg(38, 47, 1.28333),
-                    .parallax = 128.93,
-                    .promora = 00201.70,
-                    .promodec = 00286.67,
-                    .radialvelocity = -013.5
-            }
-    };
-    // Wow, Wikipedia doesn't match... apperently they get it from some coaxed version of FK5?
-    // Right Ascension  18h 36m 56.33635s[1]
-    // Declination	+38° 47′ 01.2802″
-//    CuAssertDblEquals_Msg(test, "Right Ascension Hour conversion failed", 18.615649, vega.novas.ra, 0.000001);
-//    CuAssertDblEquals_Msg(test, "Declination degree conversion failed", 38.783690, vega.novas.dec, 0.000001);
-    return vega;
-}
-
-IERS_EOP test_getEarth2018Sep9( CuTest * test ) {
-    jday jd = date2jday(2018, 9, 19, 0, 0, 0);
-    IERS_EOP eop = {
-            .mjd=jd, .pm_flag='P', .dt_flag='P',
-            .pm_x=0.207193, .pm_x_err=0.003944,
-            .pm_y=0.344530, .pm_y_err=0.004292,
-            .ut1_utc=0.0513092, .ut1_utc_err=0.0029860
-    };
-    CuAssertDblEquals_Msg(test, "incorrect MJD conversion", IERS_MJD_OFFSET+58380.00, eop.mjd, 0.01);
-    return eop;
-}
-
-Tracker test_getMcCarrenTracker( CuTest * test, IERS_EOP * eop ) {
-
-    Tracker tracker = {
-            .azimuth = 0.0,
-            .elevation = 0.0,
-            .efg = {0,0,0},
-            .site = {
-                    .pressure=1010,
-                    .temperature=10,
-                    .latitude=dms2deg(36, 4, 19.3),//36.072032,//
-                    .longitude=dms2deg(-115, 8, 3.7),//-115.134350,//
-                    .height=0.0 },
-            .earth = eop
-    };
-    CuAssertDblEquals_Msg(test, "incorrect latitude conversion", 36.072032, tracker.site.latitude, 0.000001);
-    CuAssertDblEquals_Msg(test, "incorrect longitude conversion", -115.134350, tracker.site.longitude, 0.000001);
-    return tracker;
-}
-
 void test_prediction( CuTest * test ) {
 
+    // we want answers to be within 10 arcseconds
+    double epsilon = 10.0 / 60.0 / 60.0;
+
+    // here's a hand jammed copy of the report. There's probably no typos.
     double usno[][3] = {
             { date2jday(2018, 9, 19, 12, 0, 0), dms2deg(98, 00, 38.3), dms2deg(332, 18, 58.5) },
             { date2jday(2018, 9, 19, 13, 0, 0), dms2deg(102, 37, 2.9), dms2deg(343, 15, 35.4) },
@@ -106,13 +53,15 @@ void test_prediction( CuTest * test ) {
     };
 
     Entry vega = test_getVega(test);
+//    CuAssertDblEquals_Msg(test, "Right Ascension Hour conversion failed", 18.615649, vega.novas.ra, 0.000001);
+//    CuAssertDblEquals_Msg(test, "Declination degree conversion failed", 38.783690, vega.novas.dec, 0.000001);
 
     IERS_EOP earth = test_getEarth2018Sep9(test);
+    CuAssertDblEquals_Msg(test, "incorrect MJD conversion", IERS_MJD_OFFSET+58380.00, earth.mjd, 0.01);
 
-    Tracker tracker = test_getMcCarrenTracker( test, &earth );
-
-    // we want answers to be within 10 arcseconds
-    double epsilon = 10.0 / 60.0 / 60.0;
+    Tracker tracker = test_getMcCarrenTracker( &earth );
+    CuAssertDblEquals_Msg(test, "incorrect latitude conversion", 36.072028, tracker.site.latitude, 0.000001);
+    CuAssertDblEquals_Msg(test, "incorrect longitude conversion", -115.134361, tracker.site.longitude, 0.000001);
 
     // target a star that we have data for from the reference USNO implementation
     for(int n=0; n<12; n++) {
@@ -132,15 +81,15 @@ void test_prediction( CuTest * test ) {
 
 //        // convert UT1 time to the TT timescale used by novas, and thus orion
         double leap_secs = 37.0;
-//        jday jd_ut1 = usno[n][0]; //date2jday(2018, 9, 19, 12, 0, 0);
-//        jday jd_tt = (jd_ut1 - eop.ut1_utc/86400.0) + ((leap_secs + 32.184) / 86400.0);//ut12tt( jd_ut1 );
-//        // adapted from Novas 3.1 section 3.2... doesn't work...
+        jday jd_ut1 = usno[n][0]; //date2jday(2018, 9, 19, 12, 0, 0);
+        jday jd_tt = (jd_ut1 - earth.ut1_utc/86400.0) + ((leap_secs + 32.184) / 86400.0); //ut12tt( jd_ut1 );
+        // adapted from Novas 3.1 section 3.2... doesn't work...
 
-        jday jd_ut1 = usno[n][0];
-        jday jd_tt = (jd_ut1 - earth.ut1_utc/86400.0)
-                     - ((leap_secs + 32.184) / 86400.0);
-        // some shit I randomly put together
-        // gives me better results with a bias of 57 arcsec, and a range around that of 2 arcseconds...
+//        jday jd_ut1 = usno[n][0];
+//        jday jd_tt = (jd_ut1 - earth.ut1_utc/86400.0)
+//                     - ((leap_secs + 32.184) / 86400.0);
+//        // some shit I randomly put together
+//        // gives me better results with a bias of 57 arcsec, and a range around that of 2 arcseconds...
 
         // TODO expose the calculation of celestial targets in tracker, then regenerate the USNO report for celestial coordinates.
         // use this to determine if the error is in abberation, parallax, propermotion(unlikely, these are small effects)
@@ -173,13 +122,6 @@ void test_prediction( CuTest * test ) {
     //332.701623 // dms coordinates
     //332.701623
 
-    /* There are a lot of errors at different magnitudes to sort out;
-     * Proper motion < 1 arcsecond/year(usu.much less)
-     * parallax < 1 arcsecond
-     * gravitational light bending < 0.05 arcseconds 10deg away from the sun
-     * aberration < 21 arcseconds
-     * refraction < 60 arcseconds @ 45deg, 1800 arcseconds at horizon */
-
     //    Catalog catalog = { .size = 1, .allocated=1, .stars=&vega };
 //    Application app = {
 //            .mode=1, .ip="127.0.0.1", .port=43210, .jd_tt=time,
@@ -188,7 +130,58 @@ void test_prediction( CuTest * test ) {
     // TODO it would be nice to be able to test this at the application layer, but I need to do a better job extracting the commands...
 }
 
-/** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */
+Entry test_getVega() {
+    Entry vega = {
+            .efg = {0, 0, 0},
+            .zenith_distance = 0,
+            .topocentric_azimuth = 0,
+            .magnitude = 0.03,
+            .novas = {
+                    .starname = "alpha Lyr",
+                    .catalog = "test",
+                    .starnumber = 699,
+                    .ra = dms2deg(18, 36, 56.336939), // this actually remains in hours despite using dms!
+                    .dec = dms2deg(38, 47, 1.28333),
+                    .parallax = 128.93,
+                    .promora = 00201.70,
+                    .promodec = 00286.67,
+                    .radialvelocity = -013.5
+            }
+    };
+    // Wow, Wikipedia doesn't match;
+    // Right Ascension  18h 36m 56.33635s[1]
+    // Declination	+38° 47′ 01.2802″
+    // ... apparently they get it from some coaxed version of FK5?
+    return vega;
+}
+
+IERS_EOP test_getEarth2018Sep9() {
+    jday jd = date2jday(2018, 9, 19, 0, 0, 0);
+    IERS_EOP eop = {
+            .mjd=jd, .pm_flag='P', .dt_flag='P',
+            .pm_x=0.207193, .pm_x_err=0.003944,
+            .pm_y=0.344530, .pm_y_err=0.004292,
+            .ut1_utc=0.0513092, .ut1_utc_err=0.0029860
+    };
+    return eop;
+}
+
+Tracker test_getMcCarrenTracker( IERS_EOP * eop ) {
+    Tracker tracker = {
+            .azimuth = 0.0,
+            .elevation = 0.0,
+            .efg = {0,0,0},
+            .site = {
+                    .pressure=1010,
+                    .temperature=10,
+                    .latitude = dms2deg(36, 4, 19.3),
+                    .longitude = -dms2deg(115, 8, 3.7),
+                    .height=0.0 },
+            .earth = eop
+    };
+    return tracker;
+}
+
 void test_benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // start the timer
     jday start = jday_now();

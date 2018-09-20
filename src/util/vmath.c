@@ -68,11 +68,11 @@ void deg2dms( double degrees, int *d, int * m, double * s ) {
     *d = (int)dd;
     *m = (int)dm;
     *s = ds;
-}
+} // TODO need to handle signs!!!
 
 double dms2deg( int degrees, int minutes, double seconds ) {
     return seconds/3600.0 + minutes/60.0 + degrees;
-}
+} // TODO need to handle signs!!!
 
 char* deg2str(double degrees) {
     int d, h, m;
@@ -85,7 +85,7 @@ char * dms2str(int d, int m, double s) {
     char * str = calloc(32, sizeof(char));
     sprintf(str, DMS_OUTPUT_FORMAT, d, m, s);
     return str;
-}
+}// TODO need to handle signs!!!
 
 void str2dms(char * str, int * d, int *m, double * s) {
     sscanf( str, DMS_INPUT_FORMAT, d, m, s );
