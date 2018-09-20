@@ -71,7 +71,7 @@ void deg2dms( double degrees, int *d, int * m, double * s ) {
 }
 
 double dms2deg( int degrees, int minutes, double seconds ) {
-    return degrees + minutes/60.0 + seconds/3600.0;
+    return seconds/3600.0 + minutes/60.0 + degrees;
 }
 
 char* deg2str(double degrees) {

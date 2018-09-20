@@ -499,7 +499,11 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
     free(ut1);
 
     if(cli->eop) {
-        fprintf( stream, "Earth Orientation\n\tMJD:\t%lf\n\txp:\t%lf arcsec (err=%lf)\n\typ:\t%lf arcsec (err=%lf)\n\tut1-utc:\t%lf sec (err=%lf)\n",
+        fprintf( stream, "Earth Orientation\n"
+                         "\tMJD:\t%lf\n"
+                         "\txp:\t%lf arcsec (err=%lf)\n"
+                         "\typ:\t%lf arcsec (err=%lf)\n"
+                         "\tut1-utc:\t%lf sec (err=%lf)\n",
                 cli->eop->mjd,
                 cli->eop->pm_x, cli->eop->pm_x_err,
                 cli->eop->pm_y, cli->eop->pm_y_err,

@@ -21,9 +21,9 @@
 #define J2000_EPOCH 2400000.5
 
 /** Julian days; the number of days since noon, January 1, 4713 BC- Which Joseph Justice Scaliger
- * estimated to be the beginning of history. This is a common time format used by Novas, so we
- * provide an explicit typing, and a set of convenience conversion methods built atop novas' own
- * routines.
+ * chose as a common multiple of competing calendars before any historical dates. This is a common
+ * time format used by Novas, so we provide an explicit typing, and a set of convenience conversion
+ * methods built atop novas' own routines.
  */
 typedef double jday;
 
@@ -35,14 +35,6 @@ int jday_is_valid(jday time);
 
 /** @return A julian day holding the current time in UTC. */
 jday jday_now();
-
-/** Terrestrial time is meant to be a smooth timescale and is derived from UTC by removing leap
- * seconds and adding an experimentally measured offset available from the IERS service
- * @param utc The Universal Coordinated Time in Julian Days
- * @returns The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
-jday utc2tt( jday utc );
-
-jday tt2utc( jday tt );
 
 /** @param time A posix structure holding the unix seconds with a fractional part
  * @return A Julian day equivalent to the given timeval. */

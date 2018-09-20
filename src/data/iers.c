@@ -155,6 +155,14 @@ double iers_get_DeltaT( IERS_EOP * eop ) {
     return DELTA_TT + LEAP_SECONDS - eop->ut1_utc;
 }
 
+jday ut12tt(jday ut1) {
+    return ut1 + (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
+}
+
+jday tt2ut1( jday tt ) {
+    return tt - (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
+}
+
 void iers_free( IERS * iers ) {
     iers->size = 0;
     free(iers->eops);

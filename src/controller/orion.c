@@ -93,7 +93,10 @@ void * orion_control_loop( void * arg ) {
             break;
 
         // calculate the expected time of arrival
-        jday jd_tt = utc2tt( jday_now() ) + (orion->latency/SECONDS_IN_DAY);
+        jday jd_utc = jday_now();
+        jday jd_ut1 = iers_get_UT1(orion->tracker.earth, jd_utc);
+        jday jd_tt = ut12tt( jd_ut1 );
+        jd_tt += (orion->latency/SECONDS_IN_DAY);
 
         // create a tracking message
         MIDC01 * message = (void*) buffer;

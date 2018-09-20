@@ -13,14 +13,6 @@ jday jday_now() {
     return unix2jday( &time );
 }
 
-jday utc2tt(jday utc) {
-    return utc + (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
-}
-
-jday tt2utc( jday tt ) {
-    return tt - (LEAP_SECONDS + DELTA_TT) / SECONDS_IN_DAY;
-}
-
 jday unix2jday( struct timeval * time) {
     // Novas's conversion routines take dates, hence this detour...
     struct tm* utc = gmtime( &(time->tv_sec) );

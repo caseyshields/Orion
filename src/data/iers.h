@@ -99,6 +99,15 @@ double iers_get_DeltaT( IERS_EOP * eop );
 
 void iers_print_eop( IERS_EOP * eop, FILE * file );
 
+
+/** Terrestrial time is meant to be a smooth timescale and is derived from UT1 by removing leap
+ * seconds and adding an experimentally measured offset available from the IERS service
+ * @param ut1 The Universal Coordinated Time in Julian Days
+ * @returns The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
+jday ut12tt( jday ut1 );
+
+jday tt2ut1( jday tt );
+
 /** releases all contained earth orientation parameter records. */
 void iers_free( IERS * iers );
 
