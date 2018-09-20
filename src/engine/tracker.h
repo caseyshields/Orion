@@ -40,8 +40,11 @@ typedef struct {
     /** A structure holding IERS parameters for the current orientation of the earth. Needed for high accuracy Novas calculations */
     IERS_EOP * earth;
 
-    /** Tracker orientation on the local horizon */
+    /** Tracker orientation on the topocentric local horizon */
     double azimuth, elevation;
+
+    /** Tracker orientation of the celestial sphere */
+    double right_ascension, declination;
 
     /** Tracker orientation in the ITRS frame */
     double efg[3];
@@ -80,11 +83,17 @@ IERS_EOP * tracker_get_earth(Tracker * tracker);
 void tracker_set_earth(Tracker * tracker, IERS_EOP * eop);
 // not really intrinsic to the tracker, I could see passing them along with the time
 
-/** sets the given angles to the tracker's current look direction in topocentric coordinates.
+/** sets the given angles to the tracker's current look direction in horizon topocentric spherical coordinates.
  * @param tracker
  * @param azimuth
  * @param elevation */
-void tracker_get_angles(Tracker * tracker, double * azimuth, double * elevation);
+void tracker_get_topocentric(Tracker * tracker, double * azimuth, double * elevation);
+
+/** sets the given angles to the tracker's current look direction in ICRS celestial spherical coordinates.
+ * @param tracker
+ * @param right_ascension
+ * @param declination */
+void tracker_get_celestial(Tracker * tracker, double * right_ascension, double * declination);
 
 /** Returns the tracker's current orientation as a unit vector in the ITRS frame.
  * @param tracker

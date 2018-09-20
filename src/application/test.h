@@ -32,7 +32,12 @@ Entry test_getVega();
 /** construct earth orientation from the IERS bulletin entry;
 <pre>
 18 919 58380.00 P  0.207193 0.003944  0.344530 0.004292  P 0.0513092 0.0029860                 P     0.112    0.128     0.214    0.160
-</pre> */
+</pre>
+  Newer version;
+<pre>
+18 919 58380.00 I  0.212071 0.000091  0.348723 0.000091  I 0.0558907 0.0000075  0.0222 0.0279  P     0.111    0.128     0.219    0.160
+</pre>
+ */
 IERS_EOP test_getEarth2018Sep9();
 
 /** https://www.google.com/maps/place/36%C2%B004'19.3%22N+115%C2%B008'03.7%22W/@36.0720393,-115.1344197,41m/data=!3m1!1e3!4m6!3m5!1s0x0:0x0!7e2!8m2!3d36.0720322!4d-115.13435?hl=en

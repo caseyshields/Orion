@@ -52,11 +52,11 @@ void test_prediction( CuTest * test ) {
             { date2jday(2018, 9, 19, 23, 0, 0), dms2deg(39, 51, 18.5), dms2deg(70, 17, 18.5) },
     };
 
-    Entry vega = test_getVega(test);
-//    CuAssertDblEquals_Msg(test, "Right Ascension Hour conversion failed", 18.615649, vega.novas.ra, 0.000001);
-//    CuAssertDblEquals_Msg(test, "Declination degree conversion failed", 38.783690, vega.novas.dec, 0.000001);
+    Entry vega = test_getVega();
+    CuAssertDblEquals_Msg(test, "Right Ascension Hour conversion failed", 18.615649, vega.novas.ra, 0.000001);
+    CuAssertDblEquals_Msg(test, "Declination degree conversion failed", 38.783690, vega.novas.dec, 0.000001);
 
-    IERS_EOP earth = test_getEarth2018Sep9(test);
+    IERS_EOP earth = test_getEarth2018Sep9();
     CuAssertDblEquals_Msg(test, "incorrect MJD conversion", IERS_MJD_OFFSET+58380.00, earth.mjd, 0.01);
 
     Tracker tracker = test_getMcCarrenTracker( &earth );
@@ -66,6 +66,7 @@ void test_prediction( CuTest * test ) {
     // target a star that we have data for from the reference USNO implementation
     for(int n=0; n<12; n++) {
 
+        // NOVAS documentation example of calculating time scales
 //        const short int year = 2008;
 //        const short int month = 4;
 //        const short int day = 24;
@@ -92,17 +93,14 @@ void test_prediction( CuTest * test ) {
 //        // gives me better results with a bias of 57 arcsec, and a range around that of 2 arcseconds...
 
         // TODO expose the calculation of celestial targets in tracker, then regenerate the USNO report for celestial coordinates.
-        // use this to determine if the error is in abberation, parallax, propermotion(unlikely, these are small effects)
-        // or if the error in earth orientation, it can't be refraction because I turned that off
-        // if both are still messed up then the catalog or location conversion is bad...
 
         // TODO determine the angle between the error and the motion; if it's about zero then we know it is entirely a time scale problem
 
         int result = tracker_point(&tracker, jd_tt, &vega.novas);
         CuAssertIntEquals_Msg(test, "tracker_point() failed", 0, result);
 
-        double az = usno[n][2]; //dms2deg(332, 18, 58.5);
-        double zd = usno[n][1]; //dms2deg(98, 00, 38.3);
+        double az = usno[n][2];
+        double zd = usno[n][1];
         double el = 90.0 - zd;
 
         double Eaz = tracker.azimuth - az;
@@ -117,17 +115,7 @@ void test_prediction( CuTest * test ) {
 //        CuAssertDblEquals_Msg(test, "Inaccurate Tracker azimuth", az, tracker.azimuth, epsilon);
 //        CuAssertDblEquals_Msg(test, "Inaccurate Tracker elevation", el, tracker.elevation, epsilon);
     }
-    //332.316250 // usno reference....
-    //332.515724 // decimal coordinate
-    //332.701623 // dms coordinates
-    //332.701623
 
-    //    Catalog catalog = { .size = 1, .allocated=1, .stars=&vega };
-//    Application app = {
-//            .mode=1, .ip="127.0.0.1", .port=43210, .jd_tt=time,
-//            .orion=NULL, .eop=NULL, .catalog=&catalog, .iers=NULL };
-//    cmd_target( "target 699", &app );
-    // TODO it would be nice to be able to test this at the application layer, but I need to do a better job extracting the commands...
 }
 
 Entry test_getVega() {
@@ -158,6 +146,18 @@ Entry test_getVega() {
 IERS_EOP test_getEarth2018Sep9() {
     jday jd = date2jday(2018, 9, 19, 0, 0, 0);
     IERS_EOP eop = {
+            .mjd=jd, .pm_flag='I', .dt_flag='I',
+            .pm_x=0.212071, .pm_x_err=0.000091,
+            .pm_y=0.348723, .pm_y_err=0.000091,
+            .ut1_utc=0.0558907, .ut1_utc_err=0.0000075
+    };
+    return eop;
+}
+
+// prediction from older version of the IERS
+IERS_EOP test_getEarth2018Sep9P() {
+    jday jd = date2jday(2018, 9, 19, 0, 0, 0);
+    IERS_EOP eop = {
             .mjd=jd, .pm_flag='P', .dt_flag='P',
             .pm_x=0.207193, .pm_x_err=0.003944,
             .pm_y=0.344530, .pm_y_err=0.004292,
@@ -181,6 +181,16 @@ Tracker test_getMcCarrenTracker( IERS_EOP * eop ) {
     };
     return tracker;
 }
+
+// TODO it would be nice to be able to test this at the application layer, but I need to do a better job extracting the commands...
+//void test_application() {
+//    Catalog catalog = { .size = 1, .allocated=1, .stars=&vega };
+//    Application app = {
+//            .mode=1, .ip="127.0.0.1", .port=43210, .jd_tt=time,
+//            .orion=NULL, .eop=NULL, .catalog=&catalog, .iers=NULL };
+//    cmd_target( "target 699", &app );
+//    ...
+//}
 
 void test_benchmark( Catalog* catalog, Tracker* tracker, int trials ) {
     // start the timer

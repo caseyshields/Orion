@@ -36,9 +36,14 @@ void tracker_set_earth(Tracker * tracker, IERS_EOP * eop) {
     tracker->earth = eop;
 }
 
-void tracker_get_angles(Tracker * tracker, double * azimuth, double * elevation) {
+void tracker_get_topocentric(Tracker * tracker, double * azimuth, double * elevation) {
     *azimuth = tracker->azimuth;
     *elevation = tracker->elevation;
+}
+
+void tracker_get_celestial(Tracker * tracker, double * right_ascension, double * declination) {
+    *right_ascension = tracker->right_ascension;
+    *declination = tracker->declination;
 }
 
 void tracker_get_direction(Tracker * tracker, double vec[3]) {
@@ -52,7 +57,7 @@ int tracker_point(
 {
     // Apply proper motion, parallax, gravitational deflection, relativistic
     // aberration and get the coordinates of the star in the true equator and equinox of date
-    double right_ascension=0, declination=0;
+//    double right_ascension=0, declination=0;
     short int error;
     error = topo_star(
             jd_tt,
@@ -61,14 +66,14 @@ int tracker_point(
             // thus they should be consistent to within 0.02 arcseconds of the BCRS
             &tracker->site, // The input location is supplied in WGS-84, which is within centimeters of the ITRS axis
             REDUCED_ACCURACY,
-            &right_ascension, // these are specified in term of the current orientations of the equator and ecliptic
-            &declination // that is, they don't make sense unless you have a date, because both of those things are moving...
+            &tracker->right_ascension, // these are specified in term of the current orientations of the equator and ecliptic
+            &tracker->declination // that is, they don't make sense unless you have a date, because both of those things are moving...
     );
     if( error )
         return error;
 
     // Apply refraction and convert Equatorial coordinates to horizon coordinates
-    double ra, dec;
+    //double ra, dec;
     equ2hor(
             jd_tt,
             iers_get_DeltaT( tracker->earth ),
@@ -76,10 +81,11 @@ int tracker_point(
             tracker->earth->pm_x,
             tracker->earth->pm_y,
             &tracker->site,
-            right_ascension, declination,
+            tracker->right_ascension, tracker->declination,
             REFRACTION_NONE, //REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
             &(tracker->elevation), &(tracker->azimuth),
-            &ra, &dec // uh, do I need to expose these? They are celestrial coordinates with refraction applied I believe
+            &tracker->right_ascension, &tracker->declination
+            //&ra, &dec // uh, do I need to expose these? They are celestial coordinates with refraction applied I believe
     );
 
     // the elevation is actually zenith distance so convert that real quick
@@ -88,7 +94,7 @@ int tracker_point(
     // convert the spherical coordinates to rectilinear
     double equ[3];
     // double celestial_sphere = 2<<31; // half TATS resolution?
-    radec2vector( right_ascension, declination, 1.0, equ );
+    radec2vector( tracker->right_ascension, tracker->declination, 1.0, equ );
 
     // now transform the equatorial coordinates into ITRS coordinates
     error = cel2ter(
