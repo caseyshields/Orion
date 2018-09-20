@@ -300,6 +300,73 @@ void test_FK6( CuTest * test ) {
     free( catalog );
 }
 
+// TODO Need to come up with a dummy catalog generator which I can test the filters against...
+// Work in Progress!
+void catalog_add_axis(Catalog * catalog, int type, int count);
+void test_search_equator() {
+    Catalog * catalog = catalog_create( NULL, 8 );
+    catalog_add_axis( catalog, 1, (24*60*60) );
+
+
+    // test each query along the axis contains
+}
+
+/** add either an equator or meridian to a catalog
+ * @param count number of equidistant points on the great circle.
+ * @param type 1 = Equator, 2 = Prime Meridian*/
+void catalog_add_axis(Catalog * catalog, int type, int count) {
+
+    // for the desired number of points
+    // notice <= so equator will wrap around, and meridian set will contain both poles
+    for (int n=0; n<=count; n++) {
+
+        // allocate and zero all values
+        Entry * entry = malloc( sizeof(Entry) );
+        memset( entry, 0, sizeof(Entry) );
+
+        // calculate test values
+        memcpy( entry->novas.catalog, "tst\0", 4);
+        if ( type == 1 ) {
+            double hours = 24.0 * n / count;
+            entry->novas.ra = hours;
+            sprintf( entry->novas.starname, "equator %lf", hours );
+        } else if (type == 2) {
+            double degrees = (180.0 * n / count) - 90.0;
+            entry->novas.dec = degrees;
+            sprintf( entry->novas.starname, "meridian %lf", degrees );
+        }
+
+        catalog_add(catalog, entry);
+    }
+} // need to generalize to an arbitrary lesser circle!
+
+// TODO readme columns in bsc5 do not line up, in fact they overlap. so this will not work with the FK6 loader
+// try using the metadata loader to load the yale
+void test_BSC5() {
+    // it could probably be made to work by splitting on whitespace.
+    Catalog * catalog = catalog_create( 0, 1024 );
+
+    FILE * readme = fopen("../data/bsc5/ReadMe", "r");
+    assert(NULL != readme);
+
+    char* header = "Byte-by-byte Description of file: catalog\n";
+    FK6 * bsc5 = fk6_create();
+    fk6_load_fields( bsc5, readme, header );//FK6_1_HEADER );
+    fclose( readme );
+
+    FILE * data = fopen("../data/bsc5/catalog", "r");
+    assert(NULL != data);
+    catalog_load_fk6(catalog, bsc5, data);
+    fclose( data );
+    fk6_free( bsc5 );
+    free( bsc5 );
+
+    catalog_print( catalog );
+
+    catalog_free( catalog );
+    free( catalog );
+}
+
 // doesn't work because the stack variables that affect the behavior of the function
 // are out of scope when the function is called. C does not have closures.
 //EntryPredicate patch_predicate( double ra_min, double ra_max, double dec_min, double dec_max ) {
