@@ -37,8 +37,7 @@ void test_prediction( CuTest * test ) {
     double epsilon = 10.0 / 60.0 / 60.0;
 
     // here's a hand jammed copy of the reports. There's probably no typos.
-    double usno[][5] = {
-        // UT1,  zd,  az,  ra,  dec
+    double usno[][5] = { // UT1,  zd,  az,  ra,  dec
         { date2jday(2018, 9, 19, 0, 0, 0), dms2deg(29, 03, 16.6), dms2deg(73, 25, 14.7), dms2deg(18, 37, 34.189), dms2deg(38, 48, 28.55) },
         { date2jday(2018, 9, 19, 1, 0, 0), dms2deg(17, 21, 12.4), dms2deg(74, 25, 47.5), dms2deg(18, 37, 34.191), dms2deg(38, 48, 28.59) },
         { date2jday(2018, 9, 19, 2, 0, 0), dms2deg(5, 54, 21.6), dms2deg(60, 26, 08.8), dms2deg(18, 37, 34.192), dms2deg(38, 48, 28.63) },
@@ -81,35 +80,26 @@ void test_prediction( CuTest * test ) {
     double Taz, Tel, Tra, Tdc; // Tracker Coordinates
     double Eaz, Eel, Era, Edc; // coordinate error
     double Eh, Ec; // error magnitude
-    double dUaz, dUel, dTaz, dTel; // horizon derivative
+//    double dUaz, dUel, dTaz, dTel; // horizon derivative
 
-    printf( "TT\tE_horizon\tE_celestial\n" );
+    printf( "TT\tE_horizon\tE_celestial\tUSNO elevation\n" );
 //    printf("\tTT\tUSNO_AZ\tUSNO_EL\tORION_AZ\tORION_EL\t|E|\tEaz\tEel\tEdms\n");
 
     for(int n=0; n<24; n++) {
 
-//        // convert UT1 time to the TT timescale used by novas, and thus orion
+        // convert UT1 time to the TT timescale used by novas, and thus orion
         double leap_secs = 37.0;
         jday jd_ut1 = usno[n][0];
         jday jd_utc = jd_ut1 - (earth.ut1_utc/86400.0);
         jday jd_tt = jd_utc + ((leap_secs + 32.184) / 86400.0);
-        // adapted from Novas 3.1 section 3.2... doesn't work...
+        // adapted from Novas 3.1 section 3.2
 
-//        jday jd_ut1 = usno[n][0];
-//        jday jd_tt = (jd_ut1 - earth.ut1_utc/86400.0)
-//                     - ((leap_secs + 32.184) / 86400.0);
-//        // some shit I randomly put together
-//        // gives me better results with a bias of 57 arcsec, and a range around that of 2 arcseconds...
-
-        int result = tracker_point(&tracker, jd_tt, &vega.novas, REFRACTION_NONE);
+        // point the tracker at the star, ignoring refraction.
+        int result = tracker_point(&tracker, jd_ut1, &vega.novas, REFRACTION_NONE);
         CuAssertIntEquals_Msg(test, "tracker_point() failed", 0, result);
-
-        if(n>0) {
-            dUaz = usno[n][2] - usno[n-1][2];
-            dUel = usno[n][1] - usno[n-1][1];
-            dTaz = Taz - tracker.azimuth;
-            dTel = Tel = tracker.elevation;
-        }
+        // NOTE: Something is up with the USNO web application;
+        // I can only match it when I pass the UT1 time to the topo_star() routine.
+        // According to Novas documentation, topo_star() requires terrestrial time!
 
         // compute error
         Uaz = usno[n][2];
@@ -130,27 +120,34 @@ void test_prediction( CuTest * test ) {
         Eh = sqrt( Eaz*Eaz + Eel*Eel );
         Ec = sqrt( Era*Era + Edc*Edc );
 
-        // All the basic, uninterpreted results;
-//        printf("\t%s\t%lf\t%lf\t%lf\t%lf\n",
-//               jdstr, Uaz, Uel, Taz, Tel);
+//        if(n>0) {
+//            dUaz = usno[n][2] - usno[n-1][2];
+//            dUel = usno[n][1] - usno[n-1][1];
+//            dTaz = Taz - tracker.azimuth;
+//            dTel = Tel = tracker.elevation;
+//        }
 
-        // compare the sizeof the error in the celestial placement and the terrestrial placement
-        char * jdstr = jday2str( jd_tt );
+        // print the results for the user
+        char * jdstr = jday2str( jd_ut1 );
         char * EhStr = deg2str( Eh );
         char * EcStr = deg2str( Ec );
-        printf("\t%17s\t%17s\t%17s\n", jdstr, EhStr, EcStr);
-        // full disclosure
+        printf("\t%17s\t%17s\t%17s\t%lf\n", jdstr, EhStr, EcStr, Uel);
+        // print it all
 //        printf("\t%s\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%s\n",
 //               jdstr, Uaz, Uel, Taz, Tel, E, Eaz, Eel, Estr);
+        // print just the basic values
+//        printf("\t%s\t%lf\t%lf\t%lf\t%lf\n",
+//               jdstr, Uaz, Uel, Taz, Tel);
         free(EhStr);
         free(EcStr);
         free(jdstr);
 
-//        CuAssertDblEquals_Msg(test, "Inaccurate Tracker azimuth", az, tracker.azimuth, epsilon);
-//        CuAssertDblEquals_Msg(test, "Inaccurate Tracker elevation", el, tracker.elevation, epsilon);
-// TODO determine the angle between the error and the motion; if it's about zero then we know it is entirely a time scale problem
+        // compare the sizeof the error in the celestial placement and the terrestrial placement
+        CuAssertDblEquals_Msg(test, "Inaccurate Tracker Right Ascension", Ura, tracker.right_ascension, epsilon);
+        CuAssertDblEquals_Msg(test, "Inaccurate Tracker Declination", Udc, tracker.declination, epsilon);
+        CuAssertDblEquals_Msg(test, "Inaccurate Tracker azimuth", Uaz, tracker.azimuth, epsilon);
+        CuAssertDblEquals_Msg(test, "Inaccurate Tracker elevation", Uel, tracker.elevation, epsilon);
     }
-
 }
 
 Entry test_getVega() {

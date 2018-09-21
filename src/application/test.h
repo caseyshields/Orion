@@ -150,7 +150,14 @@ Tracker test_getMcCarrenTracker( IERS_EOP * eop );
 2018 Sep 19 22:00:00.0          18 37 34.159          + 38 48 28.53
 2018 Sep 19 23:00:00.0          18 37 34.163          + 38 48 28.55
 </pre>
- */
+ <p>The celestial coordinates agree very well after you turn off refraction. though the max magnitude
+ of their error is only .03 arcseconds for hours to either end. The problem has to be time scale
+ or terrestrial. There is also a bit of gimbal lock at 2 am in the terrestrial coordinates. </p>
+ <p>...</p>
+ <p>So, Shinn and I figured it out. They must be passing a UT1 date to the Novas routine
+ topo_star(). However it actually requires Terrestrial time. This is why my routines didn't
+ produce the same data.</p>
+ <p>So if you see some weird contortions in the test code; that is why.</p> */
 void test_prediction( CuTest * test );
 
 /** Time how long it takes to point the tracker at every star in the catalog then prints the local coordinates. */
