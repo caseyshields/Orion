@@ -109,7 +109,7 @@ void tracker_get_direction(Tracker * tracker, double vec[3]);
  * @param jd_tt the terrestrial time expressed in julian days
  * @param refraction one of REFRACTION_SITE or REFRACTION_NONE
  * @return Zero on success, otherwise a Novas error code. */
-int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target, int refraction);
+int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target, short refraction);
 
 /** returns the current location of the given tracker's zenith in celestial coordinates.
  * @param tracker Location used to compute the zenith vector

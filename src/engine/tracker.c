@@ -54,7 +54,7 @@ int tracker_point(
         Tracker *tracker,
         jday jd_tt,
         cat_entry *target,
-        int refraction)
+        short refraction)
 {
     // Apply proper motion, parallax, gravitational deflection, relativistic
     // aberration and get the coordinates of the star in the true equator and equinox of date
@@ -93,9 +93,9 @@ int tracker_point(
     tracker->elevation = 90.0 - tracker->elevation;
 
     // convert the spherical coordinates to rectilinear
-    double equ[3];
+    double equatorial[3];
     // double celestial_sphere = 2<<31; // half TATS resolution?
-    radec2vector( tracker->right_ascension, tracker->declination, 1.0, equ );
+    radec2vector( tracker->right_ascension, tracker->declination, 1.0, equatorial );
 
     // now transform the equatorial coordinates into ITRS coordinates
     error = cel2ter(
@@ -106,7 +106,7 @@ int tracker_point(
             OPTION_EQUATOR_AND_EQUINOX_OF_DATE, // only compatible with the equinox method
             tracker->earth->pm_x,
             tracker->earth->pm_y,
-            equ,
+            equatorial,
             tracker->efg
     );
 
