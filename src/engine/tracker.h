@@ -24,7 +24,10 @@
 #define OPTION_GCRS 0
 #define OPTION_EQUATOR_AND_EQUINOX_OF_DATE 1
 
+/** Disables refraction calculation when computing topocentric coordinates */
 #define REFRACTION_NONE 0
+
+/** Signals use of a simple exponential model included with NOVAS 3.1 */
 #define REFRACTION_SITE 2
 
 /** The Tracker module represents a sensor on the surface of the earth at a specific time, observing
@@ -104,8 +107,9 @@ void tracker_get_direction(Tracker * tracker, double vec[3]);
  * @param tracker The tracker to compute the direction from
  * @param target A novas catalog entry to point at
  * @param jd_tt the terrestrial time expressed in julian days
+ * @param refraction one of REFRACTION_SITE or REFRACTION_NONE
  * @return Zero on success, otherwise a Novas error code. */
-int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target);
+int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target, int refraction);
 
 /** returns the current location of the given tracker's zenith in celestial coordinates.
  * @param tracker Location used to compute the zenith vector

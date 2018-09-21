@@ -303,7 +303,7 @@ MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
     if( orion->target.novas.starnumber ) {
 
         // calculate the current location of the target
-        tracker_point( &(orion->tracker), jd_tt, &(orion->target.novas) );
+        tracker_point( &(orion->tracker), jd_tt, &(orion->target.novas), REFRACTION_SITE );
         double efg[3];
         tracker_get_direction( &(orion->tracker), efg);
         midc01->E = (int)(efg[0] * TATS_CELESTIAL_SPHERE_RADIUS);

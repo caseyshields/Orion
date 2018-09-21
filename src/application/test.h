@@ -157,3 +157,17 @@ void test_prediction( CuTest * test );
 void test_benchmark( Catalog* catalog, Tracker* tracker, int trials );
 
 #endif //STARTRACK_TEST_H
+
+// NOVAS documentation example of calculating time scales
+//        const short int year = 2008;
+//        const short int month = 4;
+//        const short int day = 24;
+//        const short int leap_secs = 33;
+//        const double hour = 10.605;
+//        const double ut1_utc = -0.387845;
+//        const double x_pole = -0.002;
+//        const double y_pole = +0.529;
+//        jd_utc = julian_date (year,month,day,hour); //the output argument, jd_utc, will have a value of 2454580.9441875
+//        jd_tt = jd_utc + ((double) leap_secs + 32.184) / 86400.0;
+//        jd_ut1 = jd_utc + ut1_utc / 86400.0;
+//        delta_t = 32.184 + leap_secs - ut1_utc

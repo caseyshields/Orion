@@ -382,7 +382,7 @@ int cmd_search(char * line, Application * cli) {
             Entry * entry = bright->stars[n];
 
             // transform the catalog coordinates to topocentric coordinates in spherical and rectilinear.
-            tracker_point( &tracker, app.jd_tt, &(entry->novas) );
+            tracker_point( &tracker, app.jd_tt, &(entry->novas), REFRACTION_SITE );
 
             // if the coordinates are within the patch, add them to the results
             if( tracker.elevation > el_min
@@ -526,7 +526,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
 
         // TODO get and print tracker time since it is now decoupled from the cli time!
 
-        tracker_point( &tracker, cli->jd_tt, &(target.novas) );
+        tracker_point( &tracker, cli->jd_tt, &(target.novas), REFRACTION_SITE );
         fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf ra % 8.4lf de\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
                 target.novas.catalog, target.novas.starnumber, target.novas.starname,
                 target.novas.ra, target.novas.dec,
@@ -576,7 +576,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         tracker_set_earth( &tracker, earth );
 
         // calculate coordinates at the given time
-        tracker_point( &tracker, start, &(target.novas) );
+        tracker_point( &tracker, start, &(target.novas), REFRACTION_SITE );
 
         // print report entry
         int r = TATS_CELESTIAL_SPHERE_RADIUS;

@@ -53,7 +53,8 @@ void tracker_get_direction(Tracker * tracker, double vec[3]) {
 int tracker_point(
         Tracker *tracker,
         jday jd_tt,
-        cat_entry *target )
+        cat_entry *target,
+        int refraction)
 {
     // Apply proper motion, parallax, gravitational deflection, relativistic
     // aberration and get the coordinates of the star in the true equator and equinox of date
@@ -82,7 +83,7 @@ int tracker_point(
             tracker->earth->pm_y,
             &tracker->site,
             tracker->right_ascension, tracker->declination,
-            REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
+            refraction,
             &(tracker->elevation), &(tracker->azimuth),
             &tracker->right_ascension, &tracker->declination
             //&ra, &dec // uh, do I need to expose these? They are celestial coordinates with refraction applied I believe
