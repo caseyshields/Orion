@@ -58,13 +58,25 @@ Tracker test_getMcCarrenTracker( IERS_EOP * eop );
                   Apparent Topocentric Positions
                     Local Zenith and True North
 
-                   McCarren
+                   Henderson
          Location:  W115°08'03.7", N36°04'19.3",     0m
             (Longitude referred to Greenwich meridian)
 
    Date        Time                Zenith               Azimuth
         (UT1)                     Distance              (E of N)
              h  m   s              °  '   "             °  '   "
+2018 Sep 19 00:00:00.0            29 03 16.6           73 25 14.7
+2018 Sep 19 01:00:00.0            17 21 12.4           74 25 47.5
+2018 Sep 19 02:00:00.0             5 54 21.6           60 26 08.8
+2018 Sep 19 03:00:00.0             7 14 20.0          294 43 39.0
+2018 Sep 19 04:00:00.0            18 47 42.0          285 26 05.4
+2018 Sep 19 05:00:00.0            30 29 13.5          286 54 56.1
+2018 Sep 19 06:00:00.0            42 00 29.9          290 28 25.1
+2018 Sep 19 07:00:00.0            53 13 17.5          295 03 24.9
+2018 Sep 19 08:00:00.0            63 58 54.3          300 28 45.5
+2018 Sep 19 09:00:00.0            74 06 29.8          306 46 58.5
+2018 Sep 19 10:00:00.0            83 22 02.1          314 05 51.9
+2018 Sep 19 11:00:00.0            91 27 27.9          322 34 32.6
 2018 Sep 19 12:00:00.0            98 00 38.3          332 18 58.5
 2018 Sep 19 13:00:00.0           102 37 02.9          343 15 35.4
 2018 Sep 19 14:00:00.0           104 54 29.9          355 04 57.1
@@ -78,18 +90,17 @@ Tracker test_getMcCarrenTracker( IERS_EOP * eop );
 2018 Sep 19 22:00:00.0            51 08 12.4           65 52 22.2
 2018 Sep 19 23:00:00.0            39 51 18.5           70 17 18.5
 </pre>
-    <p>The calculation is very long and the inputs are numerous, and their sources conflicting. Making
-    troubleshooting very difficult. First you need to think about the magnitudes of the various
-    effects;
-    <ul>
-    <li>Proper motion < 1 arcsecond/year(usu.much less)</li>
+    <p>The calculation is very long and the inputs are numerous, and their sources conflicting. This
+    makes troubleshooting very difficult. First you need to think about the magnitudes of the
+    various effects;
+    <ul><li>Proper motion < 1 arcsecond/year(usu.much less)</li>
     <li>parallax < 1 arcsecond</li>
     <li>gravitational light bending < 0.05 arcseconds 10deg away from the sun</li>
     <li>aberration < 21 arcseconds</li>
     <li>refraction < 60 arcseconds @ 45deg, 1800 arcseconds at horizon</li>
     </ul></p>
 
-    <p>We can isolate these by separating the calculation into celestial coordinates and local
+    <p>We can begin to separate these by separating the calculation into celestial coordinates and local
     topocentric coordinates. If the error is found celestial coordinates, then the error is likely
     a difference of catalog. Errors in abberation, parallax, propermotion are unlikely, as these
     are really small effects. If the error is in topocentric horizon coordinates, we know the
@@ -99,6 +110,46 @@ Tracker test_getMcCarrenTracker( IERS_EOP * eop );
     <p>Another useful instrumentation could be looking at the angle or dot product of the topocentric
     star motion and the direction of the error. If the angle is always small, it means the error is likely
     in your time scale.</p>
+
+    <p> Here are the topocentric celestial coordinates to try to separate the error source.</p>
+<pre>
+                               Vega
+
+                  Apparent Topocentric Positions
+                 True Equator and Equinox of Date
+
+                   Henderson
+         Location:  W115°08'03.7", N36°04'19.3",     0m
+            (Longitude referred to Greenwich meridian)
+
+   Date        Time           Right Ascension          Declination
+        (UT1)
+             h  m   s            h  m   s                °  '   "
+2018 Sep 19 00:00:00.0          18 37 34.189          + 38 48 28.55
+2018 Sep 19 01:00:00.0          18 37 34.191          + 38 48 28.59
+2018 Sep 19 02:00:00.0          18 37 34.192          + 38 48 28.63
+2018 Sep 19 03:00:00.0          18 37 34.190          + 38 48 28.68
+2018 Sep 19 04:00:00.0          18 37 34.188          + 38 48 28.72
+2018 Sep 19 05:00:00.0          18 37 34.184          + 38 48 28.76
+2018 Sep 19 06:00:00.0          18 37 34.179          + 38 48 28.79
+2018 Sep 19 07:00:00.0          18 37 34.173          + 38 48 28.81
+2018 Sep 19 08:00:00.0          18 37 34.166          + 38 48 28.82
+2018 Sep 19 09:00:00.0          18 37 34.159          + 38 48 28.82
+2018 Sep 19 10:00:00.0          18 37 34.153          + 38 48 28.81
+2018 Sep 19 11:00:00.0          18 37 34.147          + 38 48 28.79
+2018 Sep 19 12:00:00.0          18 37 34.142          + 38 48 28.76
+2018 Sep 19 13:00:00.0          18 37 34.138          + 38 48 28.73
+2018 Sep 19 14:00:00.0          18 37 34.136          + 38 48 28.69
+2018 Sep 19 15:00:00.0          18 37 34.135          + 38 48 28.65
+2018 Sep 19 16:00:00.0          18 37 34.135          + 38 48 28.61
+2018 Sep 19 17:00:00.0          18 37 34.137          + 38 48 28.57
+2018 Sep 19 18:00:00.0          18 37 34.141          + 38 48 28.54
+2018 Sep 19 19:00:00.0          18 37 34.145          + 38 48 28.52
+2018 Sep 19 20:00:00.0          18 37 34.149          + 38 48 28.52
+2018 Sep 19 21:00:00.0          18 37 34.154          + 38 48 28.52
+2018 Sep 19 22:00:00.0          18 37 34.159          + 38 48 28.53
+2018 Sep 19 23:00:00.0          18 37 34.163          + 38 48 28.55
+</pre>
  */
 void test_prediction( CuTest * test );
 

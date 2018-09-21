@@ -36,20 +36,33 @@ void test_prediction( CuTest * test ) {
     // we want answers to be within 10 arcseconds
     double epsilon = 10.0 / 60.0 / 60.0;
 
-    // here's a hand jammed copy of the report. There's probably no typos.
-    double usno[][3] = {
-            { date2jday(2018, 9, 19, 12, 0, 0), dms2deg(98, 00, 38.3), dms2deg(332, 18, 58.5) },
-            { date2jday(2018, 9, 19, 13, 0, 0), dms2deg(102, 37, 2.9), dms2deg(343, 15, 35.4) },
-            { date2jday(2018, 9, 19, 14, 0, 0), dms2deg(104, 54, 29.9), dms2deg(355, 4, 57.1) },
-            { date2jday(2018, 9, 19, 15, 0, 0), dms2deg(104, 39, 59.3), dms2deg(7, 11, 23.9) },
-            { date2jday(2018, 9, 19, 16, 0, 0), dms2deg(101, 54, 57.7), dms2deg(18, 53, 7.5) },
-            { date2jday(2018, 9, 19, 17, 0, 0), dms2deg(96, 54, 40.4), dms2deg(29, 37, 4.2) },
-            { date2jday(2018, 9, 19, 18, 0, 0), dms2deg(90, 2, 15.2), dms2deg(39, 7, 6.0) },
-            { date2jday(2018, 9, 19, 19, 0, 0), dms2deg(81, 42, 1.4), dms2deg(47, 21, 59.2) },
-            { date2jday(2018, 9, 19, 20, 0, 0), dms2deg(72, 15, 25.1), dms2deg(54, 28, 43.5) },
-            { date2jday(2018, 9, 19, 21, 0, 0), dms2deg(61, 59, 41.6), dms2deg(60, 36, 28.4) },
-            { date2jday(2018, 9, 19, 22, 0, 0), dms2deg(51, 8, 12.4), dms2deg(65, 52, 22.2) },
-            { date2jday(2018, 9, 19, 23, 0, 0), dms2deg(39, 51, 18.5), dms2deg(70, 17, 18.5) },
+    // here's a hand jammed copy of the reports. There's probably no typos.
+    double usno[][5] = {
+        // UT1,  zd,  az,  ra,  dec
+        { date2jday(2018, 9, 19, 0, 0, 0), dms2deg(29, 03, 16.6), dms2deg(73, 25, 14.7), dms2deg(18, 37, 34.189), dms2deg(38, 48, 28.55) },
+        { date2jday(2018, 9, 19, 1, 0, 0), dms2deg(17, 21, 12.4), dms2deg(74, 25, 47.5), dms2deg(18, 37, 34.191), dms2deg(38, 48, 28.59) },
+        { date2jday(2018, 9, 19, 2, 0, 0), dms2deg(5, 54, 21.6), dms2deg(60, 26, 08.8), dms2deg(18, 37, 34.192), dms2deg(38, 48, 28.63) },
+        { date2jday(2018, 9, 19, 3, 0, 0), dms2deg(7, 14, 20.0), dms2deg(294, 43, 39.0), dms2deg(18, 37, 34.190), dms2deg(38, 48, 28.68) },
+        { date2jday(2018, 9, 19, 4, 0, 0), dms2deg(18, 47, 42.0), dms2deg(285, 26, 05.4), dms2deg(18, 37, 34.188), dms2deg(38, 48, 28.72) },
+        { date2jday(2018, 9, 19, 5, 0, 0), dms2deg(30, 29, 13.5), dms2deg(286, 54, 56.1), dms2deg(18, 37, 34.184), dms2deg(38, 48, 28.76) },
+        { date2jday(2018, 9, 19, 6, 0, 0), dms2deg(42, 00, 29.9), dms2deg(290, 28, 25.1), dms2deg(18, 37, 34.179), dms2deg(38, 48, 28.79) },
+        { date2jday(2018, 9, 19, 7, 0, 0), dms2deg(53, 13, 17.5), dms2deg(295, 03, 24.9), dms2deg(18, 37, 34.173), dms2deg(38, 48, 28.81) },
+        { date2jday(2018, 9, 19, 8, 0, 0), dms2deg(63, 58, 54.3), dms2deg(300, 28, 45.5), dms2deg(18, 37, 34.166), dms2deg(38, 48, 28.82) },
+        { date2jday(2018, 9, 19, 9, 0, 0), dms2deg(74, 06, 29.8), dms2deg(306, 46, 58.5), dms2deg(18, 37, 34.159), dms2deg(38, 48, 28.82) },
+        { date2jday(2018, 9, 19, 10, 0, 0), dms2deg(83, 22, 02.1), dms2deg(314, 05, 51.9), dms2deg(18, 37, 34.153), dms2deg(38, 48, 28.81) },
+        { date2jday(2018, 9, 19, 11, 0, 0), dms2deg(91, 27, 27.9), dms2deg(322, 34, 32.6), dms2deg(18, 37, 34.147), dms2deg(38, 48, 28.79) },
+        { date2jday(2018, 9, 19, 12, 0, 0), dms2deg(98, 00, 38.3), dms2deg(332, 18, 58.5), dms2deg(18, 37, 34.142), dms2deg(38, 48, 28.76) },
+        { date2jday(2018, 9, 19, 13, 0, 0), dms2deg(102, 37, 2.9), dms2deg(343, 15, 35.4), dms2deg(18, 37, 34.138), dms2deg(38, 48, 28.73) },
+        { date2jday(2018, 9, 19, 14, 0, 0), dms2deg(104, 54, 29.9), dms2deg(355, 4, 57.1), dms2deg(18, 37, 34.136), dms2deg(38, 48, 28.69) },
+        { date2jday(2018, 9, 19, 15, 0, 0), dms2deg(104, 39, 59.3), dms2deg(7, 11, 23.9), dms2deg(18, 37, 34.135), dms2deg(38, 48, 28.65) },
+        { date2jday(2018, 9, 19, 16, 0, 0), dms2deg(101, 54, 57.7), dms2deg(18, 53, 7.5), dms2deg(18, 37, 34.135), dms2deg(38, 48, 28.61) },
+        { date2jday(2018, 9, 19, 17, 0, 0), dms2deg(96, 54, 40.4), dms2deg(29, 37, 4.2), dms2deg(18, 37, 34.137), dms2deg(38, 48, 28.57) },
+        { date2jday(2018, 9, 19, 18, 0, 0), dms2deg(90, 2, 15.2), dms2deg(39, 7, 6.0), dms2deg(18, 37, 34.141), dms2deg(38, 48, 28.54) },
+        { date2jday(2018, 9, 19, 19, 0, 0), dms2deg(81, 42, 1.4), dms2deg(47, 21, 59.2), dms2deg(18, 37, 34.145), dms2deg(38, 48, 28.52) },
+        { date2jday(2018, 9, 19, 20, 0, 0), dms2deg(72, 15, 25.1), dms2deg(54, 28, 43.5), dms2deg(18, 37, 34.149), dms2deg(38, 48, 28.52) },
+        { date2jday(2018, 9, 19, 21, 0, 0), dms2deg(61, 59, 41.6), dms2deg(60, 36, 28.4), dms2deg(18, 37, 34.154), dms2deg(38, 48, 28.52) },
+        { date2jday(2018, 9, 19, 22, 0, 0), dms2deg(51, 8, 12.4), dms2deg(65, 52, 22.2), dms2deg(18, 37, 34.159), dms2deg(38, 48, 28.53) },
+        { date2jday(2018, 9, 19, 23, 0, 0), dms2deg(39, 51, 18.5), dms2deg(70, 17, 18.5), dms2deg(18, 37, 34.163), dms2deg(38, 48, 28.55) },
     };
 
     Entry vega = test_getVega();
@@ -64,7 +77,9 @@ void test_prediction( CuTest * test ) {
     CuAssertDblEquals_Msg(test, "incorrect longitude conversion", -115.134361, tracker.site.longitude, 0.000001);
 
     // target a star that we have data for from the reference USNO implementation
-    for(int n=0; n<12; n++) {
+    double Uaz, Uel, Taz, Tel, Eaz, Eel, E, dUaz, dUel, dTaz, dTel;
+    printf("\tTT\t|E|\tEaz\tEel\tEdms\n");
+    for(int n=0; n<24; n++) {
 
         // NOVAS documentation example of calculating time scales
 //        const short int year = 2008;
@@ -83,7 +98,7 @@ void test_prediction( CuTest * test ) {
 //        // convert UT1 time to the TT timescale used by novas, and thus orion
         double leap_secs = 37.0;
         jday jd_ut1 = usno[n][0]; //date2jday(2018, 9, 19, 12, 0, 0);
-        jday jd_tt = (jd_ut1 - earth.ut1_utc/86400.0) + ((leap_secs + 32.184) / 86400.0); //ut12tt( jd_ut1 );
+        jday jd_tt = (jd_ut1 - earth.ut1_utc/86400.0) + ((-115.0 + leap_secs + 32.184) / 86400.0); //ut12tt( jd_ut1 );
         // adapted from Novas 3.1 section 3.2... doesn't work...
 
 //        jday jd_ut1 = usno[n][0];
@@ -99,16 +114,25 @@ void test_prediction( CuTest * test ) {
         int result = tracker_point(&tracker, jd_tt, &vega.novas);
         CuAssertIntEquals_Msg(test, "tracker_point() failed", 0, result);
 
-        double az = usno[n][2];
-        double zd = usno[n][1];
-        double el = 90.0 - zd;
+        if(n>0) {
+            dUaz = usno[n][2] - usno[n-1][2];
+            dUel = usno[n][1] - usno[n-1][1];
+            dTaz = Taz - tracker.azimuth;
+            dTel = Tel = tracker.elevation;
+        }
+        // compute error
+        Uaz = usno[n][2];
+        Uel = 90.0 - usno[n][1];
+        Taz = tracker.azimuth;
+        Tel = tracker.elevation;
+        Eaz = Taz - Uaz;
+        Eel = Tel - Uel;
+        E = sqrt( Eaz*Eaz + Eel*Eel );
 
-        double Eaz = tracker.azimuth - az;
-        double Eel = tracker.elevation - el;
-        double E = sqrt( Eaz*Eaz + Eel*Eel );
+        // print debug message
         char * Estr = deg2str( E );
-        char * jdstr = jday2str( jd_ut1 );
-        printf("\ttime=%s\terror=%s\t(%lf)\n", jdstr, Estr, E);
+        char * jdstr = jday2str( jd_tt );
+        printf("\t%s\t%lf\t%lf\t%lf\t%s\n", jdstr, E, Eaz, Eel, Estr);
         free(Estr);
         free(jdstr);
 

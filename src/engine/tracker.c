@@ -82,7 +82,7 @@ int tracker_point(
             tracker->earth->pm_y,
             &tracker->site,
             tracker->right_ascension, tracker->declination,
-            REFRACTION_NONE, //REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
+            REFRACTION_SITE, // simple refraction model based on site atmospheric conditions
             &(tracker->elevation), &(tracker->azimuth),
             &tracker->right_ascension, &tracker->declination
             //&ra, &dec // uh, do I need to expose these? They are celestial coordinates with refraction applied I believe
