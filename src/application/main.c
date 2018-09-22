@@ -12,86 +12,93 @@ Application app = {
         .eop=NULL
 };
 
+int interpret(Application * app, char * line);
+
 int main( int argc, char *argv[] ) {
 
     // divert to running test suite if flagged
-    if( has_arg(argc, argv, "-test") )
+    if (has_arg(argc, argv, "-test"))
         test_run();
 
     // register cleanup routines and interrupt handlers
-    atexit( cleanup );
+    atexit(cleanup);
     signal(SIGTERM, interrupt_handler);
     signal(SIGINT, interrupt_handler);
     signal(SIGABRT, interrupt_handler);
 
     // create and configure the application
-    app.orion = orion_create( NULL, 1 );
-    app.catalog = catalog_create( NULL, 1024 );
-    app.iers = iers_create( NULL );
+    app.orion = orion_create(NULL, 1);
+    app.catalog = catalog_create(NULL, 1024);
+    app.iers = iers_create(NULL);
 
-    configure_app( argc, argv, &app );
-    configure_orion( argc, argv, app.orion );
-    configure_iers( argc, argv, app.iers );
-    configure_catalog( argc, argv, app.catalog );
+    configure_app(argc, argv, &app);
+    configure_orion(argc, argv, app.orion);
+    configure_iers(argc, argv, app.iers);
+    configure_catalog(argc, argv, app.catalog);
 
     // find the current earth orientation
-    app.eop = iers_search( app.iers, app.jd_tt );
-    if(!app.eop) {
+    app.eop = iers_search(app.iers, app.jd_tt);
+    if (!app.eop) {
         app.eop = &MISSING_EOP;
     } // TODO notify user of predicted mode, or outdated catalogs?
 
     // compute the current terrestrial time
     jday jd_utc = jday_now();
-    jday jd_ut1 = iers_get_UT1( app.eop, jd_utc );
-    app.jd_tt = ut12tt( jd_ut1 );
+    jday jd_ut1 = iers_get_UT1(app.eop, jd_utc);
+    app.jd_tt = ut12tt(jd_ut1);
     //TODO perhaps app should track utc for simplicity?
 
     // Main loop
-    while( app.mode ) {
+    while (app.mode) {
 
         // print prompt and get next user command
-        jd_ut1 = tt2ut1( app.jd_tt );
-        jd_utc = iers_get_UTC( app.eop, jd_ut1 );
-        printf( "\n" );
-        char * stamp = jday2str(jd_utc);
+        jd_ut1 = tt2ut1(app.jd_tt);
+        jd_utc = iers_get_UTC(app.eop, jd_ut1);
+        printf("\n");
+        char *stamp = jday2str(jd_utc);
         char *line = NULL;
-        size_t size = 0 ;
-        ssize_t read = get_input( stamp, &line, &size );
-        free( stamp );
+        size_t size = 0;
+        ssize_t read = get_input(stamp, &line, &size);
+        free(stamp);
 
-        // configuration commands
-        if( strncmp( "time", line, 4 ) == 0 )
-            cmd_time( line, &app );
-        else if( strncmp( "location", line, 8 ) == 0 )
-            cmd_location( line, app.orion );
-        else if( strncmp( "weather", line, 7 ) == 0 )
-            cmd_weather( line, app.orion );
-
-        // catalog commands
-        else if( strncmp( "name", line, 4 ) == 0 )
-            cmd_name( line, app.catalog);
-        else if( strncmp( "search", line, 6 ) == 0 )
-            cmd_search( line, &app );
-
-        // sensor commands
-        else if( strncmp( "connect", line, 7 ) == 0 )
-            cmd_connect( line, &app );
-        else if( strncmp( "target", line, 6 ) == 0 )
-            cmd_target( line, &app );
-
-        // Diagnostic commands
-        else if( strncmp( "status", line, 6) == 0 )
-            cmd_status( line, &app, stdout );
-        else if( strncmp( "report", line, 6) == 0 )
-            cmd_report( line, &app, stdout );
-        else if( strncmp( "help", line, 4 ) == 0 )
-            cmd_help( line );
-
-        else if( strncmp("exit", line, 4)==0 )
-            app.mode = 0;
-        else
-            alert( "Unrecognized command. enter 'help' for a list of commands" );
+        interpret(&app, line);
     }
+    return 0;
+}
+
+int interpret(Application * app, char * line) {
+    // configuration commands
+    if( strncmp( "time", line, 4 ) == 0 )
+        return cmd_time( line, &app );
+    else if( strncmp( "location", line, 8 ) == 0 )
+        return cmd_location( line, app.orion );
+    else if( strncmp( "weather", line, 7 ) == 0 )
+        return cmd_weather( line, app.orion );
+
+    // catalog commands
+    else if( strncmp( "name", line, 4 ) == 0 )
+        return cmd_name( line, app.catalog);
+    else if( strncmp( "search", line, 6 ) == 0 )
+        return cmd_search( line, &app );
+
+    // sensor commands
+    else if( strncmp( "connect", line, 7 ) == 0 )
+        return cmd_connect( line, &app );
+    else if( strncmp( "target", line, 6 ) == 0 )
+        return cmd_target( line, &app );
+
+    // Diagnostic commands
+    else if( strncmp( "status", line, 6) == 0 )
+        return cmd_status( line, &app, stdout );
+    else if( strncmp( "report", line, 6) == 0 )
+        return cmd_report( line, &app, stdout );
+    else if( strncmp( "help", line, 4 ) == 0 )
+        return cmd_help( line );
+
+    else if( strncmp("exit", line, 4)==0 )
+        app.mode = 0;
+    else
+        alert( "Unrecognized command. enter 'help' for a list of commands" );
     return 0;
 }
 
