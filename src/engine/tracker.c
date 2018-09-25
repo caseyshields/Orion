@@ -52,13 +52,18 @@ void tracker_get_direction(Tracker * tracker, double vec[3]) {
 
 int tracker_point(
         Tracker *tracker,
-        jday jd_tt,
+        jday jd_utc,
         cat_entry *target,
         short refraction)
 {
+    // terrestrial time is needed for computing celestial coordinates, Universal time is needed for eath
+    jday jd_tt = utc2tt( jd_utc );
+    jday jd_ut1 = iers_get_UT1( tracker->earth, jd_utc );
+    // jd_tt = jd_utc + ((double) leap_secs + 32.184) / 86400.0;
+    // jd_ut1 = jd_tt - delta_t / 86400.0
+
     // Apply proper motion, parallax, gravitational deflection, relativistic
     // aberration and get the coordinates of the star in the true equator and equinox of date
-//    double right_ascension=0, declination=0;
     short int error;
     error = topo_star(
             jd_tt,
@@ -74,9 +79,8 @@ int tracker_point(
         return error;
 
     // Apply refraction and convert Equatorial coordinates to horizon coordinates
-    //double ra, dec;
     equ2hor(
-            jd_tt,
+            jd_ut1,
             iers_get_DeltaT( tracker->earth ),
             REDUCED_ACCURACY,
             tracker->earth->pm_x,
@@ -86,7 +90,6 @@ int tracker_point(
             refraction,
             &(tracker->elevation), &(tracker->azimuth),
             &tracker->right_ascension, &tracker->declination
-            //&ra, &dec // uh, do I need to expose these? They are celestial coordinates with refraction applied I believe
     );
 
     // the elevation is actually zenith distance so convert that real quick

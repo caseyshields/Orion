@@ -94,13 +94,11 @@ void * orion_control_loop( void * arg ) {
 
         // calculate the expected time of arrival
         jday jd_utc = jday_now();
-        jday jd_ut1 = iers_get_UT1(orion->tracker.earth, jd_utc);
-        jday jd_tt = ut12tt( jd_ut1 );
-        jd_tt += (orion->latency/SECONDS_IN_DAY);
+        jd_utc += (orion->latency/SECONDS_IN_DAY);
 
         // create a tracking message
         MIDC01 * message = (void*) buffer;
-        create_tracking_message(orion, jd_tt, message);
+        create_tracking_message(orion, jd_utc, message);
         length = sizeof( MIDC01 );
 
         // we no longer need tracker internals or mode, so we can release the lock
@@ -280,7 +278,7 @@ void orion_clear_error( Orion * orion ) {
     pthread_mutex_unlock( &(orion->lock) );
 }
 
-MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
+MIDC01 * create_tracking_message( Orion * orion, jday jd_utc, MIDC01 * midc01 ) {
     // either allocate or initialize the provided pointer
     if(midc01)
         memset(midc01, 0, sizeof(MIDC01));
@@ -296,14 +294,14 @@ MIDC01 * create_tracking_message( Orion * orion, jday jd_tt, MIDC01 * midc01 ) {
 
     // compute timer value from sensor time...
     unsigned short int milliseconds = (unsigned short int)
-            (1000 * fmod( jd_tt * SECONDS_IN_DAY, 1.0 ) );
+            (1000 * fmod( jd_utc * SECONDS_IN_DAY, 1.0 ) );
     midc01->tcn_time = milliseconds;
 
     // if there is an assigned target
     if( orion->target.novas.starnumber ) {
 
         // calculate the current location of the target
-        tracker_point( &(orion->tracker), jd_tt, &(orion->target.novas), REFRACTION_SITE );
+        tracker_point( &(orion->tracker), jd_utc, &(orion->target.novas), REFRACTION_SITE );
         double efg[3];
         tracker_get_direction( &(orion->tracker), efg);
         midc01->E = (int)(efg[0] * TATS_CELESTIAL_SPHERE_RADIUS);

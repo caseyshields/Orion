@@ -8,7 +8,7 @@ Application app = {
         .orion=NULL,
         .catalog=NULL,
         .iers=NULL,
-        .jd_tt=0.0,
+        .jd_utc=0.0,
         .eop=NULL
 };
 
@@ -37,23 +37,18 @@ int main( int argc, char *argv[] ) {
     configure_catalog(argc, argv, app.catalog);
 
     // find the current earth orientation
-    app.eop = iers_search(app.iers, app.jd_tt);
+    app.eop = iers_search(app.iers, app.jd_utc);
     if (!app.eop) {
         app.eop = &MISSING_EOP;
     } // TODO notify user of predicted mode, or outdated catalogs?
 
     // compute the current terrestrial time
     jday jd_utc = jday_now();
-    jday jd_ut1 = iers_get_UT1(app.eop, jd_utc);
-    app.jd_tt = ut12tt(jd_ut1);
-    //TODO perhaps app should track utc for simplicity?
 
     // Main loop
     while (app.mode) {
 
         // print prompt and get next user command
-        jd_ut1 = tt2ut1(app.jd_tt);
-        jd_utc = iers_get_UTC(app.eop, jd_ut1);
         printf("\n");
         char *stamp = jday2str(jd_utc);
         char *line = NULL;
@@ -69,34 +64,34 @@ int main( int argc, char *argv[] ) {
 int interpret(Application * app, char * line) {
     // configuration commands
     if( strncmp( "time", line, 4 ) == 0 )
-        return cmd_time( line, &app );
+        return cmd_time( line, app );
     else if( strncmp( "location", line, 8 ) == 0 )
-        return cmd_location( line, app.orion );
+        return cmd_location( line, app->orion );
     else if( strncmp( "weather", line, 7 ) == 0 )
-        return cmd_weather( line, app.orion );
+        return cmd_weather( line, app->orion );
 
     // catalog commands
     else if( strncmp( "name", line, 4 ) == 0 )
-        return cmd_name( line, app.catalog);
+        return cmd_name( line, app->catalog);
     else if( strncmp( "search", line, 6 ) == 0 )
-        return cmd_search( line, &app );
+        return cmd_search( line, app );
 
     // sensor commands
     else if( strncmp( "connect", line, 7 ) == 0 )
-        return cmd_connect( line, &app );
+        return cmd_connect( line, app );
     else if( strncmp( "target", line, 6 ) == 0 )
-        return cmd_target( line, &app );
+        return cmd_target( line, app );
 
     // Diagnostic commands
     else if( strncmp( "status", line, 6) == 0 )
-        return cmd_status( line, &app, stdout );
+        return cmd_status( line, app, stdout );
     else if( strncmp( "report", line, 6) == 0 )
-        return cmd_report( line, &app, stdout );
+        return cmd_report( line, app, stdout );
     else if( strncmp( "help", line, 4 ) == 0 )
         return cmd_help( line );
 
     else if( strncmp("exit", line, 4)==0 )
-        app.mode = 0;
+        app->mode = 0;
     else
         alert( "Unrecognized command. enter 'help' for a list of commands" );
     return 0;
@@ -293,18 +288,16 @@ int cmd_time(char * line, Application * cli) {
 
     } else {
         // convert the user supplied string stamp to a jday, which we assume is utc
-        jday jd_utc = date2jday(year, month, day, hour, min, secs);
+        cli->jd_utc = date2jday(year, month, day, hour, min, secs);
 
         // look up the earth orientation parameters for the given day
-        cli->eop = iers_search( app.iers, jd_utc );
+        cli->eop = iers_search( app.iers, cli->jd_utc );
         if (!cli->eop) {
             cli->eop = &MISSING_EOP;
             // TODO warn user about out of bound times?
         }// TODO warn user about predicted mode?
 
-        // convert that time to terrestrial time
-        jday jd_ut1 = iers_get_UT1( cli->eop, jd_utc );
-        cli->jd_tt = ut12tt( jd_ut1 );
+        //TODO print time status in all time scales and formats...
 
         return 0;
     }
@@ -389,7 +382,7 @@ int cmd_search(char * line, Application * cli) {
             Entry * entry = bright->stars[n];
 
             // transform the catalog coordinates to topocentric coordinates in spherical and rectilinear.
-            tracker_point( &tracker, app.jd_tt, &(entry->novas), REFRACTION_SITE );
+            tracker_point( &tracker, app.jd_utc, &(entry->novas), REFRACTION_SITE );
 
             // if the coordinates are within the patch, add them to the results
             if( tracker.elevation > el_min
@@ -504,11 +497,11 @@ int cmd_target(char * line, Application * cli ) {
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
-    char * tt = jday2str( cli->jd_tt );
-    char * ut1 = jday2str( tt2ut1(cli->jd_tt) );
-    char * utc = jday2str( iers_get_UTC( cli->eop, tt2ut1(cli->jd_tt) ) );
+    char * utc = jday2str( cli->jd_utc );
+    char * tt = jday2str( utc2tt(cli->jd_utc) );
+    char * ut1 = jday2str( iers_get_UTC( cli->eop, cli->jd_utc ) );
     double dt = iers_get_DeltaT(cli->eop);
-    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->jd_tt, dt );
+    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->jd_utc, dt );
     free(tt);
     free(utc);
     free(ut1);
@@ -533,7 +526,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
 
         // TODO get and print tracker time since it is now decoupled from the cli time!
 
-        tracker_point( &tracker, cli->jd_tt, &(target.novas), REFRACTION_SITE );
+        tracker_point( &tracker, cli->jd_utc, &(target.novas), REFRACTION_SITE );
         fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf ra % 8.4lf de\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
                 target.novas.catalog, target.novas.starnumber, target.novas.starname,
                 target.novas.ra, target.novas.dec,
@@ -560,14 +553,14 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     // get thread safe copies of the tracker and target from the orion server
     Tracker tracker = orion_get_tracker( orion );
     Entry target = orion_get_target( orion );
-    jday start = cli->jd_tt;
+    jday start = cli->jd_utc;
 
     // print tracker information
     tracker_print_site( &tracker, stream );
     entry_print( &target ); // TODO print to the supplied stream
 
     // print the header
-    fprintf( stream, "UT1\tAZ\tEL\tE\tF\tG\n" );
+    fprintf( stream, "UTC\tAZ\tEL\tE\tF\tG\n" );
 
     // step over the given time interval
     step /= SECONDS_IN_DAY;
@@ -587,7 +580,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
 
         // print report entry
         int r = TATS_CELESTIAL_SPHERE_RADIUS;
-        char * ts = jday2str(tt2ut1(start));
+        char * ts = jday2str(start);
         fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%u\t%u\t%u\n", ts,
                 tracker.azimuth, tracker.elevation,
                  (int)(tracker.efg[0]*r), (int)(tracker.efg[1]*r), (int)(tracker.efg[2]*r) );

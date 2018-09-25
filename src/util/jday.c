@@ -78,6 +78,14 @@ jday str2jday(char *stamp) {
     return date2jday(year, month, day, hour, min, seconds);
 }
 
+jday utc2tt(jday utc) {
+    return (utc + (LEAP_SECONDS / DELTA_AT) / SECONDS_IN_DAY);
+}
+
+jday tt2utc( jday tt ) {
+    return tt - ((LEAP_SECONDS / DELTA_AT) / SECONDS_IN_DAY);
+}
+
 // test ///////////////////////////////////////////////////////////////////////
 
 void test_time( CuTest * test ) {

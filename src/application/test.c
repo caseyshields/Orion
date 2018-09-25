@@ -91,11 +91,11 @@ void test_prediction( CuTest * test ) {
         double leap_secs = 37.0;
         jday jd_ut1 = usno[n][0];
         jday jd_utc = jd_ut1 - (earth.ut1_utc/86400.0);
-        jday jd_tt = jd_utc + ((leap_secs + 32.184) / 86400.0);
+//        jday jd_tt = jd_utc + ((leap_secs + 32.184) / 86400.0);
         // adapted from Novas 3.1 section 3.2
 
         // point the tracker at the star, ignoring refraction.
-        int result = tracker_point(&tracker, jd_ut1, &vega.novas, REFRACTION_NONE);
+        int result = tracker_point(&tracker, jd_utc, &vega.novas, REFRACTION_NONE);
         CuAssertIntEquals_Msg(test, "tracker_point() failed", 0, result);
         // NOTE: Something is up with the USNO web application;
         // I can only match it when I pass the UT1 time to the topo_star() routine.

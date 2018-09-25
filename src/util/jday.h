@@ -11,7 +11,7 @@
 
 #define SECONDS_IN_DAY 86400.0
 
-#define DELTA_TT 32.184
+#define DELTA_AT 32.184
 
 #define TIMESTAMP_OUTPUT "%04u/%02u/%02u %02u:%02u:%06.3lf"
 
@@ -69,6 +69,14 @@ char * jday2str(jday utc);
  * @param stamp A string in the format TIMESTAMP_INPUT
  * @return the equivalent UTC Julian day or NAN if the string was invalid*/
 jday str2jday(char *stamp);
+
+/** Terrestrial time is meant to be a smooth timescale and is derived from UT1 by removing leap
+ * seconds and adding an experimentally measured offset available from the IERS service
+ * @param ut1 The Universal Coordinated Time in Julian Days
+ * @returns The Terrestrial Time in julian days, a somewhat obscure Novas convention. TT = UTC + leap_seconds + 32.184. */
+jday utc2tt( jday ut1 );
+
+jday tt2utc( jday tt );
 
 /** Unit test of conversions between the novas jday based time representation and a few others
  * @param test the CuTest structure which holds test results. */
