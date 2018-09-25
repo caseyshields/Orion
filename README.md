@@ -113,5 +113,5 @@ Results are tested against a [USNO web app](http://aa.usno.navy.mil/data/docs/to
 
 ## Links
  - [IERS Time Scale Converter](https://www.iers.org/IERS/EN/DataProducts/tools/timescales/timescales.html)
- - Special thanks to [George Kaplan](http://gkaplan.us/) for technical support.
+ - Special thanks to [George Kaplan](http://gkaplan.us/) for setting me straight on time scales used for different calculations.
  - Predictions of difference between Universal and Terrestrial time scales([DeltaT](https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term))
