@@ -90,7 +90,7 @@ Orion relies heavily on prior work by the [US Naval Observatory](http://www.usno
 It was developed using [CLion](https://www.jetbrains.com/clion/) with the [Cygwin](https://www.cygwin.com/) and [MinGW](http://mingw.org/) toolchains.
 Lightweight unit testing is done with [CuTest](http://cutest.sourceforge.net/).
 Code is documented using [doxygen](http://www.doxygen.org), [Mermaid](https://mermaidjs.github.io/) and [PlantUML](http://plantuml.com/)
-Results are tested against the [USNO implementation](http://aa.usno.navy.mil/data/docs/topocentric.php).
+Results are tested against a [USNO web app](http://aa.usno.navy.mil/data/docs/topocentric.php).
 
 ![Component organization](https://caseyshields.github.io/Orion/diagrams/novas.svg)
 
@@ -113,3 +113,5 @@ Results are tested against the [USNO implementation](http://aa.usno.navy.mil/dat
 
 ## Links
  - [IERS Time Scale Converter](https://www.iers.org/IERS/EN/DataProducts/tools/timescales/timescales.html)
+ - Special thanks to [George Kaplan](http://gkaplan.us/) for technical support.
+ - Predictions of difference between Universal and Terrestrial time scales([DeltaT](https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term))

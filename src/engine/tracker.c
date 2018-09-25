@@ -59,8 +59,6 @@ int tracker_point(
     // terrestrial time is needed for computing celestial coordinates, Universal time is needed for eath
     jday jd_tt = utc2tt( jd_utc );
     jday jd_ut1 = iers_get_UT1( tracker->earth, jd_utc );
-    // jd_tt = jd_utc + ((double) leap_secs + 32.184) / 86400.0;
-    // jd_ut1 = jd_tt - delta_t / 86400.0
 
     // Apply proper motion, parallax, gravitational deflection, relativistic
     // aberration and get the coordinates of the star in the true equator and equinox of date
@@ -102,7 +100,7 @@ int tracker_point(
 
     // now transform the equatorial coordinates into ITRS coordinates
     error = cel2ter(
-            jd_tt, 0, // previous novas routines don't support the level of precision available
+            jd_ut1, 0, // I do not need/have enough precision to use the low order UT1
             iers_get_DeltaT( tracker->earth ),
             METHOD_EQUINOX,
             REDUCED_ACCURACY,
