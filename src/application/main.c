@@ -284,25 +284,29 @@ int cmd_time(char * line, Application * app) {
 
     printf("result:%d\n", result );
 
-    if (result < 6) {
-        alert("usage: time [<YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>]\nnote time should be int UTC\nNot passing arguments will set the time to the current time.\n");
-        return 1;
-
-    } else {
-        // convert the user supplied string stamp to a jday, which we assume is utc
+    // convert the user supplied string stamp to a jday, which we assume is utc
+    if(result==6)
         app->jd_utc = date2jday(year, month, day, hour, min, secs);
 
-        // look up the earth orientation parameters for the given day
-        app->eop = iers_search( app->iers, app->jd_utc );
-        if (!app->eop) {
-            app->eop = &MISSING_EOP;
-            // TODO warn user about out of bound times?
-        }// TODO warn user about predicted mode?
+    // or set the current time if no arguments were provided
+    else if (strcmp(line, "time")==0)
+        app->jd_utc = jday_now();
 
-        //TODO print time status in all time scales and formats...
-
-        return 0;
+    // otherwise informthe user and abort
+    else {
+        alert("usage: time [<YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>]\nnote time should be int UTC\nNot passing arguments will set the time to the current time.\n");
+        return 1;
     }
+    // look up the earth orientation parameters for the given day
+    app->eop = iers_search( app->iers, app->jd_utc );
+    if (!app->eop)
+        app->eop = &MISSING_EOP;
+
+    // show user the current time and earth orientation parameters
+    iers_print_time( app->eop, app->jd_utc, stdout );
+    iers_print_eop( app->eop, stdout );
+
+    return 0;
 }
 
 int cmd_location( char * line, Orion * orion ) {
@@ -502,30 +506,16 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
     if(!jday_is_valid(cli->jd_utc))
         return 1;
 
-    char * utc = jday2str( cli->jd_utc );
-    char * tt = jday2str( utc2tt(cli->jd_utc) );
-    char * ut1 = jday2str( iers_get_UTC( cli->eop, cli->jd_utc ) );
-    double dt = iers_get_DeltaT(cli->eop);
-    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->jd_utc, dt );
-    free(tt);
-    free(utc);
-    free(ut1);
+    iers_print_time( cli->eop, cli->jd_utc, stdout);
 
-    if(cli->eop) {
-        fprintf( stream, "Earth Orientation\n"
-                         "\tMJD:\t%lf\n"
-                         "\txp:\t%lf arcsec (err=%lf)\n"
-                         "\typ:\t%lf arcsec (err=%lf)\n"
-                         "\tut1-utc:\t%lf sec (err=%lf)\n",
-                cli->eop->mjd,
-                cli->eop->pm_x, cli->eop->pm_x_err,
-                cli->eop->pm_y, cli->eop->pm_y_err,
-                 cli->eop->ut1_utc, cli->eop->ut1_utc_err);
-    }
+    iers_print_eop( cli->eop, stdout );
 
     Tracker tracker = orion_get_tracker( orion );
     tracker_set_earth( &tracker, cli->eop ); // we need to use the orientation of the cli time, not the tracker time...
-    tracker_print_site( &tracker, stream );
+
+    tracker_print_location( &tracker, stream );
+
+    tracker_print_atmosphere( &tracker, stream );
 
     Entry target = orion_get_target( orion );
     if( target.novas.starnumber ) {
@@ -562,7 +552,8 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     jday start = cli->jd_utc;
 
     // print tracker information
-    tracker_print_site( &tracker, stream );
+    tracker_print_location( &tracker, stream );
+    tracker_print_atmosphere( &tracker, stream );
     entry_print( &target ); // TODO print to the supplied stream
 
     // print the header

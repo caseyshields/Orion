@@ -150,20 +150,50 @@ int tracker_zenith(Tracker *tracker, jday jd_tt, double *right_ascension, double
     assert(error==0);
 }
 
-void tracker_print_site(Tracker *tracker, FILE * file) {
-
-    // print out location details
+void tracker_print_atmosphere(Tracker *tracker, FILE * file) {
     on_surface * site = &(tracker->site);
-    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
-    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
-    fprintf( file, "location:\t%10.6lf %c, %10.6lf %c, %6.1lf m\n",
-             site->latitude, ns, site->longitude, ew, site->height );
 
     // print atmospheric details
-    fprintf( file, "weather:\t%5.1lf°C, %4.3f bar\n", site->temperature, site->pressure/1000.0 );
-
+    fprintf( file,
+            "Atmosphere\n"
+            "\ttemperature:\t%5.1lf°C\n"
+            "\tpressure:\t%4.3f millibars\n",
+            site->temperature, site->pressure );
     fflush(file);
 }
+
+void tracker_print_location(Tracker *tracker, FILE * file) {
+    int deg = 0, min = 0;
+    double sec = 0.0;
+    on_surface * site = &(tracker->site);
+    fprintf( file, "Location\n" );
+
+    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
+    deg2dms(site->longitude, &deg, &min, &sec);
+    fprintf(file, "\tlongitude:\t%d %d' %lf\" %c\t(%lf)\n",
+            abs(deg), abs(min), fabs(sec), ew, site->longitude);
+
+    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
+    deg2dms(site->latitude, &deg, &min, &sec);
+    fprintf(file, "\tlatitude:\t%d %d' %lf\" %c\t(%lf)\n",
+            abs(deg), abs(min), fabs(sec), ns, site->latitude);
+
+    fprintf(file, "\theight:\t%lf meters\n");
+}
+//void tracker_print_site(Tracker *tracker, FILE * file) {
+//
+//    // print out location details
+//    on_surface * site = &(tracker->site);
+//    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
+//    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
+//    fprintf( file, "location:\t%10.6lf %c, %10.6lf %c, %6.1lf m\n",
+//             site->latitude, ns, site->longitude, ew, site->height );
+//
+//    // print atmospheric details
+//    fprintf( file, "weather:\t%5.1lf°C, %4.3f bar\n", site->temperature, site->pressure/1000.0 );
+//
+//    fflush(file);
+//}
 
 // test ///////////////////////////////////////////////////////////////////////
 

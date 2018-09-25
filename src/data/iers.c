@@ -182,14 +182,14 @@ int iers_print_time( IERS_EOP * eop, jday jd_utc, FILE * stream ) {
     free(utc);
 
     // Abort if the Earth Orientation is bad
-    if( eop==NULL || !jday_is_valid(eop->mjd) ) {
-        printf( stream, "UT1:\tInvalid Earth Orientation\n");
+    if( !iers_is_valid(eop) ) {
+        fprintf( stream, "UT1:\tInvalid Earth Orientation\n");
         return 2;
     }
 
     // Abort if the EOP isn't within a day of the given UTC time
-    if( fabs(eop->mjd - jd_utc)>1.0 ) {
-        printf( stream, "UTC:\tEOP is out of date for current time\n");
+    if( fabs(eop->mjd - jd_utc) > 1.0 ) {
+        fprintf( stream, "UTC:\tEOP is out of date for current time\n");
         return 3;
     }
 
@@ -207,17 +207,33 @@ int iers_print_time( IERS_EOP * eop, jday jd_utc, FILE * stream ) {
     return 0;
 }
 
-void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
+int iers_print_eop( IERS_EOP * eop, FILE * stream ) {
+    fprintf( stream, "Earth Orientation\n" );
+
+    if( !iers_is_valid(eop) ) {
+        fprintf( stream, "\tInvalid Parameters\n" );
+        return 1;
+    }
+
+    char * time_method = (eop->dt_flag=='I') ? "measured" : "predicted";
+    char * pole_method = (eop->pm_flag=='I') ? "measured" : "predicted";
     char * stamp = jday2str(eop->mjd);
     fprintf( stream,
-            "Earth Orientation\n"
-            "\tMJD:%s\t(%lf)\n"
-            "\tpm_x:%lf\t(e=%lf)\n"
-            "\tpm_y:%lf\t(e=%lf)\n"
-            "\tut1_utc:%lf\t(e=%lf)\n",
-             stamp, eop->mjd, eop->pm_x, eop->pm_x_err,
-             eop->pm_y, eop->pm_y_err, eop->ut1_utc, eop->ut1_utc_err);
+            "\tMJD:\t%s\t(%lf)\n"
+            "\tpm_x:\t%lf\t(e=%lf)\t%s\n"
+            "\tpm_y:\t%lf\t(e=%lf)\t%s\n"
+            "\tut1_utc:\t%lf\t(e=%lf)\t%s\n",
+             stamp, eop->mjd,
+             eop->pm_x, eop->pm_x_err, pole_method,
+             eop->pm_y, eop->pm_y_err, pole_method,
+             eop->ut1_utc, eop->ut1_utc_err, time_method);
     free( stamp );
+}
+
+int iers_is_valid(IERS_EOP * eop) {
+    return eop != NULL
+        && jday_is_valid(eop->mjd)
+        && eop->ut1_utc < 0.9; // bounded by .9 seconds by design of UTC
 }
 
 // test ///////////////////////////////////////////////////////////////////////
