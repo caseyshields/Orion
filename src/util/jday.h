@@ -78,6 +78,8 @@ jday utc2tt( jday ut1 );
 
 jday tt2utc( jday tt );
 
+int jday_print( jday jd_utc, FILE * stream );
+
 /** Unit test of conversions between the novas jday based time representation and a few others
  * @param test the CuTest structure which holds test results. */
 void test_time( CuTest * test );

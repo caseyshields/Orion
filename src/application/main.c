@@ -271,29 +271,31 @@ char * path = "../data/fk6/ReadMe";
 }// TODO should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
 
 // configuration commands /////////////////////////////////////////////////////
-int cmd_time(char * line, Application * cli) {
+int cmd_time(char * line, Application * app) {
     int year, month, day, hour, min, count;
     double secs, step;
 
-    Orion * orion = cli->orion;
+    Orion * orion = app->orion;
 
     int result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
                         &year, &month, &day, &hour, &min, &secs);
 
     //TODO if there is no argument set the current time and set the mode to NRT?
 
+    printf("result:%d\n", result );
+
     if (result < 6) {
-        alert("usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>\nnote time should be int UTC");
+        alert("usage: time [<YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>]\nnote time should be int UTC\nNot passing arguments will set the time to the current time.\n");
         return 1;
 
     } else {
         // convert the user supplied string stamp to a jday, which we assume is utc
-        cli->jd_utc = date2jday(year, month, day, hour, min, secs);
+        app->jd_utc = date2jday(year, month, day, hour, min, secs);
 
         // look up the earth orientation parameters for the given day
-        cli->eop = iers_search( app.iers, cli->jd_utc );
-        if (!cli->eop) {
-            cli->eop = &MISSING_EOP;
+        app->eop = iers_search( app->iers, app->jd_utc );
+        if (!app->eop) {
+            app->eop = &MISSING_EOP;
             // TODO warn user about out of bound times?
         }// TODO warn user about predicted mode?
 
