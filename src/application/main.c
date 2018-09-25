@@ -274,15 +274,12 @@ char * path = "../data/fk6/ReadMe";
 int cmd_time(char * line, Application * app) {
     int year, month, day, hour, min, count;
     double secs, step;
-
     Orion * orion = app->orion;
 
+    // parse the command line
     int result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
                         &year, &month, &day, &hour, &min, &secs);
-
-    //TODO if there is no argument set the current time and set the mode to NRT?
-
-    printf("result:%d\n", result );
+    // TODO actually it should probably be 'time now' that sets current time...
 
     // convert the user supplied string stamp to a jday, which we assume is utc
     if(result==6)
@@ -292,7 +289,7 @@ int cmd_time(char * line, Application * app) {
     else if (strcmp(line, "time")==0)
         app->jd_utc = jday_now();
 
-    // otherwise informthe user and abort
+    // otherwise inform the user and abort
     else {
         alert("usage: time [<YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>]\nnote time should be int UTC\nNot passing arguments will set the time to the current time.\n");
         return 1;
@@ -312,24 +309,34 @@ int cmd_time(char * line, Application * app) {
 int cmd_location( char * line, Orion * orion ) {
     double lat=0, lon=0, height=0;
     int result = sscanf(line, "location %lf %lf %lf\n", &lat, &lon, &height );
-    if(result < 3) {
+
+    if(result==3)
+        orion_set_location( orion, lat, lon, height );
+    else if (strcmp(line, "location")==0)
+        ;
+    else {
         alert( "usage: location <Lat:-90.0 to 90.0> <Lon:0.0 to 360> <height: meters>" );
         return 1;
     }
-    orion_set_location( orion, lat, lon, height );
+    Tracker tracker = orion_get_tracker( orion );
+    tracker_print_location( &tracker, stdout );
     return 0;
 }
 
 int cmd_weather(char * line, Orion * orion) {
     double temperature=0, pressure=0;
     int result = sscanf(line, "weather %lf %lf\n", &temperature, &pressure );
-    if( result<2 ) {
+    if (result==2)
+        orion_set_weather( orion, temperature, pressure );
+    else if (strcmp(line, "weather")==0)
+        ;
+    else {
         alert("usage: weather <celsius> <millibars>");
         return 1;
-    } else {
-        orion_set_weather( orion, temperature, pressure );
-        return 0;
     }
+    Tracker tracker = orion_get_tracker( orion );
+    tracker_print_atmosphere( &tracker, stdout );
+    return 0;
 }
 
 // Catalog Commands ///////////////////////////////////////////////////////////
