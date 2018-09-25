@@ -36,21 +36,21 @@ int main( int argc, char *argv[] ) {
     configure_iers(argc, argv, app.iers);
     configure_catalog(argc, argv, app.catalog);
 
+    // compute the current terrestrial time
+    app.jd_utc = jday_now();
+
     // find the current earth orientation
     app.eop = iers_search(app.iers, app.jd_utc);
     if (!app.eop) {
         app.eop = &MISSING_EOP;
     } // TODO notify user of predicted mode, or outdated catalogs?
 
-    // compute the current terrestrial time
-    jday jd_utc = jday_now();
-
     // Main loop
     while (app.mode) {
 
         // print prompt and get next user command
         printf("\n");
-        char *stamp = jday2str(jd_utc);
+        char *stamp = jday2str(app.jd_utc);
         char *line = NULL;
         size_t size = 0;
         ssize_t read = get_input(stamp, &line, &size);
@@ -497,6 +497,9 @@ int cmd_target(char * line, Application * cli ) {
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
+    if(!jday_is_valid(cli->jd_utc))
+        return 1;
+
     char * utc = jday2str( cli->jd_utc );
     char * tt = jday2str( utc2tt(cli->jd_utc) );
     char * ut1 = jday2str( iers_get_UTC( cli->eop, cli->jd_utc ) );
@@ -519,6 +522,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
     }
 
     Tracker tracker = orion_get_tracker( orion );
+    tracker_set_earth( &tracker, cli->eop ); // we need to use the orientation of the cli time, not the tracker time...
     tracker_print_site( &tracker, stream );
 
     Entry target = orion_get_target( orion );
