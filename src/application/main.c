@@ -153,11 +153,6 @@ void configure_app( int argc, char* argv[], Application * app ) { //struct socka
 
     if( arg!=default_port )
         free(arg);
-
-//    // construct server address structure
-//    address->sin_family = AF_INET; // internet address family
-//    address->sin_addr.s_addr = inet_addr( ip ); // server ip
-//    address->sin_port = htons( port ); // server port
 }
 
 void configure_orion( int argc, char* argv[], Orion * orion ) {
@@ -455,16 +450,21 @@ int cmd_connect( char * line, Application * cli ) {
     // TODO add an optional time bias parameter?
 
     // overwrite default address if one is supplied
-    if( result == 5 ) {
-        if( app.ip )
-            free( app.ip );
-        app.ip = calloc( 32, sizeof(char) );
-        sprintf( app.ip, "%u.%u.%u.%u", ip1, ip2, ip3, ip4 );
-        app.port = port;
+    if (result >= 4) {
+        if (app.ip)
+            free(app.ip);
+        app.ip = calloc(32, sizeof(char));
+        sprintf(app.ip, "%u.%u.%u.%u", ip1, ip2, ip3, ip4);
+
+        if (result == 5)
+            app.port = port;
+    }
+    else if (strcmp(line, "connect") == 0)
+        ; // just keep default value if no arguments are supplied
 
     // abort if command isn't the default structure either
-    } else if( result !=0 ) {
-        alert( "usage: connect [X.X.X.X:Y]");
+    else {
+        alert( "usage: connect[ X.X.X.X[:Y] ]");
         return 1;
     }
 
@@ -483,28 +483,29 @@ int cmd_connect( char * line, Application * cli ) {
 int cmd_target(char * line, Application * cli ) {
     unsigned long id = 0;
     int result = sscanf( line, "target %lu\n", &id );
+    if (result==1) {
 
-    if( result != 1 ) {
-        alert( "usage: track <FK6 ID>");
-        return 1;
-    }
-
-    Entry * entry = catalog_get(cli->catalog, id);
-    if( entry ) {
-
-        entry_print( entry, stdout );
+        Entry *entry = catalog_get(cli->catalog, id);
+        if (!entry) {
+            alert("Could not find star with the given id number.");
+            return 1;
+        }
+        orion_set_target( cli->orion, entry);
+        entry_print(entry, stdout);
 
         // set earth orientation parameters for the current time
         jday utc = jday_now();
-        IERS_EOP * eop = iers_search( cli->iers, utc );
-        orion_set_earth_orientation( cli->orion, eop );
+        IERS_EOP *eop = iers_search(cli->iers, utc);
+        orion_set_earth_orientation(cli->orion, eop);
         // this will be good as long as the user doesn't track a target for a day. Then it will be slightly less good...
-
-        orion_set_target( cli->orion, entry);
-
-    } else {
-        fprintf( stderr, "Could not find star %ld in catalog\n", id );
-        fflush( stderr );
+    }
+    else if( strcmp("target", line)==0 ) {
+        Entry entry = orion_get_target( cli->orion );
+        entry_print( &entry, stdout );
+    }
+    else {
+        alert( "usage: target [FK6ID]");
+        return 1;
     }
     return 0;
 }
@@ -540,7 +541,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
         tracker_point( &tracker, cli->jd_utc, &(target.novas), REFRACTION_SITE );
         tracker_print_heading( &tracker, stream );
 
-//        // print out an example midc01 message
+        // should we printout an example midc01 message? kind of hard to reset target, time, eop, tracker to calculate the example.
 //        MIDC01 midc01;
 //        create_tracking_message(orion, &midc01);
 //        tats_print_midc01(&midc01, file);
@@ -555,7 +556,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     int result = sscanf(line, "report %lf %u\n", &step, &count );
     if( result != 2 ) {
         alert( "usage: report <step> <count>" );
-        return 0;
+        return 1;
     }
 
     // get thread safe copies of the tracker and target from the orion server
@@ -596,6 +597,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         free( ts );
         start += step;
     }
+    return 0;
 }
 
 int cmd_help( char * line ) {
@@ -607,8 +609,8 @@ int cmd_help( char * line ) {
            "\tname <substr>\n"
            "\tsearch <mag> [<> <> <> <>(deg)]\n\n");
     printf("TCN Sensor\n"
-           "\tconnect [X.X.X.X:Y]\n"
-           "\ttarget <fk6 id>\n\n");
+           "\tconnect [ X.X.X.X[:Y] ]\n"
+           "\ttarget [fk6id]\n\n");
     printf("Diagnostic\n"
            "\tstatus\n"
            "\treport <step(sec)> <count>\n\n");
