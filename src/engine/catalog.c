@@ -204,7 +204,7 @@ void entry_print( Entry *star, FILE * file ) {
     deg2dms( entry->dec, &degrees, &minutes, &seconds );
     fprintf( file,
              "\tdeclination:\t%d %u' %lf\"\t(%lf degrees)\n"
-             "\tproper motion:\t(%lf ra, %lf dec) mas/year\n"
+             "\tproper motion:\t(%4.2lf ra, %4.2lf dec) mas/year\n"
              "\tparallax:\t%lf milliarcseconds\n"
              "\tvisual magnitude:\t%lf\n"
              "\tradial velocity:\t%lf km/s\n",
