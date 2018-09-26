@@ -342,16 +342,16 @@ int cmd_weather(char * line, Orion * orion) {
 // Catalog Commands ///////////////////////////////////////////////////////////
 int cmd_name( char * line, Catalog * catalog ) {
     char name[32];
-    int result = sscanf( line, "name %32s\n", name);
+    int result = sscanf( line, "name %31s\n", name);
     if( result==0 ) {
         alert( "usage: search <name>");
         return 1;
     } else {
-        int contains(Entry *entry) { // TODO nested functions are Gnu C specific...
+        int contains(Entry *entry) {
             return NULL != strstr(entry->novas.starname, name);
-        }
+        } // TODO nested functions are Gnu C specific...
         Catalog *results = catalog_filter( catalog, contains, NULL );
-        catalog_each( results, entry_print );
+        catalog_each( results, entry_print_summary );
         free( results );
     }
 }
@@ -492,6 +492,8 @@ int cmd_target(char * line, Application * cli ) {
     Entry * entry = catalog_get(cli->catalog, id);
     if( entry ) {
 
+        entry_print( entry, stdout );
+
         // set earth orientation parameters for the current time
         jday utc = jday_now();
         IERS_EOP * eop = iers_search( cli->iers, utc );
@@ -499,6 +501,7 @@ int cmd_target(char * line, Application * cli ) {
         // this will be good as long as the user doesn't track a target for a day. Then it will be slightly less good...
 
         orion_set_target( cli->orion, entry);
+
     } else {
         fprintf( stderr, "Could not find star %ld in catalog\n", id );
         fflush( stderr );
@@ -535,6 +538,7 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
                 target.novas.ra, target.novas.dec,
                 tracker.azimuth, tracker.elevation,
                 tracker.efg[0], tracker.efg[1], tracker.efg[2], target.magnitude);
+
 //        // print out an example midc01 message
 //        MIDC01 midc01;
 //        create_tracking_message(orion, &midc01);
@@ -561,7 +565,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     // print tracker information
     tracker_print_location( &tracker, stream );
     tracker_print_atmosphere( &tracker, stream );
-    entry_print( &target ); // TODO print to the supplied stream
+    entry_print( &target, stream ); // TODO print to the supplied stream
 
     // print the header
     fprintf( stream, "UTC\tAZ\tEL\tE\tF\tG\n" );
