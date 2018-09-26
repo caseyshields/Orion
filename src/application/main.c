@@ -513,31 +513,32 @@ int cmd_target(char * line, Application * cli ) {
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
-    if(!jday_is_valid(cli->jd_utc))
+    // sanity check
+    if (!jday_is_valid(cli->jd_utc))
         return 1;
 
+    // print time and orientation info using the current time of the application
     iers_print_time( cli->eop, cli->jd_utc, stdout);
-
     iers_print_eop( cli->eop, stdout );
 
+    // get a copy of the tracker so we don't have to retain the server mutex.
     Tracker tracker = orion_get_tracker( orion );
-    tracker_set_earth( &tracker, cli->eop ); // we need to use the orientation of the cli time, not the tracker time...
 
+    // print tracker config info
     tracker_print_location( &tracker, stream );
-
     tracker_print_atmosphere( &tracker, stream );
 
+    // if there is a valid target, print target info
     Entry target = orion_get_target( orion );
     if( target.novas.starnumber ) {
+        entry_print( &target, stdout );
 
-        // TODO get and print tracker time since it is now decoupled from the cli time!
+        // we need to use the eop of the app time, not the tracker's last eop...
+        tracker_set_earth( &tracker, cli->eop );
 
+        // point the tracker copy at the target and give some example output
         tracker_point( &tracker, cli->jd_utc, &(target.novas), REFRACTION_SITE );
-        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf ra % 8.4lf de\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
-                target.novas.catalog, target.novas.starnumber, target.novas.starname,
-                target.novas.ra, target.novas.dec,
-                tracker.azimuth, tracker.elevation,
-                tracker.efg[0], tracker.efg[1], tracker.efg[2], target.magnitude);
+        tracker_print_heading( &tracker, stream );
 
 //        // print out an example midc01 message
 //        MIDC01 midc01;
@@ -598,10 +599,19 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
 }
 
 int cmd_help( char * line ) {
-    printf("Configuration\n\ttime <YYYY/MM/DD HH:MM:SS.ssssss>\n\tlocation <lat(deg)> <lon(deg)> <height(m)>\n\tweather <temp(C)> <pressure(mBar)>\n\n");
-    printf("Catalog\n\tname <substr>\n\tsearch <mag> [<> <> <> <>(deg)]\n\n");
-    printf("TCN Sensor\n\tconnect [X.X.X.X:Y]\n\ttrack <fk6 id>\n\n");
-    printf("Diagnostic\n\tstatus\n\treport <step(sec)> <count>\n\n");
+    printf("Configuration\n"
+           "\ttime [YYYY/MM/DD HH:MM:SS.ssssss]\n"
+           "\tlocation [<lat(deg)> <lon(deg)> <height(m)>]\n"
+           "\tweather [<temp(C)> <pressure(mBar)>]\n\n");
+    printf("Catalog\n"
+           "\tname <substr>\n"
+           "\tsearch <mag> [<> <> <> <>(deg)]\n\n");
+    printf("TCN Sensor\n"
+           "\tconnect [X.X.X.X:Y]\n"
+           "\ttarget <fk6 id>\n\n");
+    printf("Diagnostic\n"
+           "\tstatus\n"
+           "\treport <step(sec)> <count>\n\n");
     printf("\texit\n\n");
     printf("<> : required\t[] : optional\t() : units\n");
 }
