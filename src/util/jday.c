@@ -86,6 +86,16 @@ jday tt2utc( jday tt ) {
     return tt - ((LEAP_SECONDS / DELTA_AT) / SECONDS_IN_DAY);
 }
 
+int jday_print(jday jd_utc, FILE * stream) {
+    jday jd_tt = utc2tt(jd_utc);
+    char * utc = jday2str(jd_utc);
+    char * tt = jday2str( jd_tt );
+    fprintf( stream, "Time\n\tUTC:\t%s\t(%lf)\n\tTT:\t%s\t(%lf)\n",
+             utc, jd_utc, tt, jd_tt );
+    free(tt);
+    free(utc);
+}
+
 // test ///////////////////////////////////////////////////////////////////////
 
 void test_time( CuTest * test ) {

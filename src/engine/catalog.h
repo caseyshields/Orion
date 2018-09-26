@@ -33,7 +33,9 @@ typedef struct {
 
 } Entry;
 
-void entry_print( Entry *e );
+void entry_print( Entry *e, FILE * file );
+
+void entry_print_summary( Entry *star );
 
 /** A catalog of stars. provides methods for loading, searching, filtering and printing entries.
  * @author Casey Shields*/

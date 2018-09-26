@@ -168,7 +168,7 @@ void catalog_free( Catalog * catalog ) {
 }
 
 void catalog_print( Catalog *catalog ) {
-    catalog_each( catalog, entry_print );
+    catalog_each( catalog, entry_print_summary );
 }
 
 void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
@@ -179,15 +179,40 @@ void catalog_each( Catalog *catalog, void (*function)(Entry *) ) {
     }
 }
 
-void entry_print( Entry *star ) {
-    printf( "%s.%li: %s (ra:%lf, dec:%lf, p:%lf, v=%lf)\n",
+void entry_print_summary( Entry *star ) {
+    printf( "%s.%li: %s (ra:%lf, dec:%lf, v=%lf)\n",
             star->novas.catalog,
             star->novas.starnumber,
             star->novas.starname,
             star->novas.ra,
             star->novas.dec,
-            star->novas.parallax,
             star->magnitude );
+}
+
+void entry_print( Entry *star, FILE * file ) {
+    int degrees = 0, hours = 0, minutes = 0;
+    double seconds = 0.0;
+    cat_entry * entry = &(star->novas);
+    deg2dms( entry->ra, &hours, &minutes, &seconds );
+    fprintf( file, "Catalog Entry\n"
+            "\tCatalog designation:\t%s.%li\n"
+            "\tFlamsteed/Bayer designation:\t%s\n"
+            "\tright ascension:\t%d %u' %lf\"\t(%lf hours)\n",
+             entry->catalog, entry->starnumber,
+             entry->starname,
+            hours, minutes, seconds, entry->ra);
+    deg2dms( entry->dec, &degrees, &minutes, &seconds );
+    fprintf( file,
+             "\tdeclination:\t%d %u' %lf\"\t(%lf degrees)\n"
+             "\tproper motion:\t(%4.2lf ra, %4.2lf dec) mas/year\n"
+             "\tparallax:\t%lf milliarcseconds\n"
+             "\tvisual magnitude:\t%lf\n"
+             "\tradial velocity:\t%lf km/s\n",
+             degrees, minutes, seconds, entry->dec,
+             entry->promora, entry->promodec,
+             entry->parallax,
+             star->magnitude,
+             entry->radialvelocity);
     fflush( stdout );
 }
 

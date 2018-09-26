@@ -129,9 +129,9 @@ IERS_EOP * iers_search( IERS * iers, jday time ) {
 
     // check bounds, we only want to return values in a measured interval
     if (low==iers->size) // low ==-1)
-        return NULL;
+        return &MISSING_EOP; //NULL;
     else if (low==0 && time < iers->eops[low].mjd)
-        return NULL;
+        return &MISSING_EOP;//NULL;
 
     // TODO should we interpolate orientation between the two adjacent dates?
 
@@ -161,12 +161,79 @@ void iers_free( IERS * iers ) {
     iers->eops = NULL;
 }
 
-void iers_print_eop( IERS_EOP * eop, FILE * stream ) {
-    char * stamp = jday2str(eop->mjd);
-    fprintf( stream, "t:%s\tpmX:%lf\tpmY:%lf\tdt:%lf\te={%lf,%lf,%lf}",
-             stamp, eop->pm_x, eop->pm_y, eop->ut1_utc,
-             eop->pm_x_err, eop->pm_y_err, eop->ut1_utc_err);
+int iers_print_time( IERS_EOP * eop, jday jd_utc, FILE * stream ) {
+    fprintf( stream, "Time\n" );
+
+    // abort if given UTC time is incorrect
+    if( !jday_is_valid(jd_utc) ) {
+        fprintf( stream, "\tUTC:\tinvalid Julian Date\n");
+        return 1;
+    }
+
+    // summarize Coordinated time and Terrestrial time
+    jday jd_tt = utc2tt(jd_utc);
+    char * utc = jday2str(jd_utc);
+    char * tt = jday2str( jd_tt );
+    fprintf( stream,
+             "\tUTC:\t%s\t(%lf)\n"
+             "\tTT:\t%s\t(%lf)\n",
+             utc, jd_utc, tt, jd_tt );
+    free(tt);
+    free(utc);
+
+    // Abort if the Earth Orientation is bad
+    if( !iers_is_valid(eop) ) {
+        fprintf( stream, "\tUT1:\tInvalid Earth Orientation\n");
+        return 2;
+    }
+
+    // Abort if the EOP isn't within a day of the given UTC time
+    if( fabs(eop->mjd - jd_utc) > 1.0 ) {
+        fprintf( stream, "\tUT1:\tNo EOP for current time\n");
+        return 3;
+    }
+
+    // Summarize the Universal Time
+    double dt = iers_get_DeltaT(eop);
+    jday jd_ut1 = iers_get_UT1( eop, jd_utc );
+    char * ut1 = jday2str( jd_ut1 );
+    char * method = (eop->dt_flag=='I') ? "measured" : (eop->dt_flag=='P') ? "predicted" : "unavailable";
+    fprintf( stream,
+            "\tUT1:\t%s\t(%lf)\n"
+            "\tdT:\t%lf\t%s\n",
+            ut1, jd_ut1, dt, method );
+    free(ut1);
+
+    return 0;
+}
+
+int iers_print_eop( IERS_EOP * eop, FILE * stream ) {
+    fprintf( stream, "Earth Orientation\n" );
+
+    if( !iers_is_valid(eop) ) {
+        fprintf( stream, "\tInvalid Parameters\n" );
+        return 1;
+    }
+
+    char * time_method = (eop->dt_flag=='I') ? "measured" : (eop->dt_flag=='P') ? "predicted" : "unavailable";
+    char * pole_method = (eop->pm_flag=='I') ? "measured" : (eop->pm_flag=='P') ? "predicted" : "unavailable";
+    char * stamp = (eop->mjd>0) ? jday2str(eop->mjd) : "";
+    fprintf( stream,
+            "\tMJD:\t%s\t(%lf)\n"
+            "\tpm_x:\t%lf\t(e=%lf)\t%s\n"
+            "\tpm_y:\t%lf\t(e=%lf)\t%s\n"
+            "\tut1_utc:\t%lf\t(e=%lf)\t%s\n",
+             stamp, eop->mjd,
+             eop->pm_x, eop->pm_x_err, pole_method,
+             eop->pm_y, eop->pm_y_err, pole_method,
+             eop->ut1_utc, eop->ut1_utc_err, time_method);
     free( stamp );
+}
+
+int iers_is_valid(IERS_EOP * eop) {
+    return eop != NULL
+        && jday_is_valid(eop->mjd)
+        && eop->ut1_utc < 0.9; // bounded by .9 seconds by design of UTC
 }
 
 // test ///////////////////////////////////////////////////////////////////////
@@ -230,7 +297,7 @@ IERS_EOP * linear_search( IERS * iers, jday time ) {
         else n++;
     // check bounds
     if (n==iers->size)
-        return NULL;
+        return &MISSING_EOP;//NULL;
     else
         return &(iers->eops[n]);
 }
@@ -256,9 +323,9 @@ void test_iers_search( CuTest * test ) {
     // test bounds
     IERS_EOP * eop;
     eop = iers_search( &iers, offset - step );
-    CuAssertPtrEquals_Msg(test,"searches before first item should return null", NULL, eop);
+    CuAssertPtrEquals_Msg(test,"searches before first item should return null", &MISSING_EOP, eop);
     eop = iers_search( &iers, offset + (count+1) * step );
-    CuAssertPtrEquals_Msg(test,"searches after last item should return null", NULL, eop);
+    CuAssertPtrEquals_Msg(test,"searches after last item should return null", &MISSING_EOP, eop);
 
     // search for exact matches to every time
     for (int n=0; n<count; n++) {

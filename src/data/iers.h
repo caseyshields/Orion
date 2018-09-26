@@ -98,7 +98,19 @@ jday iers_get_UTC( IERS_EOP * eop, jday ut1 );
 /** @returns The time offset in seconds of the given earth orientation. */
 double iers_get_DeltaT( IERS_EOP * eop );
 
-void iers_print_eop( IERS_EOP * eop, FILE * file );
+/** @param file desired output stream
+ * @param eop current earth orientation parameters
+ * @param jd_utc current time we wish to obtain Universal time for
+ * @return Zero on success, 1 iff UTC is invalid, 2 iff EOP is invalid, 3 iff EOP is outdated.*/
+int iers_print_time( IERS_EOP * eop, jday jd_utc, FILE * file );
+
+/** @param eop earth orientation to print a summary of
+ * @param file stream to print the summary to
+ * @return Zero on success, 1 iff eop is invalid*/
+int iers_print_eop( IERS_EOP * eop, FILE * file );
+
+/** @return true when pointer is non-null, MJD is valid, and UT1-UTC is bounded by .9 seconds. False otherwise. */
+int iers_is_valid(IERS_EOP * eop);
 
 /** releases all contained earth orientation parameter records. */
 void iers_free( IERS * iers );

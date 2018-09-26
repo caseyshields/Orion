@@ -7,11 +7,13 @@
 #define STARTRACK_TRACKER_H
 
 #include <assert.h>
+#include <util/vmath.h>
+
 #include <data/iers.h>
+#include "util/jday.h"
 
 #include "../lib/novasc3.1/novas.h"
 #include "../lib/cutest-1.5/CuTest.h"
-#include "util/jday.h"
 
 /** Novas in reduced accuracy mode can be expected to have 1 arcsecond accuracy when properly configured. */
 #define REDUCED_ACCURACY 1
@@ -119,7 +121,11 @@ int tracker_point(Tracker *tracker, jday jd_tt, cat_entry *target, short refract
  * @returns Zero on success, otherwise a Novas error code. */
 int tracker_zenith(Tracker *tracker, jday jd_tt, double *right_ascension, double *declination);
 
-void tracker_print_site(Tracker *tracker, FILE * file);
+void tracker_print_atmosphere(Tracker *tracker, FILE * file);
+
+void tracker_print_location(Tracker *tracker, FILE * file);
+
+void tracker_print_heading(Tracker * tracker, FILE * file);
 
 /** Performs some calculations on a small set of stars and tests them against precomputed coordinates.
  * Directly taken from 'checkout-stars.c' from novas 3.1.

@@ -36,21 +36,18 @@ int main( int argc, char *argv[] ) {
     configure_iers(argc, argv, app.iers);
     configure_catalog(argc, argv, app.catalog);
 
+    // compute the current terrestrial time
+    app.jd_utc = jday_now();
+
     // find the current earth orientation
     app.eop = iers_search(app.iers, app.jd_utc);
-    if (!app.eop) {
-        app.eop = &MISSING_EOP;
-    } // TODO notify user of predicted mode, or outdated catalogs?
-
-    // compute the current terrestrial time
-    jday jd_utc = jday_now();
 
     // Main loop
     while (app.mode) {
 
         // print prompt and get next user command
         printf("\n");
-        char *stamp = jday2str(jd_utc);
+        char *stamp = jday2str(app.jd_utc);
         char *line = NULL;
         size_t size = 0;
         ssize_t read = get_input(stamp, &line, &size);
@@ -153,11 +150,6 @@ void configure_app( int argc, char* argv[], Application * app ) { //struct socka
 
     if( arg!=default_port )
         free(arg);
-
-//    // construct server address structure
-//    address->sin_family = AF_INET; // internet address family
-//    address->sin_addr.s_addr = inet_addr( ip ); // server ip
-//    address->sin_port = htons( port ); // server port
 }
 
 void configure_orion( int argc, char* argv[], Orion * orion ) {
@@ -271,74 +263,85 @@ char * path = "../data/fk6/ReadMe";
 }// TODO should we add some other bright stars as a stop gap, or just finish the YBS Catalog loader?
 
 // configuration commands /////////////////////////////////////////////////////
-int cmd_time(char * line, Application * cli) {
+int cmd_time(char * line, Application * app) {
     int year, month, day, hour, min, count;
     double secs, step;
+    Orion * orion = app->orion;
 
-    Orion * orion = cli->orion;
-
+    // parse the command line
     int result = sscanf(line, "time %u/%u/%u %u:%u:%lf\n",
                         &year, &month, &day, &hour, &min, &secs);
+    // TODO actually it should probably be 'time now' that sets current time...
 
-    //TODO if there is no argument set the current time and set the mode to NRT?
+    // convert the user supplied string stamp to a jday, which we assume is utc
+    if(result==6)
+        app->jd_utc = date2jday(year, month, day, hour, min, secs);
 
-    if (result < 6) {
-        alert("usage: report <YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>\nnote time should be int UTC");
+    // or set the current time if no arguments were provided
+    else if (strcmp(line, "time")==0)
+        app->jd_utc = jday_now();
+
+    // otherwise inform the user and abort
+    else {
+        alert("usage: time [<YYYY>/<MM>/<DD> <hh>:<mm>:<ss.sss>]\nnote time should be int UTC\nNot passing arguments will set the time to the current time.\n");
         return 1;
-
-    } else {
-        // convert the user supplied string stamp to a jday, which we assume is utc
-        cli->jd_utc = date2jday(year, month, day, hour, min, secs);
-
-        // look up the earth orientation parameters for the given day
-        cli->eop = iers_search( app.iers, cli->jd_utc );
-        if (!cli->eop) {
-            cli->eop = &MISSING_EOP;
-            // TODO warn user about out of bound times?
-        }// TODO warn user about predicted mode?
-
-        //TODO print time status in all time scales and formats...
-
-        return 0;
     }
+    // look up the earth orientation parameters for the given day
+    app->eop = iers_search( app->iers, app->jd_utc );
+
+    // show user the current time and earth orientation parameters
+    iers_print_time( app->eop, app->jd_utc, stdout );
+    iers_print_eop( app->eop, stdout );
+
+    return 0;
 }
 
 int cmd_location( char * line, Orion * orion ) {
     double lat=0, lon=0, height=0;
     int result = sscanf(line, "location %lf %lf %lf\n", &lat, &lon, &height );
-    if(result < 3) {
+
+    if(result==3)
+        orion_set_location( orion, lat, lon, height );
+    else if (strcmp(line, "location")==0)
+        ;
+    else {
         alert( "usage: location <Lat:-90.0 to 90.0> <Lon:0.0 to 360> <height: meters>" );
         return 1;
     }
-    orion_set_location( orion, lat, lon, height );
+    Tracker tracker = orion_get_tracker( orion );
+    tracker_print_location( &tracker, stdout );
     return 0;
 }
 
 int cmd_weather(char * line, Orion * orion) {
     double temperature=0, pressure=0;
     int result = sscanf(line, "weather %lf %lf\n", &temperature, &pressure );
-    if( result<2 ) {
+    if (result==2)
+        orion_set_weather( orion, temperature, pressure );
+    else if (strcmp(line, "weather")==0)
+        ;
+    else {
         alert("usage: weather <celsius> <millibars>");
         return 1;
-    } else {
-        orion_set_weather( orion, temperature, pressure );
-        return 0;
     }
+    Tracker tracker = orion_get_tracker( orion );
+    tracker_print_atmosphere( &tracker, stdout );
+    return 0;
 }
 
 // Catalog Commands ///////////////////////////////////////////////////////////
 int cmd_name( char * line, Catalog * catalog ) {
     char name[32];
-    int result = sscanf( line, "name %32s\n", name);
+    int result = sscanf( line, "name %31s\n", name);
     if( result==0 ) {
         alert( "usage: search <name>");
         return 1;
     } else {
-        int contains(Entry *entry) { // TODO nested functions are Gnu C specific...
+        int contains(Entry *entry) {
             return NULL != strstr(entry->novas.starname, name);
-        }
+        } // TODO nested functions are Gnu C specific...
         Catalog *results = catalog_filter( catalog, contains, NULL );
-        catalog_each( results, entry_print );
+        catalog_each( results, entry_print_summary );
         free( results );
     }
 }
@@ -442,16 +445,21 @@ int cmd_connect( char * line, Application * cli ) {
     // TODO add an optional time bias parameter?
 
     // overwrite default address if one is supplied
-    if( result == 5 ) {
-        if( app.ip )
-            free( app.ip );
-        app.ip = calloc( 32, sizeof(char) );
-        sprintf( app.ip, "%u.%u.%u.%u", ip1, ip2, ip3, ip4 );
-        app.port = port;
+    if (result >= 4) {
+        if (app.ip)
+            free(app.ip);
+        app.ip = calloc(32, sizeof(char));
+        sprintf(app.ip, "%u.%u.%u.%u", ip1, ip2, ip3, ip4);
+
+        if (result == 5)
+            app.port = port;
+    }
+    else if (strcmp(line, "connect") == 0)
+        ; // just keep default value if no arguments are supplied
 
     // abort if command isn't the default structure either
-    } else if( result !=0 ) {
-        alert( "usage: connect [X.X.X.X:Y]");
+    else {
+        alert( "usage: connect[ X.X.X.X[:Y] ]");
         return 1;
     }
 
@@ -459,36 +467,47 @@ int cmd_connect( char * line, Application * cli ) {
     if( orion_connect( cli->orion, app.ip, app.port) ) {
         alert( "Could not connect to TATS sensor");
         return 1;
-    } if( orion_start( cli->orion ) ) {
+    }
+
+    if( orion_start( cli->orion ) ) {
         alert( "Failed to start TATS control thread" );
         return 1;
     }
 
+    fprintf( stdout,
+            "Sensor\n"
+            "\tip:\t%s\n"
+            "\tport:\t%d\n",
+            app.ip, app.port);
     return 0;
 }
 
 int cmd_target(char * line, Application * cli ) {
     unsigned long id = 0;
     int result = sscanf( line, "target %lu\n", &id );
+    if (result==1) {
 
-    if( result != 1 ) {
-        alert( "usage: track <FK6 ID>");
-        return 1;
-    }
-
-    Entry * entry = catalog_get(cli->catalog, id);
-    if( entry ) {
+        Entry *entry = catalog_get(cli->catalog, id);
+        if (!entry) {
+            alert("Could not find star with the given id number.");
+            return 1;
+        }
+        orion_set_target( cli->orion, entry);
+        entry_print(entry, stdout);
 
         // set earth orientation parameters for the current time
         jday utc = jday_now();
-        IERS_EOP * eop = iers_search( cli->iers, utc );
-        orion_set_earth_orientation( cli->orion, eop );
+        IERS_EOP *eop = iers_search(cli->iers, utc);
+        orion_set_earth_orientation(cli->orion, eop);
         // this will be good as long as the user doesn't track a target for a day. Then it will be slightly less good...
-
-        orion_set_target( cli->orion, entry);
-    } else {
-        fprintf( stderr, "Could not find star %ld in catalog\n", id );
-        fflush( stderr );
+    }
+    else if( strcmp("target", line)==0 ) {
+        Entry entry = orion_get_target( cli->orion );
+        entry_print( &entry, stdout );
+    }
+    else {
+        alert( "usage: target [FK6ID]");
+        return 1;
     }
     return 0;
 }
@@ -497,46 +516,43 @@ int cmd_target(char * line, Application * cli ) {
 int cmd_status(char * line, Application * cli, FILE * stream ) {
     Orion * orion = cli->orion;
 
-    char * utc = jday2str( cli->jd_utc );
-    char * tt = jday2str( utc2tt(cli->jd_utc) );
-    char * ut1 = jday2str( iers_get_UTC( cli->eop, cli->jd_utc ) );
-    double dt = iers_get_DeltaT(cli->eop);
-    fprintf( stream, "UTC:\t%s\nUT1:\t%s\nTT:\t%s\nMJD:\t%lf\nDeltaT:\t%lf\n", utc, ut1, tt, cli->jd_utc, dt );
-    free(tt);
-    free(utc);
-    free(ut1);
+    // sanity check
+    if (!jday_is_valid(cli->jd_utc))
+        return 1;
 
-    if(cli->eop) {
-        fprintf( stream, "Earth Orientation\n"
-                         "\tMJD:\t%lf\n"
-                         "\txp:\t%lf arcsec (err=%lf)\n"
-                         "\typ:\t%lf arcsec (err=%lf)\n"
-                         "\tut1-utc:\t%lf sec (err=%lf)\n",
-                cli->eop->mjd,
-                cli->eop->pm_x, cli->eop->pm_x_err,
-                cli->eop->pm_y, cli->eop->pm_y_err,
-                 cli->eop->ut1_utc, cli->eop->ut1_utc_err);
-    }
+    // print time and orientation info using the current time of the application
+    iers_print_time( cli->eop, cli->jd_utc, stdout);
+    iers_print_eop( cli->eop, stdout );
 
+    // get a copy of the tracker so we don't have to retain the server mutex.
     Tracker tracker = orion_get_tracker( orion );
-    tracker_print_site( &tracker, stream );
 
+    // print tracker config info
+    tracker_print_location( &tracker, stream );
+    tracker_print_atmosphere( &tracker, stream );
+
+    // if there is a valid target, print target info
     Entry target = orion_get_target( orion );
     if( target.novas.starnumber ) {
+        entry_print( &target, stdout );
 
-        // TODO get and print tracker time since it is now decoupled from the cli time!
+        // we need to use the eop of the app time, not the tracker's last eop...
+        tracker_set_earth( &tracker, cli->eop );
 
+        // point the tracker copy at the target and give some example output
         tracker_point( &tracker, cli->jd_utc, &(target.novas), REFRACTION_SITE );
-        fprintf( stream, "target:\n\t%s %ld: %s\n\t%8.4lf ra % 8.4lf de\n\t%8.4lf°az % 8.4lf°el\n\t(%lf, %lf, %lf)\n\tVmag: %3.1lf\n",
-                target.novas.catalog, target.novas.starnumber, target.novas.starname,
-                target.novas.ra, target.novas.dec,
-                tracker.azimuth, tracker.elevation,
-                tracker.efg[0], tracker.efg[1], tracker.efg[2], target.magnitude);
-//        // print out an example midc01 message
+        tracker_print_heading( &tracker, stream );
+
+        // should we printout an example midc01 message? kind of hard to reset target, time, eop, tracker to calculate the example.
 //        MIDC01 midc01;
 //        create_tracking_message(orion, &midc01);
 //        tats_print_midc01(&midc01, file);
     }
+    fprintf( stdout,
+             "Sensor\n"
+             "\tip:\t%s\n"
+             "\tport:\t%d\n",
+             app.ip, app.port);
 }
 
 int cmd_report( char * line, Application * cli, FILE * stream ) {
@@ -547,7 +563,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     int result = sscanf(line, "report %lf %u\n", &step, &count );
     if( result != 2 ) {
         alert( "usage: report <step> <count>" );
-        return 0;
+        return 1;
     }
 
     // get thread safe copies of the tracker and target from the orion server
@@ -556,8 +572,9 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     jday start = cli->jd_utc;
 
     // print tracker information
-    tracker_print_site( &tracker, stream );
-    entry_print( &target ); // TODO print to the supplied stream
+    tracker_print_location( &tracker, stream );
+    tracker_print_atmosphere( &tracker, stream );
+    entry_print( &target, stream ); // TODO print to the supplied stream
 
     // print the header
     fprintf( stream, "UTC\tAZ\tEL\tE\tF\tG\n" );
@@ -568,11 +585,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     while( start < end ) {
 
         // look up the earth orientation parameters
-        IERS_EOP * earth = iers_search( cli->iers, start ); // TODO this can really be sped up to a linear search after the first iteration...
-        if (!earth) {
-            // TODO should we print a warning if missing or predicted?
-            earth = &MISSING_EOP;
-        }
+        IERS_EOP * earth = iers_search( cli->iers, start ); // TODO this could be sped up to a linear search after the first iteration... or just using an interpolation search
         tracker_set_earth( &tracker, earth );
 
         // calculate coordinates at the given time
@@ -581,19 +594,29 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         // print report entry
         int r = TATS_CELESTIAL_SPHERE_RADIUS;
         char * ts = jday2str(start);
-        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%u\t%u\t%u\n", ts,
+        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%d\t%d\t%d\n", ts,
                 tracker.azimuth, tracker.elevation,
                  (int)(tracker.efg[0]*r), (int)(tracker.efg[1]*r), (int)(tracker.efg[2]*r) );
         free( ts );
         start += step;
     }
+    return 0;
 }
 
 int cmd_help( char * line ) {
-    printf("Configuration\n\ttime <YYYY/MM/DD HH:MM:SS.ssssss>\n\tlocation <lat(deg)> <lon(deg)> <height(m)>\n\tweather <temp(C)> <pressure(mBar)>\n\n");
-    printf("Catalog\n\tname <substr>\n\tsearch <mag> [<> <> <> <>(deg)]\n\n");
-    printf("TCN Sensor\n\tconnect [X.X.X.X:Y]\n\ttrack <fk6 id>\n\n");
-    printf("Diagnostic\n\tstatus\n\treport <step(sec)> <count>\n\n");
+    printf("Configuration\n"
+           "\ttime [YYYY/MM/DD HH:MM:SS.ssssss]\n"
+           "\tlocation [<lat(deg)> <lon(deg)> <height(m)>]\n"
+           "\tweather [<temp(C)> <pressure(mBar)>]\n\n");
+    printf("Catalog\n"
+           "\tname <substr>\n"
+           "\tsearch <mag> [<> <> <> <>(deg)]\n\n");
+    printf("TCN Sensor\n"
+           "\tconnect [ X.X.X.X[:Y] ]\n"
+           "\ttarget [fk6id]\n\n");
+    printf("Diagnostic\n"
+           "\tstatus\n"
+           "\treport <step(sec)> <count>\n\n");
     printf("\texit\n\n");
     printf("<> : required\t[] : optional\t() : units\n");
 }

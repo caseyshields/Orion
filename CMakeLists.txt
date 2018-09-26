@@ -49,9 +49,9 @@ add_executable( sensor
         src/application/sensor.c
         )
 if (WIN32)
-    target_link_libraries( sensor novas wsock32 ws2_32 )
+    target_link_libraries( sensor cutest novas wsock32 ws2_32 )
 else(WIN32)
-    target_link_libraries( sensor novas m )
+    target_link_libraries( sensor cutest novas m )
 endif(WIN32)
 
 # Create the Orion command line application

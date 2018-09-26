@@ -150,19 +150,66 @@ int tracker_zenith(Tracker *tracker, jday jd_tt, double *right_ascension, double
     assert(error==0);
 }
 
-void tracker_print_site(Tracker *tracker, FILE * file) {
-
-    // print out location details
+void tracker_print_atmosphere(Tracker *tracker, FILE * file) {
     on_surface * site = &(tracker->site);
-    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
-    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
-    fprintf( file, "location:\t%10.6lf %c, %10.6lf %c, %6.1lf m\n",
-             site->latitude, ns, site->longitude, ew, site->height );
 
     // print atmospheric details
-    fprintf( file, "weather:\t%5.1lf°C, %4.3f bar\n", site->temperature, site->pressure/1000.0 );
-
+    fprintf( file,
+            "Atmosphere\n"
+            "\ttemperature:\t%5.1lf°C\n"
+            "\tpressure:\t%4.3f millibars\n",
+            site->temperature, site->pressure );
     fflush(file);
+}
+
+void tracker_print_location(Tracker *tracker, FILE * file) {
+    int deg = 0, min = 0;
+    double sec = 0.0;
+    on_surface * site = &(tracker->site);
+    fprintf( file, "Location\n" );
+
+    char ew = (char) ((site->longitude>0.0) ? 'E' : 'W');
+    deg2dms(site->longitude, &deg, &min, &sec);
+    fprintf(file, "\tlongitude:\t%d %d' %lf\" %c\t(%lf)\n",
+            abs(deg), abs(min), fabs(sec), ew, site->longitude);
+
+    char ns = (char) ((site->latitude>0.0) ? 'N' : 'S');
+    deg2dms(site->latitude, &deg, &min, &sec);
+    fprintf(file, "\tlatitude:\t%d %d' %lf\" %c\t(%lf)\n",
+            abs(deg), abs(min), fabs(sec), ns, site->latitude);
+
+    fprintf(file, "\theight:\t%lf meters\n");
+}
+
+void tracker_print_heading(Tracker * tracker, FILE * file) {
+    int deg = 0, min = 0;
+    double sec = 0.0;
+
+    fprintf( file, "Tracker Heading\n");
+
+    deg2dms(tracker->right_ascension, &deg, &min, &sec);
+    fprintf( file,
+            "\tright ascension:\t%d %u' %lf\" (%9.5lf hours)\n",
+            deg, min, sec, tracker->right_ascension);
+
+    deg2dms(tracker->declination, &deg, &min, &sec);
+    fprintf( file,
+             "\tdeclination:\t%d %u' %lf\" (%9.5lf degrees)\n", //°
+             deg, min, sec, tracker->declination);
+
+    deg2dms(tracker->azimuth, &deg, &min, &sec);
+    fprintf( file,
+             "\tazimuth:\t%d %u' %lf\" (%9.5lf degrees)\n",
+             deg, min, sec, tracker->azimuth);
+
+    deg2dms(tracker->elevation, &deg, &min, &sec);
+    fprintf( file,
+             "\televation:\t%d %u' %lf\" (%9.5lf degrees)\n",
+             deg, min, sec, tracker->elevation);
+
+    fprintf( file,
+             "\tEFG:\t[%lf, %lf, %lf]\n",
+            tracker->efg[0], tracker->efg[1], tracker->efg[2]);
 }
 
 // test ///////////////////////////////////////////////////////////////////////
