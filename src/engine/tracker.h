@@ -125,6 +125,8 @@ void tracker_print_atmosphere(Tracker *tracker, FILE * file);
 
 void tracker_print_location(Tracker *tracker, FILE * file);
 
+void tracker_print_heading(Tracker * tracker, FILE * file);
+
 /** Performs some calculations on a small set of stars and tests them against precomputed coordinates.
  * Directly taken from 'checkout-stars.c' from novas 3.1.
  * @param test the CuTest structure which holds test results. */
