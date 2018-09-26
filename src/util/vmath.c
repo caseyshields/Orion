@@ -63,16 +63,20 @@ void spherical2cartesian(double theta, double phi, double C[3] ) {
 
 void deg2dms( double degrees, int *d, int * m, double * s ) {
     double dd, dm, ds;
-    ds = modf( degrees, &dd) * 60.0;
+    double sign = (degrees<0.0) ? -1.0 : 1.0;
+    ds = modf( fabs(degrees), &dd) * 60.0;
     ds = modf( ds, &dm) * 60.0;
-    *d = (int)dd;
+    *d = (int)(sign * dd);
     *m = (int)dm;
     *s = ds;
-} // TODO need to handle signs!!!
+}
 
 double dms2deg( int degrees, int minutes, double seconds ) {
-    return seconds/3600.0 + minutes/60.0 + degrees;
-} // TODO need to handle signs!!!
+    if (degrees < 0)
+        return - fabs(seconds)/3600.0 - abs(minutes)/60.0 - abs(degrees);
+    else
+        return fabs(seconds)/3600.0 + abs(minutes)/60.0 + abs(degrees);
+}
 
 char* deg2str(double degrees) {
     int d, h, m;
