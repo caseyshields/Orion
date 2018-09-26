@@ -17,7 +17,7 @@
 /** 2^31/256 meters, or half the maximum distance representable by TATS((2^32)/256 = 16777216 meters).
  * Novas uses Astronomical units for distance and they set their celestial sphere(for the purposes of parallax)
  * at 2*10^14 AU */
-#define TATS_CELESTIAL_SPHERE_RADIUS (1<<31)
+#define TATS_CELESTIAL_SPHERE_RADIUS (1<<30)
 
 /** Midc index of TATS message types. */
 typedef enum {
