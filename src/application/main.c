@@ -41,9 +41,6 @@ int main( int argc, char *argv[] ) {
 
     // find the current earth orientation
     app.eop = iers_search(app.iers, app.jd_utc);
-    if (!app.eop) {
-        app.eop = &MISSING_EOP;
-    } // TODO notify user of predicted mode, or outdated catalogs?
 
     // Main loop
     while (app.mode) {
@@ -291,8 +288,6 @@ int cmd_time(char * line, Application * app) {
     }
     // look up the earth orientation parameters for the given day
     app->eop = iers_search( app->iers, app->jd_utc );
-    if (!app->eop)
-        app->eop = &MISSING_EOP;
 
     // show user the current time and earth orientation parameters
     iers_print_time( app->eop, app->jd_utc, stdout );
@@ -578,11 +573,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
     while( start < end ) {
 
         // look up the earth orientation parameters
-        IERS_EOP * earth = iers_search( cli->iers, start ); // TODO this can really be sped up to a linear search after the first iteration...
-        if (!earth) {
-            // TODO should we print a warning if missing or predicted?
-            earth = &MISSING_EOP;
-        }
+        IERS_EOP * earth = iers_search( cli->iers, start ); // TODO this could be sped up to a linear search after the first iteration... or just using an interpolation search
         tracker_set_earth( &tracker, earth );
 
         // calculate coordinates at the given time
