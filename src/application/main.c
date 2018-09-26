@@ -467,11 +467,18 @@ int cmd_connect( char * line, Application * cli ) {
     if( orion_connect( cli->orion, app.ip, app.port) ) {
         alert( "Could not connect to TATS sensor");
         return 1;
-    } if( orion_start( cli->orion ) ) {
+    }
+
+    if( orion_start( cli->orion ) ) {
         alert( "Failed to start TATS control thread" );
         return 1;
     }
 
+    fprintf( stdout,
+            "Sensor\n"
+            "\tip:\t%s\n"
+            "\tport:\t%d\n",
+            app.ip, app.port);
     return 0;
 }
 
@@ -541,6 +548,11 @@ int cmd_status(char * line, Application * cli, FILE * stream ) {
 //        create_tracking_message(orion, &midc01);
 //        tats_print_midc01(&midc01, file);
     }
+    fprintf( stdout,
+             "Sensor\n"
+             "\tip:\t%s\n"
+             "\tport:\t%d\n",
+             app.ip, app.port);
 }
 
 int cmd_report( char * line, Application * cli, FILE * stream ) {
