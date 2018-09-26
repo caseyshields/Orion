@@ -594,7 +594,7 @@ int cmd_report( char * line, Application * cli, FILE * stream ) {
         // print report entry
         int r = TATS_CELESTIAL_SPHERE_RADIUS;
         char * ts = jday2str(start);
-        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%u\t%u\t%u\n", ts,
+        fprintf( stream, "%s\t%010.6lf\t%010.6lf\t%d\t%d\t%d\n", ts,
                 tracker.azimuth, tracker.elevation,
                  (int)(tracker.efg[0]*r), (int)(tracker.efg[1]*r), (int)(tracker.efg[2]*r) );
         free( ts );
