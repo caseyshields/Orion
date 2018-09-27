@@ -79,11 +79,11 @@ jday str2jday(char *stamp) {
 }
 
 jday utc2tt(jday utc) {
-    return (utc + (LEAP_SECONDS / DELTA_AT) / SECONDS_IN_DAY);
+    return utc + ((LEAP_SECONDS + DELTA_AT) / SECONDS_IN_DAY);
 }
 
 jday tt2utc( jday tt ) {
-    return tt - ((LEAP_SECONDS / DELTA_AT) / SECONDS_IN_DAY);
+    return tt - ((LEAP_SECONDS + DELTA_AT) / SECONDS_IN_DAY);
 }
 
 int jday_print(jday jd_utc, FILE * stream) {

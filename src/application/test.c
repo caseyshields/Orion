@@ -90,9 +90,15 @@ void test_prediction( CuTest * test ) {
         // convert UT1 time to the TT timescale used by novas, and thus orion
         double leap_secs = 37.0;
         jday jd_ut1 = usno[n][0];
-        jday jd_utc = jd_ut1 - (earth.ut1_utc/86400.0);
-//        jday jd_tt = jd_utc + ((leap_secs + 32.184) / 86400.0);
+        jday novas_jd_utc = jd_ut1 - (earth.ut1_utc/86400.0);
+        jday novas_jd_tt = novas_jd_utc + ((leap_secs + 32.184) / 86400.0);
         // adapted from Novas 3.1 section 3.2
+
+        jday jd_utc = iers_get_UTC(&earth, jd_ut1);
+        CuAssertDblEquals_Msg(test, "Orion UT1 UTC conversion didn't match Novas'", novas_jd_utc, jd_utc, 0.00001);
+
+        jday jd_tt = utc2tt( jd_utc );
+        CuAssertDblEquals_Msg(test, "Orion UTC TT conversion didn't match Novas'", novas_jd_tt, jd_tt, 0.00001);
 
         // point the tracker at the star, ignoring refraction.
         int result = tracker_point(&tracker, jd_utc, &vega.novas, REFRACTION_NONE);
