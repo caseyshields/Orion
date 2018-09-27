@@ -27,7 +27,7 @@ ssize_t get_input(char* prompt, char **line, size_t *size ) {
         *line = NULL;
         *size = 0;
     }
-    printf("%s : ", prompt);
+    printf("%s> ", prompt);
     fflush( stdout );
     ssize_t read = getline( line, size, stdin );
 

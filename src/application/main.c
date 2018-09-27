@@ -47,11 +47,9 @@ int main( int argc, char *argv[] ) {
 
         // print prompt and get next user command
         printf("\n");
-        char *stamp = jday2str(app.jd_utc);
         char *line = NULL;
         size_t size = 0;
-        ssize_t read = get_input(stamp, &line, &size);
-        free(stamp);
+        ssize_t read = get_input("Orion", &line, &size);
 
         interpret(&app, line);
     }
@@ -129,7 +127,6 @@ void cleanup() {
 
 void configure_app( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
     app->mode = 1;
-    //app->jd_tt = utc2tt(jday_now());
 
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation
     char * arg = get_arg( argc, argv, "-ut1_utc", UT1_UTC );
