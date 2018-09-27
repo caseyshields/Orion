@@ -35,6 +35,7 @@ void test_prediction( CuTest * test ) {
 
     // we want answers to be within 10 arcseconds
     double epsilon = 10.0 / 60.0 / 60.0;
+    // 0.001 degrees
 
     // here's a hand jammed copy of the reports. There's probably no typos.
     double usno[][5] = { // UT1,  zd,  az,  ra,  dec
@@ -67,13 +68,18 @@ void test_prediction( CuTest * test ) {
     Entry vega = test_getVega();
     CuAssertDblEquals_Msg(test, "Right Ascension Hour conversion failed", 18.615649, vega.novas.ra, 0.000001);
     CuAssertDblEquals_Msg(test, "Declination degree conversion failed", 38.783690, vega.novas.dec, 0.000001);
+    entry_print( &vega, stdout );
 
     IERS_EOP earth = test_getEarth2018Sep9();
     CuAssertDblEquals_Msg(test, "incorrect MJD conversion", IERS_MJD_OFFSET+58380.00, earth.mjd, 0.01);
+    iers_print_eop( &earth, stdout );
 
     Tracker tracker = test_getMcCarrenTracker( &earth );
     CuAssertDblEquals_Msg(test, "incorrect latitude conversion", 36.072028, tracker.site.latitude, 0.000001);
     CuAssertDblEquals_Msg(test, "incorrect longitude conversion", -115.134361, tracker.site.longitude, 0.000001);
+    tracker_print_location( &tracker, stdout );
+    tracker_print_atmosphere( &tracker, stdout );
+
 
     // target a star that we have data for from the reference USNO implementation
     double Uaz, Uel, Ura, Udc; // USNO coordinates
@@ -118,13 +124,16 @@ void test_prediction( CuTest * test ) {
         Tra = tracker.right_ascension;
         Tdc = tracker.declination;
 
-        Eaz = Taz - Uaz;
-        Eel = Tel - Uel;
-        Era = Tra - Ura;
-        Edc = Tdc - Udc;
+//        Eaz = Taz - Uaz;
+//        Eel = Tel - Uel;
+//        Era = Tra - Ura;
+//        Edc = Tdc - Udc;
+//        Eh = sqrt( Eaz*Eaz + Eel*Eel );
+//        Ec = sqrt( Era*Era + Edc*Edc );
+        // this will add a secant term, noticable near the poles...
 
-        Eh = sqrt( Eaz*Eaz + Eel*Eel );
-        Ec = sqrt( Era*Era + Edc*Edc );
+        Eh = orthodromic_distance(Tel*DEG2RAD, Taz*DEG2RAD, Uel*DEG2RAD, Uaz*DEG2RAD);
+        Ec = orthodromic_distance(Tdc*DEG2RAD, Tra*DEG2RAD, Udc*DEG2RAD, Ura*DEG2RAD);
 
 //        if(n>0) {
 //            dUaz = usno[n][2] - usno[n-1][2];
@@ -135,8 +144,8 @@ void test_prediction( CuTest * test ) {
 
         // print the results for the user
         char * jdstr = jday2str( jd_ut1 );
-        char * EhStr = deg2str( Eh );
-        char * EcStr = deg2str( Ec );
+        char * EhStr = deg2str( RAD2DEG * Eh );
+        char * EcStr = deg2str( RAD2DEG * Ec );
         printf("\t%17s\t%17s\t%17s\t%lf\n", jdstr, EhStr, EcStr, Uel);
         // print it all
 //        printf("\t%s\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%s\n",

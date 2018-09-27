@@ -9,9 +9,10 @@
 #include <stdlib.h>
 #include "../lib/cutest-1.5/CuTest.h"
 
-#define DMS_OUTPUT_FORMAT "% 3d°% 2d'% 6.3lf\""
+#define DMS_OUTPUT_FORMAT "% 3d % 2d'% 6.3lf\""
 
-#define DMS_INPUT_FORMAT "%d°%d'%lf\""
+#define DMS_INPUT_FORMAT "%d %d'%lf\""
+// The '°' character doesn't display correctly in executables...
 
 void scale( double U[3], double k );
 
@@ -28,7 +29,8 @@ double normalize( double U[3] );
 /** Determines the angle between two vectors which lie on the surface of the sphere, by taking the arcsin of the resulting chord. */
 double angular_separation( double theta_1, double phi_1, double theta_2, double phi_2 );
 
-/** Determines the great-circle distance between two points on a sphere. arctan( ||VxU|| / V*U ) */
+/** Determines the great-circle distance between two points on a sphere. arctan( ||VxU|| / V*U )
+ * */
 double orthodromic_distance( double theta_1, double phi_1, double theta_2, double phi_2 );
 
 double hours2radians( double h );

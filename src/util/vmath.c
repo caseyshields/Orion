@@ -47,8 +47,9 @@ double orthodromic_distance( double theta_1, double phi_1, double theta_2, doubl
 
     double sind = magnitude( UxV );
     double cosd = dot( U, V );
-
     double angle = atan( sind / cosd );
+    //double angle = asin( sind );
+    return angle;
 }
 
 double hours2radians( double h ) { return (h/24.0)*M_PI; }
