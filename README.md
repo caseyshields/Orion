@@ -181,3 +181,7 @@ Results are tested against a [USNO web app](http://aa.usno.navy.mil/data/docs/to
  - [IERS Time Scale Converter](https://www.iers.org/IERS/EN/DataProducts/tools/timescales/timescales.html)
  - Special thanks to [George Kaplan](http://gkaplan.us/) for setting me straight on time scales used for different calculations.
  - Predictions of difference between Universal and Terrestrial time scales([DeltaT](https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term))
+ - [Astronomical Almanac](http://asa.usno.navy.mil/SecM/Glossary.html)
+ - [In-The-Sky.org](https://in-the-sky.org/skymap.php)
+ - [USNO Topocentric position calculator](http://aa.usno.navy.mil/data/docs/topocentric.php)
+ - [Sky and Telescope](https://www.skyandtelescope.com/interactive-sky-chart/)
