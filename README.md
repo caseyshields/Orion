@@ -8,7 +8,7 @@ Loading IERS Bulletin "../data/iers/finals2000A.data"... 1992/01/01 00:00:00.000
 loading FK6 I metadata "../data/fk6/ReadMe"... 93 fields loaded.
 loading FK6 III metadata "../data/fk6/ReadMe"... 56 fields loaded.
 loading catalog "../data/fk6/fk6_1.dat"... 878 entries total.
-loading catalog "../data/fk6/fk6_1.dat"... 4150 entries total.
+loading catalog "../data/fk6/fk6_3.dat"... 4150 entries total.
 
 2018/09/26 23:43:55.503 : time 2000/1/1 12:0:0
 Time

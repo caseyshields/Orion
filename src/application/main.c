@@ -245,7 +245,7 @@ char * path = "../data/fk6/ReadMe";
 
     // load the third part
     char * path3 = "../data/fk6/fk6_3.dat";
-    printf( "loading catalog \"%s\"...", path1);
+    printf( "loading catalog \"%s\"...", path3);
     FILE * data3 = fopen( path3, "r" );
     catalog_load_fk6(catalog, fk6_3, data3);
     fk6_free( fk6_3 );
