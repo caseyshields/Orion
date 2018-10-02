@@ -126,7 +126,7 @@ void cleanup() {
 
 // Initialization /////////////////////////////////////////////////////////////
 
-void configure_app( int argc, char* argv[], Application * app ) { //struct sockaddr_in* address) {
+void configure_app( int argc, char* argv[], Application * app ) {
     app->mode = 1;
 
     // (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation

@@ -76,21 +76,20 @@ else (WIN32)
 endif (WIN32)
 
 # generate the installation script
-set( ORION_INSTALL_LOCATION "C:/Users/Casey Shields/orion" )
-
-message( "\nCMAKE_INSTALL_PREFIX : ${CMAKE_INSTALL_PREFIX}" )
-message( "\nORION_INSTALL_LOCATION : ${ORION_INSTALL_LOCATION}\n" )
+set( ORION_INSTALL "C:/Users/Casey Shields/orion" )
+#set( ORION_INSTALL "${CMAKE_INSTALL_PREFIX}" )
+message( "\nORION_INSTALL : ${ORION_INSTALL}" )
 
 install( TARGETS orion sensor cutest novas
-        RUNTIME DESTINATION ${ORION_INSTALL_LOCATION}/bin
-        ARCHIVE DESTINATION ${ORION_INSTALL_LOCATION}/lib )
+        RUNTIME DESTINATION ${ORION_INSTALL}/bin
+        ARCHIVE DESTINATION ${ORION_INSTALL}/lib )
 
 install( DIRECTORY data
-        DESTINATION ${ORION_INSTALL_LOCATION} )
+        DESTINATION ${ORION_INSTALL} )
 
-install(DIRECTORY src
-        DESTINATION ${ORION_INSTALL_LOCATION}/include
-        FILES_MATCHING PATTERN "*.h")
+install( DIRECTORY src
+        DESTINATION ${ORION_INSTALL}/include
+        FILES_MATCHING PATTERN "*.h" )
 
 #install( DIRECTORY docs DESTINATION ${ORION_INSTALL_LOCATION} )
 # TODO instead I should invoke the doxygen tool rather than pushing all this into the repo...
