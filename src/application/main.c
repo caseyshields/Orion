@@ -409,14 +409,8 @@ int cmd_search(char * line, Application * cli) {
         // print the search results for the user
         for (int n = 0; n<stars->size; n++) {
             Entry * entry = stars->stars[n];
-
-            cat_entry *novas = &(entry->novas);
-            printf("%s%ld\t%s\t%f\t%lf\t%lf\n",
-                   novas->catalog, novas->starnumber,
-                   novas->starname, entry->magnitude,
-                   entry->topocentric_azimuth, entry->zenith_distance);
+            entry_print_summary( entry ); // TODO include current horizon coordinates...
         }
-
         printf( "%u stars found.\n", (unsigned int)stars->size );
 
         // release catalogs
