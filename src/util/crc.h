@@ -6,7 +6,7 @@
 #ifndef DRDOBBS_CRC_H
 #define DRDOBBS_CRC_H
 
-#include <mem.h>
+#include <string.h>
 #include "../lib/cutest-1.5/CuTest.h"
 
 /**
