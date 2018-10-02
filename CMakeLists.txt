@@ -77,6 +77,7 @@ endif (WIN32)
 
 # generate the installation script
 set( ORION_INSTALL_LOCATION "C:/Users/Casey Shields/orion" )
+
 message( "\nCMAKE_INSTALL_PREFIX : ${CMAKE_INSTALL_PREFIX}" )
 message( "\nORION_INSTALL_LOCATION : ${ORION_INSTALL_LOCATION}\n" )
 
@@ -84,7 +85,25 @@ install( TARGETS orion sensor cutest novas
         RUNTIME DESTINATION ${ORION_INSTALL_LOCATION}/bin
         ARCHIVE DESTINATION ${ORION_INSTALL_LOCATION}/lib )
 
-install( DIRECTORY data DESTINATION ${ORION_INSTALL_LOCATION} )
+install( DIRECTORY data
+        DESTINATION ${ORION_INSTALL_LOCATION} )
+
+install(DIRECTORY src
+        DESTINATION ${ORION_INSTALL_LOCATION}/include
+        FILES_MATCHING PATTERN "*.h")
 
 #install( DIRECTORY docs DESTINATION ${ORION_INSTALL_LOCATION} )
 # TODO instead I should invoke the doxygen tool rather than pushing all this into the repo...
+find_package( Doxygen )
+if (DOXYGEN_FOUND)
+    message("\nFound Doxygen version ${DOXYGEN_VERSION}\n")
+    #so CMAKE generates it's own doxyfile and doesn't accept one as an argument.
+    # I think I need to remove the documentation from the master branch so the user always generates it locally.
+    # I need to change the git hub page to host from the doc branch where I will commit the docs
+    # and I need to remove the doxygen command from the normal build process since it takes awhile...
+    #doxygen_add_docs(
+    #    orion
+    #    ${PROJECT_SOURCE_DIR}
+    #    COMMENT "Generate man pages"
+    #)
+ENDIF(DOXYGEN_FOUND)
