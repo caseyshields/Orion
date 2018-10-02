@@ -15,6 +15,7 @@ Application app = {
 int interpret(Application * app, char * line);
 
 int main( int argc, char *argv[] ) {
+    printf( "Orion v.%u.%u", VERSION_MAJOR, VERSION_MINOR);
 
     // divert to running test suite if flagged
     if (has_arg(argc, argv, "-test"))

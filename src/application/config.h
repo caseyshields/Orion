@@ -1,0 +1,36 @@
+
+// configured by CMake
+
+#define VERSION_MAJOR 1
+
+#define VERSION_MINOR 0
+
+/** default north latitude of sensor in degrees */
+#define LATITUDE "36.1989"
+//define LATITUDE "38.8897"
+
+/** default east longitude of sensor in degrees */
+#define LONGITUDE "-115.1175"
+//define LONGITUDE "-77.0075"
+
+/** default geodetic height of sensor in meters */
+#define HEIGHT "0.0"
+//#define HEIGHT "125.0"
+
+/** default site temperature in degrees celsius */
+#define TEMPERATURE "10.0"
+
+/** default atmospheric pressure at site in millibars */
+#define PRESSURE "1010.0"
+
+/** (UT1-UTC); current offset between atomic clock time and time derived from Earth's orientation */
+#define UT1_UTC "0.05939"
+// IERS 9/11;
+
+/** delta AT, Difference between TAI and UTC. Obtained from IERS June 20 2018 */
+#define TAI_UTC "37.000000"
+
+/** A positive time bias to account for the network latency between Orion and it's slaved TATS sensor. */
+#define LATENCY "0.0"
+
+#define LOCALHOST "127.0.0.1"

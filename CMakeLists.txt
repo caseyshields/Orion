@@ -3,9 +3,16 @@ project(startrack C)
 
 set(CMAKE_C_STANDARD 11)
 
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 0)
+
+configure_file(
+        "${PROJECT_SOURCE_DIR}/src/application/config.h.in"
+        "${PROJECT_SOURCE_DIR}/src/application/config.h"
+)
+
 include_directories(src)
-include_directories(lib/novasc3.1)
-include_directories(lib/novasc3.1/ext)
+include_directories(lib)
 
 # Compiles a static library for Novas 3.1 in reduced accuracy mode
 set( NOVAS_SOURCE
@@ -60,6 +67,7 @@ add_executable( orion
         src/controller/orion.c
         src/application/main.c
         src/application/test.c
+        src/application/config.h
         )
 if (WIN32)
     target_link_libraries( orion cutest novas pthread wsock32 ws2_32 )
@@ -67,12 +75,14 @@ else (WIN32)
     target_link_libraries( orion cutest novas pthread m )
 endif (WIN32)
 
-## This executable was converted to a unit test and added to the main test suite
-# This is the test program that came with Novas for reduced accuracy mode;
-# Its output is meant to match "data/novas/checkout-stars-usno.txt"
-#add_executable( checkout lib/novasc3.1/test/checkout-stars.c)
-#if(WIN32)
-#    target_link_libraries( checkout novas )
-#else(WIN32)
-#    target_link_libraries( checkout novas m )
-#endif(WIN32)
+# generate the installation script
+set( ORION_INSTALL_LOCATION "C:/Users/Casey Shields/orion" )
+message( "\nCMAKE_INSTALL_PREFIX : ${CMAKE_INSTALL_PREFIX}" )
+message( "\nORION_INSTALL_LOCATION : ${ORION_INSTALL_LOCATION}\n" )
+
+install( TARGETS orion sensor cutest novas
+        RUNTIME DESTINATION ${ORION_INSTALL_LOCATION}/bin
+        ARCHIVE DESTINATION ${ORION_INSTALL_LOCATION}/lib )
+
+install( DIRECTORY data
+        DESTINATION ${ORION_INSTALL_LOCATION})
