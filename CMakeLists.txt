@@ -84,5 +84,7 @@ install( TARGETS orion sensor cutest novas
         RUNTIME DESTINATION ${ORION_INSTALL_LOCATION}/bin
         ARCHIVE DESTINATION ${ORION_INSTALL_LOCATION}/lib )
 
-install( DIRECTORY data
-        DESTINATION ${ORION_INSTALL_LOCATION})
+install( DIRECTORY data DESTINATION ${ORION_INSTALL_LOCATION} )
+
+#install( DIRECTORY docs DESTINATION ${ORION_INSTALL_LOCATION} )
+# TODO instead I should invoke the doxygen tool rather than pushing all this into the repo...
