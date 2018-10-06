@@ -128,13 +128,13 @@ int main( int argc, char *argv[] ) {
 
             } else if (result == 0) {
                 // terminate(0, NULL);
-                printf( "[%d] Client closed connection\n\0", socket_error());
+                printf( "[%d] Client closed connection\n", socket_error());
                 socket_close( client );
                 break;
 
             } else {
                 //terminate(WSAGetLastError(), "Failed to read from client\n");
-                printf( "[%d] Failed to read from client\n\0", socket_error());
+                printf( "[%d] Failed to read from client\n", socket_error());
                 socket_close( client );
                 break;
             }
