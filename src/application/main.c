@@ -120,7 +120,7 @@ void cleanup() {
     if (app.iers)
         iers_free( app.iers );
 
-    if( app.ip && app.ip==LOCALHOST)
+    if( app.ip && app.ip!=LOCALHOST)
         free( app.ip );
 }
 

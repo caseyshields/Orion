@@ -248,7 +248,7 @@ void test_iers_load( CuTest * test ) {
     CuAssertPtrNotNullMsg(test, "failed to allocate EOPs", iers.eops);
 
     int result = iers_load( &iers, bulletinA );
-    CuAssertIntEquals( test, 10105, result );
+    CuAssertIntEquals( test, 10140, result );
 
     // compute and print the average assuming samples are evenly spaced...
     IERS_EOP avg = {0.0,'M',0.0,0.0,0.0,0.0,'M',0.0,0.0};
