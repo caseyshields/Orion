@@ -438,7 +438,7 @@ int cmd_connect( char * line, Application * cli ) {
 
     // overwrite default address if one is supplied
     if (result >= 4) {
-        if (app.ip)
+        if (app.ip && app.ip!=LOCALHOST)
             free(app.ip);
         app.ip = calloc(32, sizeof(char));
         sprintf(app.ip, "%u.%u.%u.%u", ip1, ip2, ip3, ip4);
