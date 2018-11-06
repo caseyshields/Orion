@@ -111,7 +111,7 @@ ENDIF(DOXYGEN_FOUND)
 # build a CPack driven installer package
 include (InstallRequiredSystemLibraries)
 set (CPACK_RESOURCE_FILE_LICENSE
-        "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
+        "${CMAKE_CURRENT_SOURCE_DIR}/license.txt")
 set (CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 include (CPack)

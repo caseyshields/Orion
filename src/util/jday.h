@@ -5,7 +5,8 @@
 #ifndef STARTRACK_JDAY_H
 #define STARTRACK_JDAY_H
 
-#include <sys/time.h>
+//#include <sys/time.h>
+#include <time.h>
 #include "../lib/cutest-1.5/CuTest.h"
 #include "../lib/novasc3.1/novas.h"
 
