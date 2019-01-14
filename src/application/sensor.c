@@ -130,12 +130,14 @@ int main( int argc, char *argv[] ) {
                 // terminate(0, NULL);
                 printf( "[%d] Client closed connection\n", socket_error());
                 socket_close( client );
+                mode = 0;
                 break;
 
             } else {
                 //terminate(WSAGetLastError(), "Failed to read from client\n");
                 printf( "[%d] Failed to read from client\n", socket_error());
                 socket_close( client );
+                mode = 0;
                 break;
             }
             fflush(stdout);

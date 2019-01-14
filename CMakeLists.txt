@@ -78,10 +78,15 @@ endif (WIN32)
 # generate the installation script
 #set( ORION_INSTALL "C:/Users/Casey Shields/orion" )
 #set( ORION_INSTALL "C:/Users/shiel/orion" )
+
+#example MinGW installation
+#set( ORION_INSTALL "C:/MinGW/msys/1.0/home/Casey Shields/orion" )
+
 #set( ORION_INSTALL "${CMAKE_INSTALL_PREFIX}" )
 set( ORION_INSTALL "C:/cygwin64/home/Casey/orion" )
 message( "\nORION_INSTALL : ${ORION_INSTALL}" )
 
+# generate the installation script
 install( TARGETS orion sensor cutest novas
         RUNTIME DESTINATION ${ORION_INSTALL}/bin
         ARCHIVE DESTINATION ${ORION_INSTALL}/lib )
